@@ -1,0 +1,39 @@
+{
+  "name": "dart-07-beetpx",
+  "version": "0.0.0",
+  "author": "Beetroot Paul",
+  "license": "MIT",
+  "private": true,
+  "description": "A scrolling shooter, built with BeetPx. As the Dart-07 you fight on Emerald Islands, Outpost in Space, and in the interstellar Phoslar Mine.",
+  "homepage": "https://github.com/beetrootpaul/dart-07-beetpx#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beetrootpaul/dart-07-beetpx.git"
+  },
+  "engines": {
+    "node": ">=14.18.0"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "cleanup": "rimraf ./.beetpx/ ./index.html ./itch_io_simulation.html",
+    "format": "prettier --ignore-path .gitignore --write src/",
+    "typecheck": "tsc",
+    "typecheck:watch": "tsc --watch",
+    "test": "jest",
+    "start": "npm run dev",
+    "dev": "beetpx dev",
+    "prod": "npm run cleanup && npm run typecheck && beetpx build && beetpx preview",
+    "itch": "npm run cleanup && npm run typecheck && beetpx build && beetpx zip"
+  },
+  "devDependencies": {
+    "@beetpx/beetpx": "0.8.1",
+    "@jest/globals": "29.5.0",
+    "husky": "8.0.3",
+    "jest": "29.6.2",
+    "prettier": "2.8.8",
+    "prettier-plugin-organize-imports": "3.2.3",
+    "rimraf": "5.0.0",
+    "ts-jest": "29.1.1",
+    "typescript": "5.0.4"
+  }
+}
