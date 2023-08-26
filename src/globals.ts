@@ -1,5 +1,7 @@
-import { Utils, v_ } from "@beetpx/beetpx";
+import { BeetPx, Utils, v_ } from "@beetpx/beetpx";
 import { Pico8Colors } from "./pico8/Pico8Color";
+
+export const b = BeetPx;
 
 export const c = Pico8Colors;
 

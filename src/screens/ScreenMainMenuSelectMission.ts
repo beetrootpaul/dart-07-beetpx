@@ -1,12 +1,11 @@
-import { BeetPx } from "@beetpx/beetpx";
-import { c } from "../globals";
+import { b, c } from "../globals";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 
 export class ScreenMainMenuSelectMission implements GameScreen {
   update(): GameScreen {
     // TODO: remove this temporary code
-    if (BeetPx.wasJustPressed("x")) {
+    if (b.wasJustPressed("x")) {
       return new ScreenMissionMain();
     }
     return this;
@@ -14,7 +13,7 @@ export class ScreenMainMenuSelectMission implements GameScreen {
 
   draw(): void {
     // TODO: remove this temporary code
-    BeetPx.clearCanvas(c.darkOrange);
+    b.clearCanvas(c.darkOrange);
   }
 }
 

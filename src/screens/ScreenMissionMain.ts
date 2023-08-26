@@ -1,5 +1,5 @@
-import { BeetPx, Timer } from "@beetpx/beetpx";
-import { c } from "../globals";
+import { Timer } from "@beetpx/beetpx";
+import { b, c } from "../globals";
 import { GameScreen } from "./GameScreen";
 import { ScreenMainMenuSelectMission } from "./ScreenMainMenuSelectMission";
 
@@ -15,7 +15,7 @@ export class ScreenMissionMain implements GameScreen {
 
   draw(): void {
     // TODO: remove this temporary code
-    BeetPx.clearCanvas(c.trueBlue);
+    b.clearCanvas(c.trueBlue);
   }
 }
 
