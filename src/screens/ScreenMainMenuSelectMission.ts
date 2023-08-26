@@ -3,17 +3,26 @@ import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 
 export class ScreenMainMenuSelectMission implements GameScreen {
-  update(): GameScreen {
+  // TODO: remove this temporary code
+  private _next: boolean = false;
+
+  update(): void {
     // TODO: remove this temporary code
     if (b.wasJustPressed("x")) {
-      return new ScreenMissionMain();
+      this._next = true;
     }
-    return this;
   }
 
   draw(): void {
     // TODO: remove this temporary code
     b.clearCanvas(c.darkOrange);
+  }
+
+  conclude(): GameScreen | undefined {
+    // TODO: remove this temporary code
+    if (this._next) {
+      return new ScreenMissionMain();
+    }
   }
 }
 

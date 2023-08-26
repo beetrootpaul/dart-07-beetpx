@@ -42,12 +42,15 @@ export class Game {
         b.setFont(g.assets.pico8FontId);
 
         // TODO: make it start with a real first screen (BRP)
-        this._nextScreen = new ScreenMainMenuSelectMission();
+        this._currentScreen = new ScreenMainMenuSelectMission();
       });
 
       b.setOnUpdate(() => {
-        this._currentScreen = this._nextScreen;
-        this._nextScreen = this._currentScreen?.update();
+        this._nextScreen = this._currentScreen?.conclude();
+        if (this._nextScreen) {
+          this._currentScreen = this._nextScreen;
+        }
+        this._currentScreen?.update();
       });
 
       b.setOnDraw(() => {

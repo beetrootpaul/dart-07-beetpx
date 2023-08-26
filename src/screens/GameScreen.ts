@@ -1,5 +1,7 @@
 export interface GameScreen {
-  update(): GameScreen;
+  update(): void;
 
   draw(): void;
+
+  conclude(): GameScreen | undefined;
 }

@@ -7,25 +7,9 @@ export class ScreenMissionMain implements GameScreen {
   // TODO: remove this temporary code
   private _timer: Timer = new Timer(2);
 
-  update(): GameScreen {
-    // TODO: remove this temporary code
-    this._timer.update(b.dt);
-    return this._timer.hasFinished ? new ScreenMainMenuSelectMission() : this;
-  }
-
-  draw(): void {
-    // TODO: remove this temporary code
-    b.clearCanvas(c.trueBlue);
-  }
-}
-
-// TODO: migrate from Lua
-/*
--- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- cart_mission/screen_mission_main.lua   --
--- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
+  // TODO: migrate from Lua
+  /*
+  function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
     local game = new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
 
     local fade_in_frames, sliding_info_slide_frames, screen_frames = _unpack_split "30,50,200"
@@ -49,12 +33,17 @@ function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_
     }
     local fade_in, screen = new_fade("in", fade_in_frames), {}
 
-    --
-
     function screen._init()
         music(_m_mission_main_music)
     end
+   */
 
+  update(): void {
+    // TODO: remove this temporary code
+    this._timer.update(b.dt);
+
+    // TODO: migrate from Lua
+    /*
     function screen._update()
         game._update()
         hud._update()
@@ -62,43 +51,62 @@ function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_
         mission_info._update()
         fade_in._update()
     end
+     */
+  }
 
-    function screen._draw()
-        cls(_m_bg_color)
+  draw(): void {
+    // TODO: remove this temporary code
+    b.clearCanvas(c.trueBlue);
+
+    // TODO: migrate from Lua
+    /*
+            cls(_m_bg_color)
         game._draw()
         hud._draw(game)
 
         mission_info._draw()
         fade_in._draw()
-    end
+     */
+  }
 
-    function screen._post_draw()
-        game._post_draw()
+  conclude(): GameScreen | undefined {
+    // TODO: remove this temporary code
+    if (this._timer.hasFinished) {
+      return new ScreenMainMenuSelectMission();
+    }
 
-        if fade_in.has_finished() then
-            fade_in = _noop_game_object
-        end
+    // TODO: migrate from Lua
+    /*
 
-        if mission_info.has_finished() then
-            mission_info = _noop_game_object
-            game.enter_enemies_phase()
-        end
+        function screen._post_draw()
+            game._post_draw()
 
-        if game.is_ready_to_enter_boss_phase() then
-            return new_screen_mission_boss(game, hud)
-        end
+            if fade_in.has_finished() then
+                fade_in = _noop_game_object
+            end
 
-        if game.health <= 0 then
-            return new_screen_defeat(game, hud)
+            if mission_info.has_finished() then
+                mission_info = _noop_game_object
+                game.enter_enemies_phase()
+            end
+
+            if game.is_ready_to_enter_boss_phase() then
+                return new_screen_mission_boss(game, hud)
+            end
+
+            if game.health <= 0 then
+                return new_screen_defeat(game, hud)
+                -- DEBUG:
+                --return new_screen_over(game, game.shockwave_charges == 0)
+            end
+
             -- DEBUG:
-            --return new_screen_over(game, game.shockwave_charges == 0)
+            --return new_screen_over(game, false)
+            --return new_screen_over(game, true)
         end
 
-        -- DEBUG:
-        --return new_screen_over(game, false)
-        --return new_screen_over(game, true)
+        return screen
     end
-
-    return screen
-end
-*/
+    */
+  }
+}
