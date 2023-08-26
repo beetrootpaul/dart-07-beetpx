@@ -46,7 +46,12 @@ export class ScreenMissionMain implements GameScreen {
 
     // TODO: migrate from Lua
     this._missionInfo = new SlidingInfo({
+      // TODO: migrate from Lua
+      text1: `mission ${this._metadata.missionNumber}`,
+      // text_1 = "mission \-f" .. _m_mission_number,
+      text2: this._metadata.missionName,
       mainColor: this._metadata.missionInfoColor,
+      presentDuration: 2,
     });
     /*
     local mission_info = new_sliding_info {
