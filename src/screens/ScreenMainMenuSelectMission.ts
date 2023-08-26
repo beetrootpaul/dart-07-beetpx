@@ -1,4 +1,4 @@
-import { b, c } from "../globals";
+import { b, c, g } from "../globals";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 
@@ -21,7 +21,15 @@ export class ScreenMainMenuSelectMission implements GameScreen {
   conclude(): GameScreen | undefined {
     // TODO: remove this temporary code
     if (this._next) {
-      return new ScreenMissionMain();
+      return new ScreenMissionMain({
+        metadata: g.missions[0]!,
+        health: 3,
+        shockwaveCharges: 3,
+        fastMovement: false,
+        fastShoot: false,
+        tripleShoot: false,
+        score: 3,
+      });
     }
   }
 }

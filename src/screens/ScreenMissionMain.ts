@@ -1,23 +1,50 @@
-import { Timer } from "@beetpx/beetpx";
-import { b, c } from "../globals";
+import { MissionMetadata } from "../MissionMetadata";
+import { Game } from "../game/Game";
+import { b } from "../globals";
+import { Hud } from "../gui/Hud";
 import { GameScreen } from "./GameScreen";
-import { ScreenMainMenuSelectMission } from "./ScreenMainMenuSelectMission";
 
 export class ScreenMissionMain implements GameScreen {
-  // TODO: remove this temporary code
-  private _timer: Timer = new Timer(2);
+  private readonly _metadata: MissionMetadata;
+
+  private readonly _game: Game;
+  private readonly _hud: Hud;
+
+  constructor(params: {
+    metadata: MissionMetadata;
+    health: number;
+    shockwaveCharges: number;
+    fastMovement: boolean;
+    fastShoot: boolean;
+    tripleShoot: boolean;
+    score: number;
+  }) {
+    this._metadata = params.metadata;
+
+    this._game = new Game({
+      health: params.health,
+      shockwaveCharges: params.shockwaveCharges,
+      fastMovement: params.fastMovement,
+      fastShoot: params.fastShoot,
+      tripleShoot: params.tripleShoot,
+      score: params.score,
+    });
+
+    // TODO: migrate from Lua
+    // local fade_in_frames, sliding_info_slide_frames, screen_frames = _unpack_split "30,50,200"
+
+    // TODO: migrate from Lua
+    this._hud = new Hud();
+    //   local hud = new_hud {
+    //         wait_frames = screen_frames - 10,
+    //         slide_in_frames = 40,
+    //     }
+  }
 
   // TODO: migrate from Lua
   /*
   function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
-    local game = new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
 
-    local fade_in_frames, sliding_info_slide_frames, screen_frames = _unpack_split "30,50,200"
-
-    local hud = new_hud {
-        wait_frames = screen_frames - 10,
-        slide_in_frames = 40,
-    }
     local mission_info = new_sliding_info {
         text_1 = "mission \-f" .. _m_mission_number,
         text_2 = _m_mission_name,
@@ -39,48 +66,37 @@ export class ScreenMissionMain implements GameScreen {
    */
 
   update(): void {
-    // TODO: remove this temporary code
-    this._timer.update(b.dt);
+    this._game.update();
+    this._hud.update();
 
     // TODO: migrate from Lua
     /*
-    function screen._update()
-        game._update()
-        hud._update()
-
         mission_info._update()
         fade_in._update()
-    end
      */
   }
 
   draw(): void {
-    // TODO: remove this temporary code
-    b.clearCanvas(c.trueBlue);
+    b.clearCanvas(this._metadata.bgColor);
+
+    this._game.draw();
+    // TODO: migrate from Lua
+    this._hud.draw();
+    // hud._draw(game)
 
     // TODO: migrate from Lua
     /*
-            cls(_m_bg_color)
-        game._draw()
-        hud._draw(game)
-
         mission_info._draw()
         fade_in._draw()
      */
   }
 
   conclude(): GameScreen | undefined {
-    // TODO: remove this temporary code
-    if (this._timer.hasFinished) {
-      return new ScreenMainMenuSelectMission();
-    }
+    this._game.conclude();
 
     // TODO: migrate from Lua
+    return;
     /*
-
-        function screen._post_draw()
-            game._post_draw()
-
             if fade_in.has_finished() then
                 fade_in = _noop_game_object
             end
@@ -106,7 +122,6 @@ export class ScreenMissionMain implements GameScreen {
         end
 
         return screen
-    end
     */
   }
 }
