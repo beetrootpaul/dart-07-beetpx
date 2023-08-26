@@ -12,6 +12,8 @@ export const g = {
   fps: 60,
 
   viewportSize: v_(128, 128),
+  gameAreaSize: v_(96, 128),
+  gameAreaOffsetX: 16,
 
   assets: {
     pico8FontId: "pico8",
@@ -21,6 +23,7 @@ export const g = {
   missions: [
     {
       bgColor: c.trueBlue,
+      missionInfoColor: c.darkOrange,
     },
   ] satisfies MissionMetadata[],
 };
