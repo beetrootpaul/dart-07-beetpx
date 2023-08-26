@@ -5,11 +5,11 @@ import { ScreenMainMenuSelectMission } from "./ScreenMainMenuSelectMission";
 
 export class ScreenMissionMain implements GameScreen {
   // TODO: remove this temporary code
-  private _timer: Timer = new Timer({ frames: 120 });
+  private _timer: Timer = new Timer(2);
 
   update(): GameScreen {
     // TODO: remove this temporary code
-    this._timer.update();
+    this._timer.update(b.dt);
     return this._timer.hasFinished ? new ScreenMainMenuSelectMission() : this;
   }
 

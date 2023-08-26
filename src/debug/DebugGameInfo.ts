@@ -17,7 +17,7 @@ export class DebugGameInfo {
         : "@";
     b.print(
       audioStateText,
-      v_(g.canvasSize.x - u.measureTextSize(audioStateText).x, 0),
+      v_(g.canvasSize.x - u.measureText(audioStateText).x, 0),
       c.white
     );
   }

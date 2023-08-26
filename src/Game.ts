@@ -12,9 +12,7 @@ export class Game {
     b.init(
       {
         gameCanvasSize: "128x128",
-        desiredFps: g.fps,
         visibleTouchButtons: ["left", "right", "up", "down", "o", "x", "menu"],
-        logActualFps: !__BEETPX_IS_PROD__,
         debug: {
           available: !__BEETPX_IS_PROD__,
           toggleKey: ";",
