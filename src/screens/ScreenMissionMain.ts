@@ -77,9 +77,7 @@ export class ScreenMissionMain implements GameScreen {
     b.clearCanvas(CurrentMission.bgColor);
 
     this._game.draw();
-    // TODO
-    this._hud.draw();
-    // hud._draw(game)
+    this._hud.draw(this._game);
 
     this._missionInfo.draw();
     // TODO

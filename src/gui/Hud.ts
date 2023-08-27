@@ -4,6 +4,7 @@
 //     end
 
 import { v_ } from "@beetpx/beetpx";
+import { Game } from "../game/Game";
 import { b, c, g } from "../globals";
 
 export class Hud {
@@ -43,7 +44,7 @@ export class Hud {
     // _update = slide_in_offset._update,
   }
 
-  draw(): void {
+  draw(game: Game): void {
     b.rectFilled(
       v_(0, 0).sub(Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
@@ -60,7 +61,6 @@ export class Hud {
     }
 
     // TODO
-    //             _draw = function(game)
     //                 -- health bar
     //                 local xy = _xy(
     //                     ceil(-_gaox + 3 + slide_in_offset.xy.x),
@@ -139,6 +139,5 @@ export class Hud {
     //                         )
     //                     end
     //                 end
-    //             end
   }
 }

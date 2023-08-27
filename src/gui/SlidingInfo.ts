@@ -13,6 +13,7 @@ export class SlidingInfo {
   private readonly _text2: string;
   private readonly _mainColor: SolidColor;
   private readonly _movement: Movement;
+  private _roundingFn: "ceil" | "floor";
 
   constructor(params: {
     text1: string;
@@ -25,11 +26,9 @@ export class SlidingInfo {
   }) {
     this._text1 = params.text1;
     this._text2 = params.text2;
+    this._mainColor = params.mainColor;
+    this._roundingFn = "ceil";
 
-    // TODO
-    //    local rounding_fn = ceil
-
-    // TODO
     this._movement = MovementSequence.of([
       MovementFixed.of({
         // TODO
@@ -40,10 +39,9 @@ export class SlidingInfo {
         targetY: g.gameAreaSize.y / 2,
         duration: params.slideInDuration,
         easingFn: Easing.outQuartic,
-        // TODO
-        // on_finished = function()
-        //     rounding_fn = flr
-        // end,
+        onFinished: () => {
+          this._roundingFn = "floor";
+        },
       }),
       MovementFixed.of({
         duration: params.presentDuration,
@@ -54,7 +52,6 @@ export class SlidingInfo {
         easingFn: Easing.inQuartic,
       }),
     ])(v_(g.gameAreaOffsetX, -18));
-    this._mainColor = params.mainColor;
   }
 
   // TODO
@@ -65,9 +62,7 @@ export class SlidingInfo {
   }
 
   draw(): void {
-    // TODO
-    const xy = this._movement.xy;
-    // local x, y = rounding_fn(movement.xy.x), rounding_fn(movement.xy.y)
+    const xy = this._movement.xy[this._roundingFn]();
     // TODO
     //  if params.text_1 then
     printCentered(

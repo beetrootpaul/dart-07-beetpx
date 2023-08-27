@@ -8,6 +8,7 @@ export class MovementToTarget implements Movement {
       targetY: number;
       duration: number;
       easingFn: EasingFn;
+      onFinished?: () => void;
     }): MovementFactory =>
     // TODO
     // local easing_fn = params.easing_fn or _easing_linear
@@ -16,13 +17,15 @@ export class MovementToTarget implements Movement {
         startXy,
         params.targetY,
         params.duration,
-        params.easingFn
+        params.easingFn,
+        params.onFinished
       );
 
   private readonly _startXy: Vector2d;
   private readonly _targetY: number;
   private readonly _timer: Timer;
   private readonly _easingFn: EasingFn;
+  private _onFinished: (() => void) | undefined;
   private _xy: Vector2d;
   private _speed: Vector2d;
 
@@ -30,7 +33,8 @@ export class MovementToTarget implements Movement {
     startXy: Vector2d,
     targetY: number,
     duration: number,
-    easingFn: EasingFn
+    easingFn: EasingFn,
+    onFinished: (() => void) | undefined
   ) {
     this._startXy = startXy;
     this._targetY = targetY;
@@ -38,6 +42,7 @@ export class MovementToTarget implements Movement {
     this._timer = new Timer(duration);
     // local timer = new_timer(params.frames, params.on_finished or nil
     this._easingFn = easingFn;
+    this._onFinished = onFinished;
 
     this._xy = startXy;
     this._speed = this._nextXy().sub(startXy);
@@ -81,5 +86,9 @@ export class MovementToTarget implements Movement {
     this._timer.update(BeetPx.dt);
     this._speed = this._nextXy().sub(this._xy);
     this._xy = this._xy.add(this._speed);
+    if (this._onFinished && this._timer.hasFinished) {
+      this._onFinished();
+      this._onFinished = undefined;
+    }
   }
 }
