@@ -1,3 +1,5 @@
+import { BeetPx } from "@beetpx/beetpx";
+import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { b, c, g } from "./globals";
 import { Pico8Font } from "./pico8/Pico8Font";
@@ -6,6 +8,8 @@ import { ScreenMissionMain } from "./screens/ScreenMissionMain";
 
 let nextScreen: GameScreen | undefined;
 let currentScreen: GameScreen | undefined;
+// TODO: rework pause menu
+let pauseMenu: PauseMenu | undefined;
 
 b.init(
   {
@@ -33,6 +37,10 @@ b.init(
   }
 ).then(({ startGame }) => {
   b.setOnStarted(() => {
+    // TODO: rework pause menu
+    PauseMenu.isGamePaused = false;
+    pauseMenu = new PauseMenu();
+
     // TODO: set repeating?
     // TODO: pause menu
     // TODO: stopAllSounds
@@ -52,11 +60,21 @@ b.init(
   });
 
   b.setOnUpdate(() => {
-    nextScreen = currentScreen?.conclude();
-    if (nextScreen) {
-      currentScreen = nextScreen;
+    // TODO: rework pause menu
+    if (BeetPx.wasJustPressed("menu")) {
+      PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
     }
-    currentScreen?.update();
+
+    // TODO: rework pause menu
+    if (PauseMenu.isGamePaused) {
+      pauseMenu?.update();
+    } else {
+      nextScreen = currentScreen?.conclude();
+      if (nextScreen) {
+        currentScreen = nextScreen;
+      }
+      currentScreen?.update();
+    }
   });
 
   b.setOnDraw(() => {
@@ -65,6 +83,11 @@ b.init(
     // TODO: print audiocontext state and FPS
 
     currentScreen?.draw();
+
+    // TODO: rework pause menu
+    if (PauseMenu.isGamePaused) {
+      pauseMenu?.draw();
+    }
 
     if (b.debug) DebugGameInfo.draw();
   });
