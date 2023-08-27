@@ -29,8 +29,8 @@ b.init(
     fonts: [
       {
         font: new Pico8Font(),
-        imageTextColor: c.white,
-        imageBgColor: c.black,
+        imageTextColor: c._7_white,
+        imageBgColor: c._0_black,
       },
     ],
     sounds: [],
@@ -95,3 +95,5 @@ b.init(
 
   startGame();
 });
+
+// TODO: performance improvements to reach ~55 FPS?

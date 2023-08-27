@@ -1,5 +1,7 @@
-import { spr_, Vector2d } from "@beetpx/beetpx";
-import { b, g } from "../globals";
+import { spr_, transparent_, Vector2d } from "@beetpx/beetpx";
+import { b, c, g } from "../globals";
+
+// TODO: consider renaming BeetPx's Sprite to SpriteData in order to allow totally different Sprite implementation in games
 
 export class AnimatedSprite {
   private readonly _spriteW: number;
@@ -36,9 +38,8 @@ export class AnimatedSprite {
     // TODO
     xy = xy.sub(this._spriteW / 2, this._spriteH / 2);
     //             xy = (from_left_top_corner and xy or xy.minus(sprite_w / 2, sprite_h / 2))
-    //
-    //             palt(_color_0_black, false)
-    //             palt(_color_11_transparent, true)
+
+    b.mapSpriteColors([{ from: c._11_transparent, to: transparent_ }]);
 
     // TODO
     b.sprite(
@@ -54,7 +55,6 @@ export class AnimatedSprite {
       xy.add(g.gameAreaOffset)
     );
 
-    // TODO
-    //             palt()
+    b.mapSpriteColors([{ from: c._11_transparent, to: c._11_transparent }]);
   }
 }

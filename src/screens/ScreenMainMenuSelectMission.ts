@@ -31,7 +31,7 @@ export class ScreenMainMenuSelectMission implements GameScreen {
 
   draw(): void {
     // TODO: remove this temporary code
-    b.clearCanvas(c.darkOrange);
+    b.clearCanvas(c._9_dark_orange);
   }
 }
 

@@ -60,17 +60,17 @@ export class PauseMenu {
       xy.sub(2),
       wh.add(4),
       new MappingColor(({ r, g, b, a }) =>
-        r + g + b > (0x100 * 3) / 2 ? c.darkerBlue : c.black
+        r + g + b > (0x100 * 3) / 2 ? c._1_darker_blue : c._0_black
       )
     );
-    BeetPx.rect(xy.sub(1), wh.add(2), c.white);
+    BeetPx.rect(xy.sub(1), wh.add(2), c._7_white);
     BeetPx.print(
       "continue",
       xy.add(
         padding + (this.#selected === 0 ? 1 : 0),
         padding + (this.#pressedIndex === 0 ? 1 : 0)
       ),
-      this.#pressedIndex === 0 ? c.peach : c.white
+      this.#pressedIndex === 0 ? c._15_peach : c._7_white
     );
     BeetPx.print(
       "restart",
@@ -81,7 +81,7 @@ export class PauseMenu {
           gapBetweenLines +
           (this.#pressedIndex === 1 ? 1 : 0)
       ),
-      this.#pressedIndex === 1 ? c.peach : c.white
+      this.#pressedIndex === 1 ? c._15_peach : c._7_white
     );
     for (const offset of PauseMenu.#arrowPixelsOffsets) {
       BeetPx.pixel(
@@ -93,7 +93,7 @@ export class PauseMenu {
           )
           .sub(4, 0)
           .add(offset),
-        c.white
+        c._7_white
       );
     }
   }

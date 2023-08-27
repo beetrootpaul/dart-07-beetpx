@@ -48,16 +48,20 @@ export class Hud {
     b.rectFilled(
       v_(0, 0).sub(Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
-      c.black
+      c._0_black
     );
     b.rectFilled(
       g.viewportSize.sub(Hud._barSize).sub(0, Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
-      c.black
+      c._0_black
     );
     if (b.debug) {
-      b.rectFilled(v_(0, 0), Hud._barSize, c.blueGreen);
-      b.rectFilled(g.viewportSize.sub(Hud._barSize), Hud._barSize, c.blueGreen);
+      b.rectFilled(v_(0, 0), Hud._barSize, c._5_blue_green);
+      b.rectFilled(
+        g.viewportSize.sub(Hud._barSize),
+        Hud._barSize,
+        c._5_blue_green
+      );
     }
 
     // TODO
