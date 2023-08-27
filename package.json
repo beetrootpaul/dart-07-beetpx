@@ -20,6 +20,8 @@
     "typecheck": "tsc",
     "typecheck:watch": "tsc --watch",
     "test": "jest",
+    "syncAssets": "node ./scripts/syncAssets.js",
+    "syncAssets:watch": "node ./scripts/syncAssets.js watch",
     "start": "npm run dev",
     "dev": "beetpx dev",
     "prod": "npm run cleanup && npm run typecheck && beetpx build && beetpx preview",
@@ -27,7 +29,7 @@
     "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "devDependencies": {
-    "@beetpx/beetpx": "git+ssh://git@github.com:beetrootpaul/beetpx#849079f333b313d093b9230b4b9ad8590a364e95",
+    "@beetpx/beetpx": "git+ssh://git@github.com:beetrootpaul/beetpx#03e5bc7f9a14804d8521fe6cd80dfff3d4673d4b",
     "@jest/globals": "29.5.0",
     "husky": "8.0.3",
     "jest": "29.6.2",

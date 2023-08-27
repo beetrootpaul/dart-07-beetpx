@@ -18,6 +18,7 @@ export const g = {
   assets: {
     pico8FontId: "pico8",
     pico8FontImage: "pico-8-font.png",
+    mainSpritesheetUrl: "spritesheet_main.png",
   },
 
   missions: [
@@ -26,6 +27,7 @@ export const g = {
       missionName: "emerald islands",
       bgColor: c.trueBlue,
       missionInfoColor: c.darkOrange,
+      spritesheetUrl: "spritesheet_mission_1.png",
     },
   ] satisfies MissionMetadata[],
 };

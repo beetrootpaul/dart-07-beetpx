@@ -25,7 +25,7 @@ b.init(
     },
   },
   {
-    images: [],
+    images: [{ url: g.assets.mainSpritesheetUrl }],
     fonts: [
       {
         font: new Pico8Font(),

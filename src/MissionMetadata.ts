@@ -5,4 +5,5 @@ export type MissionMetadata = {
   missionName: string;
   bgColor: SolidColor;
   missionInfoColor: SolidColor;
+  spritesheetUrl: string;
 };
