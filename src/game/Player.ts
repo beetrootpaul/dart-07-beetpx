@@ -4,7 +4,9 @@ import { AnimatedSprite } from "../misc/AnimatedSprite";
 
 export class Player {
   private readonly _shipSpriteNeutral: AnimatedSprite;
-  private readonly _shipSpriteCurrent: AnimatedSprite;
+  private readonly _shipSpriteFlyingLeft: AnimatedSprite;
+  private readonly _shipSpriteFlyingRight: AnimatedSprite;
+  private _shipSpriteCurrent: AnimatedSprite;
 
   private readonly _xy: Vector2d;
 
@@ -14,8 +16,9 @@ export class Player {
     // local w, h, on_damaged, on_destroyed = 10, 12, params.on_damaged, params.on_destroyed
 
     this._shipSpriteNeutral = new AnimatedSprite(10, 10, [19], 0);
+    this._shipSpriteFlyingLeft = new AnimatedSprite(10, 10, [9], 0);
+    this._shipSpriteFlyingRight = new AnimatedSprite(10, 10, [29], 0);
     // TODO
-    // local ship_sprite_flying_left, ship_sprite_flying_right = new_static_sprite "10,10,9,0", new_static_sprite "10,10,29,0"
     // local jet_sprite_visible = new_animated_sprite(
     //     4,
     //     20,
@@ -64,22 +67,32 @@ export class Player {
   //     return is_destroyed
   // end,
   //
-  // set_movement = function(left, right, up, down, fast_movement)
-  //     jet_sprite = down and jet_sprite_hidden or jet_sprite_visible
-  //     ship_sprite_current = left and ship_sprite_flying_left or (right and ship_sprite_flying_right or ship_sprite_neutral)
-  //
-  //     local speed = fast_movement and 1.5 or 1
-  //     local x_diff, y_diff = (right and speed or (left and -speed or 0)), (down and speed or (up and -speed or 0))
-  //     if x_diff ~= 0 and y_diff ~= 0 then
-  //         -- speed fix for a diagonal movement
-  //         x_diff, y_diff = x_diff / 1.41, y_diff / 1.41
-  //     end
-  //     xy = _xy(
-  //         mid(w / 2 + 1, xy.x + x_diff, _gaw - w / 2 - 1),
-  //         mid(h / 2 + 1, xy.y + y_diff, _gah - h / 2 - 1)
-  //     )
-  // end,
-  //
+
+  // TODO params: up, down, fast_movement
+  setMovement(left: boolean, right: boolean) {
+    // TODO
+    //     jet_sprite = down and jet_sprite_hidden or jet_sprite_visible
+    //     ship_sprite_current = left and ship_sprite_flying_left or (right and ship_sprite_flying_right or ship_sprite_neutral)
+    this._shipSpriteCurrent = left
+      ? this._shipSpriteFlyingLeft
+      : right
+      ? this._shipSpriteFlyingRight
+      : this._shipSpriteNeutral;
+
+    // TODO
+    //     local speed = fast_movement and 1.5 or 1
+    //     local x_diff, y_diff = (right and speed or (left and -speed or 0)), (down and speed or (up and -speed or 0))
+    //     if x_diff ~= 0 and y_diff ~= 0 then
+    //         -- speed fix for a diagonal movement
+    //         x_diff, y_diff = x_diff / 1.41, y_diff / 1.41
+    //     end
+    //     xy = _xy(
+    //         mid(w / 2 + 1, xy.x + x_diff, _gaw - w / 2 - 1),
+    //         mid(h / 2 + 1, xy.y + y_diff, _gah - h / 2 - 1)
+    //     )
+  }
+
+  // TODO
   // fire = function(fast_shoot, triple_shoot)
   //     on_bullets_spawned.invoke_if_ready(
   //         triple_shoot and (fast_shoot and 10 or 16) or (fast_shoot and 8 or 12),

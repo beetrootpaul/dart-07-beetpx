@@ -39,11 +39,14 @@ export class AnimatedSprite {
     xy = xy.sub(this._spriteW / 2, this._spriteH / 2);
     //             xy = (from_left_top_corner and xy or xy.minus(sprite_w / 2, sprite_h / 2))
 
-    b.mapSpriteColors([{ from: c._11_transparent, to: transparent_ }]);
+    // TODO: BeetPx: make previous mapping include only affected colors maybe?
+    const prevMapping = b.mapSpriteColors([
+      { from: c._11_transparent, to: transparent_ },
+    ]);
 
     // TODO
     b.sprite(
-      // TODO: avoid `spr_` call here, pre-create all sprite in construtor
+      // TODO: avoid `spr_` call here, pre-create all sprite in constructor
       // TODO: parametrize which url is used
       spr_(g.assets.mainSpritesheetUrl)(
         // TODO: remove "!"
@@ -55,6 +58,6 @@ export class AnimatedSprite {
       xy.add(g.gameAreaOffset)
     );
 
-    b.mapSpriteColors([{ from: c._11_transparent, to: c._11_transparent }]);
+    b.mapSpriteColors(prevMapping);
   }
 }

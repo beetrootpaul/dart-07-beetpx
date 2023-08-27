@@ -1,3 +1,4 @@
+import { BeetPx } from "@beetpx/beetpx";
 import { Player } from "./Player";
 
 export class Game {
@@ -315,8 +316,11 @@ export class Game {
 
   update(): void {
     // TODO
+    this._player.setMovement(
+      BeetPx.isPressed("left"),
+      BeetPx.isPressed("right")
+    );
     /*
-        function game._update()
         if player then
             player.set_movement(btn(_button_left), btn(_button_right), btn(_button_up), btn(_button_down), game.fast_movement)
             if btn(_button_x) then
@@ -330,7 +334,10 @@ export class Game {
                 end
             end
         end
+        */
 
+    // TODO
+    /*
         _flattened_for_each(
             { level },
             shockwaves,
@@ -386,8 +393,6 @@ export class Game {
             -- thanks to that we can easily detect if it's time to show boss' health bar
             game.boss_health = boss.health
         end
-    end
-
      */
   }
 
