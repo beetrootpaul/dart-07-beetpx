@@ -34,8 +34,9 @@ export class ScreenMissionMain implements GameScreen {
       score: params.score,
     });
 
-    // TODO: migrate from Lua
-    // local fade_in_frames, sliding_info_slide_frames, screen_frames = _unpack_split "30,50,200"
+    const fadeInDuration = 30 / 60;
+    const slidingInfoSlideDuration = 50 / 60;
+    const screenDuration = 200 / 60;
 
     // TODO: migrate from Lua
     this._hud = new Hud();
@@ -44,29 +45,16 @@ export class ScreenMissionMain implements GameScreen {
     //         slide_in_frames = 40,
     //     }
 
-    // TODO: migrate from Lua
     this._missionInfo = new SlidingInfo({
       text1: `mission ${this._metadata.missionNumber}`,
       text2: this._metadata.missionName,
       mainColor: this._metadata.missionInfoColor,
-      presentDuration: 2,
-      slideOutDuration: 2,
+      waitDuration: fadeInDuration,
+      slideInDuration: slidingInfoSlideDuration,
+      presentDuration:
+        screenDuration - fadeInDuration - 2 * slidingInfoSlideDuration,
+      slideOutDuration: slidingInfoSlideDuration,
     });
-    /*
-    local mission_info = new_sliding_info {
-        text_1 = "mission \-f" .. _m_mission_number,
-        text_2 = _m_mission_name,
-        main_color = _m_mission_info_color,
-        wait_frames = fade_in_frames,
-        slide_in_frames = sliding_info_slide_frames,
-        present_frames = screen_frames - fade_in_frames - 2 * sliding_info_slide_frames,
-        slide_out_frames = sliding_info_slide_frames,
-        -- DEBUG:
-        --slide_in_frames = 8,
-        --present_frames = 0,
-        --slide_out_frames = 8,
-    }
-     */
 
     // TODO: migrate from Lua
     // local fade_in, screen = new_fade("in", fade_in_frames), {}

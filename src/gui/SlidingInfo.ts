@@ -15,6 +15,8 @@ export class SlidingInfo {
   constructor(params: {
     text1: string;
     text2: string;
+    waitDuration: number;
+    slideInDuration: number;
     presentDuration: number;
     slideOutDuration: number;
     mainColor: SolidColor;
@@ -28,6 +30,20 @@ export class SlidingInfo {
     // TODO: migrate from Lua
     this._movement = MovementSequence.of([
       MovementFixed.of({
+        // TODO: migrate from Lua
+        duration: params.waitDuration,
+        // frames = params.wait_frames or 0,
+      }),
+      MovementToTarget.of({
+        targetY: g.gameAreaSize.y / 2,
+        duration: params.slideInDuration,
+        easingFn: Easing.outQuartic,
+        // TODO: migrate from Lua
+        // on_finished = function()
+        //     rounding_fn = flr
+        // end,
+      }),
+      MovementFixed.of({
         duration: params.presentDuration,
       }),
       MovementToTarget.of({
@@ -35,28 +51,7 @@ export class SlidingInfo {
         duration: params.slideOutDuration,
         easingFn: Easing.inQuartic,
       }),
-    ])(v_(g.gameAreaOffsetX, 40));
-    //     local movement = new_movement_sequence_factory {
-    //         new_movement_fixed_factory {
-    //             frames = params.wait_frames or 0,
-    //         },
-    //         new_movement_to_target_factory {
-    //             frames = params.slide_in_frames,
-    //             target_y = _gah / 2,
-    //             easing_fn = _easing_easeoutquart,
-    //             on_finished = function()
-    //                 rounding_fn = flr
-    //             end,
-    //         },
-    //         new_movement_fixed_factory {
-    //             frames = params.present_frames,
-    //         },
-    //         new_movement_to_target_factory {
-    //             frames = params.slide_out_frames,
-    //             target_y = _gah + 18,
-    //             easing_fn = _easing_easeinquart,
-    //         },
-    //     }(_xy(_gaox, -18))
+    ])(v_(g.gameAreaOffsetX, -18));
     this._mainColor = params.mainColor;
   }
 
