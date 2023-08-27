@@ -1,29 +1,40 @@
 import { BeetPx, Timer, Vector2d } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 
-export function movementFixedFactory(params: {
-  duration: number;
-}): MovementFactory {
-  return (startXy) => {
-    return new MovementFixed(startXy, params.duration);
-  };
+// TODO: extract to BeetPx and rework
+class TimerInfinite extends Timer {
+  get left(): number {
+    return 1;
+  }
+  get progress(): number {
+    return 0;
+  }
+  get hasFinished(): boolean {
+    return false;
+  }
+  update(secondsPassed: number): void {}
 }
 
-class MovementFixed implements Movement {
+export class MovementFixed implements Movement {
+  static of =
+    (params: { duration?: number }): MovementFactory =>
+    (startXy) =>
+      new MovementFixed(startXy, params.duration);
+
   private readonly _timer: Timer;
   private readonly _xy: Vector2d;
 
-  constructor(startXy: Vector2d, duration: number) {
-    // TODO: migrate from Lua
-    this._timer = new Timer(duration);
-    // local timer = params.frames and new_timer(params.frames) or new_fake_timer()
+  private constructor(startXy: Vector2d, duration: number | undefined) {
+    this._timer = duration ? new Timer(duration) : new TimerInfinite(123);
     this._xy = startXy;
-    // TODO: migrate from Lua
-    //     speed_xy = _xy_0_0,
   }
 
   get xy(): Vector2d {
     return this._xy;
+  }
+
+  get speed(): Vector2d {
+    return Vector2d.zero;
   }
 
   get hasFinished(): boolean {

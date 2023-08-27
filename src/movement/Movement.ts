@@ -7,6 +7,8 @@ export interface MovementFactory {
 export interface Movement {
   get xy(): Vector2d;
 
+  get speed(): Vector2d;
+
   get hasFinished(): boolean;
 
   update(): void;

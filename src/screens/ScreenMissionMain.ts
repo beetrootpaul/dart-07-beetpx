@@ -50,6 +50,7 @@ export class ScreenMissionMain implements GameScreen {
       text2: this._metadata.missionName,
       mainColor: this._metadata.missionInfoColor,
       presentDuration: 2,
+      slideOutDuration: 2,
     });
     /*
     local mission_info = new_sliding_info {

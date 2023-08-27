@@ -1,7 +1,10 @@
 import { SolidColor, v_ } from "@beetpx/beetpx";
 import { b, g } from "../globals";
+import { Easing } from "../misc/Easing";
 import { Movement } from "../movement/Movement";
-import { movementFixedFactory } from "../movement/MovementFixed";
+import { MovementFixed } from "../movement/MovementFixed";
+import { MovementSequence } from "../movement/MovementSequence";
+import { MovementToTarget } from "../movement/MovementToTarget";
 
 export class SlidingInfo {
   private readonly _text1: string;
@@ -13,6 +16,7 @@ export class SlidingInfo {
     text1: string;
     text2: string;
     presentDuration: number;
+    slideOutDuration: number;
     mainColor: SolidColor;
   }) {
     this._text1 = params.text1;
@@ -21,10 +25,17 @@ export class SlidingInfo {
     // TODO: migrate from Lua
     //    local rounding_fn = ceil
 
-    this._movement = movementFixedFactory({
-      duration: params.presentDuration,
-    })(v_(g.gameAreaOffsetX, 40));
     // TODO: migrate from Lua
+    this._movement = MovementSequence.of([
+      MovementFixed.of({
+        duration: params.presentDuration,
+      }),
+      MovementToTarget.of({
+        targetY: g.gameAreaSize.y + 18,
+        duration: params.slideOutDuration,
+        easingFn: Easing.inQuartic,
+      }),
+    ])(v_(g.gameAreaOffsetX, 40));
     //     local movement = new_movement_sequence_factory {
     //         new_movement_fixed_factory {
     //             frames = params.wait_frames or 0,
