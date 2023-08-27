@@ -23,9 +23,7 @@ export const g = {
   missions: [
     {
       missionNumber: 1,
-      // TODO: migrate from Lua
       missionName: "emerald islands",
-      // missionName: "emerald \-fislands",
       bgColor: c.trueBlue,
       missionInfoColor: c.darkOrange,
     },
