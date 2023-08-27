@@ -1,4 +1,4 @@
-// TODO: migrate from Lua
+// TODO
 //    local function new_hud_sprite(sprite_whxy_txt)
 //         return new_static_sprite(sprite_whxy_txt, true)
 //     end
@@ -7,7 +7,7 @@ import { v_ } from "@beetpx/beetpx";
 import { b, c, g } from "../globals";
 
 export class Hud {
-  // TODO: migrate from Lua
+  // TODO
   //         local slide_in_offset = new_movement_sequence_factory {
   //             new_movement_fixed_factory {
   //                 frames = params.wait_frames,
@@ -27,10 +27,10 @@ export class Hud {
   private static readonly _safetyBorder = 20;
 
   private static readonly _barSize = v_(16, g.viewportSize.y);
-  // TODO: migrate from Lua
+  // TODO
   // local boss_health_bar_margin = 2
 
-  // TODO: migrate from Lua
+  // TODO
   //         local heart, health_bar_start, health_bar_segment_full, health_bar_segment_empty = new_hud_sprite "6,5,40,24", new_hud_sprite "8,5,40,19", new_hud_sprite "8,9,40,10", new_hud_sprite "1,9,40,10"
   //         local shockwave, shockwave_bar_start, shockwave_bar_segment_full, shockwave_bar_segment_empty = new_hud_sprite "7,6,48,24", new_hud_sprite "8,1,48,23", new_hud_sprite "8,11,48,12", new_hud_sprite "2,11,54,12"
   //         local ship_indicator = new_hud_sprite "3,5,32,15"
@@ -39,7 +39,7 @@ export class Hud {
   //         fast_movement_off, fast_movement_on, fast_shoot_off, fast_shoot_on, triple_shoot_off, triple_shoot_on = new_hud_sprite "7,4,96,24", new_hud_sprite "7,4,96,28", new_hud_sprite "7,4,104,24", new_hud_sprite "7,4,104,28", new_hud_sprite "7,4,112,24", new_hud_sprite "7,4,112,28"
 
   update(): void {
-    // TODO: migrate from Lua
+    // TODO
     // _update = slide_in_offset._update,
   }
 
@@ -59,7 +59,7 @@ export class Hud {
       b.rectFilled(g.viewportSize.sub(Hud._barSize), Hud._barSize, c.blueGreen);
     }
 
-    // TODO: migrate from Lua
+    // TODO
     //             _draw = function(game)
     //                 -- health bar
     //                 local xy = _xy(

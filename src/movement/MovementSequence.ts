@@ -27,7 +27,7 @@ export class MovementSequence implements Movement {
   }
 
   get hasFinished(): boolean {
-    // TODO: migrate from Lua
+    // TODO
     //if loop then
     //     return false
     // end
@@ -47,7 +47,7 @@ export class MovementSequence implements Movement {
           this._currentSubMovement.xy
         );
       }
-      // TODO: migrate from Lua
+      // TODO
       //     elseif loop then
       //         sequence_index = 1
       //         current_sub_movement = sequence[sequence_index](current_sub_movement.xy)

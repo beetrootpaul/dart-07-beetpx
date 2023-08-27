@@ -1,6 +1,8 @@
 import { SolidColor, v_ } from "@beetpx/beetpx";
+import { CurrentMission } from "../CurrentMission";
 import { b, g } from "../globals";
 import { Easing } from "../misc/Easing";
+import { printCentered } from "../misc/helpers";
 import { Movement } from "../movement/Movement";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementSequence } from "../movement/MovementSequence";
@@ -24,13 +26,13 @@ export class SlidingInfo {
     this._text1 = params.text1;
     this._text2 = params.text2;
 
-    // TODO: migrate from Lua
+    // TODO
     //    local rounding_fn = ceil
 
-    // TODO: migrate from Lua
+    // TODO
     this._movement = MovementSequence.of([
       MovementFixed.of({
-        // TODO: migrate from Lua
+        // TODO
         duration: params.waitDuration,
         // frames = params.wait_frames or 0,
       }),
@@ -38,7 +40,7 @@ export class SlidingInfo {
         targetY: g.gameAreaSize.y / 2,
         duration: params.slideInDuration,
         easingFn: Easing.outQuartic,
-        // TODO: migrate from Lua
+        // TODO
         // on_finished = function()
         //     rounding_fn = flr
         // end,
@@ -55,7 +57,7 @@ export class SlidingInfo {
     this._mainColor = params.mainColor;
   }
 
-  // TODO: migrate from Lua
+  // TODO
   //   has_finished = movement.has_finished,
 
   update(): void {
@@ -63,17 +65,25 @@ export class SlidingInfo {
   }
 
   draw(): void {
-    // TODO: migrate from Lua
+    // TODO
     const xy = this._movement.xy;
     // local x, y = rounding_fn(movement.xy.x), rounding_fn(movement.xy.y)
-    // TODO: migrate from Lua
-    //             if params.text_1 then
-    b.print(this._text1, v_(xy.x, xy.y - 17), this._mainColor);
-    //                 _centered_print(params.text_1, y - 17, _m_bg_color, params.main_color)
-    //             end
-    // TODO: migrate from Lua
-    b.print(this._text2, v_(xy.x, xy.y - 8), this._mainColor);
-    //             _centered_print(params.text_2, y - 8, _m_bg_color, params.main_color)
+    // TODO
+    //  if params.text_1 then
+    printCentered(
+      this._text1,
+      xy.y - 17,
+      CurrentMission.bgColor,
+      this._mainColor
+    );
+    // TODO
+    // end
+    printCentered(
+      this._text2,
+      xy.y - 8,
+      CurrentMission.bgColor,
+      this._mainColor
+    );
     b.line(xy, v_(g.gameAreaSize.x, 1), this._mainColor);
   }
 }

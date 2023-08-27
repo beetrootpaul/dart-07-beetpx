@@ -9,7 +9,7 @@ export class MovementToTarget implements Movement {
       duration: number;
       easingFn: EasingFn;
     }): MovementFactory =>
-    // TODO: migrate from Lua
+    // TODO
     // local easing_fn = params.easing_fn or _easing_linear
     (startXy) =>
       new MovementToTarget(
@@ -34,7 +34,7 @@ export class MovementToTarget implements Movement {
   ) {
     this._startXy = startXy;
     this._targetY = targetY;
-    // TODO: migrate from Lua
+    // TODO
     this._timer = new Timer(duration);
     // local timer = new_timer(params.frames, params.on_finished or nil
     this._easingFn = easingFn;
@@ -44,7 +44,7 @@ export class MovementToTarget implements Movement {
   }
 
   private _nextXy(): Vector2d {
-    // TODO: migrate from Lua
+    // TODO
     return v_(
       this.xy.x,
       Easing.lerp(

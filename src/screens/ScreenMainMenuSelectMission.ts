@@ -2,6 +2,7 @@ import { b, c, g } from "../globals";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 
+// TODO: use it
 export class ScreenMainMenuSelectMission implements GameScreen {
   // TODO: remove this temporary code
   private _next: boolean = false;
@@ -34,7 +35,7 @@ export class ScreenMainMenuSelectMission implements GameScreen {
   }
 }
 
-// TODO: migrate from Lua
+// TODO
 /*
 -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- cart_main/screen_select_mission.lua --

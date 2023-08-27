@@ -7,7 +7,7 @@ export class Game {
     tripleShoot: boolean;
     score: number;
   }) {}
-  // TODO: migrate from Lua
+  // TODO
   /*
 
 function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
@@ -56,7 +56,7 @@ function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_s
         end,
     }
      */
-  // TODO: migrate from Lua
+  // TODO
   /*
 
     local function handle_player_damage()
@@ -262,7 +262,7 @@ function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_s
      */
 
   update(): void {
-    // TODO: migrate from Lua
+    // TODO
     /*
         function game._update()
         if player then
@@ -340,7 +340,7 @@ function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_s
   }
 
   draw(): void {
-    // TODO: migrate from Lua
+    // TODO
     /*
           clip(_gaox, 0, _gaw, _gah)
           _flattened_for_each(
@@ -390,7 +390,7 @@ function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_s
   }
 
   conclude(): void {
-    // TODO: migrate from Lua
+    // TODO
     /*
         function game._post_draw()
         if player and player.has_finished() then

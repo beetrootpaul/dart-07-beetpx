@@ -1,3 +1,4 @@
+import { CurrentMission } from "../CurrentMission";
 import { MissionMetadata } from "../MissionMetadata";
 import { Game } from "../game/Game";
 import { b } from "../globals";
@@ -6,13 +7,11 @@ import { SlidingInfo } from "../gui/SlidingInfo";
 import { GameScreen } from "./GameScreen";
 
 export class ScreenMissionMain implements GameScreen {
-  private readonly _metadata: MissionMetadata;
-
   private readonly _game: Game;
   private readonly _hud: Hud;
   private readonly _missionInfo: SlidingInfo;
 
-  // TODO: migrate from Lua
+  // TODO
   // function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
   constructor(params: {
     metadata: MissionMetadata;
@@ -23,7 +22,7 @@ export class ScreenMissionMain implements GameScreen {
     tripleShoot: boolean;
     score: number;
   }) {
-    this._metadata = params.metadata;
+    CurrentMission.setFrom(params.metadata);
 
     this._game = new Game({
       health: params.health,
@@ -38,7 +37,7 @@ export class ScreenMissionMain implements GameScreen {
     const slidingInfoSlideDuration = 50 / 60;
     const screenDuration = 200 / 60;
 
-    // TODO: migrate from Lua
+    // TODO
     this._hud = new Hud();
     //   local hud = new_hud {
     //         wait_frames = screen_frames - 10,
@@ -46,9 +45,9 @@ export class ScreenMissionMain implements GameScreen {
     //     }
 
     this._missionInfo = new SlidingInfo({
-      text1: `mission ${this._metadata.missionNumber}`,
-      text2: this._metadata.missionName,
-      mainColor: this._metadata.missionInfoColor,
+      text1: `mission ${CurrentMission.missionNumber}`,
+      text2: CurrentMission.missionName,
+      mainColor: CurrentMission.missionInfoColor,
       waitDuration: fadeInDuration,
       slideInDuration: slidingInfoSlideDuration,
       presentDuration:
@@ -56,10 +55,10 @@ export class ScreenMissionMain implements GameScreen {
       slideOutDuration: slidingInfoSlideDuration,
     });
 
-    // TODO: migrate from Lua
+    // TODO
     // local fade_in, screen = new_fade("in", fade_in_frames), {}
 
-    // TODO: migrate from Lua
+    // TODO
     // function screen._init()
     //     music(_m_mission_main_music)
     // end
@@ -70,27 +69,27 @@ export class ScreenMissionMain implements GameScreen {
     this._hud.update();
 
     this._missionInfo.update();
-    // TODO: migrate from Lua
+    // TODO
     // fade_in._update()
   }
 
   draw(): void {
-    b.clearCanvas(this._metadata.bgColor);
+    b.clearCanvas(CurrentMission.bgColor);
 
     this._game.draw();
-    // TODO: migrate from Lua
+    // TODO
     this._hud.draw();
     // hud._draw(game)
 
     this._missionInfo.draw();
-    // TODO: migrate from Lua
+    // TODO
     // fade_in._draw()
   }
 
   conclude(): GameScreen | undefined {
     this._game.conclude();
 
-    // TODO: migrate from Lua
+    // TODO
     return;
     /*
             if fade_in.has_finished() then
