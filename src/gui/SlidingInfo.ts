@@ -51,7 +51,7 @@ export class SlidingInfo {
         duration: params.slideOutDuration,
         easingFn: Easing.inQuartic,
       }),
-    ])(v_(g.gameAreaOffsetX, -18));
+    ])(g.gameAreaOffset.sub(0, 18));
   }
 
   // TODO

@@ -1,4 +1,8 @@
+import { Player } from "./Player";
+
 export class Game {
+  private readonly _player: Player;
+
   constructor(params: {
     health: number;
     shockwaveCharges: number;
@@ -6,56 +10,61 @@ export class Game {
     fastShoot: boolean;
     tripleShoot: boolean;
     score: number;
-  }) {}
-  // TODO
-  /*
+  }) {
+    // TODO
+    /*
 
-function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
-    local game = {
-        health = health,
-        boss_health = nil,
-        boss_health_max = nil,
-        shockwave_charges = shockwave_charges,
-        fast_movement = fast_movement,
-        fast_shoot = fast_shoot,
-        triple_shoot = triple_shoot,
-        score = new_score(score),
-        -- DEBUG:
-        --fast_movement = true,
-        --fast_shoot = true,
-        --triple_shoot = true,
-        --score = new_score(123),
-    }
+  function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
+      local game = {
+          health = health,
+          boss_health = nil,
+          boss_health_max = nil,
+          shockwave_charges = shockwave_charges,
+          fast_movement = fast_movement,
+          fast_shoot = fast_shoot,
+          triple_shoot = triple_shoot,
+          score = new_score(score),
+          -- DEBUG:
+          --fast_movement = true,
+          --fast_shoot = true,
+          --triple_shoot = true,
+          --score = new_score(123),
+      }
 
-    local level, camera_shake_timer, boss = new_level(new_level_descriptor()), new_timer(0)
+      local level, camera_shake_timer, boss = new_level(new_level_descriptor()), new_timer(0)
 
-    local player_bullets, enemy_bullets, enemies, powerups, explosions, shockwaves, shockwave_enemy_hits, floats = {}, {}, {}, {}, {}, {}, {}, {}
+      local player_bullets, enemy_bullets, enemies, powerups, explosions, shockwaves, shockwave_enemy_hits, floats = {}, {}, {}, {}, {}, {}, {}, {}
+  */
+    // TODO
+    this._player = new Player();
+    /*
+      local player = new_player {
+          on_bullets_spawned = function(bullets)
+              _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
+              for b in all(bullets) do
+                  add(player_bullets, b)
+              end
+          end,
+          on_shockwave_triggered = function(shockwave)
+              _sfx_play(_sfx_player_shockwave, 2)
+              add(shockwaves, shockwave)
+          end,
+          on_damaged = function()
+              _sfx_play(_sfx_damage_player, 2)
+          end,
+          on_destroyed = function(collision_circle)
+              _sfx_play(_sfx_destroy_player, 3)
+              _add_all(
+                  explosions,
+                  new_explosion(collision_circle.xy, collision_circle.r),
+                  new_explosion(collision_circle.xy, 2 * collision_circle.r, 4 + flr(rnd(8))),
+                  new_explosion(collision_circle.xy, 3 * collision_circle.r, 12 + flr(rnd(8)))
+              )
+          end,
+      }
+       */
+  }
 
-    local player = new_player {
-        on_bullets_spawned = function(bullets)
-            _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
-            for b in all(bullets) do
-                add(player_bullets, b)
-            end
-        end,
-        on_shockwave_triggered = function(shockwave)
-            _sfx_play(_sfx_player_shockwave, 2)
-            add(shockwaves, shockwave)
-        end,
-        on_damaged = function()
-            _sfx_play(_sfx_damage_player, 2)
-        end,
-        on_destroyed = function(collision_circle)
-            _sfx_play(_sfx_destroy_player, 3)
-            _add_all(
-                explosions,
-                new_explosion(collision_circle.xy, collision_circle.r),
-                new_explosion(collision_circle.xy, 2 * collision_circle.r, 4 + flr(rnd(8))),
-                new_explosion(collision_circle.xy, 3 * collision_circle.r, 12 + flr(rnd(8)))
-            )
-        end,
-    }
-     */
   // TODO
   /*
 
@@ -384,6 +393,7 @@ function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_s
 
   draw(): void {
     // TODO
+    this._player.draw();
     /*
           clip(_gaox, 0, _gaw, _gah)
           _flattened_for_each(

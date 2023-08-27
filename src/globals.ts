@@ -13,7 +13,7 @@ export const g = {
 
   viewportSize: v_(128, 128),
   gameAreaSize: v_(96, 128),
-  gameAreaOffsetX: 16,
+  gameAreaOffset: v_(16, 0),
 
   assets: {
     pico8FontId: "pico8",

@@ -1,8 +1,7 @@
-import { spr_, v_ } from "@beetpx/beetpx";
 import { CurrentMission } from "../CurrentMission";
 import { MissionMetadata } from "../MissionMetadata";
 import { Game } from "../game/Game";
-import { b, g } from "../globals";
+import { b } from "../globals";
 import { Hud } from "../gui/Hud";
 import { SlidingInfo } from "../gui/SlidingInfo";
 import { GameScreen } from "./GameScreen";
@@ -117,8 +116,5 @@ export class ScreenMissionMain implements GameScreen {
     this._missionInfo.draw();
     // TODO
     // fade_in._draw()
-
-    // TODO: REMOVE this temporary code
-    b.sprite(spr_(g.assets.mainSpritesheetUrl)(32, 32, 64, 64), v_(16, 16));
   }
 }
