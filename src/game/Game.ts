@@ -261,6 +261,49 @@ function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_s
     end
      */
 
+  preUpdate(): void {
+    // TODO
+    /*
+        function game._post_draw()
+        if player and player.has_finished() then
+            player = nil
+            player_bullets = {}
+        end
+
+        if boss and boss.has_finished() then
+            -- we assume here there are no enemies on a screen at the same time as boss is,
+            -- therefore we can just remove all enemy bullets when boss is destroyed
+            boss, enemy_bullets = nil, {}
+        end
+
+        _flattened_for_each(
+            shockwaves,
+            player_bullets,
+            enemy_bullets,
+            enemies,
+            powerups,
+            explosions,
+            floats,
+            function(game_object, game_objects)
+                if game_object.has_finished() then
+                    del(game_objects, game_object)
+                end
+            end
+        )
+
+        -- DEBUG:
+        --printh("  === #TABLES ===  ")
+        --printh(#player_bullets)
+        --printh(#enemy_bullets)
+        --printh(#enemies)
+        --printh(#powerups)
+        --printh(#explosions)
+        --printh(#shockwaves)
+    end
+
+     */
+  }
+
   update(): void {
     // TODO
     /*
@@ -387,48 +430,5 @@ function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_s
       end
 
        */
-  }
-
-  conclude(): void {
-    // TODO
-    /*
-        function game._post_draw()
-        if player and player.has_finished() then
-            player = nil
-            player_bullets = {}
-        end
-
-        if boss and boss.has_finished() then
-            -- we assume here there are no enemies on a screen at the same time as boss is,
-            -- therefore we can just remove all enemy bullets when boss is destroyed
-            boss, enemy_bullets = nil, {}
-        end
-
-        _flattened_for_each(
-            shockwaves,
-            player_bullets,
-            enemy_bullets,
-            enemies,
-            powerups,
-            explosions,
-            floats,
-            function(game_object, game_objects)
-                if game_object.has_finished() then
-                    del(game_objects, game_object)
-                end
-            end
-        )
-
-        -- DEBUG:
-        --printh("  === #TABLES ===  ")
-        --printh(#player_bullets)
-        --printh(#enemy_bullets)
-        --printh(#enemies)
-        --printh(#powerups)
-        --printh(#explosions)
-        --printh(#shockwaves)
-    end
-
-     */
   }
 }

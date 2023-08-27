@@ -64,28 +64,8 @@ export class ScreenMissionMain implements GameScreen {
     // end
   }
 
-  update(): void {
-    this._game.update();
-    this._hud.update();
-
-    this._missionInfo.update();
-    // TODO
-    // fade_in._update()
-  }
-
-  draw(): void {
-    b.clearCanvas(CurrentMission.bgColor);
-
-    this._game.draw();
-    this._hud.draw(this._game);
-
-    this._missionInfo.draw();
-    // TODO
-    // fade_in._draw()
-  }
-
-  conclude(): GameScreen | undefined {
-    this._game.conclude();
+  preUpdate(): GameScreen | undefined {
+    this._game.preUpdate();
 
     // TODO
     return;
@@ -116,5 +96,25 @@ export class ScreenMissionMain implements GameScreen {
 
         return screen
     */
+  }
+
+  update(): void {
+    this._game.update();
+    this._hud.update();
+
+    this._missionInfo.update();
+    // TODO
+    // fade_in._update()
+  }
+
+  draw(): void {
+    b.clearCanvas(CurrentMission.bgColor);
+
+    this._game.draw();
+    this._hud.draw(this._game);
+
+    this._missionInfo.draw();
+    // TODO
+    // fade_in._draw()
   }
 }

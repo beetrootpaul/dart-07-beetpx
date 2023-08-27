@@ -7,19 +7,7 @@ export class ScreenMainMenuSelectMission implements GameScreen {
   // TODO: remove this temporary code
   private _next: boolean = false;
 
-  update(): void {
-    // TODO: remove this temporary code
-    if (b.wasJustPressed("x")) {
-      this._next = true;
-    }
-  }
-
-  draw(): void {
-    // TODO: remove this temporary code
-    b.clearCanvas(c.darkOrange);
-  }
-
-  conclude(): GameScreen | undefined {
+  preUpdate(): GameScreen | undefined {
     // TODO: remove this temporary code
     if (this._next) {
       return new ScreenMissionMain({
@@ -32,6 +20,18 @@ export class ScreenMainMenuSelectMission implements GameScreen {
         score: 3,
       });
     }
+  }
+
+  update(): void {
+    // TODO: remove this temporary code
+    if (b.wasJustPressed("x")) {
+      this._next = true;
+    }
+  }
+
+  draw(): void {
+    // TODO: remove this temporary code
+    b.clearCanvas(c.darkOrange);
   }
 }
 

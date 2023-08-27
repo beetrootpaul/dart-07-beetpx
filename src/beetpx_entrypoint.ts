@@ -69,7 +69,8 @@ b.init(
     if (PauseMenu.isGamePaused) {
       pauseMenu?.update();
     } else {
-      nextScreen = currentScreen?.conclude();
+      // TODO: consider a dedicated `setOnPreUpdate` in BeetPx
+      nextScreen = currentScreen?.preUpdate();
       if (nextScreen) {
         currentScreen = nextScreen;
       }
