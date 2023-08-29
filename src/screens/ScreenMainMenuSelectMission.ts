@@ -1,23 +1,41 @@
-import { b, c } from "../globals";
+import { b, c, g } from "../globals";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 
+// TODO: use it
 export class ScreenMainMenuSelectMission implements GameScreen {
-  update(): GameScreen {
+  // TODO: remove this temporary code
+  private _next: boolean = false;
+
+  preUpdate(): GameScreen | undefined {
+    // TODO: remove this temporary code
+    if (this._next) {
+      return new ScreenMissionMain({
+        metadata: g.missions[0]!,
+        health: 3,
+        shockwaveCharges: 3,
+        fastMovement: false,
+        fastShoot: false,
+        tripleShoot: false,
+        score: 3,
+      });
+    }
+  }
+
+  update(): void {
     // TODO: remove this temporary code
     if (b.wasJustPressed("x")) {
-      return new ScreenMissionMain();
+      this._next = true;
     }
-    return this;
   }
 
   draw(): void {
     // TODO: remove this temporary code
-    b.clearCanvas(c.darkOrange);
+    b.clearCanvas(c._9_dark_orange);
   }
 }
 
-// TODO: migrate from Lua
+// TODO
 /*
 -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- cart_main/screen_select_mission.lua --

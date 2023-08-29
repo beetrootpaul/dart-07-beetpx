@@ -23,6 +23,9 @@ export class Pico8Font implements Font {
 
   readonly imageUrl: ImageUrl = g.assets.pico8FontImage;
 
+  // in PICO-8 the space takes 3 px wide, but in this game we want it to be a 1 px shorter
+  static #spaceW = 2;
+
   static #sprites: Record<string, Sprite> = {
     // TODO: uncomment or delete
     // ["⬅️"]: glyph(11, 8, 7),
@@ -90,7 +93,7 @@ export class Pico8Font implements Font {
       if (sprite) {
         charSprites.push({ positionInText, sprite, char });
       }
-      const jumpX = (sprite ?? glyph(-1, -1)).size().x + 1;
+      const jumpX = (sprite?.size().x ?? Pico8Font.#spaceW) + 1;
       positionInText = positionInText.add(jumpX, 0);
     }
 

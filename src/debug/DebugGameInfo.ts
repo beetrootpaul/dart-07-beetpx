@@ -4,7 +4,7 @@ import { b, c, g, u } from "../globals";
 export class DebugGameInfo {
   static draw(): void {
     const fps = b.averageFps.toFixed(0);
-    b.print(fps, Vector2d.zero, c.white);
+    b.print(fps, Vector2d.zero, c._7_white);
 
     const audioState = b.audioContext.state;
     const audioStateText =
@@ -17,8 +17,8 @@ export class DebugGameInfo {
         : "@";
     b.print(
       audioStateText,
-      v_(g.canvasSize.x - u.measureText(audioStateText).x, 0),
-      c.white
+      v_(g.viewportSize.x - u.measureText(audioStateText).x, 0),
+      c._7_white
     );
   }
 }

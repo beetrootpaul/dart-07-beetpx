@@ -1,104 +1,120 @@
-import { Timer } from "@beetpx/beetpx";
-import { b, c } from "../globals";
+import { CurrentMission } from "../CurrentMission";
+import { MissionMetadata } from "../MissionMetadata";
+import { Game } from "../game/Game";
+import { b } from "../globals";
+import { Hud } from "../gui/Hud";
+import { SlidingInfo } from "../gui/SlidingInfo";
 import { GameScreen } from "./GameScreen";
-import { ScreenMainMenuSelectMission } from "./ScreenMainMenuSelectMission";
 
 export class ScreenMissionMain implements GameScreen {
-  // TODO: remove this temporary code
-  private _timer: Timer = new Timer(2);
+  private readonly _game: Game;
+  private readonly _hud: Hud;
+  private readonly _missionInfo: SlidingInfo;
 
-  update(): GameScreen {
-    // TODO: remove this temporary code
-    this._timer.update(b.dt);
-    return this._timer.hasFinished ? new ScreenMainMenuSelectMission() : this;
+  // TODO
+  // function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
+  constructor(params: {
+    metadata: MissionMetadata;
+    health: number;
+    shockwaveCharges: number;
+    fastMovement: boolean;
+    fastShoot: boolean;
+    tripleShoot: boolean;
+    score: number;
+  }) {
+    CurrentMission.setFrom(params.metadata);
+
+    this._game = new Game({
+      health: params.health,
+      shockwaveCharges: params.shockwaveCharges,
+      fastMovement: params.fastMovement,
+      fastShoot: params.fastShoot,
+      tripleShoot: params.tripleShoot,
+      score: params.score,
+    });
+
+    const fadeInDuration = 30 / 60;
+    const slidingInfoSlideDuration = 50 / 60;
+    const screenDuration = 200 / 60;
+
+    // TODO
+    this._hud = new Hud();
+    //   local hud = new_hud {
+    //         wait_frames = screen_frames - 10,
+    //         slide_in_frames = 40,
+    //     }
+
+    this._missionInfo = new SlidingInfo({
+      text1: `mission ${CurrentMission.missionNumber}`,
+      text2: CurrentMission.missionName,
+      mainColor: CurrentMission.missionInfoColor,
+      waitDuration: fadeInDuration,
+      slideInDuration: slidingInfoSlideDuration,
+      presentDuration:
+        screenDuration - fadeInDuration - 2 * slidingInfoSlideDuration,
+      slideOutDuration: slidingInfoSlideDuration,
+    });
+
+    // TODO
+    // local fade_in, screen = new_fade("in", fade_in_frames), {}
+
+    // TODO
+    // function screen._init()
+    //     music(_m_mission_main_music)
+    // end
+  }
+
+  preUpdate(): GameScreen | undefined {
+    this._game.preUpdate();
+
+    // TODO
+    return;
+    /*
+            if fade_in.has_finished() then
+                fade_in = _noop_game_object
+            end
+
+            if mission_info.has_finished() then
+                mission_info = _noop_game_object
+                game.enter_enemies_phase()
+            end
+
+            if game.is_ready_to_enter_boss_phase() then
+                return new_screen_mission_boss(game, hud)
+            end
+
+            if game.health <= 0 then
+                return new_screen_defeat(game, hud)
+                -- DEBUG:
+                --return new_screen_over(game, game.shockwave_charges == 0)
+            end
+
+            -- DEBUG:
+            --return new_screen_over(game, false)
+            --return new_screen_over(game, true)
+        end
+
+        return screen
+    */
+  }
+
+  update(): void {
+    this._game.update();
+    this._hud.update();
+
+    this._missionInfo.update();
+    // TODO
+    // fade_in._update()
   }
 
   draw(): void {
-    // TODO: remove this temporary code
-    b.clearCanvas(c.trueBlue);
+    b.clearCanvas(CurrentMission.bgColor);
+
+    this._game.draw();
+    this._hud.draw(this._game);
+
+    this._missionInfo.draw();
+    // TODO
+    // fade_in._draw()
   }
 }
-
-// TODO: migrate from Lua
-/*
--- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- cart_mission/screen_mission_main.lua   --
--- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
-    local game = new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
-
-    local fade_in_frames, sliding_info_slide_frames, screen_frames = _unpack_split "30,50,200"
-
-    local hud = new_hud {
-        wait_frames = screen_frames - 10,
-        slide_in_frames = 40,
-    }
-    local mission_info = new_sliding_info {
-        text_1 = "mission \-f" .. _m_mission_number,
-        text_2 = _m_mission_name,
-        main_color = _m_mission_info_color,
-        wait_frames = fade_in_frames,
-        slide_in_frames = sliding_info_slide_frames,
-        present_frames = screen_frames - fade_in_frames - 2 * sliding_info_slide_frames,
-        slide_out_frames = sliding_info_slide_frames,
-        -- DEBUG:
-        --slide_in_frames = 8,
-        --present_frames = 0,
-        --slide_out_frames = 8,
-    }
-    local fade_in, screen = new_fade("in", fade_in_frames), {}
-
-    --
-
-    function screen._init()
-        music(_m_mission_main_music)
-    end
-
-    function screen._update()
-        game._update()
-        hud._update()
-
-        mission_info._update()
-        fade_in._update()
-    end
-
-    function screen._draw()
-        cls(_m_bg_color)
-        game._draw()
-        hud._draw(game)
-
-        mission_info._draw()
-        fade_in._draw()
-    end
-
-    function screen._post_draw()
-        game._post_draw()
-
-        if fade_in.has_finished() then
-            fade_in = _noop_game_object
-        end
-
-        if mission_info.has_finished() then
-            mission_info = _noop_game_object
-            game.enter_enemies_phase()
-        end
-
-        if game.is_ready_to_enter_boss_phase() then
-            return new_screen_mission_boss(game, hud)
-        end
-
-        if game.health <= 0 then
-            return new_screen_defeat(game, hud)
-            -- DEBUG:
-            --return new_screen_over(game, game.shockwave_charges == 0)
-        end
-
-        -- DEBUG:
-        --return new_screen_over(game, false)
-        --return new_screen_over(game, true)
-    end
-
-    return screen
-end
-*/
