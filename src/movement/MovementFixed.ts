@@ -1,9 +1,12 @@
-import { BeetPx, Timer, Vector2d } from "@beetpx/beetpx";
+import { Timer, Vector2d } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 
-// TODO: extract to BeetPx and rework
+// TODO: rework it and extract to BeetPx and rework
 class TimerInfinite extends Timer {
-  get left(): number {
+  constructor() {
+    super({ frames: 1 });
+  }
+  get framesLeft(): number {
     return 1;
   }
   get progress(): number {
@@ -12,20 +15,20 @@ class TimerInfinite extends Timer {
   get hasFinished(): boolean {
     return false;
   }
-  update(secondsPassed: number): void {}
+  update(): void {}
 }
 
 export class MovementFixed implements Movement {
   static of =
-    (params: { duration?: number }): MovementFactory =>
+    (params: { frames?: number }): MovementFactory =>
     (startXy) =>
-      new MovementFixed(startXy, params.duration);
+      new MovementFixed(startXy, params.frames);
 
   private readonly _timer: Timer;
   private readonly _xy: Vector2d;
 
-  private constructor(startXy: Vector2d, duration: number | undefined) {
-    this._timer = duration ? new Timer(duration) : new TimerInfinite(123);
+  private constructor(startXy: Vector2d, frames: number | undefined) {
+    this._timer = frames ? new Timer({ frames }) : new TimerInfinite();
     this._xy = startXy;
   }
 
@@ -42,6 +45,6 @@ export class MovementFixed implements Movement {
   }
 
   update(): void {
-    this._timer.update(BeetPx.dt);
+    this._timer.update();
   }
 }

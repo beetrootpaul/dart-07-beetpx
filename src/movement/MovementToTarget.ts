@@ -1,4 +1,4 @@
-import { BeetPx, Timer, v_, Vector2d } from "@beetpx/beetpx";
+import { Timer, v_, Vector2d } from "@beetpx/beetpx";
 import { Easing, EasingFn } from "../misc/Easing";
 import { Movement, MovementFactory } from "./Movement";
 
@@ -6,7 +6,7 @@ export class MovementToTarget implements Movement {
   static of =
     (params: {
       targetY: number;
-      duration: number;
+      frames: number;
       easingFn: EasingFn;
       onFinished?: () => void;
     }): MovementFactory =>
@@ -16,7 +16,7 @@ export class MovementToTarget implements Movement {
       new MovementToTarget(
         startXy,
         params.targetY,
-        params.duration,
+        params.frames,
         params.easingFn,
         params.onFinished
       );
@@ -32,14 +32,14 @@ export class MovementToTarget implements Movement {
   private constructor(
     startXy: Vector2d,
     targetY: number,
-    duration: number,
+    frames: number,
     easingFn: EasingFn,
     onFinished: (() => void) | undefined
   ) {
     this._startXy = startXy;
     this._targetY = targetY;
     // TODO
-    this._timer = new Timer(duration);
+    this._timer = new Timer({ frames });
     // local timer = new_timer(params.frames, params.on_finished or nil
     this._easingFn = easingFn;
     this._onFinished = onFinished;
@@ -83,7 +83,7 @@ export class MovementToTarget implements Movement {
   }
 
   update(): void {
-    this._timer.update(BeetPx.dt);
+    this._timer.update();
     this._speed = this._nextXy().sub(this._xy);
     this._xy = this._xy.add(this._speed);
     if (this._onFinished && this._timer.hasFinished) {

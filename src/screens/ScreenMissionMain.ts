@@ -33,9 +33,9 @@ export class ScreenMissionMain implements GameScreen {
       score: params.score,
     });
 
-    const fadeInDuration = 30 / 60;
-    const slidingInfoSlideDuration = 50 / 60;
-    const screenDuration = 200 / 60;
+    const fadeInDuration = 30;
+    const slidingInfoSlideDuration = 50;
+    const screenDuration = 200;
 
     // TODO
     this._hud = new Hud();
@@ -48,11 +48,11 @@ export class ScreenMissionMain implements GameScreen {
       text1: `mission ${CurrentMission.missionNumber}`,
       text2: CurrentMission.missionName,
       mainColor: CurrentMission.missionInfoColor,
-      waitDuration: fadeInDuration,
-      slideInDuration: slidingInfoSlideDuration,
-      presentDuration:
+      waitFrames: fadeInDuration,
+      slideInFrames: slidingInfoSlideDuration,
+      presentFrames:
         screenDuration - fadeInDuration - 2 * slidingInfoSlideDuration,
-      slideOutDuration: slidingInfoSlideDuration,
+      slideOutFrames: slidingInfoSlideDuration,
     });
 
     // TODO

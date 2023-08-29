@@ -1,4 +1,4 @@
-import { BeetPx, v_, Vector2d } from "@beetpx/beetpx";
+import { v_, Vector2d } from "@beetpx/beetpx";
 import { g } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 
@@ -80,7 +80,7 @@ export class Player {
       : this._shipSpriteNeutral;
 
     // TODO
-    const speed = 60;
+    const speed = 1;
     //     local speed = fast_movement and 1.5 or 1
     // TODO
     const xDiff = right ? speed : left ? -speed : 0;
@@ -90,7 +90,7 @@ export class Player {
     //         x_diff, y_diff = x_diff / 1.41, y_diff / 1.41
     //     end
     // TODO
-    this._xy = this._xy.add(v_(xDiff, 0).mul(BeetPx.dt));
+    this._xy = this._xy.add(v_(xDiff, 0));
     //     xy = _xy(
     //         mid(w / 2 + 1, xy.x + x_diff, _gaw - w / 2 - 1),
     //         mid(h / 2 + 1, xy.y + y_diff, _gah - h / 2 - 1)

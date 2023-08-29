@@ -18,10 +18,10 @@ export class SlidingInfo {
   constructor(params: {
     text1: string;
     text2: string;
-    waitDuration: number;
-    slideInDuration: number;
-    presentDuration: number;
-    slideOutDuration: number;
+    waitFrames: number;
+    slideInFrames: number;
+    presentFrames: number;
+    slideOutFrames: number;
     mainColor: SolidColor;
   }) {
     this._text1 = params.text1;
@@ -32,23 +32,23 @@ export class SlidingInfo {
     this._movement = MovementSequence.of([
       MovementFixed.of({
         // TODO
-        duration: params.waitDuration,
+        frames: params.waitFrames,
         // frames = params.wait_frames or 0,
       }),
       MovementToTarget.of({
         targetY: g.gameAreaSize.y / 2,
-        duration: params.slideInDuration,
+        frames: params.slideInFrames,
         easingFn: Easing.outQuartic,
         onFinished: () => {
           this._roundingFn = "floor";
         },
       }),
       MovementFixed.of({
-        duration: params.presentDuration,
+        frames: params.presentFrames,
       }),
       MovementToTarget.of({
         targetY: g.gameAreaSize.y + 18,
-        duration: params.slideOutDuration,
+        frames: params.slideOutFrames,
         easingFn: Easing.inQuartic,
       }),
     ])(g.gameAreaOffset.sub(0, 18));

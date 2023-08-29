@@ -15,9 +15,11 @@ let pauseMenu: PauseMenu | undefined;
 b.init(
   {
     gameCanvasSize: "128x128",
+    desiredUpdateFps: g.fps,
     visibleTouchButtons: ["left", "right", "up", "down", "o", "x", "menu"],
     debug: {
-      available: !__BEETPX_IS_PROD__,
+      // available: !__BEETPX_IS_PROD__,
+      available: true,
       toggleKey: ";",
       frameByFrame: {
         activateKey: ",",
@@ -117,3 +119,5 @@ b.init(
 });
 
 // TODO: performance improvements to reach ~55 FPS?
+
+// TODO: use versioned BeetPx from npm

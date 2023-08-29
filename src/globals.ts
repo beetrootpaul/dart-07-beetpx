@@ -30,7 +30,8 @@ export const c = {
 export const u = Utils;
 
 export const g = {
-  fps: 60,
+  // TODO: do we use it anywhere else than BeetPx config? Can we inline it?
+  fps: 60 as const,
 
   viewportSize: v_(128, 128),
   gameAreaSize: v_(96, 128),
