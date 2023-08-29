@@ -12,20 +12,14 @@ let currentScreen: GameScreen | undefined;
 // TODO: rework pause menu
 let pauseMenu: PauseMenu | undefined;
 
+const debugGameInfo: DebugGameInfo = new DebugGameInfo();
+
 b.init(
   {
     gameCanvasSize: "128x128",
     desiredUpdateFps: g.fps,
     visibleTouchButtons: ["left", "right", "up", "down", "o", "x", "menu"],
-    debug: {
-      // available: !__BEETPX_IS_PROD__,
-      available: true,
-      toggleKey: ";",
-      frameByFrame: {
-        activateKey: ",",
-        stepKey: ".",
-      },
-    },
+    debugFeatures: !__BEETPX_IS_PROD__,
   },
   {
     images: [{ url: g.assets.mainSpritesheetUrl }],
@@ -82,6 +76,8 @@ b.init(
   });
 
   b.setOnUpdate(() => {
+    debugGameInfo.update();
+
     // TODO: rework pause menu
     if (BeetPx.wasJustPressed("menu")) {
       PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
@@ -112,7 +108,9 @@ b.init(
       pauseMenu?.draw();
     }
 
-    if (b.debug) DebugGameInfo.draw();
+    debugGameInfo.preDraw();
+    if (b.debug) debugGameInfo.draw();
+    debugGameInfo.postDraw();
   });
 
   startGame();
