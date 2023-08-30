@@ -11,7 +11,7 @@ const watchForChanges = process.argv[2] === "watch";
 const asperiteCli = "/Applications/Aseprite.app/Contents/MacOS/aseprite";
 
 const rootDir = path.resolve(__dirname, "..");
-const graphicsDir = path.resolve(rootDir, "graphics");
+const assetsDir = path.resolve(rootDir, "assets");
 const publicDir = path.resolve(rootDir, "public");
 
 const spriteSheets = [
@@ -30,10 +30,8 @@ const spriteSheets = [
   },
 ];
 
-// graphics/spritesheet_main.aseprite --sheet abc.png --batch
-
 spriteSheets.forEach(({ input, output }) => {
-  const inputPath = path.resolve(graphicsDir, input);
+  const inputPath = path.resolve(assetsDir, input);
   const outputPath = path.resolve(publicDir, output);
 
   syncFile(inputPath, outputPath);
