@@ -1,4 +1,3 @@
-import { BeetPx } from "@beetpx/beetpx";
 import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { b, c, g } from "./globals";
@@ -79,7 +78,7 @@ b.init(
     debugGameInfo.update();
 
     // TODO: rework pause menu
-    if (BeetPx.wasJustPressed("menu")) {
+    if (b.wasJustPressed("menu")) {
       PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
     }
 

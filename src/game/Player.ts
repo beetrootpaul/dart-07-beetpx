@@ -1,8 +1,11 @@
 import { v_, Vector2d } from "@beetpx/beetpx";
 import { g } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { PlayerBullet } from "./PlayerBullet";
 
 export class Player {
+  private readonly _onBulletsSpawned: (bullets: PlayerBullet[]) => void;
+
   private readonly _shipSpriteNeutral: AnimatedSprite;
   private readonly _shipSpriteFlyingLeft: AnimatedSprite;
   private readonly _shipSpriteFlyingRight: AnimatedSprite;
@@ -10,8 +13,9 @@ export class Player {
 
   private _xy: Vector2d;
 
-  constructor() {
+  constructor(params: { onBulletsSpawned: (bullets: PlayerBullet[]) => void }) {
     // TODO
+    this._onBulletsSpawned = params.onBulletsSpawned;
     // local on_bullets_spawned, on_shockwave_triggered = new_throttle(params.on_bullets_spawned), new_throttle(params.on_shockwave_triggered)
     // local w, h, on_damaged, on_destroyed = 10, 12, params.on_damaged, params.on_destroyed
 
@@ -43,13 +47,12 @@ export class Player {
   //         r = 3,
   //     }
   // end
-  //
-  // local function create_single_bullet()
-  //     return {
-  //         new_player_bullet(xy.plus(0, -4)),
-  //     }
-  // end
-  //
+
+  private _createSingleBullet(): PlayerBullet[] {
+    return [new PlayerBullet(this._xy.add(0, -4))];
+  }
+
+  // TODO
   // local function create_triple_bullets()
   //     return {
   //         new_player_bullet(xy.plus(0, -4)),
@@ -101,12 +104,16 @@ export class Player {
 
   // TODO
   // fire = function(fast_shoot, triple_shoot)
-  //     on_bullets_spawned.invoke_if_ready(
-  //         triple_shoot and (fast_shoot and 10 or 16) or (fast_shoot and 8 or 12),
-  //         triple_shoot and create_triple_bullets or create_single_bullet
-  //     )
-  // end,
-  //
+  fire(): void {
+    // TODO
+    this._onBulletsSpawned(this._createSingleBullet());
+    //     on_bullets_spawned.invoke_if_ready(
+    //         triple_shoot and (fast_shoot and 10 or 16) or (fast_shoot and 8 or 12),
+    //         triple_shoot and create_triple_bullets or create_single_bullet
+    //     )
+  }
+
+  // TODO
   // trigger_shockwave = function()
   //     on_shockwave_triggered.invoke_if_ready(
   //         6,
@@ -143,6 +150,7 @@ export class Player {
   // on_bullets_spawned._update()
   // on_shockwave_triggered._update()
   //
+
   // jet_sprite._update()
 
   draw(): void {
