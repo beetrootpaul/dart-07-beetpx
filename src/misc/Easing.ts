@@ -9,6 +9,7 @@ export type EasingFn = (t: number) => number;
  *   - t: a moment in time between 0 and 1
  */
 export class Easing {
+  // TODO: try to make available both number and Vector2d variants of lerp (or create Vector2d.lerp(…)?)
   static lerp(a: number, b: number, t: number): number {
     return a + (b - a) * t;
   }

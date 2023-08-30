@@ -43,6 +43,8 @@ export const g = {
     mainSpritesheetUrl: "spritesheet_main.png",
   },
 
+  healthMax: 10,
+
   missions: [
     {
       missionNumber: 1,

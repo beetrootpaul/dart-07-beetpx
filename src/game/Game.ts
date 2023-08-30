@@ -2,6 +2,11 @@ import { BeetPx } from "@beetpx/beetpx";
 import { Player } from "./Player";
 
 export class Game {
+  private readonly _health: number;
+  get health(): number {
+    return this._health;
+  }
+
   private readonly _player: Player;
 
   constructor(params: {
@@ -14,10 +19,12 @@ export class Game {
   }) {
     // TODO
     /*
-
   function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
       local game = {
-          health = health,
+      */
+    this._health = params.health;
+    // TODO
+    /*
           boss_health = nil,
           boss_health_max = nil,
           shockwave_charges = shockwave_charges,
