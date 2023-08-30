@@ -1,3 +1,6 @@
+# LDtk backups
+/assets/.ldtk_backups/
+
 # BeetPx: generated and temporary files
 /.beetpx/
 /index.html
