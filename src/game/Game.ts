@@ -316,13 +316,15 @@ export class Game {
 
   update(): void {
     // TODO
+    // if player then
     this._player.setMovement(
       BeetPx.isPressed("left"),
-      BeetPx.isPressed("right")
+      BeetPx.isPressed("right"),
+      BeetPx.isPressed("up"),
+      BeetPx.isPressed("down")
     );
+    // TODO
     /*
-        if player then
-            player.set_movement(btn(_button_left), btn(_button_right), btn(_button_up), btn(_button_down), game.fast_movement)
             if btn(_button_x) then
                 player.fire(game.fast_shoot, game.triple_shoot)
             end
@@ -333,8 +335,9 @@ export class Game {
                 else
                 end
             end
-        end
         */
+    // TODO
+    // end
 
     // TODO
     /*
