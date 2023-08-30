@@ -1,7 +1,19 @@
-import { BeetPx } from "@beetpx/beetpx";
+import { b } from "../globals";
 import { Player } from "./Player";
+import { PlayerBullet } from "./PlayerBullet";
 
 export class Game {
+  private readonly _health: number;
+  get health(): number {
+    return this._health;
+  }
+  private readonly _shockwaveCharges: number;
+  get shockwaveCharges(): number {
+    return this._shockwaveCharges;
+  }
+
+  private _playerBullets: PlayerBullet[] = [];
+
   private readonly _player: Player;
 
   constructor(params: {
@@ -13,14 +25,14 @@ export class Game {
     score: number;
   }) {
     // TODO
+    // local game = {
+    this._health = params.health;
+    // TODO
+    // boss_health = nil,
+    // boss_health_max = nil,
+    // TODO
+    this._shockwaveCharges = params.shockwaveCharges;
     /*
-
-  function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
-      local game = {
-          health = health,
-          boss_health = nil,
-          boss_health_max = nil,
-          shockwave_charges = shockwave_charges,
           fast_movement = fast_movement,
           fast_shoot = fast_shoot,
           triple_shoot = triple_shoot,
@@ -34,18 +46,17 @@ export class Game {
 
       local level, camera_shake_timer, boss = new_level(new_level_descriptor()), new_timer(0)
 
-      local player_bullets, enemy_bullets, enemies, powerups, explosions, shockwaves, shockwave_enemy_hits, floats = {}, {}, {}, {}, {}, {}, {}, {}
+      local enemy_bullets, enemies, powerups, explosions, shockwaves, shockwave_enemy_hits, floats =  {}, {}, {}, {}, {}, {}, {}
   */
-    // TODO
-    this._player = new Player();
-    /*
-      local player = new_player {
-          on_bullets_spawned = function(bullets)
-              _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
-              for b in all(bullets) do
-                  add(player_bullets, b)
-              end
-          end,
+
+    this._player = new Player({
+      // TODO
+      onBulletsSpawned: (bullets) => {
+        // TODO
+        // _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
+        this._playerBullets.push(...bullets);
+      },
+      /*
           on_shockwave_triggered = function(shockwave)
               _sfx_play(_sfx_player_shockwave, 2)
               add(shockwaves, shockwave)
@@ -62,8 +73,8 @@ export class Game {
                   new_explosion(collision_circle.xy, 3 * collision_circle.r, 12 + flr(rnd(8)))
               )
           end,
-      }
        */
+    });
   }
 
   // TODO
@@ -285,7 +296,11 @@ export class Game {
             -- therefore we can just remove all enemy bullets when boss is destroyed
             boss, enemy_bullets = nil, {}
         end
+        */
 
+    // TODO
+    this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
+    /*
         _flattened_for_each(
             shockwaves,
             player_bullets,
@@ -300,15 +315,6 @@ export class Game {
                 end
             end
         )
-
-        -- DEBUG:
-        --printh("  === #TABLES ===  ")
-        --printh(#player_bullets)
-        --printh(#enemy_bullets)
-        --printh(#enemies)
-        --printh(#powerups)
-        --printh(#explosions)
-        --printh(#shockwaves)
     end
 
      */
@@ -316,16 +322,20 @@ export class Game {
 
   update(): void {
     // TODO
+    // if player then
     this._player.setMovement(
-      BeetPx.isPressed("left"),
-      BeetPx.isPressed("right")
+      b.isPressed("left"),
+      b.isPressed("right"),
+      b.isPressed("up"),
+      b.isPressed("down")
     );
+    if (b.isPressed("x")) {
+      // TODO
+      this._player.fire();
+      // player.fire(game.fast_shoot, game.triple_shoot)
+    }
+    // TODO
     /*
-        if player then
-            player.set_movement(btn(_button_left), btn(_button_right), btn(_button_up), btn(_button_down), game.fast_movement)
-            if btn(_button_x) then
-                player.fire(game.fast_shoot, game.triple_shoot)
-            end
             if btnp(_button_o) then
                 if game.shockwave_charges > 0 then
                     game.shockwave_charges = game.shockwave_charges - 1
@@ -333,10 +343,13 @@ export class Game {
                 else
                 end
             end
-        end
         */
+    // TODO
+    // end
 
     // TODO
+    this._playerBullets.forEach((pb) => pb.update());
+    this._player.update();
     /*
         _flattened_for_each(
             { level },
@@ -399,8 +412,13 @@ export class Game {
   draw(): void {
     // TODO
     this._player.draw();
+
+    // TODO
+    // clip(_gaox, 0, _gaw, _gah)
+
+    // TODO
+    this._playerBullets.forEach((pb) => pb.draw());
     /*
-          clip(_gaox, 0, _gaw, _gah)
           _flattened_for_each(
               { level },
               enemies, -- some enemies are placed on a ground and have collision circle smaller than a sprite, therefore have to be drawn before a player and bullets

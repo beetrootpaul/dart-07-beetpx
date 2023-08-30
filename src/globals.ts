@@ -36,12 +36,16 @@ export const g = {
   viewportSize: v_(128, 128),
   gameAreaSize: v_(96, 128),
   gameAreaOffset: v_(16, 0),
+  tileSize: v_(8, 8),
 
   assets: {
     pico8FontId: "pico8",
     pico8FontImage: "pico-8-font.png",
     mainSpritesheetUrl: "spritesheet_main.png",
   },
+
+  healthMax: 10,
+  shockwaveChargesMax: 4,
 
   missions: [
     {

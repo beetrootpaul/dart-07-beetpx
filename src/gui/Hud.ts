@@ -1,29 +1,24 @@
-// TODO
-//    local function new_hud_sprite(sprite_whxy_txt)
-//         return new_static_sprite(sprite_whxy_txt, true)
-//     end
+import { AnimatedSprite } from "../misc/AnimatedSprite";
 
 import { v_ } from "@beetpx/beetpx";
 import { Game } from "../game/Game";
 import { b, c, g } from "../globals";
+import { Easing } from "../misc/Easing";
+import { Movement } from "../movement/Movement";
+import { MovementFixed } from "../movement/MovementFixed";
+import { MovementSequence } from "../movement/MovementSequence";
+import { MovementToTarget } from "../movement/MovementToTarget";
+
+function hudSprite(
+  spriteW: number,
+  spriteH: number,
+  spriteX: number,
+  spriteY: number
+): AnimatedSprite {
+  return new AnimatedSprite(spriteW, spriteH, [spriteX], spriteY, true);
+}
 
 export class Hud {
-  // TODO
-  //         local slide_in_offset = new_movement_sequence_factory {
-  //             new_movement_fixed_factory {
-  //                 frames = params.wait_frames,
-  //                 -- DEBUG:
-  //                 --frames = 0,
-  //             },
-  //             new_movement_to_target_factory {
-  //                 frames = params.slide_in_frames,
-  //                 target_x = 0,
-  //                 easing_fn = _easing_easeoutquart,
-  //                 -- DEBUG:
-  //                 --frames = 0,
-  //             },
-  //         }(_xy(-20, 0))
-
   // we draw HUD area 20 px bigger on the outside in order to compensate for a player damage camera shake
   private static readonly _safetyBorder = 20;
 
@@ -31,17 +26,36 @@ export class Hud {
   // TODO
   // local boss_health_bar_margin = 2
 
+  private readonly _heart = hudSprite(6, 5, 40, 24);
+  private readonly _healthBarStart = hudSprite(8, 5, 40, 19);
+  private readonly _healthBarSegmentFull = hudSprite(8, 9, 40, 10);
+  private readonly _healthBarSegmentEmpty = hudSprite(1, 9, 40, 10);
+
+  private readonly _shockwave = hudSprite(7, 6, 48, 24);
+  private readonly _shockwaveBarStart = hudSprite(8, 1, 48, 23);
+  private readonly _shockwaveBarSegmentFull = hudSprite(8, 11, 48, 12);
+  private readonly _shockwaveBarSegmentEmpty = hudSprite(2, 11, 54, 12);
   // TODO
-  //         local heart, health_bar_start, health_bar_segment_full, health_bar_segment_empty = new_hud_sprite "6,5,40,24", new_hud_sprite "8,5,40,19", new_hud_sprite "8,9,40,10", new_hud_sprite "1,9,40,10"
-  //         local shockwave, shockwave_bar_start, shockwave_bar_segment_full, shockwave_bar_segment_empty = new_hud_sprite "7,6,48,24", new_hud_sprite "8,1,48,23", new_hud_sprite "8,11,48,12", new_hud_sprite "2,11,54,12"
   //         local ship_indicator = new_hud_sprite "3,5,32,15"
   //         local boss_health_bar_start, boss_health_bar_end = new_hud_sprite "4,4,27,20", new_hud_sprite "4,4,31,20"
   //         -- these sprites are defined globally, because we want to access it through "_ENV"
   //         fast_movement_off, fast_movement_on, fast_shoot_off, fast_shoot_on, triple_shoot_off, triple_shoot_on = new_hud_sprite "7,4,96,24", new_hud_sprite "7,4,96,28", new_hud_sprite "7,4,104,24", new_hud_sprite "7,4,104,28", new_hud_sprite "7,4,112,24", new_hud_sprite "7,4,112,28"
 
+  private readonly _slideInOffset: Movement;
+
+  constructor(params: { waitFrames: number; slideInFrames: number }) {
+    this._slideInOffset = MovementSequence.of([
+      MovementFixed.of({ frames: params.waitFrames }),
+      MovementToTarget.of({
+        targetX: 0,
+        frames: params.slideInFrames,
+        easingFn: Easing.outQuartic,
+      }),
+    ])(v_(-20, 0));
+  }
+
   update(): void {
-    // TODO
-    // _update = slide_in_offset._update,
+    this._slideInOffset.update();
   }
 
   draw(game: Game): void {
@@ -64,19 +78,23 @@ export class Hud {
       );
     }
 
-    // TODO
-    //                 -- health bar
-    //                 local xy = _xy(
-    //                     ceil(-_gaox + 3 + slide_in_offset.xy.x),
-    //                     ceil(_vs - 16 + slide_in_offset.xy.y)
-    //                 )
-    //                 heart._draw(xy.plus(1, 6))
-    //                 for segment = 1, _health_max do
-    //                     (game.health >= segment and health_bar_segment_full or health_bar_segment_empty)._draw(xy.minus(0, 4 + segment * 6))
-    //                 end
-    //                 -- we have to draw health_bar_start after health_bar_segment_full in order to cover 1st segment's joint with black pixels
-    //                 health_bar_start._draw(xy.minus(0, 4))
     //
+    // health bar
+    //
+    let xy = this._slideInOffset.xy
+      .add(-g.gameAreaOffset.x + 3, g.viewportSize.y - 16)
+      .ceil();
+    this._heart.draw(xy.add(1, 6));
+    for (let segment = 0; segment < g.healthMax; segment++) {
+      (game.health > segment
+        ? this._healthBarSegmentFull
+        : this._healthBarSegmentEmpty
+      ).draw(xy.sub(0, 10 + segment * 6));
+    }
+    // we have to draw health_bar_start after health_bar_segment_full in order to cover 1st segment's joint with black pixels
+    this._healthBarStart.draw(xy.sub(0, 4));
+
+    // TODO
     //                 -- mission progress
     //                 local mission_progress_h, mission_progress_x = 35, _gaox + xy.x + 5
     //                 line(
@@ -92,23 +110,24 @@ export class Hud {
     //                 -- DEBUG:
     //                 --    77 + .25 * (mission_progress_h - 3)
     //                 ))
+
     //
+    // shockwave charges
     //
-    //                 -- shockwave charges
-    //                 xy = _xy(
-    //                     ceil(_gaw + 5 - slide_in_offset.xy.x),
-    //                     ceil(_vs - 16 - slide_in_offset.xy.y)
-    //                 )
-    //                 shockwave._draw(xy.plus(0, 6))
-    //                 shockwave_bar_start._draw(xy)
-    //                 for segment = 1, _shockwave_charges_max do
-    //                     if game.shockwave_charges >= segment then
-    //                         shockwave_bar_segment_full._draw(xy.minus(0, segment * 11))
-    //                     else
-    //                         shockwave_bar_segment_empty._draw(xy.minus(-6, segment * 11))
-    //                     end
-    //                 end
-    //
+    xy = v_(g.gameAreaSize.x + 5, g.viewportSize.y - 16)
+      .sub(this._slideInOffset.xy)
+      .ceil();
+    this._shockwave.draw(xy.add(0, 6));
+    this._shockwaveBarStart.draw(xy);
+    for (let segment = 0; segment < g.shockwaveChargesMax; segment++) {
+      if (game.shockwaveCharges > segment) {
+        this._shockwaveBarSegmentFull.draw(xy.sub(0, 11 + segment * 11));
+      } else {
+        this._shockwaveBarSegmentEmpty.draw(xy.sub(-6, 11 + segment * 11));
+      }
+    }
+
+    // TODO
     //                 -- score
     //                 game.score._draw(xy.x + 17, 4, _color_6_light_grey, _color_2_darker_purple, true)
     //

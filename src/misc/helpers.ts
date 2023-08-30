@@ -1,5 +1,5 @@
 // TODO: move to BeetPx
-import { SolidColor } from "@beetpx/beetpx";
+import { SolidColor, Vector2d } from "@beetpx/beetpx";
 import { g, u } from "../globals";
 
 export function printCentered(
@@ -19,4 +19,14 @@ export function printCentered(
   u.printWithOutline(text, xy, textColor, outlineColor);
   // TODO
   // end
+}
+
+// calculations below assume xy is in relation to (_gaox, 0) point
+export function isSafelyOutsideGameplayArea(xy: Vector2d): boolean {
+  return (
+    xy.x < -g.tileSize.x ||
+    xy.x > g.gameAreaSize.x + g.tileSize.x ||
+    xy.y < -g.tileSize.y ||
+    xy.y > g.gameAreaSize.y + g.tileSize.y
+  );
 }

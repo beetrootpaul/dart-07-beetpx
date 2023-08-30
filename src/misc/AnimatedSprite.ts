@@ -9,22 +9,24 @@ export class AnimatedSprite {
   private readonly _spriteXs: number[];
   private readonly _spriteY: number;
 
-  private readonly _frame: number;
+  private readonly _fromLeftTopCorner: boolean;
 
-  // TODO
-  // from_left_top_corner AS LAST PARAM
+  private readonly _frame: number = 0;
+
   constructor(
     spriteW: number,
     spriteH: number,
     spriteXs: number[],
-    spriteY: number
+    spriteY: number,
+    fromLeftTopCorner: boolean = false
   ) {
     this._spriteW = spriteW;
     this._spriteH = spriteH;
     this._spriteXs = spriteXs;
     this._spriteY = spriteY;
 
-    this._frame = 0;
+    this._fromLeftTopCorner = fromLeftTopCorner;
+
     // TODO
     // local max_frame = #sprite_xs
   }
@@ -35,9 +37,9 @@ export class AnimatedSprite {
   //         end,
 
   draw(xy: Vector2d): void {
-    // TODO
-    xy = xy.sub(this._spriteW / 2, this._spriteH / 2);
-    //             xy = (from_left_top_corner and xy or xy.minus(sprite_w / 2, sprite_h / 2))
+    xy = this._fromLeftTopCorner
+      ? xy
+      : xy.sub(this._spriteW / 2, this._spriteH / 2);
 
     // TODO: BeetPx: make previous mapping include only affected colors maybe?
     const prevMapping = b.mapSpriteColors([

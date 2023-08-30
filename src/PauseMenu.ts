@@ -1,5 +1,5 @@
-import { BeetPx, MappingColor, v_ } from "@beetpx/beetpx";
-import { c, g, u } from "./globals";
+import { MappingColor, v_ } from "@beetpx/beetpx";
+import { b, c, g, u } from "./globals";
 
 // TODO: rework? It's just a copy paste from my another game
 export class PauseMenu {
@@ -19,24 +19,24 @@ export class PauseMenu {
   #pressedIndex = -1;
 
   update(): void {
-    if (BeetPx.isPressed("x") || BeetPx.isPressed("o")) {
+    if (b.isPressed("x") || b.isPressed("o")) {
       this.#pressedIndex = this.#selected;
     } else {
       this.#pressedIndex = -1;
     }
 
-    if (BeetPx.wasJustPressed("up")) {
+    if (b.wasJustPressed("up")) {
       this.#selected = Math.max(0, this.#selected - 1);
     }
-    if (BeetPx.wasJustPressed("down")) {
+    if (b.wasJustPressed("down")) {
       this.#selected = Math.min(1, this.#selected + 1);
     }
 
-    if (BeetPx.wasJustReleased("x") || BeetPx.wasJustReleased("o")) {
+    if (b.wasJustReleased("x") || b.wasJustReleased("o")) {
       if (this.#selected === 0) {
         PauseMenu.isGamePaused = false;
       } else if (this.#selected === 1) {
-        BeetPx.restart();
+        b.restart();
       }
     }
   }
@@ -56,15 +56,15 @@ export class PauseMenu {
     );
     const xy = g.viewportSize.sub(wh).div(2);
 
-    BeetPx.rectFilled(
+    b.rectFilled(
       xy.sub(2),
       wh.add(4),
       new MappingColor(({ r, g, b, a }) =>
         r + g + b > (0x100 * 3) / 2 ? c._1_darker_blue : c._0_black
       )
     );
-    BeetPx.rect(xy.sub(1), wh.add(2), c._7_white);
-    BeetPx.print(
+    b.rect(xy.sub(1), wh.add(2), c._7_white);
+    b.print(
       "continue",
       xy.add(
         padding + (this.#selected === 0 ? 1 : 0),
@@ -72,7 +72,7 @@ export class PauseMenu {
       ),
       this.#pressedIndex === 0 ? c._15_peach : c._7_white
     );
-    BeetPx.print(
+    b.print(
       "restart",
       xy.add(
         padding + (this.#selected === 1 ? 1 : 0),
@@ -84,7 +84,7 @@ export class PauseMenu {
       this.#pressedIndex === 1 ? c._15_peach : c._7_white
     );
     for (const offset of PauseMenu.#arrowPixelsOffsets) {
-      BeetPx.pixel(
+      b.pixel(
         xy
           .add(
             padding,

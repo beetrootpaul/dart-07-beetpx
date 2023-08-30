@@ -5,7 +5,8 @@ import { Movement, MovementFactory } from "./Movement";
 export class MovementToTarget implements Movement {
   static of =
     (params: {
-      targetY: number;
+      targetX?: number;
+      targetY?: number;
       frames: number;
       easingFn: EasingFn;
       onFinished?: () => void;
@@ -15,14 +16,14 @@ export class MovementToTarget implements Movement {
     (startXy) =>
       new MovementToTarget(
         startXy,
-        params.targetY,
+        v_(params.targetX ?? startXy.x, params.targetY ?? startXy.y),
         params.frames,
         params.easingFn,
         params.onFinished
       );
 
   private readonly _startXy: Vector2d;
-  private readonly _targetY: number;
+  private readonly _targetXy: Vector2d;
   private readonly _timer: Timer;
   private readonly _easingFn: EasingFn;
   private _onFinished: (() => void) | undefined;
@@ -31,13 +32,13 @@ export class MovementToTarget implements Movement {
 
   private constructor(
     startXy: Vector2d,
-    targetY: number,
+    targetXy: Vector2d,
     frames: number,
     easingFn: EasingFn,
     onFinished: (() => void) | undefined
   ) {
     this._startXy = startXy;
-    this._targetY = targetY;
+    this._targetXy = targetXy;
     // TODO
     this._timer = new Timer({ frames });
     // local timer = new_timer(params.frames, params.on_finished or nil
@@ -49,25 +50,18 @@ export class MovementToTarget implements Movement {
   }
 
   private _nextXy(): Vector2d {
-    // TODO
     return v_(
-      this.xy.x,
+      Easing.lerp(
+        this._startXy.x,
+        this._targetXy.x,
+        this._easingFn(this._timer.progress)
+      ),
       Easing.lerp(
         this._startXy.y,
-        this._targetY,
+        this._targetXy.y,
         this._easingFn(this._timer.progress)
       )
     );
-    //                 _easing_lerp(
-    //                     start_xy.x,
-    //                     params.target_x or start_xy.x,
-    //                     easing_fn(timer.passed_fraction())
-    //                 ),
-    //                 _easing_lerp(
-    //                     start_xy.y,
-    //                     params.target_y or start_xy.y,
-    //                     easing_fn(timer.passed_fraction())
-    //                 )
   }
 
   get xy(): Vector2d {

@@ -33,26 +33,23 @@ export class ScreenMissionMain implements GameScreen {
       score: params.score,
     });
 
-    const fadeInDuration = 30;
-    const slidingInfoSlideDuration = 50;
-    const screenDuration = 200;
+    const fadeInFrames = 30;
+    const slidingInfoSlideFrames = 50;
+    const screenFrames = 200;
 
-    // TODO
-    this._hud = new Hud();
-    //   local hud = new_hud {
-    //         wait_frames = screen_frames - 10,
-    //         slide_in_frames = 40,
-    //     }
+    this._hud = new Hud({
+      waitFrames: screenFrames - 10,
+      slideInFrames: 40,
+    });
 
     this._missionInfo = new SlidingInfo({
       text1: `mission ${CurrentMission.missionNumber}`,
       text2: CurrentMission.missionName,
       mainColor: CurrentMission.missionInfoColor,
-      waitFrames: fadeInDuration,
-      slideInFrames: slidingInfoSlideDuration,
-      presentFrames:
-        screenDuration - fadeInDuration - 2 * slidingInfoSlideDuration,
-      slideOutFrames: slidingInfoSlideDuration,
+      waitFrames: fadeInFrames,
+      slideInFrames: slidingInfoSlideFrames,
+      presentFrames: screenFrames - fadeInFrames - 2 * slidingInfoSlideFrames,
+      slideOutFrames: slidingInfoSlideFrames,
     });
 
     // TODO

@@ -13,7 +13,7 @@ export class SlidingInfo {
   private readonly _text2: string;
   private readonly _mainColor: SolidColor;
   private readonly _movement: Movement;
-  private _roundingFn: "ceil" | "floor";
+  private _roundingFn: "ceil" | "floor" = "ceil";
 
   constructor(params: {
     text1: string;
@@ -27,7 +27,6 @@ export class SlidingInfo {
     this._text1 = params.text1;
     this._text2 = params.text2;
     this._mainColor = params.mainColor;
-    this._roundingFn = "ceil";
 
     this._movement = MovementSequence.of([
       MovementFixed.of({

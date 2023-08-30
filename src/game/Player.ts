@@ -1,8 +1,14 @@
 import { v_, Vector2d } from "@beetpx/beetpx";
 import { g } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Throttle } from "../misc/Throttle";
+import { PlayerBullet } from "./PlayerBullet";
 
 export class Player {
+  private readonly _onBulletsSpawned: Throttle<
+    (bullets: PlayerBullet[]) => void
+  >;
+
   private readonly _shipSpriteNeutral: AnimatedSprite;
   private readonly _shipSpriteFlyingLeft: AnimatedSprite;
   private readonly _shipSpriteFlyingRight: AnimatedSprite;
@@ -10,8 +16,9 @@ export class Player {
 
   private _xy: Vector2d;
 
-  constructor() {
+  constructor(params: { onBulletsSpawned: (bullets: PlayerBullet[]) => void }) {
     // TODO
+    this._onBulletsSpawned = new Throttle(params.onBulletsSpawned);
     // local on_bullets_spawned, on_shockwave_triggered = new_throttle(params.on_bullets_spawned), new_throttle(params.on_shockwave_triggered)
     // local w, h, on_damaged, on_destroyed = 10, 12, params.on_damaged, params.on_destroyed
 
@@ -43,13 +50,12 @@ export class Player {
   //         r = 3,
   //     }
   // end
-  //
-  // local function create_single_bullet()
-  //     return {
-  //         new_player_bullet(xy.plus(0, -4)),
-  //     }
-  // end
-  //
+
+  private _createSingleBullet(): PlayerBullet[] {
+    return [new PlayerBullet(this._xy.add(0, -4))];
+  }
+
+  // TODO
   // local function create_triple_bullets()
   //     return {
   //         new_player_bullet(xy.plus(0, -4)),
@@ -68,8 +74,8 @@ export class Player {
   // end,
   //
 
-  // TODO params: up, down, fast_movement
-  setMovement(left: boolean, right: boolean) {
+  // TODO params: fast_movement
+  setMovement(left: boolean, right: boolean, up: boolean, down: boolean) {
     // TODO
     //     jet_sprite = down and jet_sprite_hidden or jet_sprite_visible
     //     ship_sprite_current = left and ship_sprite_flying_left or (right and ship_sprite_flying_right or ship_sprite_neutral)
@@ -83,14 +89,16 @@ export class Player {
     const speed = 1;
     //     local speed = fast_movement and 1.5 or 1
     // TODO
-    const xDiff = right ? speed : left ? -speed : 0;
-    //     local x_diff, y_diff = (right and speed or (left and -speed or 0)), (down and speed or (up and -speed or 0))
-    //     if x_diff ~= 0 and y_diff ~= 0 then
-    //         -- speed fix for a diagonal movement
-    //         x_diff, y_diff = x_diff / 1.41, y_diff / 1.41
-    //     end
+    let diff = v_(
+      right ? speed : left ? -speed : 0,
+      down ? speed : up ? -speed : 0
+    );
+    if (diff.x !== 0 && diff.y !== 0) {
+      // fix for a diagonal movement speed
+      diff = diff.div(1.44);
+    }
     // TODO
-    this._xy = this._xy.add(v_(xDiff, 0));
+    this._xy = this._xy.add(diff);
     //     xy = _xy(
     //         mid(w / 2 + 1, xy.x + x_diff, _gaw - w / 2 - 1),
     //         mid(h / 2 + 1, xy.y + y_diff, _gah - h / 2 - 1)
@@ -99,12 +107,19 @@ export class Player {
 
   // TODO
   // fire = function(fast_shoot, triple_shoot)
-  //     on_bullets_spawned.invoke_if_ready(
-  //         triple_shoot and (fast_shoot and 10 or 16) or (fast_shoot and 8 or 12),
-  //         triple_shoot and create_triple_bullets or create_single_bullet
-  //     )
-  // end,
-  //
+  fire(): void {
+    // TODO
+    this._onBulletsSpawned.invokeIfReady(
+      12,
+      this._createSingleBullet.bind(this)
+    );
+    //     on_bullets_spawned.invoke_if_ready(
+    //         triple_shoot and (fast_shoot and 10 or 16) or (fast_shoot and 8 or 12),
+    //         triple_shoot and create_triple_bullets or create_single_bullet
+    //     )
+  }
+
+  // TODO
   // trigger_shockwave = function()
   //     on_shockwave_triggered.invoke_if_ready(
   //         6,
@@ -129,19 +144,23 @@ export class Player {
   //     end
   // end,
 
-  // TODO
-  // if invincible_after_damage_timer then
-  //     if invincible_after_damage_timer.ttl <= 0 then
-  //         invincible_after_damage_timer = nil
-  //     else
-  //         invincible_after_damage_timer._update()
-  //     end
-  // end
-  //
-  // on_bullets_spawned._update()
-  // on_shockwave_triggered._update()
-  //
-  // jet_sprite._update()
+  update(): void {
+    // TODO
+    // if invincible_after_damage_timer then
+    //     if invincible_after_damage_timer.ttl <= 0 then
+    //         invincible_after_damage_timer = nil
+    //     else
+    //         invincible_after_damage_timer._update()
+    //     end
+    // end
+
+    this._onBulletsSpawned.update();
+    // TODO
+    // on_shockwave_triggered._update()
+    //
+    // TODO
+    // jet_sprite._update()
+  }
 
   draw(): void {
     // TODO
