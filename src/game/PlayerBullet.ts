@@ -1,5 +1,6 @@
 import { Vector2d } from "@beetpx/beetpx";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { isSafelyOutsideGameplayArea } from "../misc/helpers";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
 
@@ -18,12 +19,13 @@ export class PlayerBullet {
     })(startXy);
   }
 
+  get hasFinished(): boolean {
+    // TODO
+    return isSafelyOutsideGameplayArea(this._movement.xy);
+    // return is_destroyed or _is_safely_outside_gameplay_area(movement.xy)
+  }
   // TODO
   //     return {
-  //         has_finished = function()
-  //             return is_destroyed or _is_safely_outside_gameplay_area(movement.xy)
-  //         end,
-  //
   //         collision_circle = function()
   //             return {
   //                 xy = movement.xy.minus(0, .5),

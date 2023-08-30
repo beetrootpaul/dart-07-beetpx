@@ -7,8 +7,12 @@ export class Game {
   get health(): number {
     return this._health;
   }
+  private readonly _shockwaveCharges: number;
+  get shockwaveCharges(): number {
+    return this._shockwaveCharges;
+  }
 
-  private readonly _playerBullets: PlayerBullet[] = [];
+  private _playerBullets: PlayerBullet[] = [];
 
   private readonly _player: Player;
 
@@ -21,16 +25,14 @@ export class Game {
     score: number;
   }) {
     // TODO
-    /*
-  function new_game(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
-      local game = {
-      */
+    // local game = {
     this._health = params.health;
     // TODO
+    // boss_health = nil,
+    // boss_health_max = nil,
+    // TODO
+    this._shockwaveCharges = params.shockwaveCharges;
     /*
-          boss_health = nil,
-          boss_health_max = nil,
-          shockwave_charges = shockwave_charges,
           fast_movement = fast_movement,
           fast_shoot = fast_shoot,
           triple_shoot = triple_shoot,
@@ -295,9 +297,9 @@ export class Game {
             boss, enemy_bullets = nil, {}
         end
         */
-    // TODO: REMOVE
-    // console.log(this._playerBullets.length);
+
     // TODO
+    this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
     /*
         _flattened_for_each(
             shockwaves,
@@ -313,15 +315,6 @@ export class Game {
                 end
             end
         )
-
-        -- DEBUG:
-        --printh("  === #TABLES ===  ")
-        --printh(#player_bullets)
-        --printh(#enemy_bullets)
-        --printh(#enemies)
-        --printh(#powerups)
-        --printh(#explosions)
-        --printh(#shockwaves)
     end
 
      */
@@ -355,11 +348,8 @@ export class Game {
     // end
 
     // TODO
-    for (const gameObjects of [this._playerBullets]) {
-      for (const gameObject of gameObjects) {
-        gameObject.update();
-      }
-    }
+    this._playerBullets.forEach((pb) => pb.update());
+    this._player.update();
     /*
         _flattened_for_each(
             { level },
@@ -427,11 +417,7 @@ export class Game {
     // clip(_gaox, 0, _gaw, _gah)
 
     // TODO
-    for (const gameObjects of [this._playerBullets]) {
-      for (const gameObject of gameObjects) {
-        gameObject.draw();
-      }
-    }
+    this._playerBullets.forEach((pb) => pb.draw());
     /*
           _flattened_for_each(
               { level },

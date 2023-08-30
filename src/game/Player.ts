@@ -1,10 +1,13 @@
 import { v_, Vector2d } from "@beetpx/beetpx";
 import { g } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Throttle } from "../misc/Throttle";
 import { PlayerBullet } from "./PlayerBullet";
 
 export class Player {
-  private readonly _onBulletsSpawned: (bullets: PlayerBullet[]) => void;
+  private readonly _onBulletsSpawned: Throttle<
+    (bullets: PlayerBullet[]) => void
+  >;
 
   private readonly _shipSpriteNeutral: AnimatedSprite;
   private readonly _shipSpriteFlyingLeft: AnimatedSprite;
@@ -15,7 +18,7 @@ export class Player {
 
   constructor(params: { onBulletsSpawned: (bullets: PlayerBullet[]) => void }) {
     // TODO
-    this._onBulletsSpawned = params.onBulletsSpawned;
+    this._onBulletsSpawned = new Throttle(params.onBulletsSpawned);
     // local on_bullets_spawned, on_shockwave_triggered = new_throttle(params.on_bullets_spawned), new_throttle(params.on_shockwave_triggered)
     // local w, h, on_damaged, on_destroyed = 10, 12, params.on_damaged, params.on_destroyed
 
@@ -106,7 +109,10 @@ export class Player {
   // fire = function(fast_shoot, triple_shoot)
   fire(): void {
     // TODO
-    this._onBulletsSpawned(this._createSingleBullet());
+    this._onBulletsSpawned.invokeIfReady(
+      12,
+      this._createSingleBullet.bind(this)
+    );
     //     on_bullets_spawned.invoke_if_ready(
     //         triple_shoot and (fast_shoot and 10 or 16) or (fast_shoot and 8 or 12),
     //         triple_shoot and create_triple_bullets or create_single_bullet
@@ -138,20 +144,23 @@ export class Player {
   //     end
   // end,
 
-  // TODO
-  // if invincible_after_damage_timer then
-  //     if invincible_after_damage_timer.ttl <= 0 then
-  //         invincible_after_damage_timer = nil
-  //     else
-  //         invincible_after_damage_timer._update()
-  //     end
-  // end
-  //
-  // on_bullets_spawned._update()
-  // on_shockwave_triggered._update()
-  //
+  update(): void {
+    // TODO
+    // if invincible_after_damage_timer then
+    //     if invincible_after_damage_timer.ttl <= 0 then
+    //         invincible_after_damage_timer = nil
+    //     else
+    //         invincible_after_damage_timer._update()
+    //     end
+    // end
 
-  // jet_sprite._update()
+    this._onBulletsSpawned.update();
+    // TODO
+    // on_shockwave_triggered._update()
+    //
+    // TODO
+    // jet_sprite._update()
+  }
 
   draw(): void {
     // TODO

@@ -36,6 +36,7 @@ export const g = {
   viewportSize: v_(128, 128),
   gameAreaSize: v_(96, 128),
   gameAreaOffset: v_(16, 0),
+  tileSize: v_(8, 8),
 
   assets: {
     pico8FontId: "pico8",
@@ -44,6 +45,7 @@ export const g = {
   },
 
   healthMax: 10,
+  shockwaveChargesMax: 4,
 
   missions: [
     {
