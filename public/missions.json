@@ -1,0 +1,256 @@
+{
+  "jsonVersion": "1.3.4",
+  "levels": [
+    {
+      "layerInstances": [
+        {
+          "entityInstances": [
+            {
+              "__identifier": "m1e_fast_and_small",
+              "__grid": [
+                8,
+                422
+              ]
+            },
+            {
+              "__identifier": "m1e_stationary",
+              "__grid": [
+                8,
+                408
+              ]
+            },
+            {
+              "__identifier": "m1e_aimed_triple_shot",
+              "__grid": [
+                2,
+                405
+              ]
+            },
+            {
+              "__identifier": "m1e_big",
+              "__grid": [
+                8,
+                415
+              ]
+            },
+            {
+              "__identifier": "m1e_wait_and_charge",
+              "__grid": [
+                1,
+                415
+              ]
+            },
+            {
+              "__identifier": "m1e_wait_and_charge",
+              "__grid": [
+                2,
+                418
+              ]
+            },
+            {
+              "__identifier": "m1e_sinusoidal",
+              "__grid": [
+                0,
+                424
+              ]
+            },
+            {
+              "__identifier": "m1e_sinusoidal",
+              "__grid": [
+                10,
+                424
+              ]
+            },
+            {
+              "__identifier": "m1e_big",
+              "__grid": [
+                0,
+                409
+              ]
+            },
+            {
+              "__identifier": "m1e_stationary",
+              "__grid": [
+                10,
+                418
+              ]
+            }
+          ]
+        },
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": []
+        }
+      ]
+    },
+    {
+      "layerInstances": [
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": [
+            {
+              "__identifier": "m2e_stationary",
+              "__grid": [
+                0,
+                14
+              ]
+            },
+            {
+              "__identifier": "m2e_stationary",
+              "__grid": [
+                10,
+                14
+              ]
+            },
+            {
+              "__identifier": "m2e_stationary",
+              "__grid": [
+                10,
+                0
+              ]
+            },
+            {
+              "__identifier": "m2e_stationary",
+              "__grid": [
+                0,
+                0
+              ]
+            },
+            {
+              "__identifier": "m2e_stationary",
+              "__grid": [
+                2,
+                10
+              ]
+            },
+            {
+              "__identifier": "m2e_stationary",
+              "__grid": [
+                8,
+                10
+              ]
+            },
+            {
+              "__identifier": "m2e_stationary",
+              "__grid": [
+                0,
+                10
+              ]
+            },
+            {
+              "__identifier": "m2e_stationary",
+              "__grid": [
+                6,
+                14
+              ]
+            }
+          ]
+        },
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": []
+        }
+      ]
+    },
+    {
+      "layerInstances": [
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": [
+            {
+              "__identifier": "m3e_stationary",
+              "__grid": [
+                0,
+                14
+              ]
+            },
+            {
+              "__identifier": "m3e_stationary",
+              "__grid": [
+                10,
+                14
+              ]
+            },
+            {
+              "__identifier": "m3e_stationary",
+              "__grid": [
+                10,
+                0
+              ]
+            },
+            {
+              "__identifier": "m3e_stationary",
+              "__grid": [
+                0,
+                0
+              ]
+            },
+            {
+              "__identifier": "m3e_stationary",
+              "__grid": [
+                4,
+                12
+              ]
+            },
+            {
+              "__identifier": "m3e_stationary",
+              "__grid": [
+                6,
+                12
+              ]
+            },
+            {
+              "__identifier": "m3e_stationary",
+              "__grid": [
+                2,
+                12
+              ]
+            },
+            {
+              "__identifier": "m3e_stationary",
+              "__grid": [
+                8,
+                10
+              ]
+            }
+          ]
+        },
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": []
+        },
+        {
+          "entityInstances": []
+        }
+      ]
+    }
+  ]
+}
