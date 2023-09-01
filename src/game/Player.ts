@@ -22,9 +22,27 @@ export class Player {
     // local on_bullets_spawned, on_shockwave_triggered = new_throttle(params.on_bullets_spawned), new_throttle(params.on_shockwave_triggered)
     // local w, h, on_damaged, on_destroyed = 10, 12, params.on_damaged, params.on_destroyed
 
-    this._shipSpriteNeutral = new AnimatedSprite(10, 10, [19], 0);
-    this._shipSpriteFlyingLeft = new AnimatedSprite(10, 10, [9], 0);
-    this._shipSpriteFlyingRight = new AnimatedSprite(10, 10, [29], 0);
+    this._shipSpriteNeutral = new AnimatedSprite(
+      g.assets.mainSpritesheetUrl,
+      10,
+      10,
+      [19],
+      0
+    );
+    this._shipSpriteFlyingLeft = new AnimatedSprite(
+      g.assets.mainSpritesheetUrl,
+      10,
+      10,
+      [9],
+      0
+    );
+    this._shipSpriteFlyingRight = new AnimatedSprite(
+      g.assets.mainSpritesheetUrl,
+      10,
+      10,
+      [29],
+      0
+    );
     // TODO
     // local jet_sprite_visible = new_animated_sprite(
     //     4,

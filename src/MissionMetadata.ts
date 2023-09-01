@@ -6,4 +6,6 @@ export type MissionMetadata = {
   bgColor: SolidColor;
   missionInfoColor: SolidColor;
   spritesheetUrl: string;
+  levelBgDraw: () => void;
+  levelBgUpdate: () => void;
 };

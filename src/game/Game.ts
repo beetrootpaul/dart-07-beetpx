@@ -1,4 +1,5 @@
 import { b } from "../globals";
+import { Level } from "./Level";
 import { Player } from "./Player";
 import { PlayerBullet } from "./PlayerBullet";
 
@@ -12,9 +13,12 @@ export class Game {
     return this._shockwaveCharges;
   }
 
-  private _playerBullets: PlayerBullet[] = [];
+  // TODO: param: new_level_descriptor()
+  private readonly _level: Level = new Level();
 
   private readonly _player: Player;
+
+  private _playerBullets: PlayerBullet[] = [];
 
   constructor(params: {
     health: number;
@@ -37,14 +41,9 @@ export class Game {
           fast_shoot = fast_shoot,
           triple_shoot = triple_shoot,
           score = new_score(score),
-          -- DEBUG:
-          --fast_movement = true,
-          --fast_shoot = true,
-          --triple_shoot = true,
-          --score = new_score(123),
       }
 
-      local level, camera_shake_timer, boss = new_level(new_level_descriptor()), new_timer(0)
+      local camera_shake_timer, boss = new_timer(0)
 
       local enemy_bullets, enemies, powerups, explosions, shockwaves, shockwave_enemy_hits, floats =  {}, {}, {}, {}, {}, {}, {}
   */
@@ -348,6 +347,7 @@ export class Game {
     // end
 
     // TODO
+    this._level.update();
     this._playerBullets.forEach((pb) => pb.update());
     this._player.update();
     /*
@@ -411,13 +411,12 @@ export class Game {
 
   draw(): void {
     // TODO
-    this._player.draw();
-
-    // TODO
     // clip(_gaox, 0, _gaw, _gah)
 
     // TODO
+    this._level.draw();
     this._playerBullets.forEach((pb) => pb.draw());
+    this._player.draw();
     /*
           _flattened_for_each(
               { level },

@@ -21,7 +21,10 @@ b.init(
     debugFeatures: !__BEETPX_IS_PROD__,
   },
   {
-    images: [{ url: g.assets.mainSpritesheetUrl }],
+    images: [
+      { url: g.assets.mainSpritesheetUrl },
+      { url: g.assets.mission1SpritesheetUrl },
+    ],
     fonts: [
       {
         font: new Pico8Font(),

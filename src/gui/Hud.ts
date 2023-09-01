@@ -15,7 +15,14 @@ function hudSprite(
   spriteX: number,
   spriteY: number
 ): AnimatedSprite {
-  return new AnimatedSprite(spriteW, spriteH, [spriteX], spriteY, true);
+  return new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    spriteW,
+    spriteH,
+    [spriteX],
+    spriteY,
+    true
+  );
 }
 
 export class Hud {

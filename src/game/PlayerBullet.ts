@@ -1,11 +1,18 @@
 import { Vector2d } from "@beetpx/beetpx";
+import { g } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { isSafelyOutsideGameplayArea } from "../misc/helpers";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
 
 export class PlayerBullet {
-  private readonly _sprite: AnimatedSprite = new AnimatedSprite(4, 5, [9], 11);
+  private readonly _sprite: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    4,
+    5,
+    [9],
+    11
+  );
 
   private readonly _movement: Movement;
 
