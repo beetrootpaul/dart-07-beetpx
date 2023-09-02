@@ -53,8 +53,9 @@ export class SlidingInfo {
     ])(g.gameAreaOffset.sub(0, 18));
   }
 
-  // TODO
-  //   has_finished = movement.has_finished,
+  get hasFinished(): boolean {
+    return this._movement.hasFinished;
+  }
 
   update(): void {
     this._movement.update();

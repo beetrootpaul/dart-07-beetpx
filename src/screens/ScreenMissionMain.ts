@@ -9,7 +9,7 @@ import { GameScreen } from "./GameScreen";
 export class ScreenMissionMain implements GameScreen {
   private readonly _game: Game;
   private readonly _hud: Hud;
-  private readonly _missionInfo: SlidingInfo;
+  private _missionInfo: SlidingInfo | null;
 
   // TODO
   // function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
@@ -65,41 +65,35 @@ export class ScreenMissionMain implements GameScreen {
     this._game.preUpdate();
 
     // TODO
+    // if fade_in.has_finished() then
+    //     fade_in = _noop_game_object
+    // end
+
+    // TODO
+    if (this._missionInfo?.hasFinished) {
+      this._missionInfo = null;
+      this._game.enterEnemiesPhase();
+    }
+
+    // TODO
+    // if game.is_ready_to_enter_boss_phase() then
+    //     return new_screen_mission_boss(game, hud)
+    // end
+
+    // TODO
+    // if game.health <= 0 then
+    //     return new_screen_defeat(game, hud)
+    //     -- DEBUG:
+    //     --return new_screen_over(game, game.shockwave_charges == 0)
+    // end
     return;
-    /*
-            if fade_in.has_finished() then
-                fade_in = _noop_game_object
-            end
-
-            if mission_info.has_finished() then
-                mission_info = _noop_game_object
-                game.enter_enemies_phase()
-            end
-
-            if game.is_ready_to_enter_boss_phase() then
-                return new_screen_mission_boss(game, hud)
-            end
-
-            if game.health <= 0 then
-                return new_screen_defeat(game, hud)
-                -- DEBUG:
-                --return new_screen_over(game, game.shockwave_charges == 0)
-            end
-
-            -- DEBUG:
-            --return new_screen_over(game, false)
-            --return new_screen_over(game, true)
-        end
-
-        return screen
-    */
   }
 
   update(): void {
     this._game.update();
     this._hud.update();
 
-    this._missionInfo.update();
+    this._missionInfo?.update();
     // TODO
     // fade_in._update()
   }
@@ -110,7 +104,7 @@ export class ScreenMissionMain implements GameScreen {
     this._game.draw();
     this._hud.draw(this._game);
 
-    this._missionInfo.draw();
+    this._missionInfo?.draw();
     // TODO
     // fade_in._draw()
   }

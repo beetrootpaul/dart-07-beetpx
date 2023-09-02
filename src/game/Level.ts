@@ -1,33 +1,35 @@
 // To avoid thinking in x and y we talk here about:
 //   - distance = how many tiles we have scrolled forward (can be fraction)
 //   - lane     = which row of tiles are we talking about, perpendicular to distance
+import { g, u } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
+import { LeveDescriptor } from "./LeveDescriptor";
 
 export class Level {
+  private readonly _leveDescriptor: LeveDescriptor;
+
+  private _phase: "intro" | "main" = "main";
+
+  private readonly _minVisibleDistance: number = 1;
+  private readonly _maxVisibleDistance: number =
+    this._minVisibleDistance + g.viewportTiles.y - 1;
+
   // TODO: params: structures, enemies, max_defined_distance
-  constructor() {
+  constructor(leveDescriptor: LeveDescriptor) {
+    this._leveDescriptor = leveDescriptor;
     // TODO
     //     -- we draw enemy in center of block of 4 tiles, but store them in the top-left tile's position
     //     local enemy_offset = _xy(_ts / 2, _ts / 2)
     //
-    //     local min_visible_distance = 1
-    //     local max_visible_distance = min_visible_distance + _vst - 1
-    //
     //     local prev_spawn_distance = max_visible_distance
     //     local spawn_distance_offset = 2
     //     local spawn_distance = max_visible_distance + spawn_distance_offset
-    //
-    //     -- phase: intro -> main -> outro
-    //     local phase = "intro"
-    //
-    //     _m_level_bg_init()
   }
 
-  // TODO
-  //         enter_phase_main = function()
-  //             phase = "main"
-  //         end,
-  //
+  enterPhaseMain(): void {
+    this._phase = "main";
+  }
+
   // TODO
   //         progress_fraction = function()
   //             -- We remove 17 from max_visible_distance in order to make sure progress_fraction is not above 0 during mission intro phase.
@@ -90,20 +92,31 @@ export class Level {
   draw(): void {
     CurrentMission.m.levelBgDraw();
 
-    // TODO
-    //             if phase == "main" then
-    //                 for distance = flr(min_visible_distance), ceil(max_visible_distance) do
-    //                     for lane = 1, 12 do
-    //                         local fg_tile = structures[distance][lane]
-    //                         if fg_tile then
-    //                             spr(
-    //                                 fg_tile,
-    //                                 _gaox + (lane - 1) * _ts,
-    //                                 _vs - flr((distance - min_visible_distance + 1) * _ts)
-    //                             )
-    //                         end
-    //                     end
-    //                 end
-    //             end
+    if (this._phase === "main") {
+      for (
+        let distance = Math.floor(this._minVisibleDistance);
+        distance <= Math.ceil(this._maxVisibleDistance);
+        distance++
+      ) {
+        for (let lane = 1; lane <= 12; lane++) {
+          const fgTileId =
+            (this._leveDescriptor.structures[distance] ??
+              u.throwError(
+                `Tried to access non-existent structures at distance=${distance}`
+              ))[lane] ??
+            u.throwError(
+              `Tried to access non-existent structure at distance=${distance} lane=${lane}`
+            );
+          if (fgTileId !== LeveDescriptor.noTileId) {
+            // TODO
+            //                             spr(
+            //                                 fg_tile,
+            //                                 _gaox + (lane - 1) * _ts,
+            //                                 _vs - flr((distance - min_visible_distance + 1) * _ts)
+            //                             )
+          }
+        }
+      }
+    }
   }
 }

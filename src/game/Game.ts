@@ -1,4 +1,5 @@
 import { b } from "../globals";
+import { LeveDescriptor } from "./LeveDescriptor";
 import { Level } from "./Level";
 import { Player } from "./Player";
 import { PlayerBullet } from "./PlayerBullet";
@@ -13,8 +14,7 @@ export class Game {
     return this._shockwaveCharges;
   }
 
-  // TODO: param: new_level_descriptor()
-  private readonly _level: Level = new Level();
+  private readonly _level: Level = new Level(new LeveDescriptor());
 
   private readonly _player: Player;
 
@@ -217,9 +217,14 @@ export class Game {
     --
 
     game.mission_progress_fraction = level.progress_fraction
+    */
 
-    game.enter_enemies_phase = level.enter_phase_main
+  enterEnemiesPhase(): void {
+    this._level.enterPhaseMain();
+  }
 
+  // TODO
+  /*
     function game.is_ready_to_enter_boss_phase()
         return level.has_scrolled_to_end() and #enemies <= 0 and #powerups <= 0
     end
