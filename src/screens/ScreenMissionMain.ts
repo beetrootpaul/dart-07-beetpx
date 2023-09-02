@@ -1,9 +1,9 @@
-import { CurrentMission } from "../CurrentMission";
-import { MissionMetadata } from "../MissionMetadata";
 import { Game } from "../game/Game";
 import { b } from "../globals";
 import { Hud } from "../gui/Hud";
 import { SlidingInfo } from "../gui/SlidingInfo";
+import { CurrentMission } from "../missions/CurrentMission";
+import { Mission } from "../missions/Mission";
 import { GameScreen } from "./GameScreen";
 
 export class ScreenMissionMain implements GameScreen {
@@ -14,7 +14,7 @@ export class ScreenMissionMain implements GameScreen {
   // TODO
   // function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
   constructor(params: {
-    metadata: MissionMetadata;
+    mission: Mission;
     health: number;
     shockwaveCharges: number;
     fastMovement: boolean;
@@ -22,7 +22,7 @@ export class ScreenMissionMain implements GameScreen {
     tripleShoot: boolean;
     score: number;
   }) {
-    CurrentMission.setFrom(params.metadata);
+    CurrentMission.m = params.mission;
 
     this._game = new Game({
       health: params.health,
@@ -43,9 +43,9 @@ export class ScreenMissionMain implements GameScreen {
     });
 
     this._missionInfo = new SlidingInfo({
-      text1: `mission ${CurrentMission.missionNumber}`,
-      text2: CurrentMission.missionName,
-      mainColor: CurrentMission.missionInfoColor,
+      text1: `mission ${CurrentMission.m.missionNumber}`,
+      text2: CurrentMission.m.missionName,
+      mainColor: CurrentMission.m.missionInfoColor,
       waitFrames: fadeInFrames,
       slideInFrames: slidingInfoSlideFrames,
       presentFrames: screenFrames - fadeInFrames - 2 * slidingInfoSlideFrames,
@@ -105,7 +105,7 @@ export class ScreenMissionMain implements GameScreen {
   }
 
   draw(): void {
-    b.clearCanvas(CurrentMission.bgColor);
+    b.clearCanvas(CurrentMission.m.bgColor);
 
     this._game.draw();
     this._hud.draw(this._game);

@@ -1,7 +1,7 @@
 // To avoid thinking in x and y we talk here about:
 //   - distance = how many tiles we have scrolled forward (can be fraction)
 //   - lane     = which row of tiles are we talking about, perpendicular to distance
-import { CurrentMission } from "../CurrentMission";
+import { CurrentMission } from "../missions/CurrentMission";
 
 export class Level {
   // TODO: params: structures, enemies, max_defined_distance
@@ -66,7 +66,7 @@ export class Level {
   //         end,
   //
   update(): void {
-    CurrentMission.levelBgUpdate();
+    CurrentMission.m.levelBgUpdate();
 
     // TODO
     //             if phase ~= "outro" and min_visible_distance >= max_defined_distance + 3 then
@@ -88,7 +88,7 @@ export class Level {
   }
 
   draw(): void {
-    CurrentMission.levelBgDraw();
+    CurrentMission.m.levelBgDraw();
 
     // TODO
     //             if phase == "main" then

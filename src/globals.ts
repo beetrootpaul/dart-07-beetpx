@@ -1,6 +1,4 @@
 import { BeetPx, Utils, v_ } from "@beetpx/beetpx";
-import { MissionMetadata } from "./MissionMetadata";
-import { AnimatedSprite } from "./misc/AnimatedSprite";
 import { Pico8Colors } from "./pico8/Pico8Color";
 
 export const b = BeetPx;
@@ -28,36 +26,7 @@ export const c = {
 
 export const u = Utils;
 
-const tileSize = 8;
-
-// TODO: move to a separate mission params file
-let wavesTileOffsetY = 0;
-
-// TODO: move to a separate mission params file
-const m1ScrollPerFrame = 0.5;
-
 // TODO: inline
-const mainSpritesheetUrl = "spritesheet_main.png";
-const mission1SpritesheetUrl = "spritesheet_mission_1.png";
-
-// TODO: move to a separate mission params file
-const m1WaveTile = new AnimatedSprite(
-  mission1SpritesheetUrl,
-  8,
-  8,
-  [
-    // TODO: replace with some smart syntax which helps to understand how much of each frame
-    24,
-    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
-    24, 24, 24, 24, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-    32, 32, 32, 32, 32, 32, 32, 32, 32, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
-    40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 48, 48, 48, 48, 48,
-    48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48,
-  ],
-  56,
-  true
-);
-
 export const g = {
   // TODO: do we use it anywhere else than BeetPx config? Can we inline it?
   fps: 60 as const,
@@ -65,42 +34,15 @@ export const g = {
   viewportSize: v_(128, 128),
   gameAreaSize: v_(96, 128),
   gameAreaOffset: v_(16, 0),
-  tileSize: v_(tileSize, tileSize),
+  tileSize: v_(8, 8),
 
   assets: {
     pico8FontId: "pico8",
     pico8FontImage: "pico-8-font.png",
-    mainSpritesheetUrl: mainSpritesheetUrl,
-    mission1SpritesheetUrl: mission1SpritesheetUrl,
+    mainSpritesheetUrl: "spritesheet_main.png",
+    mission1SpritesheetUrl: "spritesheet_mission_1.png",
   },
 
   healthMax: 10,
   shockwaveChargesMax: 4,
-
-  missions: [
-    // TODO: move to a separate mission params file
-    {
-      missionNumber: 1,
-      missionName: "emerald islands",
-      bgColor: c._4_true_blue,
-      missionInfoColor: c._9_dark_orange,
-      spritesheetUrl: mission1SpritesheetUrl,
-      levelBgUpdate: () => {
-        wavesTileOffsetY = (wavesTileOffsetY + m1ScrollPerFrame) % tileSize;
-        m1WaveTile.update();
-      },
-      levelBgDraw: () => {
-        for (let distance = 0; distance <= 16; distance++) {
-          for (let lane = 1; lane <= 12; lane++) {
-            m1WaveTile.draw(
-              v_(
-                (lane - 1) * tileSize,
-                Math.ceil((distance - 1) * tileSize + wavesTileOffsetY)
-              )
-            );
-          }
-        }
-      },
-    },
-  ] satisfies MissionMetadata[],
 };
