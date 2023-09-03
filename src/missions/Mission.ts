@@ -7,6 +7,8 @@ export interface Mission {
   readonly bgColor: SolidColor;
   readonly missionInfoColor: SolidColor;
 
+  readonly scrollPerFrame: number;
+
   levelBgUpdate(): void;
   levelBgDraw(): void;
 }

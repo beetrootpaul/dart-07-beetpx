@@ -33,9 +33,13 @@ export class ScreenMissionMain implements GameScreen {
       score: params.score,
     });
 
+    // TODO: REVERT
+    // const fadeInFrames = 30;
+    // const slidingInfoSlideFrames = 50;
+    // const screenFrames = 200;
     const fadeInFrames = 30;
     const slidingInfoSlideFrames = 50;
-    const screenFrames = 200;
+    const screenFrames = 100;
 
     this._hud = new Hud({
       waitFrames: screenFrames - 10,
@@ -48,7 +52,10 @@ export class ScreenMissionMain implements GameScreen {
       mainColor: CurrentMission.m.missionInfoColor,
       waitFrames: fadeInFrames,
       slideInFrames: slidingInfoSlideFrames,
-      presentFrames: screenFrames - fadeInFrames - 2 * slidingInfoSlideFrames,
+      presentFrames: Math.max(
+        1,
+        screenFrames - fadeInFrames - 2 * slidingInfoSlideFrames
+      ),
       slideOutFrames: slidingInfoSlideFrames,
     });
 

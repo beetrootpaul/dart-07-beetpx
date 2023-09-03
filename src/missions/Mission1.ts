@@ -10,6 +10,8 @@ export class Mission1 implements Mission {
   readonly bgColor: SolidColor = c._4_true_blue;
   readonly missionInfoColor: SolidColor = c._9_dark_orange;
 
+  readonly scrollPerFrame: number = 0.5;
+
   private readonly _waveTile: AnimatedSprite = new AnimatedSprite(
     g.assets.mission1SpritesheetUrl,
     8,
@@ -24,12 +26,11 @@ export class Mission1 implements Mission {
     true
   );
 
-  private _scrollPerFrame: number = 0.5;
   private _waveTileOffsetY: number = 0;
 
   levelBgUpdate(): void {
     this._waveTileOffsetY =
-      (this._waveTileOffsetY + this._scrollPerFrame) % g.tileSize.y;
+      (this._waveTileOffsetY + this.scrollPerFrame) % g.tileSize.y;
     this._waveTile.update();
   }
 
