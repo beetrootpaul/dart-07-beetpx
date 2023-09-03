@@ -1,4 +1,5 @@
 import { b } from "../globals";
+import { Enemy } from "./Enemy";
 import { LeveDescriptor } from "./LeveDescriptor";
 import { Level } from "./Level";
 import { Player } from "./Player";
@@ -17,6 +18,7 @@ export class Game {
   private readonly _level: Level = new Level(new LeveDescriptor());
 
   private readonly _player: Player;
+  private readonly _enemies: Enemy[] = [];
 
   private _playerBullets: PlayerBullet[] = [];
 
@@ -45,7 +47,7 @@ export class Game {
 
       local camera_shake_timer, boss = new_timer(0)
 
-      local enemy_bullets, enemies, powerups, explosions, shockwaves, shockwave_enemy_hits, floats =  {}, {}, {}, {}, {}, {}, {}
+      local enemy_bullets, powerups, explosions, shockwaves, shockwave_enemy_hits, floats =  {}, {}, {}, {}, {}, {}
   */
 
     this._player = new Player({
@@ -355,6 +357,7 @@ export class Game {
     this._level.update();
     this._playerBullets.forEach((pb) => pb.update());
     this._player.update();
+    this._enemies.forEach((e) => e.update());
     /*
         _flattened_for_each(
             { level },
@@ -376,35 +379,40 @@ export class Game {
         if player then
             handle_collisions()
         end
+        */
 
-        local enemies_to_spawn = level.enemies_to_spawn()
-        for enemy_to_spawn in all(enemies_to_spawn) do
-            add(enemies, new_enemy {
-                enemy_properties = _m_enemy_properties_for(enemy_to_spawn.enemy_map_marker),
-                start_xy = enemy_to_spawn.xy,
-                on_bullets_spawned = function(spawned_enemy_bullets_fn, enemy_movement)
-                    if player then
-                        for seb in all(spawned_enemy_bullets_fn(enemy_movement, player.collision_circle())) do
-                            add(enemy_bullets, seb)
-                        end
-                    end
-                end,
-                on_damaged = function(collision_circle)
-                    _sfx_play(_sfx_damage_enemy)
-                    add(explosions, new_explosion(collision_circle.xy, .5 * collision_circle.r))
-                end,
-                on_destroyed = function(collision_circle, powerup_type, score_to_add)
-                    _sfx_play(_sfx_destroy_enemy)
-                    game.score.add(score_to_add)
-                    add(floats, new_float(collision_circle.xy, score_to_add))
-                    add(explosions, new_explosion(collision_circle.xy, 2.5 * collision_circle.r))
-                    if powerup_type ~= "-" then
-                        add(powerups, new_powerup(collision_circle.xy, powerup_type))
-                    end
-                end,
-            })
-        end
+    for (const enemyToSpawn of this._level.enemiesToSpawn()) {
+      this._enemies.push(
+        new Enemy({
+          startXy: enemyToSpawn.xy,
+          // TODO
+          // enemy_properties = _m_enemy_properties_for(enemy_to_spawn.enemy_map_marker),
+          // on_bullets_spawned = function(spawned_enemy_bullets_fn, enemy_movement)
+          //     if player then
+          //         for seb in all(spawned_enemy_bullets_fn(enemy_movement, player.collision_circle())) do
+          //             add(enemy_bullets, seb)
+          //         end
+          //     end
+          // end,
+          // on_damaged = function(collision_circle)
+          //     _sfx_play(_sfx_damage_enemy)
+          //     add(explosions, new_explosion(collision_circle.xy, .5 * collision_circle.r))
+          // end,
+          // on_destroyed = function(collision_circle, powerup_type, score_to_add)
+          //     _sfx_play(_sfx_destroy_enemy)
+          //     game.score.add(score_to_add)
+          //     add(floats, new_float(collision_circle.xy, score_to_add))
+          //     add(explosions, new_explosion(collision_circle.xy, 2.5 * collision_circle.r))
+          //     if powerup_type ~= "-" then
+          //         add(powerups, new_powerup(collision_circle.xy, powerup_type))
+          //     end
+          // end,
+        })
+      );
+    }
 
+    // TODO
+    /*
         if boss then
             -- hack to optimize tokens: we set game.boss_health_max only when boss enters
             -- fight phase, even if we update game.boss_health earlier on every frame;
@@ -420,6 +428,7 @@ export class Game {
 
     // TODO
     this._level.draw();
+    this._enemies.forEach((e) => e.draw());
     this._playerBullets.forEach((pb) => pb.draw());
     this._player.draw();
     /*

@@ -1,7 +1,7 @@
 // To avoid thinking in x and y we talk here about:
 //   - distance = how many tiles we have scrolled forward (can be fraction)
 //   - lane     = which row of tiles are we talking about, perpendicular to distance
-import { spr_, transparent_, v_ } from "@beetpx/beetpx";
+import { spr_, transparent_, v_, Vector2d } from "@beetpx/beetpx";
 import { b, c, g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { LeveDescriptor } from "./LeveDescriptor";
@@ -15,17 +15,13 @@ export class Level {
   private _minVisibleDistance: number =
     this._maxVisibleDistance - g.gameAreaTiles.y - 1;
 
-  // TODO: params: structures, enemies, max_defined_distance
+  private readonly _spawnDistanceOffset: number = 2;
+  private _distanceNoSpawn: number =
+    this._maxVisibleDistance + this._spawnDistanceOffset;
+  private _distanceNextSpawn: number = this._maxVisibleDistance;
+
   constructor(leveDescriptor: LeveDescriptor) {
     this._leveDescriptor = leveDescriptor;
-    // TODO
-    //     -- we draw enemy in center of block of 4 tiles, but store them in the top-left tile's position
-    //     local enemy_offset = _xy(_ts / 2, _ts / 2)
-    //
-    // TODO
-    //     local prev_spawn_distance = max_visible_distance
-    //     local spawn_distance_offset = 2
-    //     local spawn_distance = max_visible_distance + spawn_distance_offset
   }
 
   enterPhaseMain(): void {
@@ -44,32 +40,38 @@ export class Level {
   //         has_scrolled_to_end = function()
   //             return phase == "main" and max_visible_distance >= max_defined_distance + 1 or phase == "outro"
   //         end,
-  //
-  // TODO
-  //         enemies_to_spawn = function()
-  //             if phase ~= "main" then
-  //                 return {}
-  //             end
-  //
-  //             local result = {}
-  //             if spawn_distance > prev_spawn_distance then
-  //                 prev_spawn_distance = spawn_distance
-  //                 for lane = 1, 12 do
-  //                     local enemy_map_marker = enemies[spawn_distance] and enemies[spawn_distance][lane] or nil
-  //                     if enemy_map_marker then
-  //                         add(result, {
-  //                             enemy_map_marker = enemy_map_marker,
-  //                             xy = _xy(
-  //                                 (lane - .5) * _ts,
-  //                                 _vs - _ts - (spawn_distance - min_visible_distance + .5) * _ts
-  //                             ).plus(enemy_offset),
-  //                         })
-  //                     end
-  //                 end
-  //             end
-  //             return result
-  //         end,
-  //
+
+  enemiesToSpawn(): Array<{ id: string; xy: Vector2d }> {
+    const result: Array<{ id: string; xy: Vector2d }> = [];
+
+    if (this._phase !== "main") return result;
+
+    while (this._distanceNextSpawn < this._distanceNoSpawn) {
+      const row = this._leveDescriptor.enemies[this._distanceNextSpawn];
+      if (row) {
+        for (let lane = 1; lane <= 12; lane++) {
+          const enemyId = row[lane];
+          if (enemyId) {
+            result.push({
+              id: enemyId,
+              xy: v_(0, g.gameAreaSize.y).add(
+                g.tileSize.mul(
+                  v_(
+                    lane + 2,
+                    this._minVisibleDistance - this._distanceNextSpawn
+                  )
+                )
+              ),
+            });
+          }
+        }
+      }
+      this._distanceNextSpawn++;
+    }
+
+    return result;
+  }
+
   update(): void {
     CurrentMission.m.levelBgUpdate();
 
@@ -87,8 +89,8 @@ export class Level {
     if (this._phase === "intro") {
       this._maxVisibleDistance = this._maxVisibleDistance % 1;
     } else if (this._phase === "main") {
-      // TODO
-      // spawn_distance = max(spawn_distance, flr(max_visible_distance) + spawn_distance_offset)
+      this._distanceNoSpawn =
+        Math.floor(this._maxVisibleDistance) + this._spawnDistanceOffset;
     } else if (this._phase === "outro") {
       this._maxVisibleDistance =
         this._leveDescriptor.maxDefinedDistance +
@@ -119,11 +121,11 @@ export class Level {
         distance <= Math.ceil(this._maxVisibleDistance);
         distance++
       ) {
-        for (let lane = 1; lane <= 12; lane++) {
-          const row = this._leveDescriptor.structures[distance];
-          if (row) {
+        const row = this._leveDescriptor.structures[distance];
+        if (row) {
+          for (let lane = 1; lane <= 12; lane++) {
             const fgTileId = row[lane];
-            if (fgTileId && fgTileId !== LeveDescriptor.noTileId) {
+            if (fgTileId) {
               this._drawTile(fgTileId, distance, lane);
             }
           }
