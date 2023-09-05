@@ -1,5 +1,4 @@
 import { v_, Vector2d } from "@beetpx/beetpx";
-import { b, c } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { EnemyProperties } from "./EnemyProperties";
 
@@ -45,10 +44,6 @@ export class Enemy {
   }
 
   draw(): void {
-    // TODO: tmp
-    b.rectFilled(this._xy.sub(3), v_(7, 7), c._7_white);
-    b.pixel(this._xy, c._8_red);
-
     // TODO
     this._properties.spriteMain.draw(this._xy);
     //                 ship_sprite._draw(movement.xy)

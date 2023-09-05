@@ -56,10 +56,7 @@ export class Level {
               id: enemyId,
               xy: v_(0, g.gameAreaSize.y).add(
                 g.tileSize.mul(
-                  v_(
-                    lane + 2,
-                    this._minVisibleDistance - this._distanceNextSpawn
-                  )
+                  v_(lane, this._minVisibleDistance - this._distanceNextSpawn)
                 )
               ),
             });
