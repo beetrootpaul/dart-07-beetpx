@@ -2,6 +2,7 @@ import { SolidColor } from "@beetpx/beetpx";
 import { EnemyProperties } from "../game/EnemyProperties";
 import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { MovementLine } from "../movement/MovementLine";
 import { Mission } from "./Mission";
 
 const aspr_ = AnimatedSprite.for(g.assets.mission2SpritesheetUrl);
@@ -106,12 +107,11 @@ export class Mission2 implements Mission {
           //                 { 5 },
           //             },
           //             "h,m,f,t,s",
-          //             new_movement_line_factory {
-          //                 angle = .75,
-          //                 angled_speed = _m_scroll_per_frame,
-          //                 -- DEBUG:
-          //                 --frames = 89,
-          //             },
+          movementFactory: MovementLine.of({
+            angle: 0.25,
+            angledSpeed: this.scrollPerFrame,
+          }),
+          // TODO
           //             bullet_fire_timer = new_timer "40",
           //             spawn_bullets = function(enemy_movement, player_collision_circle)
           //                 _sfx_play(_sfx_enemy_multi_shoot)

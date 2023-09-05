@@ -1,21 +1,18 @@
-import { v_, Vector2d } from "@beetpx/beetpx";
-import { CurrentMission } from "../missions/CurrentMission";
+import { Vector2d } from "@beetpx/beetpx";
+import { Movement } from "../movement/Movement";
 import { EnemyProperties } from "./EnemyProperties";
 
 export class Enemy {
   private readonly _properties: EnemyProperties;
-  // TODO: tmp
-  private _xy: Vector2d;
+  private readonly _movement: Movement;
 
   constructor(params: { properties: EnemyProperties; startXy: Vector2d }) {
     this._properties = params.properties;
-    // TODO: tmp
-    this._xy = params.startXy;
+    this._movement = params.properties.movementFactory(params.startXy);
   }
 
   update(): void {
-    // TODO: tmp
-    this._xy = this._xy.add(v_(0, CurrentMission.m.scrollPerFrame));
+    this._movement.update();
 
     // TODO
     //                 movement._update()
@@ -44,11 +41,8 @@ export class Enemy {
   }
 
   draw(): void {
+    this._properties.spriteMain.draw(this._movement.xy);
     // TODO
-    this._properties.spriteMain.draw(this._xy);
-    //                 ship_sprite._draw(movement.xy)
-    //                 -- DEBUG:
-    //                 --if t() * 2 % 2 < 1 then
     //                 if flashing_after_damage_timer and flashing_after_damage_timer.ttl > 0 then
     //                     flash_sprite._draw(movement.xy)
     //                 end
@@ -65,7 +59,7 @@ export class Enemy {
 //         local start_xy = params.start_xy
 //         local on_bullets_spawned, on_damaged, on_destroyed = params.on_bullets_spawned, params.on_damaged, params.on_destroyed
 //
-//         local health, movement = enemy_properties[1], enemy_properties[6](start_xy)
+//         local health = enemy_properties[1]
 //         local bullet_fire_timer = enemy_properties.bullet_fire_timer or new_fake_timer()
 //
 //         local ship_sprite_props_txt, flash_sprite_props_txt = _unpack_split(enemy_properties[3], "|")

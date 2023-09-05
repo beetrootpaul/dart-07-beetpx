@@ -2,6 +2,7 @@ import { SolidColor, v_ } from "@beetpx/beetpx";
 import { EnemyProperties } from "../game/EnemyProperties";
 import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { MovementLine } from "../movement/MovementLine";
 import { Mission } from "./Mission";
 
 const aspr_ = AnimatedSprite.for(g.assets.mission1SpritesheetUrl);
@@ -94,14 +95,10 @@ export class Mission1 implements Mission {
           //                     { 3, _xy(0, 1) },
           //                 },
           //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
-          //                 new_movement_line_factory {
-          //                     angle = .75,
-          //                     angled_speed = 1.5,
-          //                     -- DEBUG:
-          //                     --frames = 123,
-          //                 },
-          //             },
-          //
+          movementFactory: MovementLine.of({
+            angle: 0.25,
+            angledSpeed: 1.5,
+          }),
         };
       case "m1e_sinusoidal":
         return {
@@ -115,6 +112,11 @@ export class Mission1 implements Mission {
           // Taspr_/                 {
           //                 },
           //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
+          // TODO: TMP
+          movementFactory: MovementLine.of({
+            angle: 0.25,
+            angledSpeed: 1.5,
+          }),
           //                 new_movement_sinusoidal_factory {
           //                     speed_y = .75,
           //                     age_divisor = 120,
@@ -126,6 +128,7 @@ export class Mission1 implements Mission {
           //                 --    angled_speed = _m_scroll_per_frame,
           //                 --    frames = 234,
           //                 --},
+          // TODO
           //                 bullet_fire_timer = new_timer "40",
           //                 spawn_bullets = function(enemy_movement)
           //                     _sfx_play(_sfx_enemy_shoot)
@@ -153,6 +156,11 @@ export class Mission1 implements Mission {
           //                     { 7 },
           //                 },
           //                 "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
+          // TODO: TMP
+          movementFactory: MovementLine.of({
+            angle: 0.25,
+            angledSpeed: 1.5,
+          }),
           //                 new_movement_sequence_factory {
           //                     new_movement_line_factory {
           //                         frames = 80,
@@ -188,6 +196,11 @@ export class Mission1 implements Mission {
           //                     { 5, _xy(0, -4) },
           //                 },
           //                 "h,s",
+          // TODO: TMP
+          movementFactory: MovementLine.of({
+            angle: 0.25,
+            angledSpeed: 1.5,
+          }),
           //                 new_movement_sequence_factory {
           //                     new_movement_to_target_factory {
           //                         target_y = 32,
@@ -210,6 +223,7 @@ export class Mission1 implements Mission {
           //                 --    angled_speed = _m_scroll_per_frame,
           //                 --    frames = 123,
           //                 --},
+          // TODO
           //                 bullet_fire_timer = new_timer "33",
           //                 spawn_bullets = function(enemy_movement)
           //                     _sfx_play(_sfx_enemy_multi_shoot)
@@ -242,6 +256,11 @@ export class Mission1 implements Mission {
           //                     { 4, _xy(0, -7) },
           //                 },
           //                 "-,-,-,-,-,-,h,m,m,f,f,f,t,t,s",
+          // TODO: TMP
+          movementFactory: MovementLine.of({
+            angle: 0.25,
+            angledSpeed: 1.5,
+          }),
           //                 new_movement_sequence_factory({
           //                     new_movement_to_target_factory {
           //                         target_y = 80,
@@ -264,6 +283,7 @@ export class Mission1 implements Mission {
           //                 --    angled_speed = _m_scroll_per_frame,
           //                 --    frames = 160,
           //                 --},
+          // TODO
           //                 bullet_fire_timer = new_timer "60",
           //                 spawn_bullets = function(enemy_movement, player_collision_circle)
           //                     _sfx_play(_sfx_enemy_shoot)
@@ -303,12 +323,11 @@ export class Mission1 implements Mission {
           //                     { 6 },
           //                 },
           //                 "-,-,-,h,h,m,f,t,t,s,s,s",
-          //                 new_movement_line_factory {
-          //                     angle = .75,
-          //                     angled_speed = _m_scroll_per_frame,
-          //                     -- DEBUG:
-          //                     --frames = 100,
-          //                 },
+          movementFactory: MovementLine.of({
+            angle: 0.25,
+            angledSpeed: this.scrollPerFrame,
+          }),
+          // TODO
           //                 bullet_fire_timer = new_timer "60",
           //                 spawn_bullets = function(enemy_movement)
           //                     _sfx_play(_sfx_enemy_multi_shoot)

@@ -1,4 +1,5 @@
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { MovementFactory } from "../movement/Movement";
 
 export type EnemyProperties = {
   // TODO
@@ -14,7 +15,7 @@ export type EnemyProperties = {
   //     --                    { r },
   //     --                },
   //     --   - [5] = powerups_distribution
-  //     --   - [6] = movement_factory
+  movementFactory: MovementFactory;
   //     --   - spawn_bullets = function(enemy_movement, player_collision_circle)
   //     --                       return bullets_table
   //     --                     end

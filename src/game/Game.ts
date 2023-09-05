@@ -425,6 +425,9 @@ export class Game {
             game.boss_health = boss.health
         end
      */
+
+    // TODO: log everything that might matter
+    b.logDebug("e:", this._enemies.length, "pb:", this._playerBullets.length);
   }
 
   draw(): void {
