@@ -8,6 +8,13 @@ export interface Mission {
 
   readonly scrollPerFrame: number;
 
+  readonly ldtk: {
+    level: string;
+    tilesetPng: string;
+    landLayer: string;
+    enemiesLayer: string;
+  };
+
   levelBgUpdate(): void;
   levelBgDraw(): void;
 }

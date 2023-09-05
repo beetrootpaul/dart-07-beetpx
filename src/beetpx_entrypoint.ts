@@ -26,6 +26,8 @@ b.init(
     images: [
       { url: g.assets.mainSpritesheetUrl },
       { url: g.assets.mission1SpritesheetUrl },
+      { url: g.assets.mission2SpritesheetUrl },
+      { url: g.assets.mission3SpritesheetUrl },
     ],
     fonts: [
       {

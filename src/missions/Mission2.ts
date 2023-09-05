@@ -1,5 +1,5 @@
 import { SolidColor } from "@beetpx/beetpx";
-import { c } from "../globals";
+import { c, g } from "../globals";
 import { Mission } from "./Mission";
 
 export class Mission2 implements Mission {
@@ -9,6 +9,18 @@ export class Mission2 implements Mission {
   readonly missionInfoColor: SolidColor = c._6_light_grey;
 
   readonly scrollPerFrame: number = 1;
+
+  readonly ldtk: {
+    level: string;
+    tilesetPng: string;
+    landLayer: string;
+    enemiesLayer: string;
+  } = {
+    level: "mission_2",
+    tilesetPng: g.assets.mission2SpritesheetUrl,
+    landLayer: "m2_land",
+    enemiesLayer: "m2_enemies",
+  };
 
   // TODO
   // local function maybe_add_star(y)

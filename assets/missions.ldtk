@@ -3910,6 +3910,22 @@
 							"defUid": 19,
 							"px": [48,112],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "m2e_stationary",
+							"__grid": [4,8],
+							"__pivot": [0,0],
+							"__tags": ["m2"],
+							"__tile": { "tilesetUid": 4, "x": 120, "y": 32, "w": 8, "h": 8 },
+							"__smartColor": "#8B9BB4",
+							"__worldX": 128,
+							"__worldY": -64,
+							"iid": "6ce01460-3b70-11ee-bd8b-796cf70399e8",
+							"width": 16,
+							"height": 16,
+							"defUid": 19,
+							"px": [32,64],
+							"fieldInstances": []
 						}
 					]
 				},
@@ -4369,6 +4385,22 @@
 							"height": 16,
 							"defUid": 20,
 							"px": [64,80],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "m3e_stationary",
+							"__grid": [8,6],
+							"__pivot": [0,0],
+							"__tags": ["m3"],
+							"__tile": { "tilesetUid": 5, "x": 120, "y": 32, "w": 8, "h": 8 },
+							"__smartColor": "#5A6988",
+							"__worldX": 256,
+							"__worldY": -80,
+							"iid": "7113abf0-3b70-11ee-bd8b-79f08cfc025e",
+							"width": 16,
+							"height": 16,
+							"defUid": 20,
+							"px": [64,48],
 							"fieldInstances": []
 						}
 					]

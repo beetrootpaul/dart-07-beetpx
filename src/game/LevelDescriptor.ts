@@ -1,4 +1,5 @@
 import { g } from "../globals";
+import { CurrentMission } from "../missions/CurrentMission";
 
 export class LevelDescriptor {
   // TODO: REMOVE
@@ -23,15 +24,17 @@ export class LevelDescriptor {
 
     this.maxDefinedDistance =
       LevelDescriptor.tmpJson.levels.find(
-        (l: any) => l.identifier === "mission_1"
+        (l: any) => l.identifier === CurrentMission.m.ldtk.level
       ).pxHei /
         g.tileSize.y -
       2 * tileMarginY;
 
     const tiles: Array<{ tileY: number; tileX: number; id: number }> =
       LevelDescriptor.tmpJson.levels
-        .find((l: any) => l.identifier === "mission_1")
-        .layerInstances.find((li: any) => li.__identifier === "m1_land")
+        .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)
+        .layerInstances.find(
+          (li: any) => li.__identifier === CurrentMission.m.ldtk.landLayer
+        )
         .autoLayerTiles.map((alt: any) => ({
           tileY: alt.px[1] / 8 - tileMarginY,
           tileX: alt.px[0] / 8,
@@ -44,8 +47,10 @@ export class LevelDescriptor {
 
     const enemies: Array<{ tileY: number; tileX: number; id: string }> =
       LevelDescriptor.tmpJson.levels
-        .find((l: any) => l.identifier === "mission_1")
-        .layerInstances.find((li: any) => li.__identifier === "m1_enemies")
+        .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)
+        .layerInstances.find(
+          (li: any) => li.__identifier === CurrentMission.m.ldtk.enemiesLayer
+        )
         .entityInstances.map((ei: any) => ({
           id: ei.__identifier,
           tileX: ei.__grid[0],

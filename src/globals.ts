@@ -43,6 +43,8 @@ export const g = {
     pico8FontImage: "pico-8-font.png",
     mainSpritesheetUrl: "spritesheet_main.png",
     mission1SpritesheetUrl: "spritesheet_mission_1.png",
+    mission2SpritesheetUrl: "spritesheet_mission_2.png",
+    mission3SpritesheetUrl: "spritesheet_mission_3.png",
   },
 
   healthMax: 10,

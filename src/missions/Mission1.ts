@@ -11,6 +11,18 @@ export class Mission1 implements Mission {
 
   readonly scrollPerFrame: number = 0.5;
 
+  readonly ldtk: {
+    level: string;
+    tilesetPng: string;
+    landLayer: string;
+    enemiesLayer: string;
+  } = {
+    level: "mission_1",
+    tilesetPng: g.assets.mission1SpritesheetUrl,
+    landLayer: "m1_land",
+    enemiesLayer: "m1_enemies",
+  };
+
   private readonly _waveTile: AnimatedSprite = new AnimatedSprite(
     g.assets.mission1SpritesheetUrl,
     8,

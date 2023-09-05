@@ -137,9 +137,10 @@ export class Level {
   }
 
   private _drawTile(tileId: number, distance: number, lane: number): void {
-    // TODO: rework: cache sprites, decouple from URL, read sheet tiles width from somewhere else
+    // TODO: rework: cache sprites
+    // TODO: rework: decouple sheet width and height?
     b.sprite(
-      spr_(g.assets.mission1SpritesheetUrl)(
+      spr_(CurrentMission.m.ldtk.tilesetPng)(
         (tileId % 16) * g.tileSize.x,
         Math.floor(tileId / 16) * g.tileSize.y,
         g.tileSize.x,

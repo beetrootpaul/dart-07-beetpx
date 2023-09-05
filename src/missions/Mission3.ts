@@ -1,5 +1,5 @@
 import { SolidColor } from "@beetpx/beetpx";
-import { c } from "../globals";
+import { c, g } from "../globals";
 import { Mission } from "./Mission";
 
 export class Mission3 implements Mission {
@@ -9,6 +9,18 @@ export class Mission3 implements Mission {
   readonly missionInfoColor: SolidColor = c._3_dark_green;
 
   readonly scrollPerFrame: number = 1;
+
+  readonly ldtk: {
+    level: string;
+    tilesetPng: string;
+    landLayer: string;
+    enemiesLayer: string;
+  } = {
+    level: "mission_3",
+    tilesetPng: g.assets.mission3SpritesheetUrl,
+    landLayer: "m3_land",
+    enemiesLayer: "m3_enemies",
+  };
 
   // TODO
   // local tube_tiles = split "71,72,87,88,118,118,118,118,103,104,119,120"
