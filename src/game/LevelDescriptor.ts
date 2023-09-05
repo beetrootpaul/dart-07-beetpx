@@ -1,6 +1,6 @@
 import { g } from "../globals";
 
-export class LeveDescriptor {
+export class LevelDescriptor {
   // TODO: REMOVE
   static tmpJson: any;
 
@@ -15,21 +15,21 @@ export class LeveDescriptor {
   // TODO: REWORK, this is temporary implementation
   constructor() {
     // TODO: delete
-    console.log(LeveDescriptor.tmpJson);
+    console.log(LevelDescriptor.tmpJson);
 
     const tileMarginY = 2;
     // because enemies occupy 2 tiles in Y and their are placed on the further one, but we want to detect them on the closer one
     const enemyOffsetY = 1;
 
     this.maxDefinedDistance =
-      LeveDescriptor.tmpJson.levels.find(
+      LevelDescriptor.tmpJson.levels.find(
         (l: any) => l.identifier === "mission_1"
       ).pxHei /
         g.tileSize.y -
       2 * tileMarginY;
 
     const tiles: Array<{ tileY: number; tileX: number; id: number }> =
-      LeveDescriptor.tmpJson.levels
+      LevelDescriptor.tmpJson.levels
         .find((l: any) => l.identifier === "mission_1")
         .layerInstances.find((li: any) => li.__identifier === "m1_land")
         .autoLayerTiles.map((alt: any) => ({
@@ -43,7 +43,7 @@ export class LeveDescriptor {
     const lanes = 12;
 
     const enemies: Array<{ tileY: number; tileX: number; id: string }> =
-      LeveDescriptor.tmpJson.levels
+      LevelDescriptor.tmpJson.levels
         .find((l: any) => l.identifier === "mission_1")
         .layerInstances.find((li: any) => li.__identifier === "m1_enemies")
         .entityInstances.map((ei: any) => ({

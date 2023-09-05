@@ -1,7 +1,7 @@
 import { b } from "../globals";
 import { Enemy } from "./Enemy";
-import { LeveDescriptor } from "./LeveDescriptor";
 import { Level } from "./Level";
+import { LevelDescriptor } from "./LevelDescriptor";
 import { Player } from "./Player";
 import { PlayerBullet } from "./PlayerBullet";
 
@@ -15,11 +15,13 @@ export class Game {
     return this._shockwaveCharges;
   }
 
-  private readonly _level: Level = new Level(new LeveDescriptor());
+  private readonly _level: Level = new Level(new LevelDescriptor());
 
   private readonly _player: Player;
+  // TODO: consider poll of enemies for memory reusage
   private readonly _enemies: Enemy[] = [];
 
+  // TODO: consider poll of bullets for memory reusage
   private _playerBullets: PlayerBullet[] = [];
 
   constructor(params: {
@@ -225,12 +227,14 @@ export class Game {
     this._level.enterPhaseMain();
   }
 
+  isReadyToEnterBossPhase(): boolean {
+    // TODO
+    return this._level.hasScrolledToEnd();
+    // return level.has_scrolled_to_end() and #enemies <= 0 and #powerups <= 0
+  }
+
   // TODO
   /*
-    function game.is_ready_to_enter_boss_phase()
-        return level.has_scrolled_to_end() and #enemies <= 0 and #powerups <= 0
-    end
-
     function game.enter_boss_phase()
         boss = new_boss {
             on_bullets_spawned = function(bullets_fn, boss_movement)

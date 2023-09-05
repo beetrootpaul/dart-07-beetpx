@@ -4,10 +4,10 @@
 import { spr_, transparent_, v_, Vector2d } from "@beetpx/beetpx";
 import { b, c, g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
-import { LeveDescriptor } from "./LeveDescriptor";
+import { LevelDescriptor } from "./LevelDescriptor";
 
 export class Level {
-  private readonly _leveDescriptor: LeveDescriptor;
+  private readonly _leveDescriptor: LevelDescriptor;
 
   private _phase: "intro" | "main" | "outro" = "intro";
 
@@ -20,7 +20,7 @@ export class Level {
     this._maxVisibleDistance + this._spawnDistanceOffset;
   private _distanceNextSpawn: number = this._maxVisibleDistance;
 
-  constructor(leveDescriptor: LeveDescriptor) {
+  constructor(leveDescriptor: LevelDescriptor) {
     this._leveDescriptor = leveDescriptor;
   }
 
@@ -35,11 +35,11 @@ export class Level {
   //             -- We remove 2 from max_defined_distance in order to make sure progress_fraction is not below 1 during mission boss phase.
   //             return mid(0, (max_visible_distance - 17) / (max_defined_distance - 2), 1)
   //         end,
-  //
-  // TODO
-  //         has_scrolled_to_end = function()
-  //             return phase == "main" and max_visible_distance >= max_defined_distance + 1 or phase == "outro"
-  //         end,
+
+  hasScrolledToEnd(): boolean {
+    return this._phase === "outro";
+    //             return phase == "main" and max_visible_distance >= max_defined_distance + 1 or phase == "outro"
+  }
 
   enemiesToSpawn(): Array<{ id: string; xy: Vector2d }> {
     const result: Array<{ id: string; xy: Vector2d }> = [];

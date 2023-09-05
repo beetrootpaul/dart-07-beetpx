@@ -1,6 +1,6 @@
 import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
-import { LeveDescriptor } from "./game/LeveDescriptor";
+import { LevelDescriptor } from "./game/LevelDescriptor";
 import { b, c, g } from "./globals";
 import { Mission1 } from "./missions/Mission1";
 import { Pico8Colors } from "./pico8/Pico8Color";
@@ -44,7 +44,7 @@ b.init(
         return res.json();
       })
       .then((json) => {
-        LeveDescriptor.tmpJson = json;
+        LevelDescriptor.tmpJson = json;
       })
       .then(() => ({ startGame }));
   })
@@ -79,7 +79,7 @@ b.init(
         { from: Pico8Colors._15_lightPeach, to: c._15_peach },
       ]);
 
-      // TODO: make it start with a real first screen (BRP)
+      // TODO: tmp: make it start with a real first screen (BRP)
       currentScreen = new ScreenMissionMain({
         mission: new Mission1(),
         health: 3,
