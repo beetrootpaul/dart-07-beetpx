@@ -4,7 +4,6 @@ import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Mission } from "./Mission";
 
 export class Mission1 implements Mission {
-  readonly missionNumber: number = 1;
   readonly missionName: string = "emerald islands";
 
   readonly bgColor: SolidColor = c._4_true_blue;

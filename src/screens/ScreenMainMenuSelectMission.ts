@@ -1,5 +1,5 @@
 import { b, c } from "../globals";
-import { Mission1 } from "../missions/Mission1";
+import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 
@@ -12,7 +12,7 @@ export class ScreenMainMenuSelectMission implements GameScreen {
     // TODO: remove this temporary code
     if (this._next) {
       return new ScreenMissionMain({
-        mission: new Mission1(),
+        mission: CurrentMission.first,
         health: 3,
         shockwaveCharges: 3,
         fastMovement: false,

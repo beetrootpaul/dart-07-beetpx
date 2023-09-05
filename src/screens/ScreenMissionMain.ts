@@ -3,8 +3,6 @@ import { b } from "../globals";
 import { Hud } from "../gui/Hud";
 import { SlidingInfo } from "../gui/SlidingInfo";
 import { CurrentMission } from "../missions/CurrentMission";
-import { Mission } from "../missions/Mission";
-import { Mission1 } from "../missions/Mission1";
 import { GameScreen } from "./GameScreen";
 
 export class ScreenMissionMain implements GameScreen {
@@ -15,7 +13,7 @@ export class ScreenMissionMain implements GameScreen {
   // TODO
   // function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
   constructor(params: {
-    mission: Mission;
+    mission: number;
     health: number;
     shockwaveCharges: number;
     fastMovement: boolean;
@@ -23,7 +21,7 @@ export class ScreenMissionMain implements GameScreen {
     tripleShoot: boolean;
     score: number;
   }) {
-    CurrentMission.m = params.mission;
+    CurrentMission.changeTo(params.mission);
 
     this._game = new Game({
       health: params.health,
@@ -48,7 +46,7 @@ export class ScreenMissionMain implements GameScreen {
     });
 
     this._missionInfo = new SlidingInfo({
-      text1: `mission ${CurrentMission.m.missionNumber}`,
+      text1: `mission ${CurrentMission.current}`,
       text2: CurrentMission.m.missionName,
       mainColor: CurrentMission.m.missionInfoColor,
       waitFrames: fadeInFrames,
@@ -86,7 +84,7 @@ export class ScreenMissionMain implements GameScreen {
     if (this._game.isReadyToEnterBossPhase()) {
       // TODO: tmp: make it progress the boss screen instead
       return new ScreenMissionMain({
-        mission: new Mission1(),
+        mission: CurrentMission.next,
         health: Math.floor(Math.random() * 10 + 0.1),
         shockwaveCharges: Math.floor(Math.random() * 4 + 0.1),
         fastMovement: Math.random() < 0.5,

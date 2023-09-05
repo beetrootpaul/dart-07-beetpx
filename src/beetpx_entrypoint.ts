@@ -2,7 +2,7 @@ import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { LevelDescriptor } from "./game/LevelDescriptor";
 import { b, c, g } from "./globals";
-import { Mission1 } from "./missions/Mission1";
+import { CurrentMission } from "./missions/CurrentMission";
 import { Pico8Colors } from "./pico8/Pico8Color";
 import { Pico8Font } from "./pico8/Pico8Font";
 import { GameScreen } from "./screens/GameScreen";
@@ -81,7 +81,7 @@ b.init(
 
       // TODO: tmp: make it start with a real first screen (BRP)
       currentScreen = new ScreenMissionMain({
-        mission: new Mission1(),
+        mission: CurrentMission.first,
         health: 3,
         shockwaveCharges: 3,
         fastMovement: false,
