@@ -1,4 +1,5 @@
 import { b } from "../globals";
+import { CurrentMission } from "../missions/CurrentMission";
 import { Enemy } from "./Enemy";
 import { Level } from "./Level";
 import { LevelDescriptor } from "./LevelDescriptor";
@@ -388,9 +389,9 @@ export class Game {
     for (const enemyToSpawn of this._level.enemiesToSpawn()) {
       this._enemies.push(
         new Enemy({
+          properties: CurrentMission.m.enemyPropertiesFor(enemyToSpawn.id),
           startXy: enemyToSpawn.xy,
           // TODO
-          // enemy_properties = _m_enemy_properties_for(enemy_to_spawn.enemy_map_marker),
           // on_bullets_spawned = function(spawned_enemy_bullets_fn, enemy_movement)
           //     if player then
           //         for seb in all(spawned_enemy_bullets_fn(enemy_movement, player.collision_circle())) do

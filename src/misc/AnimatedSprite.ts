@@ -4,7 +4,7 @@ import { b, c, g } from "../globals";
 // TODO: consider renaming BeetPx's Sprite to SpriteData in order to allow totally different Sprite implementation in games
 
 export class AnimatedSprite {
-  private readonly spriteFactory: (
+  private readonly _spriteFactory: (
     x1: number,
     y1: number,
     w: number,
@@ -29,7 +29,7 @@ export class AnimatedSprite {
     spriteY: number,
     fromLeftTopCorner: boolean = false
   ) {
-    this.spriteFactory = spr_(spritesheetUrl);
+    this._spriteFactory = spr_(spritesheetUrl);
 
     this._spriteW = spriteW;
     this._spriteH = spriteH;
@@ -58,7 +58,7 @@ export class AnimatedSprite {
     // TODO
     b.sprite(
       // TODO: avoid a call here, pre-create all sprite in constructor
-      this.spriteFactory(
+      this._spriteFactory(
         // TODO: remove "!"
         this._spriteXs[this._frame]!,
         this._spriteY,

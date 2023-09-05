@@ -1,5 +1,7 @@
 import { SolidColor } from "@beetpx/beetpx";
-import { c, g } from "../globals";
+import { EnemyProperties } from "../game/EnemyProperties";
+import { c, g, u } from "../globals";
+import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Mission } from "./Mission";
 
 export class Mission2 implements Mission {
@@ -70,6 +72,71 @@ export class Mission2 implements Mission {
     //     )
     // end
   }
+
+  // TODO
+  // -- enemy properties:
+  // --   - [1] = health
+  // --   - [2] = score
+  // --   - [3] = sprites_props_txt = "w,h,x,y|w,h,x,y" -- where 1st set is for a ship sprite, and 2nd – for a damage flash overlay
+  // --   - [4] = collision_circles_props = {
+  // --                    { r, optional_xy_offset }, -- put main/center circle first, since it will be source for explosions etc.
+  // --                    { r, optional_xy_offset },
+  // --                    { r },
+  // --                },
+  // --   - [5] = powerups_distribution
+  // --   - [6] = movement_factory
+  // --   - spawn_bullets = function(enemy_movement, player_collision_circle)
+  // --                       return bullets_table
+  // --                     end
+  // TODO: HELPER factory fn for new AnimatedSprite with spritesheet already stored?
+  enemyPropertiesFor(enemyId: string): EnemyProperties {
+    switch (enemyId) {
+      case "m2e_stationary":
+        return {
+          // TODO
+          //         [79] = {
+          //             5,
+          //             1,
+          // TODO
+          //             "28,28,0,64|28,28,28,64",
+          spriteMain: new AnimatedSprite(
+            g.assets.mission2SpritesheetUrl,
+            28,
+            28,
+            [0],
+            64
+          ),
+          // TODO
+          //             {
+          //                 { 5 },
+          //             },
+          //             "h,m,f,t,s",
+          //             new_movement_line_factory {
+          //                 angle = .75,
+          //                 angled_speed = _m_scroll_per_frame,
+          //                 -- DEBUG:
+          //                 --frames = 89,
+          //             },
+          //             bullet_fire_timer = new_timer "40",
+          //             spawn_bullets = function(enemy_movement, player_collision_circle)
+          //                 _sfx_play(_sfx_enemy_multi_shoot)
+          //                 local bullets = {}
+          //                 for i = 1, 8 do
+          //                     add(bullets, enemy_bullet_factory(
+          //                         new_movement_line_factory {
+          //                             base_speed_y = enemy_movement.speed_xy.y,
+          //                             angle = .0625 + i / 8,
+          //                         }(enemy_movement.xy)
+          //                     ))
+          //                 end
+          //                 return bullets
+          //             end,
+          //         },
+        };
+      default:
+        return u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
+    }
+  }
 }
 
 // TODO
@@ -82,57 +149,6 @@ export class Mission2 implements Mission {
 //        bullet_sprite = new_static_sprite "4,4,124,64",
 //        collision_circle_r = 1.5,
 //    }
-//
-// -- enemy properties:
-// --   - [1] = health
-// --   - [2] = score
-// --   - [3] = sprites_props_txt = "w,h,x,y|w,h,x,y" -- where 1st set is for a ship sprite, and 2nd – for a damage flash overlay
-// --   - [4] = collision_circles_props = {
-// --                    { r, optional_xy_offset }, -- put main/center circle first, since it will be source for explosions etc.
-// --                    { r, optional_xy_offset },
-// --                    { r },
-// --                },
-// --   - [5] = powerups_distribution
-// --   - [6] = movement_factory
-// --   - spawn_bullets = function(enemy_movement, player_collision_circle)
-// --                       return bullets_table
-// --                     end
-// function _m_enemy_properties_for(enemy_map_marker)
-//     return ({
-//
-//         -- enemy: stationary
-//         [79] = {
-//             5,
-//             1,
-//             "28,28,0,64|28,28,28,64",
-//             {
-//                 { 5 },
-//             },
-//             "h,m,f,t,s",
-//             new_movement_line_factory {
-//                 angle = .75,
-//                 angled_speed = _m_scroll_per_frame,
-//                 -- DEBUG:
-//                 --frames = 89,
-//             },
-//             bullet_fire_timer = new_timer "40",
-//             spawn_bullets = function(enemy_movement, player_collision_circle)
-//                 _sfx_play(_sfx_enemy_multi_shoot)
-//                 local bullets = {}
-//                 for i = 1, 8 do
-//                     add(bullets, enemy_bullet_factory(
-//                         new_movement_line_factory {
-//                             base_speed_y = enemy_movement.speed_xy.y,
-//                             angle = .0625 + i / 8,
-//                         }(enemy_movement.xy)
-//                     ))
-//                 end
-//                 return bullets
-//             end,
-//         },
-//
-//     })[enemy_map_marker]
-// end
 //
 // -- boss properties:
 // --   - sprites_props_txt = "w,h,x,y|w,h,x,y" -- where 1st set is for a ship sprite, and 2nd – for a damage flash overlay

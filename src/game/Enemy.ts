@@ -1,25 +1,62 @@
 import { v_, Vector2d } from "@beetpx/beetpx";
 import { b, c } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
+import { EnemyProperties } from "./EnemyProperties";
 
 export class Enemy {
+  private readonly _properties: EnemyProperties;
   // TODO: tmp
   private _xy: Vector2d;
 
-  // TODO: tmp
-  constructor(params: { startXy: Vector2d }) {
+  constructor(params: { properties: EnemyProperties; startXy: Vector2d }) {
+    this._properties = params.properties;
+    // TODO: tmp
     this._xy = params.startXy;
   }
 
-  // TODO: tmp
   update(): void {
+    // TODO: tmp
     this._xy = this._xy.add(v_(0, CurrentMission.m.scrollPerFrame));
+
+    // TODO
+    //                 movement._update()
+    //
+    //                 bullet_fire_timer._update()
+    //                 if bullet_fire_timer.ttl <= 0 then
+    //                     local can_spawn_bullets = false
+    //                     for cc in all(collision_circles()) do
+    //                         if not _is_collision_circle_nearly_outside_top_edge_of_gameplay_area(cc) then
+    //                             can_spawn_bullets = can_spawn_bullets or true
+    //                         end
+    //                     end
+    //                     if can_spawn_bullets then
+    //                         on_bullets_spawned(enemy_properties.spawn_bullets, movement)
+    //                     end
+    //                     bullet_fire_timer.restart()
+    //                 end
+    //
+    //                 if flashing_after_damage_timer then
+    //                     if flashing_after_damage_timer.ttl <= 0 then
+    //                         flashing_after_damage_timer = nil
+    //                     else
+    //                         flashing_after_damage_timer._update()
+    //                     end
+    //                 end
   }
 
-  // TODO: tmp
   draw(): void {
+    // TODO: tmp
     b.rectFilled(this._xy.sub(3), v_(7, 7), c._7_white);
     b.pixel(this._xy, c._8_red);
+
+    // TODO
+    this._properties.spriteMain.draw(this._xy);
+    //                 ship_sprite._draw(movement.xy)
+    //                 -- DEBUG:
+    //                 --if t() * 2 % 2 < 1 then
+    //                 if flashing_after_damage_timer and flashing_after_damage_timer.ttl > 0 then
+    //                     flash_sprite._draw(movement.xy)
+    //                 end
   }
 }
 
@@ -30,7 +67,7 @@ export class Enemy {
 //     function new_enemy(params)
 //         next_id = next_id + 1
 //
-//         local enemy_properties, start_xy = params.enemy_properties, params.start_xy
+//         local start_xy = params.start_xy
 //         local on_bullets_spawned, on_damaged, on_destroyed = params.on_bullets_spawned, params.on_damaged, params.on_destroyed
 //
 //         local health, movement = enemy_properties[1], enemy_properties[6](start_xy)
@@ -77,40 +114,6 @@ export class Enemy {
 //                 end
 //             end,
 //
-//             _update = function()
-//                 movement._update()
-//
-//                 bullet_fire_timer._update()
-//                 if bullet_fire_timer.ttl <= 0 then
-//                     local can_spawn_bullets = false
-//                     for cc in all(collision_circles()) do
-//                         if not _is_collision_circle_nearly_outside_top_edge_of_gameplay_area(cc) then
-//                             can_spawn_bullets = can_spawn_bullets or true
-//                         end
-//                     end
-//                     if can_spawn_bullets then
-//                         on_bullets_spawned(enemy_properties.spawn_bullets, movement)
-//                     end
-//                     bullet_fire_timer.restart()
-//                 end
-//
-//                 if flashing_after_damage_timer then
-//                     if flashing_after_damage_timer.ttl <= 0 then
-//                         flashing_after_damage_timer = nil
-//                     else
-//                         flashing_after_damage_timer._update()
-//                     end
-//                 end
-//             end,
-//
-//             _draw = function()
-//                 ship_sprite._draw(movement.xy)
-//                 -- DEBUG:
-//                 --if t() * 2 % 2 < 1 then
-//                 if flashing_after_damage_timer and flashing_after_damage_timer.ttl > 0 then
-//                     flash_sprite._draw(movement.xy)
-//                 end
-//             end,
 //         }
 //     end
 //

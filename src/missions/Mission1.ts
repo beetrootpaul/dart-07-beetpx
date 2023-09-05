@@ -1,5 +1,6 @@
 import { SolidColor, v_ } from "@beetpx/beetpx";
-import { c, g } from "../globals";
+import { EnemyProperties } from "../game/EnemyProperties";
+import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Mission } from "./Mission";
 
@@ -59,6 +60,315 @@ export class Mission1 implements Mission {
       }
     }
   }
+
+  // TODO
+  // -- enemy properties:
+  // --   - [1] = health
+  // --   - [2] = score
+  // --   - [3] = sprites_props_txt = "w,h,x,y|w,h,x,y" -- where 1st set is for a ship sprite, and 2nd – for a damage flash overlay
+  // --   - [4] = collision_circles_props = {
+  // --                    { r, optional_xy_offset }, -- put main/center circle first, since it will be source for explosions etc.
+  // --                    { r, optional_xy_offset },
+  // --                    { r },
+  // --                },
+  // --   - [5] = powerups_distribution
+  // --   - [6] = movement_factory
+  // --   - spawn_bullets = function(enemy_movement, player_collision_circle)
+  // --                       return bullets_table
+  // --                     end
+  // TODO: HELPER factory fn for new AnimatedSprite with spritesheet already stored?
+  enemyPropertiesFor(enemyId: string): EnemyProperties {
+    switch (enemyId) {
+      case "m1e_fast_and_small":
+        return {
+          // TODO:
+          //             -- enemy: fast and small
+          //             [74] = {
+          //                 1,
+          //                 2,
+          // TODO
+          //                 "8,8,0,88|6,6,22,79",
+          spriteMain: new AnimatedSprite(
+            g.assets.mission1SpritesheetUrl,
+            8,
+            8,
+            [0],
+            88
+          ),
+          // TODO
+          //                 {
+          //                     { 3, _xy(0, 1) },
+          //                 },
+          //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
+          //                 new_movement_line_factory {
+          //                     angle = .75,
+          //                     angled_speed = 1.5,
+          //                     -- DEBUG:
+          //                     --frames = 123,
+          //                 },
+          //             },
+          //
+        };
+      case "m1e_sinusoidal":
+        return {
+          // TODO
+          //             [75] = {
+          //                 2,
+          //                 5,
+          // TODO
+          //                 "10,10,22,86|8,8,13,88",
+          spriteMain: new AnimatedSprite(
+            g.assets.mission1SpritesheetUrl,
+            10,
+            10,
+            [22],
+            86
+          ),
+          // TODO
+          //                 {
+          //                     { 4 },
+          //                 },
+          //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
+          //                 new_movement_sinusoidal_factory {
+          //                     speed_y = .75,
+          //                     age_divisor = 120,
+          //                     magnitude = 14,
+          //                 },
+          //                 -- DEBUG:
+          //                 --new_movement_line_factory {
+          //                 --    angle = .75,
+          //                 --    angled_speed = _m_scroll_per_frame,
+          //                 --    frames = 234,
+          //                 --},
+          //                 bullet_fire_timer = new_timer "40",
+          //                 spawn_bullets = function(enemy_movement)
+          //                     _sfx_play(_sfx_enemy_shoot)
+          //                     return {
+          //                         enemy_bullet_factory(
+          //                             new_movement_line_factory({
+          //                                 base_speed_y = enemy_movement.speed_xy.y,
+          //                                 angle = .75,
+          //                             })(enemy_movement.xy)
+          //                         )
+          //                     }
+          //                 end,
+          //             },
+        };
+      case "m1e_wait_and_charge":
+        return {
+          // TODO
+          //             [76] = {
+          //                 7,
+          //                 20,
+          // TODO
+          //                 "16,14,22,64|14,12,32,84",
+          spriteMain: new AnimatedSprite(
+            g.assets.mission1SpritesheetUrl,
+            16,
+            14,
+            [22],
+            64
+          ),
+          // TODO
+          //
+          //                 {
+          //                     { 7 },
+          //                 },
+          //                 "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
+          //                 new_movement_sequence_factory {
+          //                     new_movement_line_factory {
+          //                         frames = 80,
+          //                         angle = .75,
+          //                         angled_speed = .5,
+          //                     },
+          //                     new_movement_line_factory {
+          //                         angle = .75,
+          //                     },
+          //                 },
+          //                 -- DEBUG:
+          //                 --new_movement_line_factory {
+          //                 --    angle = .75,
+          //                 --    angled_speed = _m_scroll_per_frame,
+          //                 --    frames = 234,
+          //                 --},
+          //             },
+        };
+      case "m1e_big":
+        return {
+          // TODO
+          //             [77] = {
+          //                 40,
+          //                 100,
+          // TODO
+          //                 "24,20,64,64|22,18,88,65",
+          spriteMain: new AnimatedSprite(
+            g.assets.mission1SpritesheetUrl,
+            24,
+            20,
+            [64],
+            64
+          ),
+          // TODO
+          //                 {
+          //                     { 10, _xy(0, 1) },
+          //                     { 5, _xy(-7, 0) },
+          //                     { 5, _xy(7, 0) },
+          //                     { 5, _xy(0, -4) },
+          //                 },
+          //                 "h,s",
+          //                 new_movement_sequence_factory {
+          //                     new_movement_to_target_factory {
+          //                         target_y = 32,
+          //                         frames = 120,
+          //                         easing_fn = _easing_easeoutquart,
+          //                     },
+          //                     new_movement_fixed_factory {
+          //                         target_y = 32,
+          //                         frames = 480,
+          //                     },
+          //                     new_movement_to_target_factory {
+          //                         target_y = 140,
+          //                         frames = 120,
+          //                         easing_fn = _easing_easeinquart,
+          //                     },
+          //                 },
+          //                 -- DEBUG:
+          //                 --new_movement_line_factory {
+          //                 --    angle = .75,
+          //                 --    angled_speed = _m_scroll_per_frame,
+          //                 --    frames = 123,
+          //                 --},
+          //                 bullet_fire_timer = new_timer "33",
+          //                 spawn_bullets = function(enemy_movement)
+          //                     _sfx_play(_sfx_enemy_multi_shoot)
+          //                     local bullets = {}
+          //                     for i = 1, 8 do
+          //                         add(bullets, enemy_bullet_factory(
+          //                             new_movement_line_factory {
+          //                                 base_speed_y = enemy_movement.speed_xy.y,
+          //                                 angle = t() % 1 + i / 8,
+          //                             }(enemy_movement.xy)
+          //                         ))
+          //                     end
+          //                     return bullets
+          //                 end,
+          //             },
+        };
+      case "m1e_aimed_triple_shot":
+        return {
+          // TODO
+          //             [78] = {
+          //                 4,
+          //                 40,
+          // TODO
+          //                 "8,22,50,64|6,20,58,65",
+          spriteMain: new AnimatedSprite(
+            g.assets.mission1SpritesheetUrl,
+            8,
+            22,
+            [50],
+            64
+          ),
+          // TODO
+          //                 {
+          //                     { 4 },
+          //                     { 4, _xy(0, 7) },
+          //                     { 4, _xy(0, -7) },
+          //                 },
+          //                 "-,-,-,-,-,-,h,m,m,f,f,f,t,t,s",
+          //                 new_movement_sequence_factory({
+          //                     new_movement_to_target_factory {
+          //                         target_y = 80,
+          //                         frames = 150,
+          //                         easing_fn = _easing_easeoutquad,
+          //                     },
+          //                     new_movement_to_target_factory {
+          //                         target_y = 30,
+          //                         frames = 80,
+          //                     },
+          //                     new_movement_to_target_factory {
+          //                         target_y = 160,
+          //                         frames = 150,
+          //                         easing_fn = _easing_easeinquad,
+          //                     },
+          //                 }),
+          //                 -- DEBUG:
+          //                 --new_movement_line_factory {
+          //                 --    angle = .75,
+          //                 --    angled_speed = _m_scroll_per_frame,
+          //                 --    frames = 160,
+          //                 --},
+          //                 bullet_fire_timer = new_timer "60",
+          //                 spawn_bullets = function(enemy_movement, player_collision_circle)
+          //                     _sfx_play(_sfx_enemy_shoot)
+          //                     local enemy_xy = enemy_movement.xy
+          //                     local player_xy = player_collision_circle.xy
+          //                     return {
+          //                         enemy_bullet_factory(
+          //                             new_movement_line_factory {
+          //                                 target_xy = player_xy,
+          //                             }(enemy_xy.minus(0, 7))
+          //                         ),
+          //                         enemy_bullet_factory(
+          //                             new_movement_line_factory {
+          //                                 target_xy = player_xy,
+          //                             }(enemy_xy.minus(0, 1))
+          //                         ),
+          //                         enemy_bullet_factory(
+          //                             new_movement_line_factory {
+          //                                 target_xy = player_xy,
+          //                             }(enemy_xy.plus(0, 5))
+          //                         ),
+          //                     }
+          //                 end,
+          //             },
+        };
+      case "m1e_stationary":
+        return {
+          // TODO
+          //             [79] = {
+          //                 10,
+          //                 50,
+          // TODO
+          //                 "22,24,0,64|12,12,38,64",
+          spriteMain: new AnimatedSprite(
+            g.assets.mission1SpritesheetUrl,
+            22,
+            24,
+            [0],
+            64
+          ),
+          // TODO
+          //                 {
+          //                     { 6 },
+          //                 },
+          //                 "-,-,-,h,h,m,f,t,t,s,s,s",
+          //                 new_movement_line_factory {
+          //                     angle = .75,
+          //                     angled_speed = _m_scroll_per_frame,
+          //                     -- DEBUG:
+          //                     --frames = 100,
+          //                 },
+          //                 bullet_fire_timer = new_timer "60",
+          //                 spawn_bullets = function(enemy_movement)
+          //                     _sfx_play(_sfx_enemy_multi_shoot)
+          //                     local bullets = {}
+          //                     for i = 1, 8 do
+          //                         add(bullets, enemy_bullet_factory(
+          //                             new_movement_line_factory {
+          //                                 base_speed_y = enemy_movement.speed_xy.y,
+          //                                 angle = .0625 + i / 8,
+          //                             }(enemy_movement.xy)
+          //                         ))
+          //                     end
+          //                     return bullets
+          //                 end,
+          //             },
+        };
+      default:
+        return u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
+    }
+  }
 }
 
 // TODO
@@ -71,243 +381,6 @@ export class Mission1 implements Mission {
 //         bullet_sprite = new_static_sprite "4,4,124,64",
 //         collision_circle_r = 1.5,
 //     }
-//
-//     -- enemy properties:
-//     --   - [1] = health
-//     --   - [2] = score
-//     --   - [3] = sprites_props_txt = "w,h,x,y|w,h,x,y" -- where 1st set is for a ship sprite, and 2nd – for a damage flash overlay
-//     --   - [4] = collision_circles_props = {
-//     --                    { r, optional_xy_offset }, -- put main/center circle first, since it will be source for explosions etc.
-//     --                    { r, optional_xy_offset },
-//     --                    { r },
-//     --                },
-//     --   - [5] = powerups_distribution
-//     --   - [6] = movement_factory
-//     --   - spawn_bullets = function(enemy_movement, player_collision_circle)
-//     --                       return bullets_table
-//     --                     end
-//     function _m_enemy_properties_for(enemy_map_marker)
-//         return ({
-//
-//             -- enemy: fast and small
-//             [74] = {
-//                 1,
-//                 2,
-//                 "8,8,0,88|6,6,22,79",
-//                 {
-//                     { 3, _xy(0, 1) },
-//                 },
-//                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
-//                 new_movement_line_factory {
-//                     angle = .75,
-//                     angled_speed = 1.5,
-//                     -- DEBUG:
-//                     --frames = 123,
-//                 },
-//             },
-//
-//             -- enemy: sinusoidal
-//             [75] = {
-//                 2,
-//                 5,
-//                 "10,10,22,86|8,8,13,88",
-//                 {
-//                     { 4 },
-//                 },
-//                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
-//                 new_movement_sinusoidal_factory {
-//                     speed_y = .75,
-//                     age_divisor = 120,
-//                     magnitude = 14,
-//                 },
-//                 -- DEBUG:
-//                 --new_movement_line_factory {
-//                 --    angle = .75,
-//                 --    angled_speed = _m_scroll_per_frame,
-//                 --    frames = 234,
-//                 --},
-//                 bullet_fire_timer = new_timer "40",
-//                 spawn_bullets = function(enemy_movement)
-//                     _sfx_play(_sfx_enemy_shoot)
-//                     return {
-//                         enemy_bullet_factory(
-//                             new_movement_line_factory({
-//                                 base_speed_y = enemy_movement.speed_xy.y,
-//                                 angle = .75,
-//                             })(enemy_movement.xy)
-//                         )
-//                     }
-//                 end,
-//             },
-//
-//             -- enemy: wait and charge
-//             [76] = {
-//                 7,
-//                 20,
-//                 "16,14,22,64|14,12,32,84",
-//                 {
-//                     { 7 },
-//                 },
-//                 "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
-//                 new_movement_sequence_factory {
-//                     new_movement_line_factory {
-//                         frames = 80,
-//                         angle = .75,
-//                         angled_speed = .5,
-//                     },
-//                     new_movement_line_factory {
-//                         angle = .75,
-//                     },
-//                 },
-//                 -- DEBUG:
-//                 --new_movement_line_factory {
-//                 --    angle = .75,
-//                 --    angled_speed = _m_scroll_per_frame,
-//                 --    frames = 234,
-//                 --},
-//             },
-//
-//             -- enemy: big
-//             [77] = {
-//                 40,
-//                 100,
-//                 "24,20,64,64|22,18,88,65",
-//                 {
-//                     { 10, _xy(0, 1) },
-//                     { 5, _xy(-7, 0) },
-//                     { 5, _xy(7, 0) },
-//                     { 5, _xy(0, -4) },
-//                 },
-//                 "h,s",
-//                 new_movement_sequence_factory {
-//                     new_movement_to_target_factory {
-//                         target_y = 32,
-//                         frames = 120,
-//                         easing_fn = _easing_easeoutquart,
-//                     },
-//                     new_movement_fixed_factory {
-//                         target_y = 32,
-//                         frames = 480,
-//                     },
-//                     new_movement_to_target_factory {
-//                         target_y = 140,
-//                         frames = 120,
-//                         easing_fn = _easing_easeinquart,
-//                     },
-//                 },
-//                 -- DEBUG:
-//                 --new_movement_line_factory {
-//                 --    angle = .75,
-//                 --    angled_speed = _m_scroll_per_frame,
-//                 --    frames = 123,
-//                 --},
-//                 bullet_fire_timer = new_timer "33",
-//                 spawn_bullets = function(enemy_movement)
-//                     _sfx_play(_sfx_enemy_multi_shoot)
-//                     local bullets = {}
-//                     for i = 1, 8 do
-//                         add(bullets, enemy_bullet_factory(
-//                             new_movement_line_factory {
-//                                 base_speed_y = enemy_movement.speed_xy.y,
-//                                 angle = t() % 1 + i / 8,
-//                             }(enemy_movement.xy)
-//                         ))
-//                     end
-//                     return bullets
-//                 end,
-//             },
-//
-//             -- enemy: long, pausing, w/ aimed triple shot
-//             [78] = {
-//                 4,
-//                 40,
-//                 "8,22,50,64|6,20,58,65",
-//                 {
-//                     { 4 },
-//                     { 4, _xy(0, 7) },
-//                     { 4, _xy(0, -7) },
-//                 },
-//                 "-,-,-,-,-,-,h,m,m,f,f,f,t,t,s",
-//                 new_movement_sequence_factory({
-//                     new_movement_to_target_factory {
-//                         target_y = 80,
-//                         frames = 150,
-//                         easing_fn = _easing_easeoutquad,
-//                     },
-//                     new_movement_to_target_factory {
-//                         target_y = 30,
-//                         frames = 80,
-//                     },
-//                     new_movement_to_target_factory {
-//                         target_y = 160,
-//                         frames = 150,
-//                         easing_fn = _easing_easeinquad,
-//                     },
-//                 }),
-//                 -- DEBUG:
-//                 --new_movement_line_factory {
-//                 --    angle = .75,
-//                 --    angled_speed = _m_scroll_per_frame,
-//                 --    frames = 160,
-//                 --},
-//                 bullet_fire_timer = new_timer "60",
-//                 spawn_bullets = function(enemy_movement, player_collision_circle)
-//                     _sfx_play(_sfx_enemy_shoot)
-//                     local enemy_xy = enemy_movement.xy
-//                     local player_xy = player_collision_circle.xy
-//                     return {
-//                         enemy_bullet_factory(
-//                             new_movement_line_factory {
-//                                 target_xy = player_xy,
-//                             }(enemy_xy.minus(0, 7))
-//                         ),
-//                         enemy_bullet_factory(
-//                             new_movement_line_factory {
-//                                 target_xy = player_xy,
-//                             }(enemy_xy.minus(0, 1))
-//                         ),
-//                         enemy_bullet_factory(
-//                             new_movement_line_factory {
-//                                 target_xy = player_xy,
-//                             }(enemy_xy.plus(0, 5))
-//                         ),
-//                     }
-//                 end,
-//             },
-//
-//             -- enemy: stationary
-//             [79] = {
-//                 10,
-//                 50,
-//                 "22,24,0,64|12,12,38,64",
-//                 {
-//                     { 6 },
-//                 },
-//                 "-,-,-,h,h,m,f,t,t,s,s,s",
-//                 new_movement_line_factory {
-//                     angle = .75,
-//                     angled_speed = _m_scroll_per_frame,
-//                     -- DEBUG:
-//                     --frames = 100,
-//                 },
-//                 bullet_fire_timer = new_timer "60",
-//                 spawn_bullets = function(enemy_movement)
-//                     _sfx_play(_sfx_enemy_multi_shoot)
-//                     local bullets = {}
-//                     for i = 1, 8 do
-//                         add(bullets, enemy_bullet_factory(
-//                             new_movement_line_factory {
-//                                 base_speed_y = enemy_movement.speed_xy.y,
-//                                 angle = .0625 + i / 8,
-//                             }(enemy_movement.xy)
-//                         ))
-//                     end
-//                     return bullets
-//                 end,
-//             },
-//
-//         })[enemy_map_marker]
-//     end
 //
 //     local function t_mod_2()
 //         return t() % 2
