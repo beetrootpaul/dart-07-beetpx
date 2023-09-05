@@ -13,11 +13,8 @@ export class LevelDescriptor {
   readonly structures: (number | null)[][];
   readonly enemies: (string | null)[][];
 
-  // TODO: REWORK, this is temporary implementation
+  // TODO: !!! REWORK this !!! , this is a temporary implementation
   constructor() {
-    // TODO: delete
-    console.log(LevelDescriptor.tmpJson);
-
     const tileMarginY = 2;
     // because enemies occupy 2 tiles in Y and their are placed on the further one, but we want to detect them on the closer one
     const enemyOffsetY = 1;
@@ -76,5 +73,42 @@ export class LevelDescriptor {
       const lane = tileX + 1;
       this.enemies[distance]![lane]! = id;
     });
+
+    const markerOffsetY = 2;
+    const levelEndMarkerTileY: number = LevelDescriptor.tmpJson.levels
+      .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)
+      .layerInstances.find(
+        (li: any) =>
+          li.__identifier === CurrentMission.m.ldtk.progressionMarkersLayer
+      )
+      .entityInstances.filter((ei: any) => ei.__identifier === "level_end")
+      .map((ei: any) => ({
+        tileY: ei.__grid[1] - tileMarginY,
+      }))
+      .filter((ei: any) => ei.tileY >= 0 && ei.tileY < this.maxDefinedDistance)
+      .reduce(
+        (maxTileY: number, nextEi: any) => Math.max(maxTileY, nextEi.tileY),
+        -markerOffsetY
+      );
+    this.maxDefinedDistance =
+      this.maxDefinedDistance - levelEndMarkerTileY - markerOffsetY;
+    for (
+      let distance = this.maxDefinedDistance + 1;
+      distance < this.enemies.length;
+      distance++
+    ) {
+      for (let lane = 0; lane < this.enemies[distance]!.length; lane++) {
+        this.enemies[distance]![lane] = null;
+      }
+    }
+    for (
+      let distance = this.maxDefinedDistance + 1;
+      distance < this.structures.length;
+      distance++
+    ) {
+      for (let lane = 0; lane < this.structures[distance]!.length; lane++) {
+        this.structures[distance]![lane] = null;
+      }
+    }
   }
 }

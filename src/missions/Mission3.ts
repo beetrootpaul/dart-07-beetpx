@@ -15,11 +15,13 @@ export class Mission3 implements Mission {
     tilesetPng: string;
     landLayer: string;
     enemiesLayer: string;
+    progressionMarkersLayer: string;
   } = {
     level: "mission_3",
     tilesetPng: g.assets.mission3SpritesheetUrl,
     landLayer: "m3_land",
     enemiesLayer: "m3_enemies",
+    progressionMarkersLayer: "progression_markers",
   };
 
   // TODO

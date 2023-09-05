@@ -16,11 +16,13 @@ export class Mission1 implements Mission {
     tilesetPng: string;
     landLayer: string;
     enemiesLayer: string;
+    progressionMarkersLayer: string;
   } = {
     level: "mission_1",
     tilesetPng: g.assets.mission1SpritesheetUrl,
     landLayer: "m1_land",
     enemiesLayer: "m1_enemies",
+    progressionMarkersLayer: "progression_markers",
   };
 
   private readonly _waveTile: AnimatedSprite = new AnimatedSprite(

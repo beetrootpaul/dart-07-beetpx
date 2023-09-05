@@ -13,6 +13,7 @@ export interface Mission {
     tilesetPng: string;
     landLayer: string;
     enemiesLayer: string;
+    progressionMarkersLayer: string;
   };
 
   levelBgUpdate(): void;
