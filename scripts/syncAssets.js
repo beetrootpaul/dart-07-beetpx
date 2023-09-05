@@ -11,46 +11,108 @@ const watchForChanges = process.argv[2] === "watch";
 const asperiteCli = "/Applications/Aseprite.app/Contents/MacOS/aseprite";
 
 const rootDir = path.resolve(__dirname, "..");
-const graphicsDir = path.resolve(rootDir, "graphics");
+const assetsDir = path.resolve(rootDir, "assets");
 const publicDir = path.resolve(rootDir, "public");
 
 const spriteSheets = [
-  { input: "spritesheet_main.aseprite", output: "spritesheet_main.png" },
   {
-    input: "spritesheet_mission_1.aseprite",
-    output: "spritesheet_mission_1.png",
+    asepriteInput: "spritesheet_main.aseprite",
+    pngOutput: "spritesheet_main.png",
   },
   {
-    input: "spritesheet_mission_2.aseprite",
-    output: "spritesheet_mission_2.png",
+    asepriteInput: "spritesheet_mission_1.aseprite",
+    pngOutput: "spritesheet_mission_1.png",
   },
   {
-    input: "spritesheet_mission_3.aseprite",
-    output: "spritesheet_mission_3.png",
+    asepriteInput: "spritesheet_mission_2.aseprite",
+    pngOutput: "spritesheet_mission_2.png",
+  },
+  {
+    asepriteInput: "spritesheet_mission_3.aseprite",
+    pngOutput: "spritesheet_mission_3.png",
   },
 ];
 
-// graphics/spritesheet_main.aseprite --sheet abc.png --batch
+spriteSheets.forEach(({ asepriteInput, pngOutput }) => {
+  const asepriteInputPath = path.resolve(assetsDir, asepriteInput);
+  const pngOutputPath = path.resolve(publicDir, pngOutput);
 
-spriteSheets.forEach(({ input, output }) => {
-  const inputPath = path.resolve(graphicsDir, input);
-  const outputPath = path.resolve(publicDir, output);
-
-  syncFile(inputPath, outputPath);
-
+  exportAsepriteToPng(asepriteInputPath, pngOutputPath);
   if (watchForChanges) {
-    fs.watchFile(inputPath, { interval: 1000 }, () => {
-      syncFile(inputPath, outputPath);
+    fs.watchFile(asepriteInputPath, { interval: 1000 }, () => {
+      exportAsepriteToPng(asepriteInputPath, pngOutputPath);
     });
   }
 });
 
-function syncFile(inputPath, outputPath) {
-  const shortInputPath = path.relative(rootDir, inputPath);
-  const shortOutputPath = path.relative(rootDir, outputPath);
+const missionsLdtkPath = path.resolve(assetsDir, "missions.ldtk");
+const simplifiedMissionJsonPath = path.resolve(publicDir, "missions.json");
+
+simplifyLdtkJson(missionsLdtkPath, simplifiedMissionJsonPath);
+if (watchForChanges) {
+  fs.watchFile(missionsLdtkPath, { interval: 1000 }, () => {
+    simplifyLdtkJson(missionsLdtkPath, simplifiedMissionJsonPath);
+  });
+}
+
+////////////////
+
+function exportAsepriteToPng(asepriteInputPath, pngOutputPath) {
+  const shortInputPath = path.relative(rootDir, asepriteInputPath);
+  const shortOutputPath = path.relative(rootDir, pngOutputPath);
   console.log(`[syncAssets] ${shortInputPath} -> ${shortOutputPath} ...`);
+
   childProcess.execSync(
-    `${asperiteCli} ${inputPath} --sheet ${outputPath} --batch`,
+    `${asperiteCli} ${asepriteInputPath} --sheet ${pngOutputPath} --batch`,
     { stdio: "inherit" }
+  );
+}
+
+function simplifyLdtkJson(missionsLdtkPath, simplifiedMissionJsonPath) {
+  const shortMissionsLdtkPath = path.relative(rootDir, missionsLdtkPath);
+  const shortSimplifiedMissionJsonPath = path.relative(
+    rootDir,
+    simplifiedMissionJsonPath
+  );
+  console.log(
+    `[syncAssets] ${shortMissionsLdtkPath} -> ${shortSimplifiedMissionJsonPath} ...`
+  );
+
+  const fullJsonRaw = fs.readFileSync(shortMissionsLdtkPath, "utf-8");
+  const fullJson = JSON.parse(fullJsonRaw);
+
+  // TODO: check if everything listed here is really needed
+  const simplifiedJson = {
+    jsonVersion: fullJson.jsonVersion, // TODO: string, validate it's `1.3.4`
+    externalLevels: fullJson.externalLevels, // TODO: boolean, validate it's `false
+    simplifiedExport: fullJson.simplifiedExport, // TODO: boolean, validate it's `false
+    levels: fullJson.levels.map((l) => ({
+      identifier: l.identifier, // TODO: string
+      pxWid: l.pxWid, // TODO: number, validate it's `128`
+      pxHei: l.pxHei, // TODO: number
+      layerInstances: l.layerInstances.map((li) => ({
+        __identifier: li.__identifier, // TODO: string
+        __type: li.__type, // TODO: string, validate it's `Entities` | `IntGrid`
+        __cWid: li.__cWid, // TODO: number, validate it's `l.pxWid / 8`
+        __cHei: li.__cHei, // TODO: number, validate it's `l.pxHei / 8`
+        __tilesetRelPath: li.__tilesetRelPath, // TODO: string | null, validate it is one of expected PNGs, but first transform from `../public/spritesheet_mission_1.png` to `spritesheet_mission_1.png`
+        autoLayerTiles: li.autoLayerTiles.map((alt) => ({
+          px: alt.px, // TODO: [number, number], validate it's within real level bounds
+          t: alt.t, // TODO: number, validate it's within tileset bounds
+        })),
+        entityInstances: li.entityInstances.map((ei) => ({
+          __identifier: ei.__identifier, // TODO: string
+          __grid: ei.__grid, // TODO: [number, number], validate it's within real level bounds
+        })),
+      })),
+    })),
+  };
+
+  fs.writeFileSync(
+    shortSimplifiedMissionJsonPath,
+    JSON.stringify(simplifiedJson),
+    {
+      encoding: "utf-8",
+    }
   );
 }

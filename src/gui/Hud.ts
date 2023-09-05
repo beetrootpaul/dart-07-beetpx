@@ -15,7 +15,14 @@ function hudSprite(
   spriteX: number,
   spriteY: number
 ): AnimatedSprite {
-  return new AnimatedSprite(spriteW, spriteH, [spriteX], spriteY, true);
+  return new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    spriteW,
+    spriteH,
+    [spriteX],
+    spriteY,
+    true
+  );
 }
 
 export class Hud {
@@ -116,7 +123,7 @@ export class Hud {
     //
     xy = v_(g.gameAreaSize.x + 5, g.viewportSize.y - 16)
       .sub(this._slideInOffset.xy)
-      .ceil();
+      .floor();
     this._shockwave.draw(xy.add(0, 6));
     this._shockwaveBarStart.draw(xy);
     for (let segment = 0; segment < g.shockwaveChargesMax; segment++) {

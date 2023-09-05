@@ -1,10 +1,7 @@
 import { BeetPx, Utils, v_ } from "@beetpx/beetpx";
-import { MissionMetadata } from "./MissionMetadata";
 import { Pico8Colors } from "./pico8/Pico8Color";
 
 export const b = BeetPx;
-
-// export const c = Pico8Colors;
 
 // TODO: rework PICO-8 color names and these names here? Context: palette is "0,129,130,3,140,131,6,7,8,137,10,11,12,13,141,143"
 export const c = {
@@ -29,12 +26,15 @@ export const c = {
 
 export const u = Utils;
 
+// TODO: inline
 export const g = {
   // TODO: do we use it anywhere else than BeetPx config? Can we inline it?
   fps: 60 as const,
 
   viewportSize: v_(128, 128),
+  viewportTiles: v_(16, 16),
   gameAreaSize: v_(96, 128),
+  gameAreaTiles: v_(12, 16),
   gameAreaOffset: v_(16, 0),
   tileSize: v_(8, 8),
 
@@ -42,18 +42,11 @@ export const g = {
     pico8FontId: "pico8",
     pico8FontImage: "pico-8-font.png",
     mainSpritesheetUrl: "spritesheet_main.png",
+    mission1SpritesheetUrl: "spritesheet_mission_1.png",
+    mission2SpritesheetUrl: "spritesheet_mission_2.png",
+    mission3SpritesheetUrl: "spritesheet_mission_3.png",
   },
 
   healthMax: 10,
   shockwaveChargesMax: 4,
-
-  missions: [
-    {
-      missionNumber: 1,
-      missionName: "emerald islands",
-      bgColor: c._4_true_blue,
-      missionInfoColor: c._9_dark_orange,
-      spritesheetUrl: "spritesheet_mission_1.png",
-    },
-  ] satisfies MissionMetadata[],
 };

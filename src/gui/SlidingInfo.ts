@@ -1,8 +1,8 @@
 import { SolidColor, v_ } from "@beetpx/beetpx";
-import { CurrentMission } from "../CurrentMission";
 import { b, g } from "../globals";
 import { Easing } from "../misc/Easing";
 import { printCentered } from "../misc/helpers";
+import { CurrentMission } from "../missions/CurrentMission";
 import { Movement } from "../movement/Movement";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementSequence } from "../movement/MovementSequence";
@@ -53,8 +53,9 @@ export class SlidingInfo {
     ])(g.gameAreaOffset.sub(0, 18));
   }
 
-  // TODO
-  //   has_finished = movement.has_finished,
+  get hasFinished(): boolean {
+    return this._movement.hasFinished;
+  }
 
   update(): void {
     this._movement.update();
@@ -67,7 +68,7 @@ export class SlidingInfo {
     printCentered(
       this._text1,
       xy.y - 17,
-      CurrentMission.bgColor,
+      CurrentMission.m.bgColor,
       this._mainColor
     );
     // TODO
@@ -75,7 +76,7 @@ export class SlidingInfo {
     printCentered(
       this._text2,
       xy.y - 8,
-      CurrentMission.bgColor,
+      CurrentMission.m.bgColor,
       this._mainColor
     );
     b.line(xy, v_(g.gameAreaSize.x, 1), this._mainColor);

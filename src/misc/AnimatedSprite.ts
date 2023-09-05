@@ -1,9 +1,16 @@
-import { spr_, transparent_, Vector2d } from "@beetpx/beetpx";
+import { ImageUrl, spr_, Sprite, transparent_, Vector2d } from "@beetpx/beetpx";
 import { b, c, g } from "../globals";
 
 // TODO: consider renaming BeetPx's Sprite to SpriteData in order to allow totally different Sprite implementation in games
 
 export class AnimatedSprite {
+  private readonly spriteFactory: (
+    x1: number,
+    y1: number,
+    w: number,
+    h: number
+  ) => Sprite;
+
   private readonly _spriteW: number;
   private readonly _spriteH: number;
   private readonly _spriteXs: number[];
@@ -11,15 +18,19 @@ export class AnimatedSprite {
 
   private readonly _fromLeftTopCorner: boolean;
 
-  private readonly _frame: number = 0;
+  private _frame: number = 0;
+  private readonly _maxFrame: number;
 
   constructor(
+    spritesheetUrl: ImageUrl,
     spriteW: number,
     spriteH: number,
     spriteXs: number[],
     spriteY: number,
     fromLeftTopCorner: boolean = false
   ) {
+    this.spriteFactory = spr_(spritesheetUrl);
+
     this._spriteW = spriteW;
     this._spriteH = spriteH;
     this._spriteXs = spriteXs;
@@ -27,14 +38,12 @@ export class AnimatedSprite {
 
     this._fromLeftTopCorner = fromLeftTopCorner;
 
-    // TODO
-    // local max_frame = #sprite_xs
+    this._maxFrame = spriteXs.length;
   }
 
-  // TODO
-  //         _update = function()
-  //             frame = _tni(frame, max_frame)
-  //         end,
+  update(): void {
+    this._frame = (this._frame + 1) % this._maxFrame;
+  }
 
   draw(xy: Vector2d): void {
     xy = this._fromLeftTopCorner
@@ -48,9 +57,8 @@ export class AnimatedSprite {
 
     // TODO
     b.sprite(
-      // TODO: avoid `spr_` call here, pre-create all sprite in constructor
-      // TODO: parametrize which url is used
-      spr_(g.assets.mainSpritesheetUrl)(
+      // TODO: avoid a call here, pre-create all sprite in constructor
+      this.spriteFactory(
         // TODO: remove "!"
         this._spriteXs[this._frame]!,
         this._spriteY,
