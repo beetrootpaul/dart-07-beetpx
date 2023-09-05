@@ -4,6 +4,8 @@ import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Mission } from "./Mission";
 
+const aspr_ = AnimatedSprite.for(g.assets.mission2SpritesheetUrl);
+
 export class Mission2 implements Mission {
   readonly missionName: string = "(wip) outpost in space";
 
@@ -88,7 +90,6 @@ export class Mission2 implements Mission {
   // --   - spawn_bullets = function(enemy_movement, player_collision_circle)
   // --                       return bullets_table
   // --                     end
-  // TODO: HELPER factory fn for new AnimatedSprite with spritesheet already stored?
   enemyPropertiesFor(enemyId: string): EnemyProperties {
     switch (enemyId) {
       case "m2e_stationary":
@@ -99,13 +100,7 @@ export class Mission2 implements Mission {
           //             1,
           // TODO
           //             "28,28,0,64|28,28,28,64",
-          spriteMain: new AnimatedSprite(
-            g.assets.mission2SpritesheetUrl,
-            28,
-            28,
-            [0],
-            64
-          ),
+          spriteMain: aspr_(28, 28, [0], 64),
           // TODO
           //             {
           //                 { 5 },

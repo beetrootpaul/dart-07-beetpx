@@ -4,6 +4,8 @@ import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Mission } from "./Mission";
 
+const aspr_ = AnimatedSprite.for(g.assets.mission1SpritesheetUrl);
+
 export class Mission1 implements Mission {
   readonly missionName: string = "emerald islands";
 
@@ -26,8 +28,7 @@ export class Mission1 implements Mission {
     progressionMarkersLayer: "progression_markers",
   };
 
-  private readonly _waveTile: AnimatedSprite = new AnimatedSprite(
-    g.assets.mission1SpritesheetUrl,
+  private readonly _waveTile: AnimatedSprite = aspr_(
     8,
     8,
     [
@@ -76,7 +77,6 @@ export class Mission1 implements Mission {
   // --   - spawn_bullets = function(enemy_movement, player_collision_circle)
   // --                       return bullets_table
   // --                     end
-  // TODO: HELPER factory fn for new AnimatedSprite with spritesheet already stored?
   enemyPropertiesFor(enemyId: string): EnemyProperties {
     switch (enemyId) {
       case "m1e_fast_and_small":
@@ -88,13 +88,7 @@ export class Mission1 implements Mission {
           //                 2,
           // TODO
           //                 "8,8,0,88|6,6,22,79",
-          spriteMain: new AnimatedSprite(
-            g.assets.mission1SpritesheetUrl,
-            8,
-            8,
-            [0],
-            88
-          ),
+          spriteMain: aspr_(8, 8, [0], 88),
           // TODO
           //                 {
           //                     { 3, _xy(0, 1) },
@@ -117,16 +111,8 @@ export class Mission1 implements Mission {
           //                 5,
           // TODO
           //                 "10,10,22,86|8,8,13,88",
-          spriteMain: new AnimatedSprite(
-            g.assets.mission1SpritesheetUrl,
-            10,
-            10,
-            [22],
-            86
-          ),
-          // TODO
-          //                 {
-          //                     { 4 },
+          spriteMain: aspr_(10, 10, [22], 86),
+          // Taspr_/                 {
           //                 },
           //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
           //                 new_movement_sinusoidal_factory {
@@ -162,16 +148,8 @@ export class Mission1 implements Mission {
           //                 20,
           // TODO
           //                 "16,14,22,64|14,12,32,84",
-          spriteMain: new AnimatedSprite(
-            g.assets.mission1SpritesheetUrl,
-            16,
-            14,
-            [22],
-            64
-          ),
-          // TODO
-          //
-          //                 {
+          spriteMain: aspr_(16, 14, [22], 64),
+          // Taspr_/
           //                     { 7 },
           //                 },
           //                 "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
@@ -201,13 +179,7 @@ export class Mission1 implements Mission {
           //                 100,
           // TODO
           //                 "24,20,64,64|22,18,88,65",
-          spriteMain: new AnimatedSprite(
-            g.assets.mission1SpritesheetUrl,
-            24,
-            20,
-            [64],
-            64
-          ),
+          spriteMain: aspr_(24, 20, [64], 64),
           // TODO
           //                 {
           //                     { 10, _xy(0, 1) },
@@ -262,13 +234,7 @@ export class Mission1 implements Mission {
           //                 40,
           // TODO
           //                 "8,22,50,64|6,20,58,65",
-          spriteMain: new AnimatedSprite(
-            g.assets.mission1SpritesheetUrl,
-            8,
-            22,
-            [50],
-            64
-          ),
+          spriteMain: aspr_(8, 22, [50], 64),
           // TODO
           //                 {
           //                     { 4 },
@@ -331,13 +297,7 @@ export class Mission1 implements Mission {
           //                 50,
           // TODO
           //                 "22,24,0,64|12,12,38,64",
-          spriteMain: new AnimatedSprite(
-            g.assets.mission1SpritesheetUrl,
-            22,
-            24,
-            [0],
-            64
-          ),
+          spriteMain: aspr_(22, 24, [0], 64),
           // TODO
           //                 {
           //                     { 6 },

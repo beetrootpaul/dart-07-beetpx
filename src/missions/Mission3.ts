@@ -4,6 +4,8 @@ import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Mission } from "./Mission";
 
+const aspr_ = AnimatedSprite.for(g.assets.mission3SpritesheetUrl);
+
 export class Mission3 implements Mission {
   readonly missionName: string = "(wip) phoslar mine";
 
@@ -135,7 +137,6 @@ export class Mission3 implements Mission {
   // --   - spawn_bullets = function(enemy_movement, player_collision_circle)
   // --                       return bullets_table
   // --                     end
-  // TODO: HELPER factory fn for new AnimatedSprite with spritesheet already stored?
   enemyPropertiesFor(enemyId: string): EnemyProperties {
     switch (enemyId) {
       case "m3e_stationary":
@@ -146,13 +147,7 @@ export class Mission3 implements Mission {
           //             1,
           // TODO
           //             "16,16,0,64|10,10,16,64",
-          spriteMain: new AnimatedSprite(
-            g.assets.mission3SpritesheetUrl,
-            16,
-            16,
-            [0],
-            64
-          ),
+          spriteMain: aspr_(16, 16, [0], 64),
           // TODO
           //             {
           //                 { 5 },
