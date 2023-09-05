@@ -1,6 +1,7 @@
 import { b } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Enemy } from "./Enemy";
+import { EnemyBullet } from "./EnemyBullet";
 import { Level } from "./Level";
 import { LevelDescriptor } from "./LevelDescriptor";
 import { Player } from "./Player";
@@ -24,6 +25,7 @@ export class Game {
 
   // TODO: consider poll of bullets for memory reusage
   private _playerBullets: PlayerBullet[] = [];
+  private _enemyBullets: EnemyBullet[] = [];
 
   constructor(params: {
     health: number;
@@ -50,7 +52,7 @@ export class Game {
 
       local camera_shake_timer, boss = new_timer(0)
 
-      local enemy_bullets, powerups, explosions, shockwaves, shockwave_enemy_hits, floats =  {}, {}, {}, {}, {}, {}
+      local powerups, explosions, shockwaves, shockwave_enemy_hits, floats =  {}, {}, {}, {}, {}
   */
 
     this._player = new Player({
@@ -361,6 +363,7 @@ export class Game {
     // TODO
     this._level.update();
     this._playerBullets.forEach((pb) => pb.update());
+    this._enemyBullets.forEach((eb) => eb.update());
     this._player.update();
     this._enemies.forEach((e) => e.update());
     /*
@@ -391,14 +394,16 @@ export class Game {
         new Enemy({
           properties: CurrentMission.m.enemyPropertiesFor(enemyToSpawn.id),
           startXy: enemyToSpawn.xy,
-          // TODO
-          // on_bullets_spawned = function(spawned_enemy_bullets_fn, enemy_movement)
-          //     if player then
-          //         for seb in all(spawned_enemy_bullets_fn(enemy_movement, player.collision_circle())) do
-          //             add(enemy_bullets, seb)
-          //         end
-          //     end
-          // end,
+          onBulletsSpawned: (spawnBulletsFn, enemyMovement) => {
+            // TODO
+            //     if player then
+            // TODO
+            this._enemyBullets.push(...spawnBulletsFn(enemyMovement));
+            //         for seb in all(spawned_enemy_bullets_fn(enemy_movement, player.collision_circle())) do
+            //             add(enemy_bullets, seb)
+            //         end
+            //     end
+          },
           // on_damaged = function(collision_circle)
           //     _sfx_play(_sfx_damage_enemy)
           //     add(explosions, new_explosion(collision_circle.xy, .5 * collision_circle.r))
@@ -427,7 +432,14 @@ export class Game {
      */
 
     // TODO: log everything that might matter
-    b.logDebug("e:", this._enemies.length, "pb:", this._playerBullets.length);
+    b.logDebug(
+      "e:",
+      this._enemies.length,
+      "pb:",
+      this._playerBullets.length,
+      "eb:",
+      this._enemyBullets.length
+    );
   }
 
   draw(): void {
@@ -438,6 +450,7 @@ export class Game {
     this._level.draw();
     this._enemies.forEach((e) => e.draw());
     this._playerBullets.forEach((pb) => pb.draw());
+    this._enemyBullets.forEach((eb) => eb.draw());
     this._player.draw();
     /*
           _flattened_for_each(

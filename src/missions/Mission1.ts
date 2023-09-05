@@ -1,11 +1,15 @@
-import { SolidColor, v_ } from "@beetpx/beetpx";
+import { SolidColor, Timer, v_ } from "@beetpx/beetpx";
+import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
 import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
 import { Mission } from "./Mission";
 
 const aspr_ = AnimatedSprite.for(g.assets.mission1SpritesheetUrl);
+
+const eb_ = EnemyBullet.factory(aspr_(4, 4, [124], 64));
 
 export class Mission1 implements Mission {
   readonly missionName: string = "emerald islands";
@@ -122,12 +126,6 @@ export class Mission1 implements Mission {
           //                     age_divisor = 120,
           //                     magnitude = 14,
           //                 },
-          //                 -- DEBUG:
-          //                 --new_movement_line_factory {
-          //                 --    angle = .75,
-          //                 --    angled_speed = _m_scroll_per_frame,
-          //                 --    frames = 234,
-          //                 --},
           // TODO
           //                 bullet_fire_timer = new_timer "40",
           //                 spawn_bullets = function(enemy_movement)
@@ -171,12 +169,6 @@ export class Mission1 implements Mission {
           //                         angle = .75,
           //                     },
           //                 },
-          //                 -- DEBUG:
-          //                 --new_movement_line_factory {
-          //                 --    angle = .75,
-          //                 --    angled_speed = _m_scroll_per_frame,
-          //                 --    frames = 234,
-          //                 --},
           //             },
         };
       case "m1e_big":
@@ -217,12 +209,6 @@ export class Mission1 implements Mission {
           //                         easing_fn = _easing_easeinquart,
           //                     },
           //                 },
-          //                 -- DEBUG:
-          //                 --new_movement_line_factory {
-          //                 --    angle = .75,
-          //                 --    angled_speed = _m_scroll_per_frame,
-          //                 --    frames = 123,
-          //                 --},
           // TODO
           //                 bullet_fire_timer = new_timer "33",
           //                 spawn_bullets = function(enemy_movement)
@@ -277,12 +263,6 @@ export class Mission1 implements Mission {
           //                         easing_fn = _easing_easeinquad,
           //                     },
           //                 }),
-          //                 -- DEBUG:
-          //                 --new_movement_line_factory {
-          //                 --    angle = .75,
-          //                 --    angled_speed = _m_scroll_per_frame,
-          //                 --    frames = 160,
-          //                 --},
           // TODO
           //                 bullet_fire_timer = new_timer "60",
           //                 spawn_bullets = function(enemy_movement, player_collision_circle)
@@ -327,22 +307,24 @@ export class Mission1 implements Mission {
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          // TODO
-          //                 bullet_fire_timer = new_timer "60",
-          //                 spawn_bullets = function(enemy_movement)
-          //                     _sfx_play(_sfx_enemy_multi_shoot)
-          //                     local bullets = {}
-          //                     for i = 1, 8 do
-          //                         add(bullets, enemy_bullet_factory(
-          //                             new_movement_line_factory {
-          //                                 base_speed_y = enemy_movement.speed_xy.y,
-          //                                 angle = .0625 + i / 8,
-          //                             }(enemy_movement.xy)
-          //                         ))
-          //                     end
-          //                     return bullets
-          //                 end,
-          //             },
+          bulletFireTimer: new Timer({ frames: 60 }),
+          spawnBullets: (enemyMovement: Movement) => {
+            // TODO
+            //                     _sfx_play(_sfx_enemy_multi_shoot)
+            const bullets: EnemyBullet[] = [];
+            for (let i = 1; i <= 8; i++) {
+              bullets.push(
+                eb_(
+                  MovementLine.of({
+                    baseSpeedXy: enemyMovement.speed,
+                    angle: 1 / 16 + i / 8,
+                    angledSpeed: 1,
+                  })(enemyMovement.xy)
+                )
+              );
+            }
+            return bullets;
+          },
         };
       default:
         return u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);

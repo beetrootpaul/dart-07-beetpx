@@ -35,7 +35,7 @@ export class MovementToTarget implements Movement {
     targetXy: Vector2d,
     frames: number,
     easingFn: EasingFn,
-    onFinished: (() => void) | undefined
+    onFinished?: () => void
   ) {
     this._startXy = startXy;
     this._targetXy = targetXy;

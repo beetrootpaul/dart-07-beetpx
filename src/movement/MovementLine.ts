@@ -1,29 +1,38 @@
-import { Timer, v_, Vector2d } from "@beetpx/beetpx";
+import { Timer, Vector2d } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 import { TimerInfinite } from "./MovementFixed";
 
 export class MovementLine implements Movement {
   static of =
     (params: {
+      baseSpeedXy?: Vector2d;
       // angle: 0 = right, .25 = down, .5 = left, .75 = up
       angle: number;
       angledSpeed: number;
     }): MovementFactory =>
     (startXy) =>
-      new MovementLine(startXy, params.angle, params.angledSpeed);
+      new MovementLine(
+        startXy,
+        params.angle,
+        params.angledSpeed,
+        params.baseSpeedXy
+      );
 
   private _xy: Vector2d;
   private readonly _speed: Vector2d;
   private readonly _timer: Timer;
 
-  private constructor(startXy: Vector2d, angle: number, angledSpeed: number) {
+  private constructor(
+    startXy: Vector2d,
+    angle: number,
+    angledSpeed: number,
+    baseSpeedXy: Vector2d = Vector2d.zero
+  ) {
     this._xy = startXy;
 
-    this._speed = v_(
+    this._speed = baseSpeedXy.add(
       angledSpeed * Math.cos(angle * Math.PI * 2),
       angledSpeed * Math.sin(angle * Math.PI * 2)
-      // TODO
-      // angled_speed * sin(angle) + (params.base_speed_y or 0)
     );
 
     // TODO
