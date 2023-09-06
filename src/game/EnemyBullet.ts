@@ -1,4 +1,5 @@
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { isSafelyOutsideGameplayArea } from "../misc/helpers";
 import { Movement } from "../movement/Movement";
 
 export interface EnemyBulletFactory {
@@ -23,11 +24,12 @@ export class EnemyBullet {
     //         local is_destroyed = false
   }
 
-  // TODO
-  //             has_finished = function()
-  //                 return is_destroyed or _is_safely_outside_gameplay_area(movement.xy)
-  //             end,
-  //
+  get hasFinished(): boolean {
+    // TODO
+    //                 return is_destroyed or _is_safely_outside_gameplay_area(movement.xy)
+    return isSafelyOutsideGameplayArea(this._movement.xy);
+  }
+
   // TODO
   //             collision_circle = function()
   //                 return {

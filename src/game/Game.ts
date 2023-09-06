@@ -323,6 +323,7 @@ export class Game {
 
     // TODO
     this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
+    this._enemyBullets = this._enemyBullets.filter((eb) => !eb.hasFinished);
     this._enemies = this._enemies.filter((e) => !e.hasFinished);
     /*
         _flattened_for_each(

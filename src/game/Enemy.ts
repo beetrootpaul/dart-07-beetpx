@@ -1,5 +1,6 @@
 import { Vector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
+import { g } from "../globals";
 import { Movement } from "../movement/Movement";
 import { EnemyBullet } from "./EnemyBullet";
 import { EnemyProperties } from "./EnemyProperties";
@@ -83,9 +84,9 @@ export class Enemy {
   }
 
   get hasFinished(): boolean {
-    // TODO
-    //                 return is_destroyed or movement.xy.y > _gah + _ts
-    return this._isDestroyed;
+    return (
+      this._isDestroyed || this._movement.xy.y > g.gameAreaSize.y + g.tileSize.y
+    );
   }
 
   update(): void {
