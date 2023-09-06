@@ -2685,18 +2685,18 @@
 					"entityInstances": [
 						{
 							"__identifier": "level_end",
-							"__grid": [0,18],
+							"__grid": [0,0],
 							"__pivot": [0,0],
 							"__tags": ["marker"],
 							"__tile": { "tilesetUid": 2, "x": 0, "y": 32, "w": 8, "h": 8 },
 							"__smartColor": "#BE4A2F",
 							"__worldX": 0,
-							"__worldY": -96,
-							"iid": "aee0c270-3b70-11ee-bd8b-67a3da33e55f",
+							"__worldY": -240,
+							"iid": "1b34fbb0-3b70-11ee-9119-6195f5004fc0",
 							"width": 96,
 							"height": 16,
 							"defUid": 138,
-							"px": [0,144],
+							"px": [0,0],
 							"fieldInstances": []
 						}
 					]

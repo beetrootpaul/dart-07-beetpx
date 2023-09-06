@@ -95,17 +95,15 @@ export class Mission2 implements Mission {
     switch (enemyId) {
       case "m2e_stationary":
         return {
+          health: 5,
           // TODO
           //         [79] = {
-          //             5,
           //             1,
           // TODO
           //             "28,28,0,64|28,28,28,64",
           spriteMain: aspr_(28, 28, [0], 64),
+          collisionCirclesProps: [{ r: 5 }],
           // TODO
-          //             {
-          //                 { 5 },
-          //             },
           //             "h,m,f,t,s",
           movementFactory: MovementLine.of({
             angle: 0.25,

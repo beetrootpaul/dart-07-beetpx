@@ -86,18 +86,16 @@ export class Mission1 implements Mission {
     switch (enemyId) {
       case "m1e_fast_and_small":
         return {
+          health: 1,
           // TODO:
           //             -- enemy: fast and small
           //             [74] = {
-          //                 1,
           //                 2,
           // TODO
           //                 "8,8,0,88|6,6,22,79",
           spriteMain: aspr_(8, 8, [0], 88),
+          collisionCirclesProps: [{ r: 3, offset: v_(0, 1) }],
           // TODO
-          //                 {
-          //                     { 3, _xy(0, 1) },
-          //                 },
           //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
           movementFactory: MovementLine.of({
             angle: 0.25,
@@ -106,15 +104,15 @@ export class Mission1 implements Mission {
         };
       case "m1e_sinusoidal":
         return {
+          health: 2,
           // TODO
           //             [75] = {
-          //                 2,
           //                 5,
           // TODO
           //                 "10,10,22,86|8,8,13,88",
           spriteMain: aspr_(10, 10, [22], 86),
-          // Taspr_/                 {
-          //                 },
+          collisionCirclesProps: [{ r: 4 }],
+          // TODO
           //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
           // TODO: TMP
           movementFactory: MovementLine.of({
@@ -143,16 +141,15 @@ export class Mission1 implements Mission {
         };
       case "m1e_wait_and_charge":
         return {
+          health: 7,
           // TODO
           //             [76] = {
-          //                 7,
           //                 20,
           // TODO
           //                 "16,14,22,64|14,12,32,84",
           spriteMain: aspr_(16, 14, [22], 64),
-          // Taspr_/
-          //                     { 7 },
-          //                 },
+          collisionCirclesProps: [{ r: 7 }],
+          // TODO
           //                 "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
           // TODO: TMP
           movementFactory: MovementLine.of({
@@ -173,20 +170,20 @@ export class Mission1 implements Mission {
         };
       case "m1e_big":
         return {
+          health: 40,
           // TODO
           //             [77] = {
-          //                 40,
           //                 100,
           // TODO
           //                 "24,20,64,64|22,18,88,65",
           spriteMain: aspr_(24, 20, [64], 64),
+          collisionCirclesProps: [
+            { r: 10, offset: v_(0, 1) },
+            { r: 5, offset: v_(-7, 0) },
+            { r: 5, offset: v_(7, 0) },
+            { r: 5, offset: v_(0, -4) },
+          ],
           // TODO
-          //                 {
-          //                     { 10, _xy(0, 1) },
-          //                     { 5, _xy(-7, 0) },
-          //                     { 5, _xy(7, 0) },
-          //                     { 5, _xy(0, -4) },
-          //                 },
           //                 "h,s",
           // TODO: TMP
           movementFactory: MovementLine.of({
@@ -228,19 +225,19 @@ export class Mission1 implements Mission {
         };
       case "m1e_aimed_triple_shot":
         return {
+          health: 4,
           // TODO
           //             [78] = {
-          //                 4,
           //                 40,
           // TODO
           //                 "8,22,50,64|6,20,58,65",
           spriteMain: aspr_(8, 22, [50], 64),
+          collisionCirclesProps: [
+            { r: 4 },
+            { r: 4, offset: v_(0, 7) },
+            { r: 4, offset: v_(0, -7) },
+          ],
           // TODO
-          //                 {
-          //                     { 4 },
-          //                     { 4, _xy(0, 7) },
-          //                     { 4, _xy(0, -7) },
-          //                 },
           //                 "-,-,-,-,-,-,h,m,m,f,f,f,t,t,s",
           // TODO: TMP
           movementFactory: MovementLine.of({
@@ -291,17 +288,15 @@ export class Mission1 implements Mission {
         };
       case "m1e_stationary":
         return {
+          health: 10,
           // TODO
           //             [79] = {
-          //                 10,
           //                 50,
           // TODO
           //                 "22,24,0,64|12,12,38,64",
           spriteMain: aspr_(22, 24, [0], 64),
+          collisionCirclesProps: [{ r: 6 }],
           // TODO
-          //                 {
-          //                     { 6 },
-          //                 },
           //                 "-,-,-,h,h,m,f,t,t,s,s,s",
           movementFactory: MovementLine.of({
             angle: 0.25,

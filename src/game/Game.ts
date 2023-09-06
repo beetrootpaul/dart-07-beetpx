@@ -1,3 +1,4 @@
+import { Collisions } from "../collisions/Collisions";
 import { b } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Enemy } from "./Enemy";
@@ -21,7 +22,7 @@ export class Game {
 
   private readonly _player: Player;
   // TODO: consider poll of enemies for memory reusage
-  private readonly _enemies: Enemy[] = [];
+  private _enemies: Enemy[] = [];
 
   // TODO: consider poll of bullets for memory reusage
   private _playerBullets: PlayerBullet[] = [];
@@ -127,104 +128,113 @@ export class Game {
         )
 
     end
-
-    local function handle_collisions()
-        -- player vs powerups
-        for powerup in all(powerups) do
-            if not powerup.has_finished() then
-                if _collisions.are_colliding(player, powerup) then
-                    powerup.pick()
-                    handle_powerup(powerup.powerup_type, powerup.collision_circle().xy)
-                end
-            end
-        end
-
-        -- shockwaves vs enemies + player bullets vs enemies + player vs enemies
-        for enemy in all(enemies) do
-            for enemy_cc in all(enemy.collision_circles()) do
-                for shockwave in all(shockwaves) do
-                    local combined_id = shockwave.id .. "-" .. enemy.id
-                    shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
-                    if not enemy.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
-                        if _collisions.are_colliding(shockwave, enemy_cc, {
-                            ignore_gameplay_area_check = true,
-                        }) then
-                            enemy.take_damage(2)
-                            shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
-                        end
-                    end
-                end
-                for player_bullet in all(player_bullets) do
-                    if not enemy.has_finished() and not player_bullet.has_finished() then
-                        if _collisions.are_colliding(player_bullet, enemy_cc) then
-                            enemy.take_damage(1)
-                            player_bullet.destroy()
-                        end
-                    end
-                end
-                if not enemy.has_finished() and not player.is_invincible_after_damage() then
-                    if _collisions.are_colliding(player, enemy_cc) then
-                        enemy.take_damage(1)
-                        handle_player_damage()
-                    end
-                end
-            end
-        end
-
-        -- shockwaves vs boss + player bullets vs boss + player vs boss
-        if boss and not boss.invincible_during_intro then
-            for boss_cc in all(boss.collision_circles()) do
-                for shockwave in all(shockwaves) do
-                    local combined_id = shockwave.id .. "-boss"
-                    shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
-                    if not boss.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
-                        if _collisions.are_colliding(shockwave, boss_cc, {
-                            ignore_gameplay_area_check = true,
-                        }) then
-                            boss.take_damage(2)
-                            shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
-                        end
-                    end
-                end
-                for player_bullet in all(player_bullets) do
-                    if not boss.has_finished() and not player_bullet.has_finished() then
-                        if _collisions.are_colliding(player_bullet, boss_cc) then
-                            boss.take_damage(1)
-                            player_bullet.destroy()
-                        end
-                    end
-                end
-                if not boss.has_finished() and not player.is_invincible_after_damage() then
-                    if _collisions.are_colliding(player, boss_cc) then
-                        boss.take_damage(1)
-                        handle_player_damage()
-                    end
-                end
-            end
-        end
-
-        -- shockwaves vs enemy bullets + player vs enemy bullets
-        for enemy_bullet in all(enemy_bullets) do
-            for shockwave in all(shockwaves) do
-                if not enemy_bullet.has_finished() and not shockwave.has_finished() then
-                    if _collisions.are_colliding(shockwave, enemy_bullet) then
-                        enemy_bullet.destroy()
-                    end
-                end
-            end
-            if not enemy_bullet.has_finished() and not player.is_invincible_after_damage() then
-                if _collisions.are_colliding(enemy_bullet, player) then
-                    handle_player_damage()
-                    enemy_bullet.destroy()
-                end
-            end
-        end
-    end
-
-    --
-
-    game.mission_progress_fraction = level.progress_fraction
     */
+  //
+
+  private _handleCollisions(): void {
+    // TODO
+    //     -- player vs powerups
+    //     for powerup in all(powerups) do
+    //         if not powerup.has_finished() then
+    //             if _collisions.are_colliding(player, powerup) then
+    //                 powerup.pick()
+    //                 handle_powerup(powerup.powerup_type, powerup.collision_circle().xy)
+    //             end
+    //         end
+    //     end
+    //
+
+    // shockwaves vs enemies + player bullets vs enemies + player vs enemies
+    for (const enemy of this._enemies) {
+      for (const enemyCc of enemy.collisionCircles) {
+        // TODO
+        //             for shockwave in all(shockwaves) do
+        //                 local combined_id = shockwave.id .. "-" .. enemy.id
+        //                 shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
+        //                 if not enemy.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
+        //                     if _collisions.are_colliding(shockwave, enemy_cc, {
+        //                         ignore_gameplay_area_check = true,
+        //                     }) then
+        //                         enemy.take_damage(2)
+        //                         shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
+        //                     end
+        //                 end
+        //             end
+        for (const playerBullet of this._playerBullets) {
+          // TODO
+          //                 if not enemy.has_finished() and not player_bullet.has_finished() then
+          if (!enemy.hasFinished) {
+            if (
+              Collisions.areColliding(playerBullet.collisionCircle, enemyCc)
+            ) {
+              enemy.takeDamage(1);
+              playerBullet.destroy();
+            }
+          }
+        }
+        // TODO
+        //             if not enemy.has_finished() and not player.is_invincible_after_damage() then
+        //                 if _collisions.are_colliding(player, enemy_cc) then
+        //                     enemy.take_damage(1)
+        //                     handle_player_damage()
+        //                 end
+        //             end
+      }
+    }
+
+    // TODO
+    //     -- shockwaves vs boss + player bullets vs boss + player vs boss
+    //     if boss and not boss.invincible_during_intro then
+    //         for boss_cc in all(boss.collision_circles()) do
+    //             for shockwave in all(shockwaves) do
+    //                 local combined_id = shockwave.id .. "-boss"
+    //                 shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
+    //                 if not boss.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
+    //                     if _collisions.are_colliding(shockwave, boss_cc, {
+    //                         ignore_gameplay_area_check = true,
+    //                     }) then
+    //                         boss.take_damage(2)
+    //                         shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
+    //                     end
+    //                 end
+    //             end
+    //             for player_bullet in all(player_bullets) do
+    //                 if not boss.has_finished() and not player_bullet.has_finished() then
+    //                     if _collisions.are_colliding(player_bullet, boss_cc) then
+    //                         boss.take_damage(1)
+    //                         player_bullet.destroy()
+    //                     end
+    //                 end
+    //             end
+    //             if not boss.has_finished() and not player.is_invincible_after_damage() then
+    //                 if _collisions.are_colliding(player, boss_cc) then
+    //                     boss.take_damage(1)
+    //                     handle_player_damage()
+    //                 end
+    //             end
+    //         end
+    //     end
+    //
+    //     -- shockwaves vs enemy bullets + player vs enemy bullets
+    //     for enemy_bullet in all(enemy_bullets) do
+    //         for shockwave in all(shockwaves) do
+    //             if not enemy_bullet.has_finished() and not shockwave.has_finished() then
+    //                 if _collisions.are_colliding(shockwave, enemy_bullet) then
+    //                     enemy_bullet.destroy()
+    //                 end
+    //             end
+    //         end
+    //         if not enemy_bullet.has_finished() and not player.is_invincible_after_damage() then
+    //             if _collisions.are_colliding(enemy_bullet, player) then
+    //                 handle_player_damage()
+    //                 enemy_bullet.destroy()
+    //             end
+    //         end
+    //     end
+  }
+
+  // TODO
+  // game.mission_progress_fraction = level.progress_fraction
 
   enterEnemiesPhase(): void {
     this._level.enterPhaseMain();
@@ -313,6 +323,7 @@ export class Game {
 
     // TODO
     this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
+    this._enemies = this._enemies.filter((e) => !e.hasFinished);
     /*
         _flattened_for_each(
             shockwaves,
@@ -383,11 +394,12 @@ export class Game {
                 game_object._update()
             end
         )
+    */
 
-        if player then
-            handle_collisions()
-        end
-        */
+    // TODO
+    // if player then
+    this._handleCollisions();
+    // end
 
     for (const enemyToSpawn of this._level.enemiesToSpawn()) {
       this._enemies.push(
@@ -404,19 +416,23 @@ export class Game {
             //         end
             //     end
           },
-          // on_damaged = function(collision_circle)
-          //     _sfx_play(_sfx_damage_enemy)
-          //     add(explosions, new_explosion(collision_circle.xy, .5 * collision_circle.r))
-          // end,
-          // on_destroyed = function(collision_circle, powerup_type, score_to_add)
-          //     _sfx_play(_sfx_destroy_enemy)
-          //     game.score.add(score_to_add)
-          //     add(floats, new_float(collision_circle.xy, score_to_add))
-          //     add(explosions, new_explosion(collision_circle.xy, 2.5 * collision_circle.r))
-          //     if powerup_type ~= "-" then
-          //         add(powerups, new_powerup(collision_circle.xy, powerup_type))
-          //     end
-          // end,
+          // TODO: params: collision_circle
+          onDamaged: () => {
+            // TODO
+            //     _sfx_play(_sfx_damage_enemy)
+            //     add(explosions, new_explosion(collision_circle.xy, .5 * collision_circle.r))
+          },
+          // TODO: params: collision_circle, powerup_type, score_to_add
+          onDestroyed: () => {
+            // TODO
+            //     _sfx_play(_sfx_destroy_enemy)
+            //     game.score.add(score_to_add)
+            //     add(floats, new_float(collision_circle.xy, score_to_add))
+            //     add(explosions, new_explosion(collision_circle.xy, 2.5 * collision_circle.r))
+            //     if powerup_type ~= "-" then
+            //         add(powerups, new_powerup(collision_circle.xy, powerup_type))
+            //     end
+          },
         })
       );
     }

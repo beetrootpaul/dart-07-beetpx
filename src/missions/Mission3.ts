@@ -142,17 +142,15 @@ export class Mission3 implements Mission {
     switch (enemyId) {
       case "m3e_stationary":
         return {
+          health: 5,
           // TODO
           //         [79] = {
-          //             5,
           //             1,
           // TODO
           //             "16,16,0,64|10,10,16,64",
           spriteMain: aspr_(16, 16, [0], 64),
+          collisionCirclesProps: [{ r: 5 }],
           // TODO
-          //             {
-          //                 { 5 },
-          //             },
           //             "h,m,f,t,s",
           movementFactory: MovementLine.of({
             angle: 0.25,

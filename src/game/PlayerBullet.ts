@@ -1,4 +1,5 @@
 import { Vector2d } from "@beetpx/beetpx";
+import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { isSafelyOutsideGameplayArea } from "../misc/helpers";
@@ -16,10 +17,9 @@ export class PlayerBullet {
 
   private readonly _movement: Movement;
 
-  constructor(startXy: Vector2d) {
-    // TODO
-    //     local is_destroyed = false
+  private _isDestroyed: boolean = false;
 
+  constructor(startXy: Vector2d) {
     this._movement = MovementLine.of({
       angle: 0.75,
       angledSpeed: 2.5,
@@ -27,23 +27,19 @@ export class PlayerBullet {
   }
 
   get hasFinished(): boolean {
-    // TODO
-    return isSafelyOutsideGameplayArea(this._movement.xy);
-    // return is_destroyed or _is_safely_outside_gameplay_area(movement.xy)
+    return this._isDestroyed || isSafelyOutsideGameplayArea(this._movement.xy);
   }
-  // TODO
-  //     return {
-  //         collision_circle = function()
-  //             return {
-  //                 xy = movement.xy.minus(0, .5),
-  //                 r = 1.5,
-  //             }
-  //         end,
-  //
-  //         destroy = function()
-  //             is_destroyed = true
-  //         end,
-  //
+
+  get collisionCircle(): CollisionCircle {
+    return {
+      center: this._movement.xy.sub(0, 0.5),
+      r: 1.5,
+    };
+  }
+
+  destroy(): void {
+    this._isDestroyed = true;
+  }
 
   update(): void {
     this._movement.update();
