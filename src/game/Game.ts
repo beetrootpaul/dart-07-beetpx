@@ -486,32 +486,39 @@ export class Game {
           )
           clip()
 
-          -- DEBUG:
-          --for enemy in all(enemies) do
-          --    for enemy_cc in all(enemy.collision_circles()) do
-          --        _collisions._debug_draw_collision_circle(enemy_cc)
-          --    end
-          --end
-          --_flattened_for_each(
-          --player_bullets,
-          --enemy_bullets,
-          --    boss and boss.collision_circles() or nil,
-          --{ player },
-          --powerups,
-          --    function(game_object_or_collision_circle)
-          --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
-          --    end
-          --)
-
-          if camera_shake_timer.ttl > 0 then
-              local factor = camera_shake_timer.ttl - 1
-              camera(
-                  rnd(factor) - .5 * factor,
-                  rnd(factor) - .5 * factor
-              )
-          end
-      end
-
        */
+
+    // TODO
+    if (b.debug) {
+      for (const enemy of this._enemies) {
+        for (const enemyCc of enemy.collisionCircles) {
+          Collisions.debugDrawCollisionCircle(enemyCc);
+        }
+      }
+    }
+    for (const playerBullet of this._playerBullets) {
+      Collisions.debugDrawCollisionCircle(playerBullet.collisionCircle);
+    }
+    for (const enemyBullet of this._enemyBullets) {
+      Collisions.debugDrawCollisionCircle(enemyBullet.collisionCircle);
+    }
+    // TODO
+    // --    boss and boss.collision_circles() or nil,
+    // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
+    if (this._player) {
+      Collisions.debugDrawCollisionCircle(this._player.collisionCircle);
+    }
+    // TODO
+    // --powerups,
+    // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
+
+    // TODO
+    // if camera_shake_timer.ttl > 0 then
+    //     local factor = camera_shake_timer.ttl - 1
+    //     camera(
+    //         rnd(factor) - .5 * factor,
+    //         rnd(factor) - .5 * factor
+    //     )
+    // end
   }
 }

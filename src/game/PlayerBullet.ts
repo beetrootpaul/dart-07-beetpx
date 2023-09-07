@@ -33,7 +33,7 @@ export class PlayerBullet {
   get collisionCircle(): CollisionCircle {
     return {
       center: this._movement.xy.sub(0, 0.5),
-      r: 1.5,
+      r: 2,
     };
   }
 
