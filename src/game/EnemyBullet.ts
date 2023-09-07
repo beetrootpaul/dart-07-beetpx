@@ -1,3 +1,4 @@
+import { CollisionCircle } from "../collisions/CollisionCircle";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { isSafelyOutsideGameplayArea } from "../misc/helpers";
 import { Movement } from "../movement/Movement";
@@ -15,33 +16,29 @@ export class EnemyBullet {
 
   private readonly _sprite: AnimatedSprite;
   private readonly _movement: Movement;
+  private _isDestroyed: boolean = false;
 
   private constructor(sprite: AnimatedSprite, movement: Movement) {
     this._sprite = sprite;
     this._movement = movement;
-
-    // TODO
-    //         local is_destroyed = false
   }
 
   get hasFinished(): boolean {
-    // TODO
-    //                 return is_destroyed or _is_safely_outside_gameplay_area(movement.xy)
-    return isSafelyOutsideGameplayArea(this._movement.xy);
+    return this._isDestroyed || isSafelyOutsideGameplayArea(this._movement.xy);
   }
 
-  // TODO
-  //             collision_circle = function()
-  //                 return {
-  //                     xy = movement.xy,
-  //                     r = bullet_properties.collision_circle_r,
-  //                 }
-  //             end,
-  //
-  // TODO
-  //             destroy = function()
-  //                 is_destroyed = true
-  //             end,
+  get collisionCircle(): CollisionCircle {
+    return {
+      center: this._movement.xy,
+      // TODO
+      //                     r = bullet_properties.collision_circle_r,
+      r: 3,
+    };
+  }
+
+  destroy(): void {
+    this._isDestroyed = true;
+  }
 
   update(): void {
     this._movement.update();

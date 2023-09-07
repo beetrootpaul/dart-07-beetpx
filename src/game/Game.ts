@@ -9,7 +9,7 @@ import { Player } from "./Player";
 import { PlayerBullet } from "./PlayerBullet";
 
 export class Game {
-  private readonly _health: number;
+  private _health: number;
   get health(): number {
     return this._health;
   }
@@ -20,7 +20,7 @@ export class Game {
 
   private readonly _level: Level = new Level(new LevelDescriptor());
 
-  private readonly _player: Player;
+  private _player: Player | null;
   // TODO: consider poll of enemies for memory reusage
   private _enemies: Enemy[] = [];
 
@@ -63,36 +63,38 @@ export class Game {
         // _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
         this._playerBullets.push(...bullets);
       },
-      /*
-          on_shockwave_triggered = function(shockwave)
-              _sfx_play(_sfx_player_shockwave, 2)
-              add(shockwaves, shockwave)
-          end,
-          on_damaged = function()
-              _sfx_play(_sfx_damage_player, 2)
-          end,
-          on_destroyed = function(collision_circle)
-              _sfx_play(_sfx_destroy_player, 3)
-              _add_all(
-                  explosions,
-                  new_explosion(collision_circle.xy, collision_circle.r),
-                  new_explosion(collision_circle.xy, 2 * collision_circle.r, 4 + flr(rnd(8))),
-                  new_explosion(collision_circle.xy, 3 * collision_circle.r, 12 + flr(rnd(8)))
-              )
-          end,
-       */
+      // TODO
+      // on_shockwave_triggered = function(shockwave)
+      //     _sfx_play(_sfx_player_shockwave, 2)
+      //     add(shockwaves, shockwave)
+      // end,
+      onDamaged: () => {
+        // TODO
+        //    _sfx_play(_sfx_damage_player, 2)
+      },
+      onDestroyed: (playerCc) => {
+        // TODO
+        //    _sfx_play(_sfx_destroy_player, 3)
+        // TODO
+        //    _add_all(
+        //        explosions,
+        //        new_explosion(collision_circle.xy, collision_circle.r),
+        //        new_explosion(collision_circle.xy, 2 * collision_circle.r, 4 + flr(rnd(8))),
+        //        new_explosion(collision_circle.xy, 3 * collision_circle.r, 12 + flr(rnd(8)))
+        //    )
+      },
     });
+  }
+
+  private _handlePlayerDamage(): void {
+    // TODO
+    // game.fast_movement, game.triple_shoot, game.fast_shoot, camera_shake_timer = false, false, false, new_timer(12)
+    this._health -= 1;
+    this._player?.takeDamage(this._health);
   }
 
   // TODO
   /*
-
-    local function handle_player_damage()
-        game.fast_movement, game.triple_shoot, game.fast_shoot, camera_shake_timer = false, false, false, new_timer(12)
-        game.health = game.health - 1
-        player.take_damage(game.health)
-    end
-
     local function handle_powerup(powerup_type, powerup_xy)
         local has_effect = false
         if powerup_type == "h" then
@@ -161,9 +163,7 @@ export class Game {
         //                 end
         //             end
         for (const playerBullet of this._playerBullets) {
-          // TODO
-          //                 if not enemy.has_finished() and not player_bullet.has_finished() then
-          if (!enemy.hasFinished) {
+          if (!enemy.hasFinished && !playerBullet.hasFinished) {
             if (
               Collisions.areColliding(playerBullet.collisionCircle, enemyCc)
             ) {
@@ -214,23 +214,33 @@ export class Game {
     //             end
     //         end
     //     end
-    //
-    //     -- shockwaves vs enemy bullets + player vs enemy bullets
-    //     for enemy_bullet in all(enemy_bullets) do
-    //         for shockwave in all(shockwaves) do
-    //             if not enemy_bullet.has_finished() and not shockwave.has_finished() then
-    //                 if _collisions.are_colliding(shockwave, enemy_bullet) then
-    //                     enemy_bullet.destroy()
-    //                 end
-    //             end
-    //         end
-    //         if not enemy_bullet.has_finished() and not player.is_invincible_after_damage() then
-    //             if _collisions.are_colliding(enemy_bullet, player) then
-    //                 handle_player_damage()
-    //                 enemy_bullet.destroy()
-    //             end
-    //         end
-    //     end
+
+    // shockwaves vs enemy bullets + player vs enemy bullets
+    for (const enemyBullet of this._enemyBullets) {
+      // TODO
+      //         for shockwave in all(shockwaves) do
+      //             if not enemy_bullet.has_finished() and not shockwave.has_finished() then
+      //                 if _collisions.are_colliding(shockwave, enemy_bullet) then
+      //                     enemy_bullet.destroy()
+      //                 end
+      //             end
+      //         end
+      if (this._player) {
+        // TODO
+        //         if not enemy_bullet.has_finished() and not player.is_invincible_after_damage() then
+        if (!enemyBullet.hasFinished) {
+          if (
+            Collisions.areColliding(
+              enemyBullet.collisionCircle,
+              this._player.collisionCircle
+            )
+          ) {
+            this._handlePlayerDamage();
+            enemyBullet.destroy();
+          }
+        }
+      }
+    }
   }
 
   // TODO
@@ -306,14 +316,13 @@ export class Game {
      */
 
   preUpdate(): void {
+    if (this._player?.hasFinished) {
+      this._player = null;
+      this._playerBullets = [];
+    }
+
     // TODO
     /*
-        function game._post_draw()
-        if player and player.has_finished() then
-            player = nil
-            player_bullets = {}
-        end
-
         if boss and boss.has_finished() then
             -- we assume here there are no enemies on a screen at the same time as boss is,
             -- therefore we can just remove all enemy bullets when boss is destroyed
@@ -340,15 +349,11 @@ export class Game {
                 end
             end
         )
-    end
-
      */
   }
 
   update(): void {
-    // TODO
-    // if player then
-    this._player.setMovement(
+    this._player?.setMovement(
       b.isPressed("left"),
       b.isPressed("right"),
       b.isPressed("up"),
@@ -356,8 +361,8 @@ export class Game {
     );
     if (b.isPressed("x")) {
       // TODO
-      this._player.fire();
       // player.fire(game.fast_shoot, game.triple_shoot)
+      this._player?.fire();
     }
     // TODO
     /*
@@ -369,14 +374,12 @@ export class Game {
                 end
             end
         */
-    // TODO
-    // end
 
     // TODO
     this._level.update();
     this._playerBullets.forEach((pb) => pb.update());
     this._enemyBullets.forEach((eb) => eb.update());
-    this._player.update();
+    this._player?.update();
     this._enemies.forEach((e) => e.update());
     /*
         _flattened_for_each(
@@ -468,7 +471,7 @@ export class Game {
     this._enemies.forEach((e) => e.draw());
     this._playerBullets.forEach((pb) => pb.draw());
     this._enemyBullets.forEach((eb) => eb.draw());
-    this._player.draw();
+    this._player?.draw();
     /*
           _flattened_for_each(
               { level },
