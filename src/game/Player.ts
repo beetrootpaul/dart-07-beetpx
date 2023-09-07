@@ -1,4 +1,4 @@
-import { v_, Vector2d } from "@beetpx/beetpx";
+import { Timer, v_, Vector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
@@ -18,6 +18,8 @@ export class Player {
   private _shipSpriteCurrent: AnimatedSprite;
 
   private _xy: Vector2d;
+
+  private _invincibleAfterDamageTimer: Timer | null = null;
 
   private _isDestroyed: boolean = false;
 
@@ -70,7 +72,7 @@ export class Player {
     // local jet_sprite = jet_sprite_visible
 
     // TODO
-    // local invincible_after_damage_timer, invincibility_flash_duration, is_destroyed = nil, 6, false
+    // local invincibility_flash_duration, is_destroyed = 6, false
     this._xy = v_(g.gameAreaSize.x / 2, g.gameAreaSize.y - 28);
   }
 
@@ -156,16 +158,17 @@ export class Player {
   // end,
   //
   // collision_circle = collision_circle,
-  //
-  // is_invincible_after_damage = function()
-  //     return invincible_after_damage_timer ~= nil
-  // end,
+
+  isInvincibleAfterDamage(): boolean {
+    return !!this._invincibleAfterDamageTimer;
+  }
 
   takeDamage(updatedHealth: number): void {
     if (updatedHealth > 0) {
       // TODO
       //         -- we start with "-1" in order to avoid 1 frame of non-flash due to how "%" works (see "_draw()")
       //         invincible_after_damage_timer = new_timer(5 * invincibility_flash_duration - 1)
+      this._invincibleAfterDamageTimer = new Timer({ frames: 60 });
       this._onDamaged();
     } else {
       this._isDestroyed = true;
@@ -174,14 +177,10 @@ export class Player {
   }
 
   update(): void {
-    // TODO
-    // if invincible_after_damage_timer then
-    //     if invincible_after_damage_timer.ttl <= 0 then
-    //         invincible_after_damage_timer = nil
-    //     else
-    //         invincible_after_damage_timer._update()
-    //     end
-    // end
+    if (this._invincibleAfterDamageTimer?.hasFinished) {
+      this._invincibleAfterDamageTimer = null;
+    }
+    this._invincibleAfterDamageTimer?.update();
 
     this._onBulletsSpawned.update();
     // TODO

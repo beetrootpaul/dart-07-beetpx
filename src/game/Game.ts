@@ -134,6 +134,10 @@ export class Game {
   //
 
   private _handleCollisions(): void {
+    if (!this._player) {
+      return;
+    }
+
     // TODO
     //     -- player vs powerups
     //     for powerup in all(powerups) do
@@ -172,13 +176,12 @@ export class Game {
             }
           }
         }
-        // TODO
-        //             if not enemy.has_finished() and not player.is_invincible_after_damage() then
-        //                 if _collisions.are_colliding(player, enemy_cc) then
-        //                     enemy.take_damage(1)
-        //                     handle_player_damage()
-        //                 end
-        //             end
+        if (!enemy.hasFinished && !this._player.isInvincibleAfterDamage()) {
+          if (Collisions.areColliding(this._player.collisionCircle, enemyCc)) {
+            enemy.takeDamage(1);
+            this._handlePlayerDamage();
+          }
+        }
       }
     }
 
@@ -225,19 +228,15 @@ export class Game {
       //                 end
       //             end
       //         end
-      if (this._player) {
-        // TODO
-        //         if not enemy_bullet.has_finished() and not player.is_invincible_after_damage() then
-        if (!enemyBullet.hasFinished) {
-          if (
-            Collisions.areColliding(
-              enemyBullet.collisionCircle,
-              this._player.collisionCircle
-            )
-          ) {
-            this._handlePlayerDamage();
-            enemyBullet.destroy();
-          }
+      if (!enemyBullet.hasFinished && !this._player.isInvincibleAfterDamage()) {
+        if (
+          Collisions.areColliding(
+            enemyBullet.collisionCircle,
+            this._player.collisionCircle
+          )
+        ) {
+          this._handlePlayerDamage();
+          enemyBullet.destroy();
         }
       }
     }
@@ -400,10 +399,7 @@ export class Game {
         )
     */
 
-    // TODO
-    // if player then
     this._handleCollisions();
-    // end
 
     for (const enemyToSpawn of this._level.enemiesToSpawn()) {
       this._enemies.push(
