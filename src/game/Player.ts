@@ -1,4 +1,5 @@
-import { v_, Vector2d } from "@beetpx/beetpx";
+import { Timer, v_, Vector2d } from "@beetpx/beetpx";
+import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Throttle } from "../misc/Throttle";
@@ -8,6 +9,8 @@ export class Player {
   private readonly _onBulletsSpawned: Throttle<
     (bullets: PlayerBullet[]) => void
   >;
+  private readonly _onDamaged: () => void;
+  private readonly _onDestroyed: (playerCc: CollisionCircle) => void;
 
   private readonly _shipSpriteNeutral: AnimatedSprite;
   private readonly _shipSpriteFlyingLeft: AnimatedSprite;
@@ -16,11 +19,23 @@ export class Player {
 
   private _xy: Vector2d;
 
-  constructor(params: { onBulletsSpawned: (bullets: PlayerBullet[]) => void }) {
+  private _invincibleAfterDamageTimer: Timer | null = null;
+
+  private _isDestroyed: boolean = false;
+
+  constructor(params: {
+    onBulletsSpawned: (bullets: PlayerBullet[]) => void;
+
+    onDamaged: () => void;
+    onDestroyed: (playerCc: CollisionCircle) => void;
+  }) {
     // TODO
-    this._onBulletsSpawned = new Throttle(params.onBulletsSpawned);
     // local on_bullets_spawned, on_shockwave_triggered = new_throttle(params.on_bullets_spawned), new_throttle(params.on_shockwave_triggered)
-    // local w, h, on_damaged, on_destroyed = 10, 12, params.on_damaged, params.on_destroyed
+    this._onBulletsSpawned = new Throttle(params.onBulletsSpawned);
+    this._onDamaged = params.onDamaged;
+    this._onDestroyed = params.onDestroyed;
+    // TODO
+    // local w, h = 10, 12
 
     this._shipSpriteNeutral = new AnimatedSprite(
       g.assets.mainSpritesheetUrl,
@@ -57,17 +72,16 @@ export class Player {
     // local jet_sprite = jet_sprite_visible
 
     // TODO
-    // local invincible_after_damage_timer, invincibility_flash_duration, is_destroyed = nil, 6, false
+    // local invincibility_flash_duration, is_destroyed = 6, false
     this._xy = v_(g.gameAreaSize.x / 2, g.gameAreaSize.y - 28);
   }
 
-  // TODO
-  // local function collision_circle()
-  //     return {
-  //         xy = xy.plus(0, 1),
-  //         r = 3,
-  //     }
-  // end
+  get collisionCircle(): CollisionCircle {
+    return {
+      center: this._xy.add(0, 1),
+      r: 3,
+    };
+  }
 
   private _createSingleBullet(): PlayerBullet[] {
     return [new PlayerBullet(this._xy.add(0, -4))];
@@ -86,11 +100,9 @@ export class Player {
   //     return new_shockwave(xy, 1)
   // end
 
-  // TODO
-  // has_finished = function()
-  //     return is_destroyed
-  // end,
-  //
+  get hasFinished(): boolean {
+    return this._isDestroyed;
+  }
 
   // TODO params: fast_movement
   setMovement(left: boolean, right: boolean, up: boolean, down: boolean) {
@@ -146,31 +158,29 @@ export class Player {
   // end,
   //
   // collision_circle = collision_circle,
-  //
-  // is_invincible_after_damage = function()
-  //     return invincible_after_damage_timer ~= nil
-  // end,
-  //
-  // take_damage = function(updated_health)
-  //     if updated_health > 0 then
-  //         -- we start with "-1" in order to avoid 1 frame of non-flash due to how "%" works (see "_draw()")
-  //         invincible_after_damage_timer = new_timer(5 * invincibility_flash_duration - 1)
-  //         on_damaged()
-  //     else
-  //         is_destroyed = true
-  //         on_destroyed(collision_circle())
-  //     end
-  // end,
+
+  isInvincibleAfterDamage(): boolean {
+    return !!this._invincibleAfterDamageTimer;
+  }
+
+  takeDamage(updatedHealth: number): void {
+    if (updatedHealth > 0) {
+      // TODO
+      //         -- we start with "-1" in order to avoid 1 frame of non-flash due to how "%" works (see "_draw()")
+      //         invincible_after_damage_timer = new_timer(5 * invincibility_flash_duration - 1)
+      this._invincibleAfterDamageTimer = new Timer({ frames: 60 });
+      this._onDamaged();
+    } else {
+      this._isDestroyed = true;
+      this._onDestroyed(this.collisionCircle);
+    }
+  }
 
   update(): void {
-    // TODO
-    // if invincible_after_damage_timer then
-    //     if invincible_after_damage_timer.ttl <= 0 then
-    //         invincible_after_damage_timer = nil
-    //     else
-    //         invincible_after_damage_timer._update()
-    //     end
-    // end
+    if (this._invincibleAfterDamageTimer?.hasFinished) {
+      this._invincibleAfterDamageTimer = null;
+    }
+    this._invincibleAfterDamageTimer?.update();
 
     this._onBulletsSpawned.update();
     // TODO

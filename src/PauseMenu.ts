@@ -15,27 +15,27 @@ export class PauseMenu {
     v_(1, 2),
   ];
 
-  #selected = 0;
-  #pressedIndex = -1;
+  private _selected = 0;
+  private _pressedIndex = -1;
 
   update(): void {
     if (b.isPressed("x") || b.isPressed("o")) {
-      this.#pressedIndex = this.#selected;
+      this._pressedIndex = this._selected;
     } else {
-      this.#pressedIndex = -1;
+      this._pressedIndex = -1;
     }
 
     if (b.wasJustPressed("up")) {
-      this.#selected = Math.max(0, this.#selected - 1);
+      this._selected = Math.max(0, this._selected - 1);
     }
     if (b.wasJustPressed("down")) {
-      this.#selected = Math.min(1, this.#selected + 1);
+      this._selected = Math.min(1, this._selected + 1);
     }
 
     if (b.wasJustReleased("x") || b.wasJustReleased("o")) {
-      if (this.#selected === 0) {
+      if (this._selected === 0) {
         PauseMenu.isGamePaused = false;
-      } else if (this.#selected === 1) {
+      } else if (this._selected === 1) {
         b.restart();
       }
     }
@@ -67,21 +67,21 @@ export class PauseMenu {
     b.print(
       "continue",
       xy.add(
-        padding + (this.#selected === 0 ? 1 : 0),
-        padding + (this.#pressedIndex === 0 ? 1 : 0)
+        padding + (this._selected === 0 ? 1 : 0),
+        padding + (this._pressedIndex === 0 ? 1 : 0)
       ),
-      this.#pressedIndex === 0 ? c._15_peach : c._7_white
+      this._pressedIndex === 0 ? c._15_peach : c._7_white
     );
     b.print(
       "restart",
       xy.add(
-        padding + (this.#selected === 1 ? 1 : 0),
+        padding + (this._selected === 1 ? 1 : 0),
         padding +
           textContinueWh.y +
           gapBetweenLines +
-          (this.#pressedIndex === 1 ? 1 : 0)
+          (this._pressedIndex === 1 ? 1 : 0)
       ),
-      this.#pressedIndex === 1 ? c._15_peach : c._7_white
+      this._pressedIndex === 1 ? c._15_peach : c._7_white
     );
     for (const offset of PauseMenu.#arrowPixelsOffsets) {
       b.pixel(
@@ -89,7 +89,7 @@ export class PauseMenu {
           .add(
             padding,
             padding +
-              (this.#selected === 1 ? textContinueWh.y + gapBetweenLines : 0)
+              (this._selected === 1 ? textContinueWh.y + gapBetweenLines : 0)
           )
           .sub(4, 0)
           .add(offset),

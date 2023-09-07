@@ -1,12 +1,15 @@
+import { Collisions } from "../collisions/Collisions";
 import { b } from "../globals";
+import { CurrentMission } from "../missions/CurrentMission";
 import { Enemy } from "./Enemy";
+import { EnemyBullet } from "./EnemyBullet";
 import { Level } from "./Level";
 import { LevelDescriptor } from "./LevelDescriptor";
 import { Player } from "./Player";
 import { PlayerBullet } from "./PlayerBullet";
 
 export class Game {
-  private readonly _health: number;
+  private _health: number;
   get health(): number {
     return this._health;
   }
@@ -17,12 +20,13 @@ export class Game {
 
   private readonly _level: Level = new Level(new LevelDescriptor());
 
-  private readonly _player: Player;
+  private _player: Player | null;
   // TODO: consider poll of enemies for memory reusage
-  private readonly _enemies: Enemy[] = [];
+  private _enemies: Enemy[] = [];
 
   // TODO: consider poll of bullets for memory reusage
   private _playerBullets: PlayerBullet[] = [];
+  private _enemyBullets: EnemyBullet[] = [];
 
   constructor(params: {
     health: number;
@@ -49,7 +53,7 @@ export class Game {
 
       local camera_shake_timer, boss = new_timer(0)
 
-      local enemy_bullets, powerups, explosions, shockwaves, shockwave_enemy_hits, floats =  {}, {}, {}, {}, {}, {}
+      local powerups, explosions, shockwaves, shockwave_enemy_hits, floats =  {}, {}, {}, {}, {}
   */
 
     this._player = new Player({
@@ -59,36 +63,38 @@ export class Game {
         // _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
         this._playerBullets.push(...bullets);
       },
-      /*
-          on_shockwave_triggered = function(shockwave)
-              _sfx_play(_sfx_player_shockwave, 2)
-              add(shockwaves, shockwave)
-          end,
-          on_damaged = function()
-              _sfx_play(_sfx_damage_player, 2)
-          end,
-          on_destroyed = function(collision_circle)
-              _sfx_play(_sfx_destroy_player, 3)
-              _add_all(
-                  explosions,
-                  new_explosion(collision_circle.xy, collision_circle.r),
-                  new_explosion(collision_circle.xy, 2 * collision_circle.r, 4 + flr(rnd(8))),
-                  new_explosion(collision_circle.xy, 3 * collision_circle.r, 12 + flr(rnd(8)))
-              )
-          end,
-       */
+      // TODO
+      // on_shockwave_triggered = function(shockwave)
+      //     _sfx_play(_sfx_player_shockwave, 2)
+      //     add(shockwaves, shockwave)
+      // end,
+      onDamaged: () => {
+        // TODO
+        //    _sfx_play(_sfx_damage_player, 2)
+      },
+      onDestroyed: (playerCc) => {
+        // TODO
+        //    _sfx_play(_sfx_destroy_player, 3)
+        // TODO
+        //    _add_all(
+        //        explosions,
+        //        new_explosion(collision_circle.xy, collision_circle.r),
+        //        new_explosion(collision_circle.xy, 2 * collision_circle.r, 4 + flr(rnd(8))),
+        //        new_explosion(collision_circle.xy, 3 * collision_circle.r, 12 + flr(rnd(8)))
+        //    )
+      },
     });
+  }
+
+  private _handlePlayerDamage(): void {
+    // TODO
+    // game.fast_movement, game.triple_shoot, game.fast_shoot, camera_shake_timer = false, false, false, new_timer(12)
+    this._health -= 1;
+    this._player?.takeDamage(this._health);
   }
 
   // TODO
   /*
-
-    local function handle_player_damage()
-        game.fast_movement, game.triple_shoot, game.fast_shoot, camera_shake_timer = false, false, false, new_timer(12)
-        game.health = game.health - 1
-        player.take_damage(game.health)
-    end
-
     local function handle_powerup(powerup_type, powerup_xy)
         local has_effect = false
         if powerup_type == "h" then
@@ -124,104 +130,120 @@ export class Game {
         )
 
     end
-
-    local function handle_collisions()
-        -- player vs powerups
-        for powerup in all(powerups) do
-            if not powerup.has_finished() then
-                if _collisions.are_colliding(player, powerup) then
-                    powerup.pick()
-                    handle_powerup(powerup.powerup_type, powerup.collision_circle().xy)
-                end
-            end
-        end
-
-        -- shockwaves vs enemies + player bullets vs enemies + player vs enemies
-        for enemy in all(enemies) do
-            for enemy_cc in all(enemy.collision_circles()) do
-                for shockwave in all(shockwaves) do
-                    local combined_id = shockwave.id .. "-" .. enemy.id
-                    shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
-                    if not enemy.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
-                        if _collisions.are_colliding(shockwave, enemy_cc, {
-                            ignore_gameplay_area_check = true,
-                        }) then
-                            enemy.take_damage(2)
-                            shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
-                        end
-                    end
-                end
-                for player_bullet in all(player_bullets) do
-                    if not enemy.has_finished() and not player_bullet.has_finished() then
-                        if _collisions.are_colliding(player_bullet, enemy_cc) then
-                            enemy.take_damage(1)
-                            player_bullet.destroy()
-                        end
-                    end
-                end
-                if not enemy.has_finished() and not player.is_invincible_after_damage() then
-                    if _collisions.are_colliding(player, enemy_cc) then
-                        enemy.take_damage(1)
-                        handle_player_damage()
-                    end
-                end
-            end
-        end
-
-        -- shockwaves vs boss + player bullets vs boss + player vs boss
-        if boss and not boss.invincible_during_intro then
-            for boss_cc in all(boss.collision_circles()) do
-                for shockwave in all(shockwaves) do
-                    local combined_id = shockwave.id .. "-boss"
-                    shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
-                    if not boss.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
-                        if _collisions.are_colliding(shockwave, boss_cc, {
-                            ignore_gameplay_area_check = true,
-                        }) then
-                            boss.take_damage(2)
-                            shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
-                        end
-                    end
-                end
-                for player_bullet in all(player_bullets) do
-                    if not boss.has_finished() and not player_bullet.has_finished() then
-                        if _collisions.are_colliding(player_bullet, boss_cc) then
-                            boss.take_damage(1)
-                            player_bullet.destroy()
-                        end
-                    end
-                end
-                if not boss.has_finished() and not player.is_invincible_after_damage() then
-                    if _collisions.are_colliding(player, boss_cc) then
-                        boss.take_damage(1)
-                        handle_player_damage()
-                    end
-                end
-            end
-        end
-
-        -- shockwaves vs enemy bullets + player vs enemy bullets
-        for enemy_bullet in all(enemy_bullets) do
-            for shockwave in all(shockwaves) do
-                if not enemy_bullet.has_finished() and not shockwave.has_finished() then
-                    if _collisions.are_colliding(shockwave, enemy_bullet) then
-                        enemy_bullet.destroy()
-                    end
-                end
-            end
-            if not enemy_bullet.has_finished() and not player.is_invincible_after_damage() then
-                if _collisions.are_colliding(enemy_bullet, player) then
-                    handle_player_damage()
-                    enemy_bullet.destroy()
-                end
-            end
-        end
-    end
-
-    --
-
-    game.mission_progress_fraction = level.progress_fraction
     */
+  //
+
+  private _handleCollisions(): void {
+    if (!this._player) {
+      return;
+    }
+
+    // TODO
+    //     -- player vs powerups
+    //     for powerup in all(powerups) do
+    //         if not powerup.has_finished() then
+    //             if _collisions.are_colliding(player, powerup) then
+    //                 powerup.pick()
+    //                 handle_powerup(powerup.powerup_type, powerup.collision_circle().xy)
+    //             end
+    //         end
+    //     end
+    //
+
+    // shockwaves vs enemies + player bullets vs enemies + player vs enemies
+    for (const enemy of this._enemies) {
+      for (const enemyCc of enemy.collisionCircles) {
+        // TODO
+        //             for shockwave in all(shockwaves) do
+        //                 local combined_id = shockwave.id .. "-" .. enemy.id
+        //                 shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
+        //                 if not enemy.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
+        //                     if _collisions.are_colliding(shockwave, enemy_cc, {
+        //                         ignore_gameplay_area_check = true,
+        //                     }) then
+        //                         enemy.take_damage(2)
+        //                         shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
+        //                     end
+        //                 end
+        //             end
+        for (const playerBullet of this._playerBullets) {
+          if (!enemy.hasFinished && !playerBullet.hasFinished) {
+            if (
+              Collisions.areColliding(playerBullet.collisionCircle, enemyCc)
+            ) {
+              enemy.takeDamage(1);
+              playerBullet.destroy();
+            }
+          }
+        }
+        if (!enemy.hasFinished && !this._player.isInvincibleAfterDamage()) {
+          if (Collisions.areColliding(this._player.collisionCircle, enemyCc)) {
+            enemy.takeDamage(1);
+            this._handlePlayerDamage();
+          }
+        }
+      }
+    }
+
+    // TODO
+    //     -- shockwaves vs boss + player bullets vs boss + player vs boss
+    //     if boss and not boss.invincible_during_intro then
+    //         for boss_cc in all(boss.collision_circles()) do
+    //             for shockwave in all(shockwaves) do
+    //                 local combined_id = shockwave.id .. "-boss"
+    //                 shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
+    //                 if not boss.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
+    //                     if _collisions.are_colliding(shockwave, boss_cc, {
+    //                         ignore_gameplay_area_check = true,
+    //                     }) then
+    //                         boss.take_damage(2)
+    //                         shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
+    //                     end
+    //                 end
+    //             end
+    //             for player_bullet in all(player_bullets) do
+    //                 if not boss.has_finished() and not player_bullet.has_finished() then
+    //                     if _collisions.are_colliding(player_bullet, boss_cc) then
+    //                         boss.take_damage(1)
+    //                         player_bullet.destroy()
+    //                     end
+    //                 end
+    //             end
+    //             if not boss.has_finished() and not player.is_invincible_after_damage() then
+    //                 if _collisions.are_colliding(player, boss_cc) then
+    //                     boss.take_damage(1)
+    //                     handle_player_damage()
+    //                 end
+    //             end
+    //         end
+    //     end
+
+    // shockwaves vs enemy bullets + player vs enemy bullets
+    for (const enemyBullet of this._enemyBullets) {
+      // TODO
+      //         for shockwave in all(shockwaves) do
+      //             if not enemy_bullet.has_finished() and not shockwave.has_finished() then
+      //                 if _collisions.are_colliding(shockwave, enemy_bullet) then
+      //                     enemy_bullet.destroy()
+      //                 end
+      //             end
+      //         end
+      if (!enemyBullet.hasFinished && !this._player.isInvincibleAfterDamage()) {
+        if (
+          Collisions.areColliding(
+            enemyBullet.collisionCircle,
+            this._player.collisionCircle
+          )
+        ) {
+          this._handlePlayerDamage();
+          enemyBullet.destroy();
+        }
+      }
+    }
+  }
+
+  // TODO
+  // game.mission_progress_fraction = level.progress_fraction
 
   enterEnemiesPhase(): void {
     this._level.enterPhaseMain();
@@ -293,14 +315,13 @@ export class Game {
      */
 
   preUpdate(): void {
+    if (this._player?.hasFinished) {
+      this._player = null;
+      this._playerBullets = [];
+    }
+
     // TODO
     /*
-        function game._post_draw()
-        if player and player.has_finished() then
-            player = nil
-            player_bullets = {}
-        end
-
         if boss and boss.has_finished() then
             -- we assume here there are no enemies on a screen at the same time as boss is,
             -- therefore we can just remove all enemy bullets when boss is destroyed
@@ -310,6 +331,8 @@ export class Game {
 
     // TODO
     this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
+    this._enemyBullets = this._enemyBullets.filter((eb) => !eb.hasFinished);
+    this._enemies = this._enemies.filter((e) => !e.hasFinished);
     /*
         _flattened_for_each(
             shockwaves,
@@ -325,15 +348,11 @@ export class Game {
                 end
             end
         )
-    end
-
      */
   }
 
   update(): void {
-    // TODO
-    // if player then
-    this._player.setMovement(
+    this._player?.setMovement(
       b.isPressed("left"),
       b.isPressed("right"),
       b.isPressed("up"),
@@ -341,8 +360,8 @@ export class Game {
     );
     if (b.isPressed("x")) {
       // TODO
-      this._player.fire();
       // player.fire(game.fast_shoot, game.triple_shoot)
+      this._player?.fire();
     }
     // TODO
     /*
@@ -354,13 +373,12 @@ export class Game {
                 end
             end
         */
-    // TODO
-    // end
 
     // TODO
     this._level.update();
     this._playerBullets.forEach((pb) => pb.update());
-    this._player.update();
+    this._enemyBullets.forEach((eb) => eb.update());
+    this._player?.update();
     this._enemies.forEach((e) => e.update());
     /*
         _flattened_for_each(
@@ -379,38 +397,42 @@ export class Game {
                 game_object._update()
             end
         )
+    */
 
-        if player then
-            handle_collisions()
-        end
-        */
+    this._handleCollisions();
 
     for (const enemyToSpawn of this._level.enemiesToSpawn()) {
       this._enemies.push(
         new Enemy({
+          properties: CurrentMission.m.enemyPropertiesFor(enemyToSpawn.id),
           startXy: enemyToSpawn.xy,
-          // TODO
-          // enemy_properties = _m_enemy_properties_for(enemy_to_spawn.enemy_map_marker),
-          // on_bullets_spawned = function(spawned_enemy_bullets_fn, enemy_movement)
-          //     if player then
-          //         for seb in all(spawned_enemy_bullets_fn(enemy_movement, player.collision_circle())) do
-          //             add(enemy_bullets, seb)
-          //         end
-          //     end
-          // end,
-          // on_damaged = function(collision_circle)
-          //     _sfx_play(_sfx_damage_enemy)
-          //     add(explosions, new_explosion(collision_circle.xy, .5 * collision_circle.r))
-          // end,
-          // on_destroyed = function(collision_circle, powerup_type, score_to_add)
-          //     _sfx_play(_sfx_destroy_enemy)
-          //     game.score.add(score_to_add)
-          //     add(floats, new_float(collision_circle.xy, score_to_add))
-          //     add(explosions, new_explosion(collision_circle.xy, 2.5 * collision_circle.r))
-          //     if powerup_type ~= "-" then
-          //         add(powerups, new_powerup(collision_circle.xy, powerup_type))
-          //     end
-          // end,
+          onBulletsSpawned: (spawnBulletsFn, enemyMovement) => {
+            // TODO
+            //     if player then
+            // TODO
+            this._enemyBullets.push(...spawnBulletsFn(enemyMovement));
+            //         for seb in all(spawned_enemy_bullets_fn(enemy_movement, player.collision_circle())) do
+            //             add(enemy_bullets, seb)
+            //         end
+            //     end
+          },
+          // TODO: params: collision_circle
+          onDamaged: () => {
+            // TODO
+            //     _sfx_play(_sfx_damage_enemy)
+            //     add(explosions, new_explosion(collision_circle.xy, .5 * collision_circle.r))
+          },
+          // TODO: params: collision_circle, powerup_type, score_to_add
+          onDestroyed: () => {
+            // TODO
+            //     _sfx_play(_sfx_destroy_enemy)
+            //     game.score.add(score_to_add)
+            //     add(floats, new_float(collision_circle.xy, score_to_add))
+            //     add(explosions, new_explosion(collision_circle.xy, 2.5 * collision_circle.r))
+            //     if powerup_type ~= "-" then
+            //         add(powerups, new_powerup(collision_circle.xy, powerup_type))
+            //     end
+          },
         })
       );
     }
@@ -424,6 +446,16 @@ export class Game {
             game.boss_health = boss.health
         end
      */
+
+    // TODO: log everything that might matter
+    b.logDebug(
+      "e:",
+      this._enemies.length,
+      "pb:",
+      this._playerBullets.length,
+      "eb:",
+      this._enemyBullets.length
+    );
   }
 
   draw(): void {
@@ -434,7 +466,8 @@ export class Game {
     this._level.draw();
     this._enemies.forEach((e) => e.draw());
     this._playerBullets.forEach((pb) => pb.draw());
-    this._player.draw();
+    this._enemyBullets.forEach((eb) => eb.draw());
+    this._player?.draw();
     /*
           _flattened_for_each(
               { level },
@@ -453,32 +486,39 @@ export class Game {
           )
           clip()
 
-          -- DEBUG:
-          --for enemy in all(enemies) do
-          --    for enemy_cc in all(enemy.collision_circles()) do
-          --        _collisions._debug_draw_collision_circle(enemy_cc)
-          --    end
-          --end
-          --_flattened_for_each(
-          --player_bullets,
-          --enemy_bullets,
-          --    boss and boss.collision_circles() or nil,
-          --{ player },
-          --powerups,
-          --    function(game_object_or_collision_circle)
-          --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
-          --    end
-          --)
-
-          if camera_shake_timer.ttl > 0 then
-              local factor = camera_shake_timer.ttl - 1
-              camera(
-                  rnd(factor) - .5 * factor,
-                  rnd(factor) - .5 * factor
-              )
-          end
-      end
-
        */
+
+    // TODO
+    if (b.debug) {
+      for (const enemy of this._enemies) {
+        for (const enemyCc of enemy.collisionCircles) {
+          Collisions.debugDrawCollisionCircle(enemyCc);
+        }
+      }
+    }
+    for (const playerBullet of this._playerBullets) {
+      Collisions.debugDrawCollisionCircle(playerBullet.collisionCircle);
+    }
+    for (const enemyBullet of this._enemyBullets) {
+      Collisions.debugDrawCollisionCircle(enemyBullet.collisionCircle);
+    }
+    // TODO
+    // --    boss and boss.collision_circles() or nil,
+    // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
+    if (this._player) {
+      Collisions.debugDrawCollisionCircle(this._player.collisionCircle);
+    }
+    // TODO
+    // --powerups,
+    // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
+
+    // TODO
+    // if camera_shake_timer.ttl > 0 then
+    //     local factor = camera_shake_timer.ttl - 1
+    //     camera(
+    //         rnd(factor) - .5 * factor,
+    //         rnd(factor) - .5 * factor
+    //     )
+    // end
   }
 }

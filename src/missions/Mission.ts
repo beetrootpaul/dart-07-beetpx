@@ -1,4 +1,5 @@
 import { SolidColor } from "@beetpx/beetpx";
+import { EnemyProperties } from "../game/EnemyProperties";
 
 export interface Mission {
   readonly missionName: string;
@@ -18,4 +19,6 @@ export interface Mission {
 
   levelBgUpdate(): void;
   levelBgDraw(): void;
+
+  enemyPropertiesFor(enemyId: string): EnemyProperties;
 }

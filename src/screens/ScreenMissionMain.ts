@@ -4,6 +4,7 @@ import { Hud } from "../gui/Hud";
 import { SlidingInfo } from "../gui/SlidingInfo";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
+import { ScreenDefeat } from "./ScreenDefeat";
 
 export class ScreenMissionMain implements GameScreen {
   private readonly _game: Game;
@@ -95,13 +96,9 @@ export class ScreenMissionMain implements GameScreen {
       // return new_screen_mission_boss(game, hud)
     }
 
-    // TODO
-    // if game.health <= 0 then
-    //     return new_screen_defeat(game, hud)
-    //     -- DEBUG:
-    //     --return new_screen_over(game, game.shockwave_charges == 0)
-    // end
-    return;
+    if (this._game.health <= 0) {
+      return new ScreenDefeat({ game: this._game, hud: this._hud });
+    }
   }
 
   update(): void {
