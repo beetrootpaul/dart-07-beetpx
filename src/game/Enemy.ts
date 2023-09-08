@@ -1,4 +1,4 @@
-import { Vector2d } from "@beetpx/beetpx";
+import { Timer, Vector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g } from "../globals";
 import { Movement } from "../movement/Movement";
@@ -22,6 +22,7 @@ export class Enemy {
 
   private _health: number;
   private _isDestroyed: boolean = false;
+  private _flashingAfterDamageTimer: Timer | null = null;
 
   constructor(params: {
     properties: EnemyProperties;
@@ -47,11 +48,6 @@ export class Enemy {
     //         next_id = next_id + 1
     //
     //         local bullet_fire_timer = enemy_properties.bullet_fire_timer or new_fake_timer()
-    //
-    //         local ship_sprite_props_txt, flash_sprite_props_txt = _unpack_split(enemy_properties[3], "|")
-    //         local ship_sprite, flash_sprite = new_static_sprite(ship_sprite_props_txt), new_static_sprite(flash_sprite_props_txt)
-    //
-    //         local flashing_after_damage_timer
   }
 
   // TODO
@@ -70,8 +66,8 @@ export class Enemy {
     //
     this._health = Math.max(0, this._health - damage);
     if (this._health > 0) {
+      this._flashingAfterDamageTimer = new Timer({ frames: 4 });
       // TODO
-      //                     flashing_after_damage_timer = new_timer(4)
       //                     on_damaged(main_collision_circle)
       this._onDamaged();
     } else {
@@ -116,21 +112,17 @@ export class Enemy {
       }
     }
 
-    // TODO
-    //                 if flashing_after_damage_timer then
-    //                     if flashing_after_damage_timer.ttl <= 0 then
-    //                         flashing_after_damage_timer = nil
-    //                     else
-    //                         flashing_after_damage_timer._update()
-    //                     end
-    //                 end
+    if (this._flashingAfterDamageTimer?.hasFinished) {
+      this._flashingAfterDamageTimer = null;
+    }
+    this._flashingAfterDamageTimer?.update();
   }
 
   draw(): void {
     this._properties.spriteMain.draw(this._movement.xy);
-    // TODO
-    //                 if flashing_after_damage_timer and flashing_after_damage_timer.ttl > 0 then
-    //                     flash_sprite._draw(movement.xy)
-    //                 end
+
+    if (!(this._flashingAfterDamageTimer?.hasFinished ?? true)) {
+      this._properties.spriteFlash.draw(this._movement.xy);
+    }
   }
 }

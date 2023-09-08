@@ -495,22 +495,22 @@ export class Game {
           Collisions.debugDrawCollisionCircle(enemyCc);
         }
       }
+      for (const playerBullet of this._playerBullets) {
+        Collisions.debugDrawCollisionCircle(playerBullet.collisionCircle);
+      }
+      for (const enemyBullet of this._enemyBullets) {
+        Collisions.debugDrawCollisionCircle(enemyBullet.collisionCircle);
+      }
+      // TODO
+      // --    boss and boss.collision_circles() or nil,
+      // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
+      if (this._player) {
+        Collisions.debugDrawCollisionCircle(this._player.collisionCircle);
+      }
+      // TODO
+      // --powerups,
+      // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
     }
-    for (const playerBullet of this._playerBullets) {
-      Collisions.debugDrawCollisionCircle(playerBullet.collisionCircle);
-    }
-    for (const enemyBullet of this._enemyBullets) {
-      Collisions.debugDrawCollisionCircle(enemyBullet.collisionCircle);
-    }
-    // TODO
-    // --    boss and boss.collision_circles() or nil,
-    // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
-    if (this._player) {
-      Collisions.debugDrawCollisionCircle(this._player.collisionCircle);
-    }
-    // TODO
-    // --powerups,
-    // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
 
     // TODO
     // if camera_shake_timer.ttl > 0 then

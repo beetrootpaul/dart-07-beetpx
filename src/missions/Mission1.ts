@@ -91,9 +91,8 @@ export class Mission1 implements Mission {
           //             -- enemy: fast and small
           //             [74] = {
           //                 2,
-          // TODO
-          //                 "8,8,0,88|6,6,22,79",
           spriteMain: aspr_(8, 8, [0], 88),
+          spriteFlash: aspr_(6, 6, [22], 79),
           collisionCirclesProps: [{ r: 3, offset: v_(0, 1) }],
           // TODO
           //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
@@ -108,9 +107,8 @@ export class Mission1 implements Mission {
           // TODO
           //             [75] = {
           //                 5,
-          // TODO
-          //                 "10,10,22,86|8,8,13,88",
           spriteMain: aspr_(10, 10, [22], 86),
+          spriteFlash: aspr_(8, 8, [13], 88),
           collisionCirclesProps: [{ r: 4 }],
           // TODO
           //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
@@ -145,9 +143,8 @@ export class Mission1 implements Mission {
           // TODO
           //             [76] = {
           //                 20,
-          // TODO
-          //                 "16,14,22,64|14,12,32,84",
           spriteMain: aspr_(16, 14, [22], 64),
+          spriteFlash: aspr_(14, 12, [32], 84),
           collisionCirclesProps: [{ r: 7 }],
           // TODO
           //                 "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
@@ -174,9 +171,8 @@ export class Mission1 implements Mission {
           // TODO
           //             [77] = {
           //                 100,
-          // TODO
-          //                 "24,20,64,64|22,18,88,65",
           spriteMain: aspr_(24, 20, [64], 64),
+          spriteFlash: aspr_(22, 18, [88], 65),
           collisionCirclesProps: [
             { r: 10, offset: v_(0, 1) },
             { r: 5, offset: v_(-7, 0) },
@@ -229,9 +225,8 @@ export class Mission1 implements Mission {
           // TODO
           //             [78] = {
           //                 40,
-          // TODO
-          //                 "8,22,50,64|6,20,58,65",
           spriteMain: aspr_(8, 22, [50], 64),
+          spriteFlash: aspr_(6, 20, [58], 65),
           collisionCirclesProps: [
             { r: 4 },
             { r: 4, offset: v_(0, 7) },
@@ -292,9 +287,8 @@ export class Mission1 implements Mission {
           // TODO
           //             [79] = {
           //                 50,
-          // TODO
-          //                 "22,24,0,64|12,12,38,64",
           spriteMain: aspr_(22, 24, [0], 64),
+          spriteFlash: aspr_(12, 12, [38], 64),
           collisionCirclesProps: [{ r: 6 }],
           // TODO
           //                 "-,-,-,h,h,m,f,t,t,s,s,s",
