@@ -1,11 +1,20 @@
-import { Timer, v_, Vector2d } from "@beetpx/beetpx";
+import {
+  ColorMapping,
+  Timer,
+  transparent_,
+  v_,
+  Vector2d,
+} from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { g } from "../globals";
+import { b, c, g } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Throttle } from "../misc/Throttle";
+import { Pico8Colors } from "../pico8/Pico8Color";
 import { PlayerBullet } from "./PlayerBullet";
 
 export class Player {
+  private static readonly invincibilityFlashFrames: number = 5;
+
   private readonly _onBulletsSpawned: Throttle<
     (bullets: PlayerBullet[]) => void
   >;
@@ -71,8 +80,6 @@ export class Player {
     // TODO
     // local jet_sprite = jet_sprite_visible
 
-    // TODO
-    // local invincibility_flash_duration, is_destroyed = 6, false
     this._xy = v_(g.gameAreaSize.x / 2, g.gameAreaSize.y - 28);
   }
 
@@ -165,10 +172,9 @@ export class Player {
 
   takeDamage(updatedHealth: number): void {
     if (updatedHealth > 0) {
-      // TODO
-      //         -- we start with "-1" in order to avoid 1 frame of non-flash due to how "%" works (see "_draw()")
-      //         invincible_after_damage_timer = new_timer(5 * invincibility_flash_duration - 1)
-      this._invincibleAfterDamageTimer = new Timer({ frames: 60 });
+      this._invincibleAfterDamageTimer = new Timer({
+        frames: 5 * Player.invincibilityFlashFrames,
+      });
       this._onDamaged();
     } else {
       this._isDestroyed = true;
@@ -191,13 +197,39 @@ export class Player {
   }
 
   draw(): void {
-    // TODO
-    // if invincible_after_damage_timer and invincible_after_damage_timer.ttl % (2 * invincibility_flash_duration) < invincibility_flash_duration then
-    //     pal(split "1,7,7,7,7,7,7,7,7,7,7,7,7,7,7")
-    // end
+    let prevMapping: ColorMapping | undefined;
+    if (
+      this._invincibleAfterDamageTimer &&
+      this._invincibleAfterDamageTimer.framesLeft %
+        (2 * Player.invincibilityFlashFrames) <
+        Player.invincibilityFlashFrames
+    ) {
+      prevMapping = b.mapSpriteColors([
+        { from: Pico8Colors._0_black, to: c._7_white },
+        { from: Pico8Colors._1_darkBlue, to: c._1_darker_blue },
+        { from: Pico8Colors._2_darkPurple, to: c._7_white },
+        { from: Pico8Colors._3_darkGreen, to: c._7_white },
+        { from: Pico8Colors._4_brown, to: c._7_white },
+        { from: Pico8Colors._5_darkGrey, to: c._7_white },
+        { from: Pico8Colors._6_lightGrey, to: c._7_white },
+        { from: Pico8Colors._7_white, to: c._7_white },
+        { from: Pico8Colors._8_red, to: c._7_white },
+        { from: Pico8Colors._9_orange, to: c._7_white },
+        { from: Pico8Colors._10_yellow, to: transparent_ },
+        { from: Pico8Colors._11_green, to: transparent_ },
+        { from: Pico8Colors._12_blue, to: c._7_white },
+        { from: Pico8Colors._13_lavender, to: c._7_white },
+        { from: Pico8Colors._14_pink, to: c._7_white },
+        { from: Pico8Colors._15_lightPeach, to: c._7_white },
+      ]);
+    }
+
     this._shipSpriteCurrent.draw(this._xy);
     // TODO
     // jet_sprite._draw(xy)
-    // pal()
+
+    if (prevMapping) {
+      b.mapSpriteColors(prevMapping);
+    }
   }
 }

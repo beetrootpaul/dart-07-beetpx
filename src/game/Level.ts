@@ -2,8 +2,9 @@
 //   - distance = how many tiles we have scrolled forward (can be fraction)
 //   - lane     = which row of tiles are we talking about, perpendicular to distance
 import { spr_, transparent_, v_, Vector2d } from "@beetpx/beetpx";
-import { b, c, g } from "../globals";
+import { b, g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
+import { Pico8Colors } from "../pico8/Pico8Color";
 import { LevelDescriptor } from "./LevelDescriptor";
 
 export class Level {
@@ -110,7 +111,7 @@ export class Level {
 
     if (this._phase === "main") {
       const prevMapping = b.mapSpriteColors([
-        { from: c._0_black, to: transparent_ },
+        { from: Pico8Colors._0_black, to: transparent_ },
       ]);
 
       for (

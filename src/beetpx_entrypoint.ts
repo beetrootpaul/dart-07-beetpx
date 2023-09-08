@@ -1,3 +1,4 @@
+import { transparent_ } from "@beetpx/beetpx";
 import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { LevelDescriptor } from "./game/LevelDescriptor";
@@ -73,8 +74,8 @@ b.init(
         { from: Pico8Colors._7_white, to: c._7_white },
         { from: Pico8Colors._8_red, to: c._8_red },
         { from: Pico8Colors._9_orange, to: c._9_dark_orange },
-        { from: Pico8Colors._10_yellow, to: c._10_unused },
-        { from: Pico8Colors._11_green, to: c._11_transparent },
+        { from: Pico8Colors._10_yellow, to: transparent_ },
+        { from: Pico8Colors._11_green, to: transparent_ },
         { from: Pico8Colors._12_blue, to: c._12_blue },
         { from: Pico8Colors._13_lavender, to: c._13_lavender },
         { from: Pico8Colors._14_pink, to: c._14_mauve },
