@@ -21,10 +21,37 @@ export class Player {
   private readonly _onDamaged: () => void;
   private readonly _onDestroyed: (playerCc: CollisionCircle) => void;
 
-  private readonly _shipSpriteNeutral: AnimatedSprite;
-  private readonly _shipSpriteFlyingLeft: AnimatedSprite;
-  private readonly _shipSpriteFlyingRight: AnimatedSprite;
-  private _shipSpriteCurrent: AnimatedSprite;
+  private readonly _shipSpriteNeutral: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    10,
+    10,
+    [19],
+    0
+  );
+  private readonly _shipSpriteFlyingLeft: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    10,
+    10,
+    [9],
+    0
+  );
+  private readonly _shipSpriteFlyingRight: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    10,
+    10,
+    [29],
+    0
+  );
+  private _shipSpriteCurrent: AnimatedSprite = this._shipSpriteNeutral;
+
+  private readonly _jetSpriteVisible: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    4,
+    20,
+    [0, 0, 0, 0, 4, 4, 4, 4],
+    9
+  );
+  private _jetSprite: AnimatedSprite | null = null;
 
   private _xy: Vector2d;
 
@@ -45,40 +72,6 @@ export class Player {
     this._onDestroyed = params.onDestroyed;
     // TODO
     // local w, h = 10, 12
-
-    this._shipSpriteNeutral = new AnimatedSprite(
-      g.assets.mainSpritesheetUrl,
-      10,
-      10,
-      [19],
-      0
-    );
-    this._shipSpriteFlyingLeft = new AnimatedSprite(
-      g.assets.mainSpritesheetUrl,
-      10,
-      10,
-      [9],
-      0
-    );
-    this._shipSpriteFlyingRight = new AnimatedSprite(
-      g.assets.mainSpritesheetUrl,
-      10,
-      10,
-      [29],
-      0
-    );
-    // TODO
-    // local jet_sprite_visible = new_animated_sprite(
-    //     4,
-    //     20,
-    //     split("0,0,0,0,4,4,4,4"),
-    //     9
-    // )
-    // local jet_sprite_hidden = _noop_game_object
-    //
-    this._shipSpriteCurrent = this._shipSpriteNeutral;
-    // TODO
-    // local jet_sprite = jet_sprite_visible
 
     this._xy = v_(g.gameAreaSize.x / 2, g.gameAreaSize.y - 28);
   }
@@ -113,14 +106,13 @@ export class Player {
 
   // TODO params: fast_movement
   setMovement(left: boolean, right: boolean, up: boolean, down: boolean) {
-    // TODO
-    //     jet_sprite = down and jet_sprite_hidden or jet_sprite_visible
-    //     ship_sprite_current = left and ship_sprite_flying_left or (right and ship_sprite_flying_right or ship_sprite_neutral)
     this._shipSpriteCurrent = left
       ? this._shipSpriteFlyingLeft
       : right
       ? this._shipSpriteFlyingRight
       : this._shipSpriteNeutral;
+
+    this._jetSprite = down ? null : this._jetSpriteVisible;
 
     // TODO
     const speed = 1;
@@ -131,7 +123,7 @@ export class Player {
       down ? speed : up ? -speed : 0
     );
     if (diff.x !== 0 && diff.y !== 0) {
-      // fix for a diagonal movement speed
+      // normalization of diagonal speed
       diff = diff.div(1.44);
     }
     // TODO
@@ -191,9 +183,8 @@ export class Player {
     this._onBulletsSpawned.update();
     // TODO
     // on_shockwave_triggered._update()
-    //
-    // TODO
-    // jet_sprite._update()
+
+    this._jetSprite?.update();
   }
 
   draw(): void {
@@ -225,8 +216,8 @@ export class Player {
     }
 
     this._shipSpriteCurrent.draw(this._xy);
-    // TODO
-    // jet_sprite._draw(xy)
+
+    this._jetSprite?.draw(this._xy);
 
     if (prevMapping) {
       b.mapSpriteColors(prevMapping);
