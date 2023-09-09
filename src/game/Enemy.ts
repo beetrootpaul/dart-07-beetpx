@@ -15,8 +15,7 @@ export class Enemy {
     spawnBulletsFn: (enemyMovement: Movement) => EnemyBullet[],
     enemyMovement: Movement
   ) => void;
-  // TODO: params: main_collision_circle
-  private readonly _onDamaged: () => void;
+  private readonly _onDamaged: (mainCollisionCircle: CollisionCircle) => void;
   // TODO: params: powerup_type
   private readonly _onDestroyed: (
     mainCollisionCircle: CollisionCircle,
@@ -34,8 +33,7 @@ export class Enemy {
       spawnBulletsFn: (enemyMovement: Movement) => EnemyBullet[],
       enemyMovement: Movement
     ) => void;
-    // TODO: params: main_collision_circle
-    onDamaged: () => void;
+    onDamaged: (mainCollisionCircle: CollisionCircle) => void;
     // TODO: params: powerup_type
     onDestroyed: (
       mainCollisionCircle: CollisionCircle,
@@ -74,9 +72,7 @@ export class Enemy {
     this._health = Math.max(0, this._health - damage);
     if (this._health > 0) {
       this._flashingAfterDamageTimer = new Timer({ frames: 4 });
-      // TODO
-      //                     on_damaged(main_collision_circle)
-      this._onDamaged();
+      this._onDamaged(mainCollisionCircle);
     } else {
       this._isDestroyed = true;
       // TODO
