@@ -1,6 +1,6 @@
 import { Timer, Vector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { g } from "../globals";
+import { g, u } from "../globals";
 import { Movement } from "../movement/Movement";
 import { EnemyBullet } from "./EnemyBullet";
 import { EnemyProperties } from "./EnemyProperties";
@@ -17,8 +17,11 @@ export class Enemy {
   ) => void;
   // TODO: params: main_collision_circle
   private readonly _onDamaged: () => void;
-  // TODO: params: main_collision_circle, powerup_type, enemy_properties[2]
-  private readonly _onDestroyed: () => void;
+  // TODO: params: powerup_type
+  private readonly _onDestroyed: (
+    mainCollisionCircle: CollisionCircle,
+    scoreToAdd: number
+  ) => void;
 
   private _health: number;
   private _isDestroyed: boolean = false;
@@ -33,8 +36,11 @@ export class Enemy {
     ) => void;
     // TODO: params: main_collision_circle
     onDamaged: () => void;
-    // TODO: params: main_collision_circle, powerup_type, enemy_properties[2]
-    onDestroyed: () => void;
+    // TODO: params: powerup_type
+    onDestroyed: (
+      mainCollisionCircle: CollisionCircle,
+      scoreToAdd: number
+    ) => void;
   }) {
     this._properties = params.properties;
     this._movement = params.properties.movementFactory(params.startXy);
@@ -61,9 +67,10 @@ export class Enemy {
   }
 
   takeDamage(damage: number): void {
-    // TODO
-    //                 local main_collision_circle = collision_circles()[1]
-    //
+    const mainCollisionCircle =
+      this.collisionCircles[0] ??
+      u.throwError(`Enemy has no main collision circle`);
+
     this._health = Math.max(0, this._health - damage);
     if (this._health > 0) {
       this._flashingAfterDamageTimer = new Timer({ frames: 4 });
@@ -74,8 +81,8 @@ export class Enemy {
       this._isDestroyed = true;
       // TODO
       //                     local powerup_type = rnd(split(enemy_properties[5]))
-      //                     on_destroyed(main_collision_circle, powerup_type, enemy_properties[2])
-      this._onDestroyed();
+      // TODO: param: powerup_type
+      this._onDestroyed(mainCollisionCircle, this._properties.score);
     }
   }
 

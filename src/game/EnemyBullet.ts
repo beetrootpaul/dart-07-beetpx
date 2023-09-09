@@ -1,6 +1,6 @@
 import { CollisionCircle } from "../collisions/CollisionCircle";
+import { h } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
-import { isSafelyOutsideGameplayArea } from "../misc/helpers";
 import { Movement } from "../movement/Movement";
 
 export interface EnemyBulletFactory {
@@ -24,7 +24,9 @@ export class EnemyBullet {
   }
 
   get hasFinished(): boolean {
-    return this._isDestroyed || isSafelyOutsideGameplayArea(this._movement.xy);
+    return (
+      this._isDestroyed || h.isSafelyOutsideGameplayArea(this._movement.xy)
+    );
   }
 
   get collisionCircle(): CollisionCircle {

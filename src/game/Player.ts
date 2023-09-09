@@ -13,7 +13,8 @@ import { Pico8Colors } from "../pico8/Pico8Color";
 import { PlayerBullet } from "./PlayerBullet";
 
 export class Player {
-  private static readonly invincibilityFlashFrames: number = 5;
+  private static readonly _invincibilityFlashFrames: number = 5;
+  private static readonly _size: Vector2d = v_(10, 12);
 
   private readonly _onBulletsSpawned: Throttle<
     (bullets: PlayerBullet[]) => void
@@ -66,12 +67,10 @@ export class Player {
     onDestroyed: (playerCc: CollisionCircle) => void;
   }) {
     // TODO
-    // local on_bullets_spawned, on_shockwave_triggered = new_throttle(params.on_bullets_spawned), new_throttle(params.on_shockwave_triggered)
+    // local on_shockwave_triggered = new_throttle(params.on_shockwave_triggered)
     this._onBulletsSpawned = new Throttle(params.onBulletsSpawned);
     this._onDamaged = params.onDamaged;
     this._onDestroyed = params.onDestroyed;
-    // TODO
-    // local w, h = 10, 12
 
     this._xy = v_(g.gameAreaSize.x / 2, g.gameAreaSize.y - 28);
   }
@@ -126,12 +125,12 @@ export class Player {
       // normalization of diagonal speed
       diff = diff.div(1.44);
     }
-    // TODO
-    this._xy = this._xy.add(diff);
-    //     xy = _xy(
-    //         mid(w / 2 + 1, xy.x + x_diff, _gaw - w / 2 - 1),
-    //         mid(h / 2 + 1, xy.y + y_diff, _gah - h / 2 - 1)
-    //     )
+    this._xy = this._xy
+      .add(diff)
+      .clamp(
+        Player._size.div(2).add(1),
+        g.gameAreaSize.sub(Player._size.div(2)).sub(1)
+      );
   }
 
   // TODO
@@ -165,7 +164,7 @@ export class Player {
   takeDamage(updatedHealth: number): void {
     if (updatedHealth > 0) {
       this._invincibleAfterDamageTimer = new Timer({
-        frames: 5 * Player.invincibilityFlashFrames,
+        frames: 5 * Player._invincibilityFlashFrames,
       });
       this._onDamaged();
     } else {
@@ -192,8 +191,8 @@ export class Player {
     if (
       this._invincibleAfterDamageTimer &&
       this._invincibleAfterDamageTimer.framesLeft %
-        (2 * Player.invincibilityFlashFrames) <
-        Player.invincibilityFlashFrames
+        (2 * Player._invincibilityFlashFrames) <
+        Player._invincibilityFlashFrames
     ) {
       prevMapping = b.mapSpriteColors([
         { from: Pico8Colors._0_black, to: c._7_white },

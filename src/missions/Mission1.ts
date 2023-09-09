@@ -87,10 +87,7 @@ export class Mission1 implements Mission {
       case "m1e_fast_and_small":
         return {
           health: 1,
-          // TODO:
-          //             -- enemy: fast and small
-          //             [74] = {
-          //                 2,
+          score: 2,
           spriteMain: aspr_(8, 8, [0], 88),
           spriteFlash: aspr_(6, 6, [22], 79),
           collisionCirclesProps: [{ r: 3, offset: v_(0, 1) }],
@@ -104,9 +101,7 @@ export class Mission1 implements Mission {
       case "m1e_sinusoidal":
         return {
           health: 2,
-          // TODO
-          //             [75] = {
-          //                 5,
+          score: 5,
           spriteMain: aspr_(10, 10, [22], 86),
           spriteFlash: aspr_(8, 8, [13], 88),
           collisionCirclesProps: [{ r: 4 }],
@@ -140,9 +135,7 @@ export class Mission1 implements Mission {
       case "m1e_wait_and_charge":
         return {
           health: 7,
-          // TODO
-          //             [76] = {
-          //                 20,
+          score: 20,
           spriteMain: aspr_(16, 14, [22], 64),
           spriteFlash: aspr_(14, 12, [32], 84),
           collisionCirclesProps: [{ r: 7 }],
@@ -168,9 +161,7 @@ export class Mission1 implements Mission {
       case "m1e_big":
         return {
           health: 40,
-          // TODO
-          //             [77] = {
-          //                 100,
+          score: 100,
           spriteMain: aspr_(24, 20, [64], 64),
           spriteFlash: aspr_(22, 18, [88], 65),
           collisionCirclesProps: [
@@ -222,9 +213,7 @@ export class Mission1 implements Mission {
       case "m1e_aimed_triple_shot":
         return {
           health: 4,
-          // TODO
-          //             [78] = {
-          //                 40,
+          score: 40,
           spriteMain: aspr_(8, 22, [50], 64),
           spriteFlash: aspr_(6, 20, [58], 65),
           collisionCirclesProps: [
@@ -284,9 +273,7 @@ export class Mission1 implements Mission {
       case "m1e_stationary":
         return {
           health: 10,
-          // TODO
-          //             [79] = {
-          //                 50,
+          score: 50,
           spriteMain: aspr_(22, 24, [0], 64),
           spriteFlash: aspr_(12, 12, [38], 64),
           collisionCirclesProps: [{ r: 6 }],

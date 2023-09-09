@@ -3,6 +3,7 @@ import { b } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Enemy } from "./Enemy";
 import { EnemyBullet } from "./EnemyBullet";
+import { Float } from "./Float";
 import { Level } from "./Level";
 import { LevelDescriptor } from "./LevelDescriptor";
 import { Player } from "./Player";
@@ -27,6 +28,9 @@ export class Game {
   // TODO: consider poll of bullets for memory reusage
   private _playerBullets: PlayerBullet[] = [];
   private _enemyBullets: EnemyBullet[] = [];
+
+  // TODO: consider poll of floats for memory reusage
+  private _floats: Float[] = [];
 
   constructor(params: {
     health: number;
@@ -53,7 +57,7 @@ export class Game {
 
       local camera_shake_timer, boss = new_timer(0)
 
-      local powerups, explosions, shockwaves, shockwave_enemy_hits, floats =  {}, {}, {}, {}, {}
+      local powerups, explosions, shockwaves, shockwave_enemy_hits =  {}, {}, {}, {}
   */
 
     this._player = new Player({
@@ -333,6 +337,7 @@ export class Game {
     this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
     this._enemyBullets = this._enemyBullets.filter((eb) => !eb.hasFinished);
     this._enemies = this._enemies.filter((e) => !e.hasFinished);
+    this._floats = this._floats.filter((f) => !f.hasFinished);
     /*
         _flattened_for_each(
             shockwaves,
@@ -380,6 +385,7 @@ export class Game {
     this._enemyBullets.forEach((eb) => eb.update());
     this._player?.update();
     this._enemies.forEach((e) => e.update());
+    this._floats.forEach((f) => f.update());
     /*
         _flattened_for_each(
             { level },
@@ -422,12 +428,18 @@ export class Game {
             //     _sfx_play(_sfx_damage_enemy)
             //     add(explosions, new_explosion(collision_circle.xy, .5 * collision_circle.r))
           },
-          // TODO: params: collision_circle, powerup_type, score_to_add
-          onDestroyed: () => {
+          // TODO: params: powerup_type
+          onDestroyed: (mainCollisionCircle, scoreToAdd) => {
             // TODO
             //     _sfx_play(_sfx_destroy_enemy)
             //     game.score.add(score_to_add)
-            //     add(floats, new_float(collision_circle.xy, score_to_add))
+            this._floats.push(
+              new Float({
+                startXy: mainCollisionCircle.center,
+                score: scoreToAdd,
+              })
+            );
+            // TODO
             //     add(explosions, new_explosion(collision_circle.xy, 2.5 * collision_circle.r))
             //     if powerup_type ~= "-" then
             //         add(powerups, new_powerup(collision_circle.xy, powerup_type))
@@ -468,6 +480,7 @@ export class Game {
     this._playerBullets.forEach((pb) => pb.draw());
     this._enemyBullets.forEach((eb) => eb.draw());
     this._player?.draw();
+    this._floats.forEach((f) => f.draw());
     /*
           _flattened_for_each(
               { level },

@@ -1,7 +1,6 @@
 import { SolidColor, v_ } from "@beetpx/beetpx";
-import { b, g } from "../globals";
+import { b, g, h } from "../globals";
 import { Easing } from "../misc/Easing";
-import { printCentered } from "../misc/helpers";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Movement } from "../movement/Movement";
 import { MovementFixed } from "../movement/MovementFixed";
@@ -65,16 +64,18 @@ export class SlidingInfo {
     const xy = this._movement.xy[this._roundingFn]();
     // TODO
     //  if params.text_1 then
-    printCentered(
+    h.printCentered(
       this._text1,
+      g.gameAreaSize.div(2).x,
       xy.y - 17,
       CurrentMission.m.bgColor,
       this._mainColor
     );
     // TODO
     // end
-    printCentered(
+    h.printCentered(
       this._text2,
+      g.gameAreaSize.div(2).x,
       xy.y - 8,
       CurrentMission.m.bgColor,
       this._mainColor

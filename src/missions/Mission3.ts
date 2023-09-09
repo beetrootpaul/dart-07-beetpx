@@ -143,9 +143,7 @@ export class Mission3 implements Mission {
       case "m3e_stationary":
         return {
           health: 5,
-          // TODO
-          //         [79] = {
-          //             1,
+          score: 1,
           spriteMain: aspr_(16, 16, [0], 64),
           spriteFlash: aspr_(10, 10, [16], 64),
           collisionCirclesProps: [{ r: 5 }],

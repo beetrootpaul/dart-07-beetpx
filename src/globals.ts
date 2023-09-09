@@ -1,4 +1,5 @@
 import { BeetPx, Utils, v_ } from "@beetpx/beetpx";
+import { Helpers } from "./misc/Helpers";
 import { Pico8Colors } from "./pico8/Pico8Color";
 
 export const b = BeetPx;
@@ -22,6 +23,8 @@ export const c = {
 };
 
 export const u = Utils;
+
+export const h = Helpers;
 
 // TODO: inline
 export const g = {

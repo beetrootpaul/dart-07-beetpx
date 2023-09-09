@@ -5,8 +5,7 @@ import { EnemyBullet } from "./EnemyBullet";
 
 export type EnemyProperties = {
   health: number;
-  // TODO
-  //     --   - [2] = score
+  score: number;
   spriteMain: AnimatedSprite;
   spriteFlash: AnimatedSprite;
   // put main/center circle first, since it will be source for explosions etc.
