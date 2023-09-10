@@ -1,4 +1,4 @@
-import { Vector2d } from "@beetpx/beetpx";
+import { Timer, v_, Vector2d } from "@beetpx/beetpx";
 import { Collisions } from "../collisions/Collisions";
 import { b, g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
@@ -56,6 +56,8 @@ export class Game {
 
   readonly score: Score;
 
+  private _cameraShakeTimer: Timer = new Timer({ frames: 0 });
+
   constructor(params: {
     health: number;
     shockwaveCharges: number;
@@ -64,8 +66,6 @@ export class Game {
     tripleShoot: boolean;
     score: number;
   }) {
-    // TODO
-    // local game = {
     this._health = params.health;
     this.score = new Score(params.score);
     // TODO
@@ -75,9 +75,10 @@ export class Game {
     this._fastMovement = params.fastMovement;
     this._fastShoot = params.fastShoot;
     this._tripleShoot = params.tripleShoot;
+
     // TODO
     /*
-      local camera_shake_timer, boss = new_timer(0)
+      local boss
 
       local shockwaves, shockwave_enemy_hits =  {}, {}
   */
@@ -120,12 +121,13 @@ export class Game {
   }
 
   private _handlePlayerDamage(): void {
-    // TODO
-    // camera_shake_timer = new_timer(12)
+    this._cameraShakeTimer = new Timer({ frames: 12 });
+
     this._health -= 1;
     this._fastMovement = false;
     this._fastShoot = false;
     this._tripleShoot = false;
+
     this._player?.takeDamage(this._health);
   }
 
@@ -402,7 +404,7 @@ export class Game {
     // TODO: boss
     this._powerups.forEach((p) => p.update());
     this._explosions.forEach((e) => e.update());
-    // TODO: camera_shake_timer
+    this._cameraShakeTimer.update();
     this._floats.forEach((f) => f.update());
 
     this._handleCollisions();
@@ -525,13 +527,12 @@ export class Game {
       this._powerups.forEach(Collisions.debugDrawCollisionCircle);
     }
 
-    // TODO
-    // if camera_shake_timer.ttl > 0 then
-    //     local factor = camera_shake_timer.ttl - 1
-    //     camera(
-    //         rnd(factor) - .5 * factor,
-    //         rnd(factor) - .5 * factor
-    //     )
-    // end
+    if (this._cameraShakeTimer.framesLeft > 0) {
+      // subtracting 1 here makes the last factor always equal to 0, which makes camera reset to its neutral position
+      const factor = this._cameraShakeTimer.framesLeft - 1;
+      b.setCameraOffset(
+        v_((Math.random() - 0.5) * factor, (Math.random() - 0.5) * factor)
+      );
+    }
   }
 }
