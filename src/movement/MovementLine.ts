@@ -9,13 +9,15 @@ export class MovementLine implements Movement {
       // angle: 0 = right, .25 = down, .5 = left, .75 = up
       angle: number;
       angledSpeed: number;
+      frames?: number;
     }): MovementFactory =>
     (startXy) =>
       new MovementLine(
         startXy,
         params.angle,
         params.angledSpeed,
-        params.baseSpeedXy
+        params.baseSpeedXy,
+        params.frames
       );
 
   private _xy: Vector2d;
@@ -26,7 +28,8 @@ export class MovementLine implements Movement {
     startXy: Vector2d,
     angle: number,
     angledSpeed: number,
-    baseSpeedXy: Vector2d = Vector2d.zero
+    baseSpeedXy: Vector2d = Vector2d.zero,
+    frames?: number
   ) {
     this._xy = startXy;
 
@@ -38,8 +41,7 @@ export class MovementLine implements Movement {
     // TODO
     // local angle = params.target_xy and _angle_between(start_xy, params.target_xy) or params.angle
     // local angled_speed = params.angled_speed or 1
-    // local timer = params.frames and new_timer(params.frames) or new_fake_timer()
-    this._timer = new TimerInfinite();
+    this._timer = frames ? new Timer({ frames }) : new TimerInfinite();
   }
 
   get xy(): Vector2d {

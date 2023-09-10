@@ -1,6 +1,6 @@
-import { Vector2d } from "@beetpx/beetpx";
+import { Timer, Vector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { g } from "../globals";
+import { g, u } from "../globals";
 import { Movement } from "../movement/Movement";
 import { EnemyBullet } from "./EnemyBullet";
 import { EnemyProperties } from "./EnemyProperties";
@@ -15,13 +15,16 @@ export class Enemy {
     spawnBulletsFn: (enemyMovement: Movement) => EnemyBullet[],
     enemyMovement: Movement
   ) => void;
-  // TODO: params: main_collision_circle
-  private readonly _onDamaged: () => void;
-  // TODO: params: main_collision_circle, powerup_type, enemy_properties[2]
-  private readonly _onDestroyed: () => void;
+  private readonly _onDamaged: (mainCollisionCircle: CollisionCircle) => void;
+  // TODO: params: powerup_type
+  private readonly _onDestroyed: (
+    mainCollisionCircle: CollisionCircle,
+    scoreToAdd: number
+  ) => void;
 
   private _health: number;
   private _isDestroyed: boolean = false;
+  private _flashingAfterDamageTimer: Timer | null = null;
 
   constructor(params: {
     properties: EnemyProperties;
@@ -30,10 +33,12 @@ export class Enemy {
       spawnBulletsFn: (enemyMovement: Movement) => EnemyBullet[],
       enemyMovement: Movement
     ) => void;
-    // TODO: params: main_collision_circle
-    onDamaged: () => void;
-    // TODO: params: main_collision_circle, powerup_type, enemy_properties[2]
-    onDestroyed: () => void;
+    onDamaged: (mainCollisionCircle: CollisionCircle) => void;
+    // TODO: params: powerup_type
+    onDestroyed: (
+      mainCollisionCircle: CollisionCircle,
+      scoreToAdd: number
+    ) => void;
   }) {
     this._properties = params.properties;
     this._movement = params.properties.movementFactory(params.startXy);
@@ -47,11 +52,6 @@ export class Enemy {
     //         next_id = next_id + 1
     //
     //         local bullet_fire_timer = enemy_properties.bullet_fire_timer or new_fake_timer()
-    //
-    //         local ship_sprite_props_txt, flash_sprite_props_txt = _unpack_split(enemy_properties[3], "|")
-    //         local ship_sprite, flash_sprite = new_static_sprite(ship_sprite_props_txt), new_static_sprite(flash_sprite_props_txt)
-    //
-    //         local flashing_after_damage_timer
   }
 
   // TODO
@@ -65,21 +65,20 @@ export class Enemy {
   }
 
   takeDamage(damage: number): void {
-    // TODO
-    //                 local main_collision_circle = collision_circles()[1]
-    //
+    const mainCollisionCircle =
+      this.collisionCircles[0] ??
+      u.throwError(`Enemy has no main collision circle`);
+
     this._health = Math.max(0, this._health - damage);
     if (this._health > 0) {
-      // TODO
-      //                     flashing_after_damage_timer = new_timer(4)
-      //                     on_damaged(main_collision_circle)
-      this._onDamaged();
+      this._flashingAfterDamageTimer = new Timer({ frames: 4 });
+      this._onDamaged(mainCollisionCircle);
     } else {
       this._isDestroyed = true;
       // TODO
       //                     local powerup_type = rnd(split(enemy_properties[5]))
-      //                     on_destroyed(main_collision_circle, powerup_type, enemy_properties[2])
-      this._onDestroyed();
+      // TODO: param: powerup_type
+      this._onDestroyed(mainCollisionCircle, this._properties.score);
     }
   }
 
@@ -116,21 +115,17 @@ export class Enemy {
       }
     }
 
-    // TODO
-    //                 if flashing_after_damage_timer then
-    //                     if flashing_after_damage_timer.ttl <= 0 then
-    //                         flashing_after_damage_timer = nil
-    //                     else
-    //                         flashing_after_damage_timer._update()
-    //                     end
-    //                 end
+    if (this._flashingAfterDamageTimer?.hasFinished) {
+      this._flashingAfterDamageTimer = null;
+    }
+    this._flashingAfterDamageTimer?.update();
   }
 
   draw(): void {
     this._properties.spriteMain.draw(this._movement.xy);
-    // TODO
-    //                 if flashing_after_damage_timer and flashing_after_damage_timer.ttl > 0 then
-    //                     flash_sprite._draw(movement.xy)
-    //                 end
+
+    if (!(this._flashingAfterDamageTimer?.hasFinished ?? true)) {
+      this._properties.spriteFlash.draw(this._movement.xy);
+    }
   }
 }

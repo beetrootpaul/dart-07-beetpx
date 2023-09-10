@@ -134,10 +134,13 @@ export class Hud {
       }
     }
 
-    // TODO
-    //                 -- score
-    //                 game.score._draw(xy.x + 17, 4, _color_6_light_grey, _color_2_darker_purple, true)
     //
+    // score
+    //
+    // TODO: param: true
+    game.score.draw(v_(xy.x + 17, 4), c._6_light_grey, c._2_darker_purple);
+
+    // TODO
     //                 -- powerups
     //                 for index, powerup in pairs { "fast_movement", "fast_shoot", "triple_shoot" } do
     //                     _ENV[powerup .. (game[powerup] and "_on" or "_off")]._draw(xy.x - 1, 40 + 6 * index)

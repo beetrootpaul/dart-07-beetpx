@@ -1,21 +1,58 @@
-import { Timer, v_, Vector2d } from "@beetpx/beetpx";
+import {
+  ColorMapping,
+  Timer,
+  transparent_,
+  v_,
+  Vector2d,
+} from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { g } from "../globals";
+import { b, c, g } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Throttle } from "../misc/Throttle";
+import { Pico8Colors } from "../pico8/Pico8Color";
 import { PlayerBullet } from "./PlayerBullet";
 
 export class Player {
+  private static readonly _invincibilityFlashFrames: number = 5;
+  private static readonly _size: Vector2d = v_(10, 12);
+
   private readonly _onBulletsSpawned: Throttle<
     (bullets: PlayerBullet[]) => void
   >;
   private readonly _onDamaged: () => void;
   private readonly _onDestroyed: (playerCc: CollisionCircle) => void;
 
-  private readonly _shipSpriteNeutral: AnimatedSprite;
-  private readonly _shipSpriteFlyingLeft: AnimatedSprite;
-  private readonly _shipSpriteFlyingRight: AnimatedSprite;
-  private _shipSpriteCurrent: AnimatedSprite;
+  private readonly _shipSpriteNeutral: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    10,
+    10,
+    [19],
+    0
+  );
+  private readonly _shipSpriteFlyingLeft: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    10,
+    10,
+    [9],
+    0
+  );
+  private readonly _shipSpriteFlyingRight: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    10,
+    10,
+    [29],
+    0
+  );
+  private _shipSpriteCurrent: AnimatedSprite = this._shipSpriteNeutral;
+
+  private readonly _jetSpriteVisible: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    4,
+    20,
+    [0, 0, 0, 0, 4, 4, 4, 4],
+    9
+  );
+  private _jetSprite: AnimatedSprite | null = null;
 
   private _xy: Vector2d;
 
@@ -30,49 +67,11 @@ export class Player {
     onDestroyed: (playerCc: CollisionCircle) => void;
   }) {
     // TODO
-    // local on_bullets_spawned, on_shockwave_triggered = new_throttle(params.on_bullets_spawned), new_throttle(params.on_shockwave_triggered)
+    // local on_shockwave_triggered = new_throttle(params.on_shockwave_triggered)
     this._onBulletsSpawned = new Throttle(params.onBulletsSpawned);
     this._onDamaged = params.onDamaged;
     this._onDestroyed = params.onDestroyed;
-    // TODO
-    // local w, h = 10, 12
 
-    this._shipSpriteNeutral = new AnimatedSprite(
-      g.assets.mainSpritesheetUrl,
-      10,
-      10,
-      [19],
-      0
-    );
-    this._shipSpriteFlyingLeft = new AnimatedSprite(
-      g.assets.mainSpritesheetUrl,
-      10,
-      10,
-      [9],
-      0
-    );
-    this._shipSpriteFlyingRight = new AnimatedSprite(
-      g.assets.mainSpritesheetUrl,
-      10,
-      10,
-      [29],
-      0
-    );
-    // TODO
-    // local jet_sprite_visible = new_animated_sprite(
-    //     4,
-    //     20,
-    //     split("0,0,0,0,4,4,4,4"),
-    //     9
-    // )
-    // local jet_sprite_hidden = _noop_game_object
-    //
-    this._shipSpriteCurrent = this._shipSpriteNeutral;
-    // TODO
-    // local jet_sprite = jet_sprite_visible
-
-    // TODO
-    // local invincibility_flash_duration, is_destroyed = 6, false
     this._xy = v_(g.gameAreaSize.x / 2, g.gameAreaSize.y - 28);
   }
 
@@ -106,14 +105,13 @@ export class Player {
 
   // TODO params: fast_movement
   setMovement(left: boolean, right: boolean, up: boolean, down: boolean) {
-    // TODO
-    //     jet_sprite = down and jet_sprite_hidden or jet_sprite_visible
-    //     ship_sprite_current = left and ship_sprite_flying_left or (right and ship_sprite_flying_right or ship_sprite_neutral)
     this._shipSpriteCurrent = left
       ? this._shipSpriteFlyingLeft
       : right
       ? this._shipSpriteFlyingRight
       : this._shipSpriteNeutral;
+
+    this._jetSprite = down ? null : this._jetSpriteVisible;
 
     // TODO
     const speed = 1;
@@ -124,15 +122,15 @@ export class Player {
       down ? speed : up ? -speed : 0
     );
     if (diff.x !== 0 && diff.y !== 0) {
-      // fix for a diagonal movement speed
+      // normalization of diagonal speed
       diff = diff.div(1.44);
     }
-    // TODO
-    this._xy = this._xy.add(diff);
-    //     xy = _xy(
-    //         mid(w / 2 + 1, xy.x + x_diff, _gaw - w / 2 - 1),
-    //         mid(h / 2 + 1, xy.y + y_diff, _gah - h / 2 - 1)
-    //     )
+    this._xy = this._xy
+      .add(diff)
+      .clamp(
+        Player._size.div(2).add(1),
+        g.gameAreaSize.sub(Player._size.div(2)).sub(1)
+      );
   }
 
   // TODO
@@ -165,10 +163,9 @@ export class Player {
 
   takeDamage(updatedHealth: number): void {
     if (updatedHealth > 0) {
-      // TODO
-      //         -- we start with "-1" in order to avoid 1 frame of non-flash due to how "%" works (see "_draw()")
-      //         invincible_after_damage_timer = new_timer(5 * invincibility_flash_duration - 1)
-      this._invincibleAfterDamageTimer = new Timer({ frames: 60 });
+      this._invincibleAfterDamageTimer = new Timer({
+        frames: 5 * Player._invincibilityFlashFrames,
+      });
       this._onDamaged();
     } else {
       this._isDestroyed = true;
@@ -185,19 +182,44 @@ export class Player {
     this._onBulletsSpawned.update();
     // TODO
     // on_shockwave_triggered._update()
-    //
-    // TODO
-    // jet_sprite._update()
+
+    this._jetSprite?.update();
   }
 
   draw(): void {
-    // TODO
-    // if invincible_after_damage_timer and invincible_after_damage_timer.ttl % (2 * invincibility_flash_duration) < invincibility_flash_duration then
-    //     pal(split "1,7,7,7,7,7,7,7,7,7,7,7,7,7,7")
-    // end
+    let prevMapping: ColorMapping | undefined;
+    if (
+      this._invincibleAfterDamageTimer &&
+      this._invincibleAfterDamageTimer.framesLeft %
+        (2 * Player._invincibilityFlashFrames) <
+        Player._invincibilityFlashFrames
+    ) {
+      prevMapping = b.mapSpriteColors([
+        { from: Pico8Colors._0_black, to: c._7_white },
+        { from: Pico8Colors._1_darkBlue, to: c._1_darker_blue },
+        { from: Pico8Colors._2_darkPurple, to: c._7_white },
+        { from: Pico8Colors._3_darkGreen, to: c._7_white },
+        { from: Pico8Colors._4_brown, to: c._7_white },
+        { from: Pico8Colors._5_darkGrey, to: c._7_white },
+        { from: Pico8Colors._6_lightGrey, to: c._7_white },
+        { from: Pico8Colors._7_white, to: c._7_white },
+        { from: Pico8Colors._8_red, to: c._7_white },
+        { from: Pico8Colors._9_orange, to: c._7_white },
+        { from: Pico8Colors._10_yellow, to: transparent_ },
+        { from: Pico8Colors._11_green, to: transparent_ },
+        { from: Pico8Colors._12_blue, to: c._7_white },
+        { from: Pico8Colors._13_lavender, to: c._7_white },
+        { from: Pico8Colors._14_pink, to: c._7_white },
+        { from: Pico8Colors._15_lightPeach, to: c._7_white },
+      ]);
+    }
+
     this._shipSpriteCurrent.draw(this._xy);
-    // TODO
-    // jet_sprite._draw(xy)
-    // pal()
+
+    this._jetSprite?.draw(this._xy);
+
+    if (prevMapping) {
+      b.mapSpriteColors(prevMapping);
+    }
   }
 }

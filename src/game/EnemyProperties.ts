@@ -5,11 +5,9 @@ import { EnemyBullet } from "./EnemyBullet";
 
 export type EnemyProperties = {
   health: number;
-  // TODO
-  //     --   - [2] = score
-  // TODO
-  //     --   - [3] = sprites_props_txt = "w,h,x,y|w,h,x,y" -- where 1st set is for a ship sprite, and 2nd – for a damage flash overlay
+  score: number;
   spriteMain: AnimatedSprite;
+  spriteFlash: AnimatedSprite;
   // put main/center circle first, since it will be source for explosions etc.
   collisionCirclesProps: Array<{
     r: number;

@@ -1,5 +1,5 @@
-import { ImageUrl, spr_, Sprite, transparent_, Vector2d } from "@beetpx/beetpx";
-import { b, c, g } from "../globals";
+import { ImageUrl, spr_, Sprite, Vector2d } from "@beetpx/beetpx";
+import { b, g } from "../globals";
 
 // TODO: consider renaming BeetPx's Sprite to SpriteData in order to allow totally different Sprite implementation in games
 
@@ -70,12 +70,6 @@ export class AnimatedSprite {
       ? xy
       : xy.sub(this._spriteW / 2, this._spriteH / 2);
 
-    // TODO: BeetPx: make previous mapping include only affected colors maybe?
-    const prevMapping = b.mapSpriteColors([
-      { from: c._11_transparent, to: transparent_ },
-    ]);
-
-    // TODO
     b.sprite(
       // TODO: avoid a call here, pre-create all sprites in constructor
       this._spriteFactory(
@@ -87,7 +81,5 @@ export class AnimatedSprite {
       ),
       xy.add(g.gameAreaOffset)
     );
-
-    b.mapSpriteColors(prevMapping);
   }
 }

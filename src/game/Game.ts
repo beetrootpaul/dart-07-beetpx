@@ -3,10 +3,13 @@ import { b } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Enemy } from "./Enemy";
 import { EnemyBullet } from "./EnemyBullet";
+import { Explosion } from "./Explosion";
+import { Float } from "./Float";
 import { Level } from "./Level";
 import { LevelDescriptor } from "./LevelDescriptor";
 import { Player } from "./Player";
 import { PlayerBullet } from "./PlayerBullet";
+import { Score } from "./Score";
 
 export class Game {
   private _health: number;
@@ -28,6 +31,14 @@ export class Game {
   private _playerBullets: PlayerBullet[] = [];
   private _enemyBullets: EnemyBullet[] = [];
 
+  // TODO: consider poll of floats for memory reusage
+  private _explosions: Explosion[] = [];
+
+  // TODO: consider poll of floats for memory reusage
+  private _floats: Float[] = [];
+
+  readonly score: Score;
+
   constructor(params: {
     health: number;
     shockwaveCharges: number;
@@ -39,6 +50,7 @@ export class Game {
     // TODO
     // local game = {
     this._health = params.health;
+    this.score = new Score(params.score);
     // TODO
     // boss_health = nil,
     // boss_health_max = nil,
@@ -48,12 +60,11 @@ export class Game {
           fast_movement = fast_movement,
           fast_shoot = fast_shoot,
           triple_shoot = triple_shoot,
-          score = new_score(score),
       }
 
       local camera_shake_timer, boss = new_timer(0)
 
-      local powerups, explosions, shockwaves, shockwave_enemy_hits, floats =  {}, {}, {}, {}, {}
+      local powerups, shockwaves, shockwave_enemy_hits =  {}, {}, {}
   */
 
     this._player = new Player({
@@ -75,13 +86,19 @@ export class Game {
       onDestroyed: (playerCc) => {
         // TODO
         //    _sfx_play(_sfx_destroy_player, 3)
-        // TODO
-        //    _add_all(
-        //        explosions,
-        //        new_explosion(collision_circle.xy, collision_circle.r),
-        //        new_explosion(collision_circle.xy, 2 * collision_circle.r, 4 + flr(rnd(8))),
-        //        new_explosion(collision_circle.xy, 3 * collision_circle.r, 12 + flr(rnd(8)))
-        //    )
+        this._explosions.push(
+          new Explosion({ startXy: playerCc.center, magnitude: playerCc.r }),
+          new Explosion({
+            startXy: playerCc.center,
+            magnitude: 2 * playerCc.r,
+            waitFrames: 4 + Math.random() * 8,
+          }),
+          new Explosion({
+            startXy: playerCc.center,
+            magnitude: 3 * playerCc.r,
+            waitFrames: 12 + Math.random() * 8,
+          })
+        );
       },
     });
   }
@@ -333,6 +350,8 @@ export class Game {
     this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
     this._enemyBullets = this._enemyBullets.filter((eb) => !eb.hasFinished);
     this._enemies = this._enemies.filter((e) => !e.hasFinished);
+    this._explosions = this._explosions.filter((e) => !e.hasFinished);
+    this._floats = this._floats.filter((f) => !f.hasFinished);
     /*
         _flattened_for_each(
             shockwaves,
@@ -380,6 +399,8 @@ export class Game {
     this._enemyBullets.forEach((eb) => eb.update());
     this._player?.update();
     this._enemies.forEach((e) => e.update());
+    this._explosions.forEach((e) => e.update());
+    this._floats.forEach((f) => f.update());
     /*
         _flattened_for_each(
             { level },
@@ -416,19 +437,34 @@ export class Game {
             //         end
             //     end
           },
-          // TODO: params: collision_circle
-          onDamaged: () => {
+          onDamaged: (mainCollisionCircle) => {
             // TODO
             //     _sfx_play(_sfx_damage_enemy)
-            //     add(explosions, new_explosion(collision_circle.xy, .5 * collision_circle.r))
+            this._explosions.push(
+              new Explosion({
+                startXy: mainCollisionCircle.center,
+                magnitude: 0.5 * mainCollisionCircle.r,
+              })
+            );
           },
-          // TODO: params: collision_circle, powerup_type, score_to_add
-          onDestroyed: () => {
+          // TODO: params: powerup_type
+          onDestroyed: (mainCollisionCircle, scoreToAdd) => {
             // TODO
             //     _sfx_play(_sfx_destroy_enemy)
-            //     game.score.add(score_to_add)
-            //     add(floats, new_float(collision_circle.xy, score_to_add))
-            //     add(explosions, new_explosion(collision_circle.xy, 2.5 * collision_circle.r))
+            this.score.add(scoreToAdd);
+            this._floats.push(
+              new Float({
+                startXy: mainCollisionCircle.center,
+                score: scoreToAdd,
+              })
+            );
+            this._explosions.push(
+              new Explosion({
+                startXy: mainCollisionCircle.center,
+                magnitude: 2.5 * mainCollisionCircle.r,
+              })
+            );
+            // TODO
             //     if powerup_type ~= "-" then
             //         add(powerups, new_powerup(collision_circle.xy, powerup_type))
             //     end
@@ -454,7 +490,11 @@ export class Game {
       "pb:",
       this._playerBullets.length,
       "eb:",
-      this._enemyBullets.length
+      this._enemyBullets.length,
+      "ex:",
+      this._explosions.length,
+      "f:",
+      this._floats.length
     );
   }
 
@@ -468,6 +508,8 @@ export class Game {
     this._playerBullets.forEach((pb) => pb.draw());
     this._enemyBullets.forEach((eb) => eb.draw());
     this._player?.draw();
+    this._explosions.forEach((e) => e.draw());
+    this._floats.forEach((f) => f.draw());
     /*
           _flattened_for_each(
               { level },
@@ -495,22 +537,22 @@ export class Game {
           Collisions.debugDrawCollisionCircle(enemyCc);
         }
       }
+      for (const playerBullet of this._playerBullets) {
+        Collisions.debugDrawCollisionCircle(playerBullet.collisionCircle);
+      }
+      for (const enemyBullet of this._enemyBullets) {
+        Collisions.debugDrawCollisionCircle(enemyBullet.collisionCircle);
+      }
+      // TODO
+      // --    boss and boss.collision_circles() or nil,
+      // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
+      if (this._player) {
+        Collisions.debugDrawCollisionCircle(this._player.collisionCircle);
+      }
+      // TODO
+      // --powerups,
+      // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
     }
-    for (const playerBullet of this._playerBullets) {
-      Collisions.debugDrawCollisionCircle(playerBullet.collisionCircle);
-    }
-    for (const enemyBullet of this._enemyBullets) {
-      Collisions.debugDrawCollisionCircle(enemyBullet.collisionCircle);
-    }
-    // TODO
-    // --    boss and boss.collision_circles() or nil,
-    // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
-    if (this._player) {
-      Collisions.debugDrawCollisionCircle(this._player.collisionCircle);
-    }
-    // TODO
-    // --powerups,
-    // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
 
     // TODO
     // if camera_shake_timer.ttl > 0 then

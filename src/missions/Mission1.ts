@@ -5,6 +5,7 @@ import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
+import { MovementSinusoidal } from "../movement/MovementSinusoidal";
 import { Mission } from "./Mission";
 
 const aspr_ = AnimatedSprite.for(g.assets.mission1SpritesheetUrl);
@@ -87,13 +88,9 @@ export class Mission1 implements Mission {
       case "m1e_fast_and_small":
         return {
           health: 1,
-          // TODO:
-          //             -- enemy: fast and small
-          //             [74] = {
-          //                 2,
-          // TODO
-          //                 "8,8,0,88|6,6,22,79",
+          score: 2,
           spriteMain: aspr_(8, 8, [0], 88),
+          spriteFlash: aspr_(6, 6, [22], 79),
           collisionCirclesProps: [{ r: 3, offset: v_(0, 1) }],
           // TODO
           //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
@@ -105,25 +102,17 @@ export class Mission1 implements Mission {
       case "m1e_sinusoidal":
         return {
           health: 2,
-          // TODO
-          //             [75] = {
-          //                 5,
-          // TODO
-          //                 "10,10,22,86|8,8,13,88",
+          score: 5,
           spriteMain: aspr_(10, 10, [22], 86),
+          spriteFlash: aspr_(8, 8, [13], 88),
           collisionCirclesProps: [{ r: 4 }],
           // TODO
           //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
-          // TODO: TMP
-          movementFactory: MovementLine.of({
-            angle: 0.25,
-            angledSpeed: 1.5,
+          movementFactory: MovementSinusoidal.of({
+            speedY: 0.75,
+            ageDivisor: 120,
+            magnitude: 14,
           }),
-          //                 new_movement_sinusoidal_factory {
-          //                     speed_y = .75,
-          //                     age_divisor = 120,
-          //                     magnitude = 14,
-          //                 },
           // TODO
           //                 bullet_fire_timer = new_timer "40",
           //                 spawn_bullets = function(enemy_movement)
@@ -142,12 +131,9 @@ export class Mission1 implements Mission {
       case "m1e_wait_and_charge":
         return {
           health: 7,
-          // TODO
-          //             [76] = {
-          //                 20,
-          // TODO
-          //                 "16,14,22,64|14,12,32,84",
+          score: 20,
           spriteMain: aspr_(16, 14, [22], 64),
+          spriteFlash: aspr_(14, 12, [32], 84),
           collisionCirclesProps: [{ r: 7 }],
           // TODO
           //                 "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
@@ -171,12 +157,9 @@ export class Mission1 implements Mission {
       case "m1e_big":
         return {
           health: 40,
-          // TODO
-          //             [77] = {
-          //                 100,
-          // TODO
-          //                 "24,20,64,64|22,18,88,65",
+          score: 100,
           spriteMain: aspr_(24, 20, [64], 64),
+          spriteFlash: aspr_(22, 18, [88], 65),
           collisionCirclesProps: [
             { r: 10, offset: v_(0, 1) },
             { r: 5, offset: v_(-7, 0) },
@@ -226,12 +209,9 @@ export class Mission1 implements Mission {
       case "m1e_aimed_triple_shot":
         return {
           health: 4,
-          // TODO
-          //             [78] = {
-          //                 40,
-          // TODO
-          //                 "8,22,50,64|6,20,58,65",
+          score: 40,
           spriteMain: aspr_(8, 22, [50], 64),
+          spriteFlash: aspr_(6, 20, [58], 65),
           collisionCirclesProps: [
             { r: 4 },
             { r: 4, offset: v_(0, 7) },
@@ -289,12 +269,9 @@ export class Mission1 implements Mission {
       case "m1e_stationary":
         return {
           health: 10,
-          // TODO
-          //             [79] = {
-          //                 50,
-          // TODO
-          //                 "22,24,0,64|12,12,38,64",
+          score: 50,
           spriteMain: aspr_(22, 24, [0], 64),
+          spriteFlash: aspr_(12, 12, [38], 64),
           collisionCirclesProps: [{ r: 6 }],
           // TODO
           //                 "-,-,-,h,h,m,f,t,t,s,s,s",

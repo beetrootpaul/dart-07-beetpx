@@ -96,12 +96,9 @@ export class Mission2 implements Mission {
       case "m2e_stationary":
         return {
           health: 5,
-          // TODO
-          //         [79] = {
-          //             1,
-          // TODO
-          //             "28,28,0,64|28,28,28,64",
+          score: 1,
           spriteMain: aspr_(28, 28, [0], 64),
+          spriteFlash: aspr_(28, 28, [28], 64),
           collisionCirclesProps: [{ r: 5 }],
           // TODO
           //             "h,m,f,t,s",

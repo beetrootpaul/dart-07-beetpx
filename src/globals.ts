@@ -1,4 +1,5 @@
 import { BeetPx, Utils, v_ } from "@beetpx/beetpx";
+import { Helpers } from "./misc/Helpers";
 import { Pico8Colors } from "./pico8/Pico8Color";
 
 export const b = BeetPx;
@@ -15,9 +16,6 @@ export const c = {
   _7_white: Pico8Colors._7_white,
   _8_red: Pico8Colors._8_red,
   _9_dark_orange: Pico8Colors._137_darkOrange,
-  // TODO: do we need this one?
-  _10_unused: Pico8Colors._10_yellow,
-  _11_transparent: Pico8Colors._11_green,
   _12_blue: Pico8Colors._12_blue,
   _13_lavender: Pico8Colors._13_lavender,
   _14_mauve: Pico8Colors._141_mauve,
@@ -25,6 +23,8 @@ export const c = {
 };
 
 export const u = Utils;
+
+export const h = Helpers;
 
 // TODO: inline
 export const g = {
