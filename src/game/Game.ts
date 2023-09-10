@@ -83,13 +83,19 @@ export class Game {
       onDestroyed: (playerCc) => {
         // TODO
         //    _sfx_play(_sfx_destroy_player, 3)
-        // TODO
-        //    _add_all(
-        //        explosions,
-        //        new_explosion(collision_circle.xy, collision_circle.r),
-        //        new_explosion(collision_circle.xy, 2 * collision_circle.r, 4 + flr(rnd(8))),
-        //        new_explosion(collision_circle.xy, 3 * collision_circle.r, 12 + flr(rnd(8)))
-        //    )
+        this._explosions.push(
+          new Explosion({ startXy: playerCc.center, magnitude: playerCc.r }),
+          new Explosion({
+            startXy: playerCc.center,
+            magnitude: 2 * playerCc.r,
+            waitFrames: 4 + Math.random() * 8,
+          }),
+          new Explosion({
+            startXy: playerCc.center,
+            magnitude: 3 * playerCc.r,
+            waitFrames: 12 + Math.random() * 8,
+          })
+        );
       },
     });
   }
@@ -432,7 +438,6 @@ export class Game {
             // TODO
             //     _sfx_play(_sfx_damage_enemy)
             this._explosions.push(
-              // TODO: FIX it looks like moving top-right
               new Explosion({
                 startXy: mainCollisionCircle.center,
                 magnitude: 0.5 * mainCollisionCircle.r,
@@ -451,7 +456,6 @@ export class Game {
               })
             );
             this._explosions.push(
-              // TODO: FIX it looks like moving top-right
               new Explosion({
                 startXy: mainCollisionCircle.center,
                 magnitude: 2.5 * mainCollisionCircle.r,
