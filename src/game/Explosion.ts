@@ -1,4 +1,4 @@
-import { v_, Vector2d } from "@beetpx/beetpx";
+import { CompositeColor, FillPattern, v_, Vector2d } from "@beetpx/beetpx";
 import { b, c, g, u } from "../globals";
 
 function randNegPos05(): number {
@@ -60,37 +60,24 @@ export class Explosion {
   draw(): void {
     // TODO
     //             if wait_timer.ttl <= 0 then
-    //                 fillp(0xa5a5)
+    b.setFillPattern(FillPattern.of(0xa5a5));
     for (const p of this._particles) {
-      // TODO: TMP
-      b.ellipseFilled(
-        g.gameAreaOffset.add(p.xy),
-        v_(2, 2).mul(p.r),
-        c._9_dark_orange
-      );
-      // TODO
-      //                     local r = particle.r
-      //                     if r > 0 then
-      //                         local c1, c2 = _color_9_dark_orange, _color_8_red
-      //                         if r < magnitude * .2 then
-      //                             c1, c2 = _color_13_lavender, _color_14_mauve
-      //                         elseif r < magnitude * .4 then
-      //                             c1, c2 = _color_6_light_grey, _color_13_lavender
-      //                         elseif r < magnitude * .6 then
-      //                             c1, c2 = _color_6_light_grey, _color_15_peach
-      //                         elseif r < magnitude * .8 then
-      //                             c1, c2 = _color_15_peach, _color_9_dark_orange
-      //                         end
-      //                         circfill(
-      //                             _gaox + particle.xy.x,
-      //                             particle.xy.y,
-      //                             r,
-      //                             16 * c1 + c2
-      //                         )
-      //                     end
+      if (p.r > 0) {
+        let color = new CompositeColor(c._9_dark_orange, c._8_red);
+        if (p.r < this._magnitude * 0.2) {
+          color = new CompositeColor(c._13_lavender, c._14_mauve);
+        } else if (p.r < this._magnitude * 0.4) {
+          color = new CompositeColor(c._6_light_grey, c._13_lavender);
+        } else if (p.r < this._magnitude * 0.6) {
+          color = new CompositeColor(c._6_light_grey, c._15_peach);
+        } else if (p.r < this._magnitude * 0.8) {
+          color = new CompositeColor(c._15_peach, c._9_dark_orange);
+        }
+        b.ellipseFilled(g.gameAreaOffset.add(p.xy), v_(2, 2).mul(p.r), color);
+      }
     }
+    b.setFillPattern(FillPattern.primaryOnly);
     // TODO
-    //                 fillp()
     //             end
   }
 }
