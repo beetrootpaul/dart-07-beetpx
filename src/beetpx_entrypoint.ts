@@ -90,7 +90,7 @@ b.init(
         fastMovement: false,
         fastShoot: false,
         tripleShoot: false,
-        score: 3,
+        score: 0,
       });
     });
 

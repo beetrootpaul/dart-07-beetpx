@@ -9,6 +9,7 @@ import { Level } from "./Level";
 import { LevelDescriptor } from "./LevelDescriptor";
 import { Player } from "./Player";
 import { PlayerBullet } from "./PlayerBullet";
+import { Score } from "./Score";
 
 export class Game {
   private _health: number;
@@ -36,6 +37,8 @@ export class Game {
   // TODO: consider poll of floats for memory reusage
   private _floats: Float[] = [];
 
+  readonly score: Score;
+
   constructor(params: {
     health: number;
     shockwaveCharges: number;
@@ -47,6 +50,7 @@ export class Game {
     // TODO
     // local game = {
     this._health = params.health;
+    this.score = new Score(params.score);
     // TODO
     // boss_health = nil,
     // boss_health_max = nil,
@@ -56,7 +60,6 @@ export class Game {
           fast_movement = fast_movement,
           fast_shoot = fast_shoot,
           triple_shoot = triple_shoot,
-          score = new_score(score),
       }
 
       local camera_shake_timer, boss = new_timer(0)
@@ -448,7 +451,7 @@ export class Game {
           onDestroyed: (mainCollisionCircle, scoreToAdd) => {
             // TODO
             //     _sfx_play(_sfx_destroy_enemy)
-            //     game.score.add(score_to_add)
+            this.score.add(scoreToAdd);
             this._floats.push(
               new Float({
                 startXy: mainCollisionCircle.center,
