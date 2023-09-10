@@ -85,7 +85,7 @@ b.init(
       // TODO: tmp: make it start with a real first screen (BRP)
       currentScreen = new ScreenMissionMain({
         mission: CurrentMission.first,
-        health: 3,
+        health: 10,
         shockwaveCharges: 3,
         fastMovement: false,
         fastShoot: false,

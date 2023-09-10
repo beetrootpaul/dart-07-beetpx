@@ -5,6 +5,7 @@ import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
+import { MovementSinusoidal } from "../movement/MovementSinusoidal";
 import { Mission } from "./Mission";
 
 const aspr_ = AnimatedSprite.for(g.assets.mission1SpritesheetUrl);
@@ -107,16 +108,11 @@ export class Mission1 implements Mission {
           collisionCirclesProps: [{ r: 4 }],
           // TODO
           //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
-          // TODO: TMP
-          movementFactory: MovementLine.of({
-            angle: 0.25,
-            angledSpeed: 1.5,
+          movementFactory: MovementSinusoidal.of({
+            speedY: 0.75,
+            ageDivisor: 120,
+            magnitude: 14,
           }),
-          //                 new_movement_sinusoidal_factory {
-          //                     speed_y = .75,
-          //                     age_divisor = 120,
-          //                     magnitude = 14,
-          //                 },
           // TODO
           //                 bullet_fire_timer = new_timer "40",
           //                 spawn_bullets = function(enemy_movement)

@@ -58,6 +58,7 @@ export class Explosion {
           p.angle = p.angle + 0.1 * randNegPos05();
           const speed = Math.random();
           p.xy = p.xy.add(
+            // TODO: consider extracting a helper (here or in BeetPx) which does PI*2 by default. Remember that `+ Math.PI` might be needed as well
             speed * Math.cos(p.angle * Math.PI * 2),
             speed * Math.sin(p.angle * Math.PI * 2)
           );
