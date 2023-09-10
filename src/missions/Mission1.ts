@@ -68,32 +68,18 @@ export class Mission1 implements Mission {
     }
   }
 
-  // TODO
-  // -- enemy properties:
-  // --   - [1] = health
-  // --   - [2] = score
-  // --   - [3] = sprites_props_txt = "w,h,x,y|w,h,x,y" -- where 1st set is for a ship sprite, and 2nd – for a damage flash overlay
-  // --   - [4] = collision_circles_props = {
-  // --                    { r, optional_xy_offset }, -- put main/center circle first, since it will be source for explosions etc.
-  // --                    { r, optional_xy_offset },
-  // --                    { r },
-  // --                },
-  // --   - [5] = powerups_distribution
-  // --   - [6] = movement_factory
-  // --   - spawn_bullets = function(enemy_movement, player_collision_circle)
-  // --                       return bullets_table
-  // --                     end
   enemyPropertiesFor(enemyId: string): EnemyProperties {
     switch (enemyId) {
       case "m1e_fast_and_small":
         return {
           health: 1,
           score: 2,
+          // TODO: REVERT
+          // powerupsDistribution: "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
+          powerupsDistribution: "f,t",
           spriteMain: aspr_(8, 8, [0], 88),
           spriteFlash: aspr_(6, 6, [22], 79),
           collisionCirclesProps: [{ r: 3, offset: v_(0, 1) }],
-          // TODO
-          //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
           movementFactory: MovementLine.of({
             angle: 0.25,
             angledSpeed: 1.5,
@@ -103,11 +89,12 @@ export class Mission1 implements Mission {
         return {
           health: 2,
           score: 5,
+          // TODO: REVERT
+          // powerupsDistribution: "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
+          powerupsDistribution: "f,t",
           spriteMain: aspr_(10, 10, [22], 86),
           spriteFlash: aspr_(8, 8, [13], 88),
           collisionCirclesProps: [{ r: 4 }],
-          // TODO
-          //                 "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
           movementFactory: MovementSinusoidal.of({
             speedY: 0.75,
             ageDivisor: 120,
@@ -132,11 +119,10 @@ export class Mission1 implements Mission {
         return {
           health: 7,
           score: 20,
+          powerupsDistribution: "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
           spriteMain: aspr_(16, 14, [22], 64),
           spriteFlash: aspr_(14, 12, [32], 84),
           collisionCirclesProps: [{ r: 7 }],
-          // TODO
-          //                 "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
           // TODO: TMP
           movementFactory: MovementLine.of({
             angle: 0.25,
@@ -158,6 +144,7 @@ export class Mission1 implements Mission {
         return {
           health: 40,
           score: 100,
+          powerupsDistribution: "h,s",
           spriteMain: aspr_(24, 20, [64], 64),
           spriteFlash: aspr_(22, 18, [88], 65),
           collisionCirclesProps: [
@@ -166,8 +153,6 @@ export class Mission1 implements Mission {
             { r: 5, offset: v_(7, 0) },
             { r: 5, offset: v_(0, -4) },
           ],
-          // TODO
-          //                 "h,s",
           // TODO: TMP
           movementFactory: MovementLine.of({
             angle: 0.25,
@@ -210,6 +195,7 @@ export class Mission1 implements Mission {
         return {
           health: 4,
           score: 40,
+          powerupsDistribution: "-,-,-,-,-,-,h,m,m,f,f,f,t,t,s",
           spriteMain: aspr_(8, 22, [50], 64),
           spriteFlash: aspr_(6, 20, [58], 65),
           collisionCirclesProps: [
@@ -217,8 +203,6 @@ export class Mission1 implements Mission {
             { r: 4, offset: v_(0, 7) },
             { r: 4, offset: v_(0, -7) },
           ],
-          // TODO
-          //                 "-,-,-,-,-,-,h,m,m,f,f,f,t,t,s",
           // TODO: TMP
           movementFactory: MovementLine.of({
             angle: 0.25,
@@ -270,11 +254,10 @@ export class Mission1 implements Mission {
         return {
           health: 10,
           score: 50,
+          powerupsDistribution: "-,-,-,h,h,m,f,t,t,s,s,s",
           spriteMain: aspr_(22, 24, [0], 64),
           spriteFlash: aspr_(12, 12, [38], 64),
           collisionCirclesProps: [{ r: 6 }],
-          // TODO
-          //                 "-,-,-,h,h,m,f,t,t,s,s,s",
           movementFactory: MovementLine.of({
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,

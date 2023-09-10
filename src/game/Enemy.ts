@@ -16,10 +16,10 @@ export class Enemy {
     enemyMovement: Movement
   ) => void;
   private readonly _onDamaged: (mainCollisionCircle: CollisionCircle) => void;
-  // TODO: params: powerup_type
   private readonly _onDestroyed: (
     mainCollisionCircle: CollisionCircle,
-    scoreToAdd: number
+    scoreToAdd: number,
+    powerupType: string
   ) => void;
 
   private _health: number;
@@ -34,10 +34,10 @@ export class Enemy {
       enemyMovement: Movement
     ) => void;
     onDamaged: (mainCollisionCircle: CollisionCircle) => void;
-    // TODO: params: powerup_type
     onDestroyed: (
       mainCollisionCircle: CollisionCircle,
-      scoreToAdd: number
+      scoreToAdd: number,
+      powerupType: string
     ) => void;
   }) {
     this._properties = params.properties;
@@ -75,10 +75,18 @@ export class Enemy {
       this._onDamaged(mainCollisionCircle);
     } else {
       this._isDestroyed = true;
-      // TODO
-      //                     local powerup_type = rnd(split(enemy_properties[5]))
-      // TODO: param: powerup_type
-      this._onDestroyed(mainCollisionCircle, this._properties.score);
+      const powerupTypesToPickFrom =
+        this._properties.powerupsDistribution.split(",");
+      const powerupType =
+        powerupTypesToPickFrom[
+          // TODO: introduce a BeetPx util to pick a random array element
+          Math.floor(Math.random() * powerupTypesToPickFrom.length)
+        ]!;
+      this._onDestroyed(
+        mainCollisionCircle,
+        this._properties.score,
+        powerupType
+      );
     }
   }
 

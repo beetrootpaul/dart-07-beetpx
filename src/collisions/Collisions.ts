@@ -25,7 +25,10 @@ export class Collisions {
     return distance.x * distance.x + distance.y * distance.y <= r1r2 * r1r2;
   }
 
-  static debugDrawCollisionCircle(cc: CollisionCircle): void {
+  static debugDrawCollisionCircle(
+    cc: CollisionCircle | { collisionCircle: CollisionCircle }
+  ): void {
+    cc = "collisionCircle" in cc ? cc.collisionCircle : cc;
     b.ellipse(
       g.gameAreaOffset.add(cc.center).sub(cc.r),
       v_(2, 2).mul(cc.r),

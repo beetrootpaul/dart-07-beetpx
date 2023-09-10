@@ -9,6 +9,7 @@ import { Level } from "./Level";
 import { LevelDescriptor } from "./LevelDescriptor";
 import { Player } from "./Player";
 import { PlayerBullet } from "./PlayerBullet";
+import { Powerup } from "./Powerup";
 import { Score } from "./Score";
 
 export class Game {
@@ -37,6 +38,9 @@ export class Game {
   // TODO: consider poll of floats for memory reusage
   private _floats: Float[] = [];
 
+  // TODO: consider poll of floats for memory reusage
+  private _powerups: Powerup[] = [];
+
   readonly score: Score;
 
   constructor(params: {
@@ -64,7 +68,7 @@ export class Game {
 
       local camera_shake_timer, boss = new_timer(0)
 
-      local powerups, shockwaves, shockwave_enemy_hits =  {}, {}, {}
+      local shockwaves, shockwave_enemy_hits =  {}, {}
   */
 
     this._player = new Player({
@@ -267,9 +271,11 @@ export class Game {
   }
 
   isReadyToEnterBossPhase(): boolean {
-    // TODO
-    return this._level.hasScrolledToEnd();
-    // return level.has_scrolled_to_end() and #enemies <= 0 and #powerups <= 0
+    return (
+      this._level.hasScrolledToEnd() &&
+      this._enemies.length <= 0 &&
+      this._powerups.length <= 0
+    );
   }
 
   // TODO
@@ -346,28 +352,13 @@ export class Game {
         end
         */
 
-    // TODO
+    // TODO: shockwaves
     this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
     this._enemyBullets = this._enemyBullets.filter((eb) => !eb.hasFinished);
     this._enemies = this._enemies.filter((e) => !e.hasFinished);
+    this._powerups = this._powerups.filter((p) => !p.hasFinished);
     this._explosions = this._explosions.filter((e) => !e.hasFinished);
     this._floats = this._floats.filter((f) => !f.hasFinished);
-    /*
-        _flattened_for_each(
-            shockwaves,
-            player_bullets,
-            enemy_bullets,
-            enemies,
-            powerups,
-            explosions,
-            floats,
-            function(game_object, game_objects)
-                if game_object.has_finished() then
-                    del(game_objects, game_object)
-                end
-            end
-        )
-     */
   }
 
   update(): void {
@@ -393,32 +384,17 @@ export class Game {
             end
         */
 
-    // TODO
     this._level.update();
+    // TODO: shockwaves
     this._playerBullets.forEach((pb) => pb.update());
     this._enemyBullets.forEach((eb) => eb.update());
     this._player?.update();
     this._enemies.forEach((e) => e.update());
+    // TODO: boss
+    this._powerups.forEach((p) => p.update());
     this._explosions.forEach((e) => e.update());
+    // TODO: camera_shake_timer
     this._floats.forEach((f) => f.update());
-    /*
-        _flattened_for_each(
-            { level },
-            shockwaves,
-            player_bullets,
-            enemy_bullets,
-            { player },
-            enemies,
-            { boss },
-            powerups,
-            explosions,
-            { camera_shake_timer },
-            floats,
-            function(game_object)
-                game_object._update()
-            end
-        )
-    */
 
     this._handleCollisions();
 
@@ -447,8 +423,7 @@ export class Game {
               })
             );
           },
-          // TODO: params: powerup_type
-          onDestroyed: (mainCollisionCircle, scoreToAdd) => {
+          onDestroyed: (mainCollisionCircle, scoreToAdd, powerupType) => {
             // TODO
             //     _sfx_play(_sfx_destroy_enemy)
             this.score.add(scoreToAdd);
@@ -464,10 +439,13 @@ export class Game {
                 magnitude: 2.5 * mainCollisionCircle.r,
               })
             );
-            // TODO
-            //     if powerup_type ~= "-" then
-            //         add(powerups, new_powerup(collision_circle.xy, powerup_type))
-            //     end
+            const powerup = Powerup.for(
+              powerupType,
+              mainCollisionCircle.center
+            );
+            if (powerup) {
+              this._powerups.push(powerup);
+            }
           },
         })
       );
@@ -493,6 +471,8 @@ export class Game {
       this._enemyBullets.length,
       "ex:",
       this._explosions.length,
+      "p:",
+      this._powerups.length,
       "f:",
       this._floats.length
     );
@@ -502,56 +482,38 @@ export class Game {
     // TODO
     // clip(_gaox, 0, _gaw, _gah)
 
-    // TODO
+    // TODO: consider introduction of GameObject with update and draw managed by BeetPx. Moreover, it might need a tree structure to call screen object's update before all game objects inside it and after things like collisions and input handling
     this._level.draw();
+    // TODO: boss
+    // Some enemies are placed on a ground and have collision circle smaller than a sprite,
+    //   therefore have to be drawn before a player and bullets.
     this._enemies.forEach((e) => e.draw());
     this._playerBullets.forEach((pb) => pb.draw());
     this._enemyBullets.forEach((eb) => eb.draw());
     this._player?.draw();
+    this._powerups.forEach((p) => p.draw());
     this._explosions.forEach((e) => e.draw());
     this._floats.forEach((f) => f.draw());
-    /*
-          _flattened_for_each(
-              { level },
-              enemies, -- some enemies are placed on a ground and have collision circle smaller than a sprite, therefore have to be drawn before a player and bullets
-              { boss },
-              player_bullets,
-              enemy_bullets,
-              { player },
-              powerups,
-              explosions,
-              floats,
-              shockwaves, -- draw shockwaves on top of everything since they are supposed to affect the final game image
-              function(game_object)
-                  game_object._draw()
-              end
-          )
-          clip()
+    // Draw shockwaves on top of everything since they are supposed to affect the final game image.
+    // TODO: shockwaves
 
-       */
+    // TODO
+    //   clip()
 
     // TODO
     if (b.debug) {
-      for (const enemy of this._enemies) {
-        for (const enemyCc of enemy.collisionCircles) {
-          Collisions.debugDrawCollisionCircle(enemyCc);
-        }
-      }
-      for (const playerBullet of this._playerBullets) {
-        Collisions.debugDrawCollisionCircle(playerBullet.collisionCircle);
-      }
-      for (const enemyBullet of this._enemyBullets) {
-        Collisions.debugDrawCollisionCircle(enemyBullet.collisionCircle);
-      }
+      this._enemies.forEach((e) => {
+        e.collisionCircles.forEach(Collisions.debugDrawCollisionCircle);
+      });
+      this._playerBullets.forEach(Collisions.debugDrawCollisionCircle);
+      this._enemyBullets.forEach(Collisions.debugDrawCollisionCircle);
       // TODO
       // --    boss and boss.collision_circles() or nil,
       // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
       if (this._player) {
-        Collisions.debugDrawCollisionCircle(this._player.collisionCircle);
+        Collisions.debugDrawCollisionCircle(this._player);
       }
-      // TODO
-      // --powerups,
-      // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
+      this._powerups.forEach(Collisions.debugDrawCollisionCircle);
     }
 
     // TODO
