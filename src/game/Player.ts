@@ -86,15 +86,15 @@ export class Player {
     return [new PlayerBullet(this._xy.add(0, -4))];
   }
 
+  private _createTripleBullet(): PlayerBullet[] {
+    return [
+      new PlayerBullet(this._xy.add(0, -4)),
+      new PlayerBullet(this._xy.add(-5, -2)),
+      new PlayerBullet(this._xy.add(5, -2)),
+    ];
+  }
+
   // TODO
-  // local function create_triple_bullets()
-  //     return {
-  //         new_player_bullet(xy.plus(0, -4)),
-  //         new_player_bullet(xy.plus(-5, -2)),
-  //         new_player_bullet(xy.plus(5, -2)),
-  //     }
-  // end
-  //
   // local function create_shockwave()
   //     return new_shockwave(xy, 1)
   // end
@@ -133,18 +133,13 @@ export class Player {
       );
   }
 
-  // TODO
-  // fire = function(fast_shoot, triple_shoot)
-  fire(): void {
-    // TODO
+  fire(fastShoot: boolean, tripleShoot: boolean): void {
     this._onBulletsSpawned.invokeIfReady(
-      12,
-      this._createSingleBullet.bind(this)
+      tripleShoot ? (fastShoot ? 10 : 16) : fastShoot ? 8 : 12,
+      (tripleShoot ? this._createTripleBullet : this._createSingleBullet).bind(
+        this
+      )
     );
-    //     on_bullets_spawned.invoke_if_ready(
-    //         triple_shoot and (fast_shoot and 10 or 16) or (fast_shoot and 8 or 12),
-    //         triple_shoot and create_triple_bullets or create_single_bullet
-    //     )
   }
 
   // TODO
@@ -173,6 +168,7 @@ export class Player {
     }
   }
 
+  // TODO: consider game objects with draw and update and hasFinished, managed by BeetPx
   update(): void {
     if (this._invincibleAfterDamageTimer?.hasFinished) {
       this._invincibleAfterDamageTimer = null;

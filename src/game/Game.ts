@@ -18,9 +18,21 @@ export class Game {
   get health(): number {
     return this._health;
   }
-  private readonly _shockwaveCharges: number;
+  private _shockwaveCharges: number;
   get shockwaveCharges(): number {
     return this._shockwaveCharges;
+  }
+  private _fastMovement: boolean;
+  get fastMovement(): boolean {
+    return this._fastMovement;
+  }
+  private _fastShoot: boolean;
+  get fastShoot(): boolean {
+    return this._fastShoot;
+  }
+  private _tripleShoot: boolean;
+  get tripleShoot(): boolean {
+    return this._tripleShoot;
   }
 
   private readonly _level: Level = new Level(new LevelDescriptor());
@@ -59,14 +71,12 @@ export class Game {
     // TODO
     // boss_health = nil,
     // boss_health_max = nil,
-    // TODO
     this._shockwaveCharges = params.shockwaveCharges;
+    this._fastMovement = params.fastMovement;
+    this._fastShoot = params.fastShoot;
+    this._tripleShoot = params.tripleShoot;
+    // TODO
     /*
-          fast_movement = fast_movement,
-          fast_shoot = fast_shoot,
-          triple_shoot = triple_shoot,
-      }
-
       local camera_shake_timer, boss = new_timer(0)
 
       local shockwaves, shockwave_enemy_hits =  {}, {}
@@ -111,8 +121,11 @@ export class Game {
 
   private _handlePlayerDamage(): void {
     // TODO
-    // game.fast_movement, game.triple_shoot, game.fast_shoot, camera_shake_timer = false, false, false, new_timer(12)
+    // camera_shake_timer = new_timer(12)
     this._health -= 1;
+    this._fastMovement = false;
+    this._fastShoot = false;
+    this._tripleShoot = false;
     this._player?.takeDamage(this._health);
   }
 
@@ -124,26 +137,25 @@ export class Game {
         this._health += 1;
       }
     } else if (type === PowerupType.FastMovement) {
-      // TODO
-      // if not game.fast_movement then
-      //   has_effect, game.fast_movement = true, true
-      // end
+      if (!this._fastMovement) {
+        hasEffect = true;
+        this._fastMovement = true;
+      }
     } else if (type === PowerupType.TripleShoot) {
-      // TODO
-      // if not game.triple_shoot then
-      //     has_effect, game.triple_shoot = true, true
-      // end
+      if (!this._tripleShoot) {
+        hasEffect = true;
+        this._tripleShoot = true;
+      }
     } else if (type === PowerupType.FastShoot) {
-      // TODO
-      // if not game.fast_shoot then
-      //     has_effect, game.fast_shoot = true, true
-      // end
+      if (!this._fastShoot) {
+        hasEffect = true;
+        this._fastShoot = true;
+      }
     } else if (type === PowerupType.ShockwaveCharge) {
-      // TODO
-      // if game.shockwave_charges < _shockwave_charges_max then
-      //     has_effect = true
-      //     game.shockwave_charges = game.shockwave_charges + 1
-      // end
+      if (this._shockwaveCharges < g.shockwaveChargesMax) {
+        hasEffect = true;
+        this._shockwaveCharges += 1;
+      }
     }
     if (!hasEffect) {
       this.score.add(10);
@@ -161,8 +173,9 @@ export class Game {
       return;
     }
 
-    // TODO
+    //
     // player vs powerups
+    //
     for (const powerup of this._powerups) {
       if (!powerup.hasFinished) {
         if (Collisions.areColliding(this._player, powerup)) {
@@ -172,7 +185,9 @@ export class Game {
       }
     }
 
+    //
     // shockwaves vs enemies + player bullets vs enemies + player vs enemies
+    //
     for (const enemy of this._enemies) {
       for (const enemyCc of enemy.collisionCircles) {
         // TODO
@@ -238,7 +253,9 @@ export class Game {
     //         end
     //     end
 
+    //
     // shockwaves vs enemy bullets + player vs enemy bullets
+    //
     for (const enemyBullet of this._enemyBullets) {
       // TODO
       //         for shockwave in all(shockwaves) do
@@ -363,9 +380,7 @@ export class Game {
       b.isPressed("down")
     );
     if (b.isPressed("x")) {
-      // TODO
-      // player.fire(game.fast_shoot, game.triple_shoot)
-      this._player?.fire();
+      this._player?.fire(this._fastShoot, this._tripleShoot);
     }
     // TODO
     /*

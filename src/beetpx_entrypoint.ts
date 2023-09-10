@@ -89,7 +89,7 @@ b.init(
         shockwaveCharges: 3,
         fastMovement: false,
         fastShoot: false,
-        tripleShoot: false,
+        tripleShoot: true,
         score: 0,
       });
     });

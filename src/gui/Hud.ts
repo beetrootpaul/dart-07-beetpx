@@ -42,11 +42,18 @@ export class Hud {
   private readonly _shockwaveBarStart = hudSprite(8, 1, 48, 23);
   private readonly _shockwaveBarSegmentFull = hudSprite(8, 11, 48, 12);
   private readonly _shockwaveBarSegmentEmpty = hudSprite(2, 11, 54, 12);
+
   // TODO
   //         local ship_indicator = new_hud_sprite "3,5,32,15"
-  //         local boss_health_bar_start, boss_health_bar_end = new_hud_sprite "4,4,27,20", new_hud_sprite "4,4,31,20"
-  //         -- these sprites are defined globally, because we want to access it through "_ENV"
-  //         fast_movement_off, fast_movement_on, fast_shoot_off, fast_shoot_on, triple_shoot_off, triple_shoot_on = new_hud_sprite "7,4,96,24", new_hud_sprite "7,4,96,28", new_hud_sprite "7,4,104,24", new_hud_sprite "7,4,104,28", new_hud_sprite "7,4,112,24", new_hud_sprite "7,4,112,28"
+
+  private readonly _powerups = {
+    fastMovement: { off: hudSprite(7, 4, 96, 24), on: hudSprite(7, 4, 96, 28) },
+    fastShoot: { off: hudSprite(7, 4, 104, 24), on: hudSprite(7, 4, 104, 28) },
+    tripleShoot: {
+      off: hudSprite(7, 4, 112, 24),
+      on: hudSprite(7, 4, 112, 28),
+    },
+  };
 
   private readonly _slideInOffset: Movement;
 
@@ -140,13 +147,18 @@ export class Hud {
     // TODO: param: true
     game.score.draw(v_(xy.x + 17, 4), c._6_light_grey, c._2_darker_purple);
 
+    //
+    // powerups
+    //
+    (["fastMovement", "fastShoot", "tripleShoot"] as const).forEach(
+      (prop, i) => {
+        this._powerups[prop][game[prop] ? "on" : "off"].draw(
+          v_(xy.x - 1, 46 + 6 * i)
+        );
+      }
+    );
+
     // TODO
-    //                 -- powerups
-    //                 for index, powerup in pairs { "fast_movement", "fast_shoot", "triple_shoot" } do
-    //                     _ENV[powerup .. (game[powerup] and "_on" or "_off")]._draw(xy.x - 1, 40 + 6 * index)
-    //                 end
-    //
-    //
     //                 -- boss health
     //                 -- (hack to optimize tokens: we set game.boss_health_max only when boss enters
     //                 -- fight phase, even if we update game.boss_health earlier on every frame;
