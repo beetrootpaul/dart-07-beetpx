@@ -5,7 +5,7 @@ import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
 
-enum PowerupType {
+export enum PowerupType {
   Health,
   FastMovement,
   TripleShoot,
@@ -33,6 +33,8 @@ export class Powerup {
     }
   }
 
+  readonly type: PowerupType;
+
   private readonly _movement: Movement;
   // TODO: introduce StaticSprite
   private readonly _sprite: AnimatedSprite;
@@ -40,6 +42,8 @@ export class Powerup {
   private _isPicked: boolean = false;
 
   constructor(type: PowerupType, startXy: Vector2d) {
+    this.type = type;
+
     this._movement = MovementLine.of({
       angle: 0.25,
       angledSpeed: 0.5,
@@ -110,10 +114,9 @@ export class Powerup {
     return this._isPicked || h.isSafelyOutsideGameplayArea(this._movement.xy);
   }
 
-  // TODO
-  //     function powerup.pick()
-  //         is_picked = true
-  //     end
+  pick(): void {
+    this._isPicked = true;
+  }
 
   update(): void {
     this._movement.update();

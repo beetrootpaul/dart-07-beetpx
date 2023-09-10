@@ -100,9 +100,10 @@ export class Level {
     this._minVisibleDistance = this._maxVisibleDistance - g.gameAreaTiles.y - 1;
 
     b.logDebug(
-      `visible distance: ${this._minVisibleDistance.toFixed(
-        2
-      )} : ${this._maxVisibleDistance.toFixed(2)}`
+      "visible distance: " +
+        this._minVisibleDistance.toFixed(2) +
+        " : " +
+        this._maxVisibleDistance.toFixed(2)
     );
   }
 

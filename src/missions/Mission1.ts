@@ -76,7 +76,7 @@ export class Mission1 implements Mission {
           score: 2,
           // TODO: REVERT
           // powerupsDistribution: "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
-          powerupsDistribution: "f,t",
+          powerupsDistribution: "h,f,t,s,m",
           spriteMain: aspr_(8, 8, [0], 88),
           spriteFlash: aspr_(6, 6, [22], 79),
           collisionCirclesProps: [{ r: 3, offset: v_(0, 1) }],
@@ -91,7 +91,7 @@ export class Mission1 implements Mission {
           score: 5,
           // TODO: REVERT
           // powerupsDistribution: "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
-          powerupsDistribution: "f,t",
+          powerupsDistribution: "h,f,t,s,m",
           spriteMain: aspr_(10, 10, [22], 86),
           spriteFlash: aspr_(8, 8, [13], 88),
           collisionCirclesProps: [{ r: 4 }],

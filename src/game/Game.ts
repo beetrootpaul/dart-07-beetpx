@@ -1,5 +1,6 @@
+import { Vector2d } from "@beetpx/beetpx";
 import { Collisions } from "../collisions/Collisions";
-import { b } from "../globals";
+import { b, g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Enemy } from "./Enemy";
 import { EnemyBullet } from "./EnemyBullet";
@@ -9,7 +10,7 @@ import { Level } from "./Level";
 import { LevelDescriptor } from "./LevelDescriptor";
 import { Player } from "./Player";
 import { PlayerBullet } from "./PlayerBullet";
-import { Powerup } from "./Powerup";
+import { Powerup, PowerupType } from "./Powerup";
 import { Score } from "./Score";
 
 export class Game {
@@ -74,6 +75,7 @@ export class Game {
     this._player = new Player({
       // TODO
       onBulletsSpawned: (bullets) => {
+        // TODO: consider not playing a bullet sound at all
         // TODO
         // _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
         this._playerBullets.push(...bullets);
@@ -114,45 +116,45 @@ export class Game {
     this._player?.takeDamage(this._health);
   }
 
-  // TODO
-  /*
-    local function handle_powerup(powerup_type, powerup_xy)
-        local has_effect = false
-        if powerup_type == "h" then
-            if game.health < _health_max then
-                has_effect = true
-                game.health = game.health + 1
-            end
-        elseif powerup_type == "m" then
-            if not game.fast_movement then
-                has_effect, game.fast_movement = true, true
-            end
-        elseif powerup_type == "t" then
-            if not game.triple_shoot then
-                has_effect, game.triple_shoot = true, true
-            end
-        elseif powerup_type == "f" then
-            if not game.fast_shoot then
-                has_effect, game.fast_shoot = true, true
-            end
-        elseif powerup_type == "s" then
-            if game.shockwave_charges < _shockwave_charges_max then
-                has_effect = true
-                game.shockwave_charges = game.shockwave_charges + 1
-            end
-        end
-        if not has_effect then
-            game.score.add(10)
-            add(floats, new_float(powerup_xy, 10))
-        end
-        _sfx_play(
-            has_effect and _sfx_powerup_picked or _sfx_powerup_no_effect,
-            has_effect and 2 or nil
-        )
-
-    end
-    */
-  //
+  private _handlePowerup(type: PowerupType, xy: Vector2d): void {
+    let hasEffect = false;
+    if (type === PowerupType.Health) {
+      if (this._health < g.healthMax) {
+        hasEffect = true;
+        this._health += 1;
+      }
+    } else if (type === PowerupType.FastMovement) {
+      // TODO
+      // if not game.fast_movement then
+      //   has_effect, game.fast_movement = true, true
+      // end
+    } else if (type === PowerupType.TripleShoot) {
+      // TODO
+      // if not game.triple_shoot then
+      //     has_effect, game.triple_shoot = true, true
+      // end
+    } else if (type === PowerupType.FastShoot) {
+      // TODO
+      // if not game.fast_shoot then
+      //     has_effect, game.fast_shoot = true, true
+      // end
+    } else if (type === PowerupType.ShockwaveCharge) {
+      // TODO
+      // if game.shockwave_charges < _shockwave_charges_max then
+      //     has_effect = true
+      //     game.shockwave_charges = game.shockwave_charges + 1
+      // end
+    }
+    if (!hasEffect) {
+      this.score.add(10);
+      this._floats.push(new Float({ startXy: xy, score: 10 }));
+    }
+    // TODO
+    // _sfx_play(
+    //     has_effect and _sfx_powerup_picked or _sfx_powerup_no_effect,
+    //     has_effect and 2 or nil
+    // )
+  }
 
   private _handleCollisions(): void {
     if (!this._player) {
@@ -160,16 +162,15 @@ export class Game {
     }
 
     // TODO
-    //     -- player vs powerups
-    //     for powerup in all(powerups) do
-    //         if not powerup.has_finished() then
-    //             if _collisions.are_colliding(player, powerup) then
-    //                 powerup.pick()
-    //                 handle_powerup(powerup.powerup_type, powerup.collision_circle().xy)
-    //             end
-    //         end
-    //     end
-    //
+    // player vs powerups
+    for (const powerup of this._powerups) {
+      if (!powerup.hasFinished) {
+        if (Collisions.areColliding(this._player, powerup)) {
+          powerup.pick();
+          this._handlePowerup(powerup.type, powerup.collisionCircle.center);
+        }
+      }
+    }
 
     // shockwaves vs enemies + player bullets vs enemies + player vs enemies
     for (const enemy of this._enemies) {
@@ -189,16 +190,14 @@ export class Game {
         //             end
         for (const playerBullet of this._playerBullets) {
           if (!enemy.hasFinished && !playerBullet.hasFinished) {
-            if (
-              Collisions.areColliding(playerBullet.collisionCircle, enemyCc)
-            ) {
+            if (Collisions.areColliding(playerBullet, enemyCc)) {
               enemy.takeDamage(1);
               playerBullet.destroy();
             }
           }
         }
         if (!enemy.hasFinished && !this._player.isInvincibleAfterDamage()) {
-          if (Collisions.areColliding(this._player.collisionCircle, enemyCc)) {
+          if (Collisions.areColliding(this._player, enemyCc)) {
             enemy.takeDamage(1);
             this._handlePlayerDamage();
           }
@@ -250,12 +249,7 @@ export class Game {
       //             end
       //         end
       if (!enemyBullet.hasFinished && !this._player.isInvincibleAfterDamage()) {
-        if (
-          Collisions.areColliding(
-            enemyBullet.collisionCircle,
-            this._player.collisionCircle
-          )
-        ) {
+        if (Collisions.areColliding(enemyBullet, this._player)) {
           this._handlePlayerDamage();
           enemyBullet.destroy();
         }
