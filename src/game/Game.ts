@@ -379,7 +379,8 @@ export class Game {
       b.isPressed("left"),
       b.isPressed("right"),
       b.isPressed("up"),
-      b.isPressed("down")
+      b.isPressed("down"),
+      this._fastMovement
     );
     if (b.isPressed("x")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);

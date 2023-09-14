@@ -103,8 +103,13 @@ export class Player {
     return this._isDestroyed;
   }
 
-  // TODO params: fast_movement
-  setMovement(left: boolean, right: boolean, up: boolean, down: boolean) {
+  setMovement(
+    left: boolean,
+    right: boolean,
+    up: boolean,
+    down: boolean,
+    fastMovement: boolean
+  ) {
     this._shipSpriteCurrent = left
       ? this._shipSpriteFlyingLeft
       : right
@@ -113,10 +118,7 @@ export class Player {
 
     this._jetSprite = down ? null : this._jetSpriteVisible;
 
-    // TODO
-    const speed = 1;
-    //     local speed = fast_movement and 1.5 or 1
-    // TODO
+    const speed = fastMovement ? 1.5 : 1;
     let diff = v_(
       right ? speed : left ? -speed : 0,
       down ? speed : up ? -speed : 0
