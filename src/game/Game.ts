@@ -2,6 +2,7 @@ import { Timer, v_, Vector2d } from "@beetpx/beetpx";
 import { Collisions } from "../collisions/Collisions";
 import { b, g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
+import { Boss } from "./Boss";
 import { Enemy } from "./Enemy";
 import { EnemyBullet } from "./EnemyBullet";
 import { Explosion } from "./Explosion";
@@ -18,18 +19,22 @@ export class Game {
   get health(): number {
     return this._health;
   }
+
   private _shockwaveCharges: number;
   get shockwaveCharges(): number {
     return this._shockwaveCharges;
   }
+
   private _fastMovement: boolean;
   get fastMovement(): boolean {
     return this._fastMovement;
   }
+
   private _fastShoot: boolean;
   get fastShoot(): boolean {
     return this._fastShoot;
   }
+
   private _tripleShoot: boolean;
   get tripleShoot(): boolean {
     return this._tripleShoot;
@@ -40,6 +45,7 @@ export class Game {
   private _player: Player | null;
   // TODO: consider poll of enemies for memory reusage
   private _enemies: Enemy[] = [];
+  private _boss: Boss | null = null;
 
   // TODO: consider poll of bullets for memory reusage
   private _playerBullets: PlayerBullet[] = [];
@@ -77,11 +83,7 @@ export class Game {
     this._tripleShoot = params.tripleShoot;
 
     // TODO
-    /*
-      local boss
-
-      local shockwaves, shockwave_enemy_hits =  {}, {}
-  */
+    // local shockwaves, shockwave_enemy_hits =  {}, {}
 
     this._player = new Player({
       // TODO
@@ -222,38 +224,43 @@ export class Game {
       }
     }
 
-    // TODO
-    //     -- shockwaves vs boss + player bullets vs boss + player vs boss
-    //     if boss and not boss.invincible_during_intro then
-    //         for boss_cc in all(boss.collision_circles()) do
-    //             for shockwave in all(shockwaves) do
-    //                 local combined_id = shockwave.id .. "-boss"
-    //                 shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
-    //                 if not boss.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
-    //                     if _collisions.are_colliding(shockwave, boss_cc, {
-    //                         ignore_gameplay_area_check = true,
-    //                     }) then
-    //                         boss.take_damage(2)
-    //                         shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
-    //                     end
-    //                 end
-    //             end
-    //             for player_bullet in all(player_bullets) do
-    //                 if not boss.has_finished() and not player_bullet.has_finished() then
-    //                     if _collisions.are_colliding(player_bullet, boss_cc) then
-    //                         boss.take_damage(1)
-    //                         player_bullet.destroy()
-    //                     end
-    //                 end
-    //             end
-    //             if not boss.has_finished() and not player.is_invincible_after_damage() then
-    //                 if _collisions.are_colliding(player, boss_cc) then
-    //                     boss.take_damage(1)
-    //                     handle_player_damage()
-    //                 end
-    //             end
-    //         end
-    //     end
+    //
+    // shockwaves vs boss + player bullets vs boss + player vs boss
+    //
+    if (this._boss && !this._boss.invincibleDuringIntro) {
+      for (const bossCc of this._boss.collisionCircles) {
+        // TODO
+        //             for shockwave in all(shockwaves) do
+        //                 local combined_id = shockwave.id .. "-boss"
+        //                 shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
+        //                 if not boss.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
+        //                     if _collisions.are_colliding(shockwave, boss_cc, {
+        //                         ignore_gameplay_area_check = true,
+        //                     }) then
+        //                         boss.take_damage(2)
+        //                         shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
+        //                     end
+        //                 end
+        //             end
+        for (const playerBullet of this._playerBullets) {
+          if (!this._boss.hasFinished && !playerBullet.hasFinished) {
+            if (Collisions.areColliding(playerBullet, bossCc)) {
+              this._boss.takeDamage(1);
+              playerBullet.destroy();
+            }
+          }
+        }
+        if (
+          !this._boss.hasFinished &&
+          !this._player.isInvincibleAfterDamage()
+        ) {
+          if (Collisions.areColliding(this._player, bossCc)) {
+            this._boss.takeDamage(1);
+            this._handlePlayerDamage();
+          }
+        }
+      }
+    }
 
     //
     // shockwaves vs enemy bullets + player vs enemy bullets
@@ -291,64 +298,73 @@ export class Game {
     );
   }
 
+  enterBossPhase(): void {
+    this._boss = new Boss({
+      // TODO: params: bullets_fn, boss_movement
+      onBulletsSpawned: () => {
+        // TODO
+        //             if player then
+        //                 for b in all(bullets_fn(boss_movement, player.collision_circle())) do
+        //                     add(enemy_bullets, b)
+        //                 end
+        //             end
+      },
+      onDamaged: () => {
+        // TODO
+        // _sfx_play(_sfx_damage_enemy, 3)
+      },
+      // TODO: params: collision_circles, score_to_add
+      onEnteredNextPhase: () => {
+        // TODO
+        //             _sfx_play(_sfx_destroy_boss_phase)
+        //             game.score.add(score_to_add)
+        //             add(floats, new_float(collision_circles[1].xy, score_to_add))
+        //             for cc in all(collision_circles) do
+        //                 add(explosions, new_explosion(cc.xy, .75 * cc.r))
+        //             end
+      },
+      // TODO: params: collision_circles, score_to_add
+      onDestroyed: () => {
+        //             _sfx_play(_sfx_destroy_boss_final_1)
+        //             game.score.add(score_to_add)
+        //             add(floats, new_float(collision_circles[1].xy, score_to_add))
+        //             for cc in all(collision_circles) do
+        //                 local xy, r = cc.xy, cc.r
+        //                 _add_all(
+        //                     explosions,
+        //                     new_explosion(xy, .8 * r),
+        //                     new_explosion(xy, 1.4 * r, 4 + flr(rnd(44)), function()
+        //                         _sfx_play(_sfx_destroy_boss_final_2)
+        //                     end),
+        //                     new_explosion(xy, 1.8 * r, 12 + flr(rnd(36)), function()
+        //                         _sfx_play(_sfx_destroy_boss_final_3)
+        //                     end),
+        //                     new_explosion(xy, 3.5 * r, 30 + flr(rnd(18))),
+        //                     new_explosion(xy, 5 * r, 50 + flr(rnd(6)))
+        //                 )
+        //             end
+      },
+    });
+  }
+
+  startBossFight(): void {
+    // TODO
+    // -- hack to optimize tokens: we set game.boss_health_max only when boss enters
+    // -- fight phase, even if we update game.boss_health earlier on every frame;
+    // -- thanks to that we can easily detect if it's time to show boss' health bar
+    // game.boss_health_max = boss.health_max
+
+    if (!this._boss) {
+      throw Error(`Boss was not instantiated before calling the boss fight`);
+    }
+    this._boss.startFirstPhase();
+  }
+
   // TODO
-  /*
-    function game.enter_boss_phase()
-        boss = new_boss {
-            on_bullets_spawned = function(bullets_fn, boss_movement)
-                if player then
-                    for b in all(bullets_fn(boss_movement, player.collision_circle())) do
-                        add(enemy_bullets, b)
-                    end
-                end
-            end,
-            on_damage = function()
-                _sfx_play(_sfx_damage_enemy, 3)
-            end,
-            on_entered_next_phase = function(collision_circles, score_to_add)
-                _sfx_play(_sfx_destroy_boss_phase)
-                game.score.add(score_to_add)
-                add(floats, new_float(collision_circles[1].xy, score_to_add))
-                for cc in all(collision_circles) do
-                    add(explosions, new_explosion(cc.xy, .75 * cc.r))
-                end
-            end,
-            on_destroyed = function(collision_circles, score_to_add)
-                _sfx_play(_sfx_destroy_boss_final_1)
-                game.score.add(score_to_add)
-                add(floats, new_float(collision_circles[1].xy, score_to_add))
-                for cc in all(collision_circles) do
-                    local xy, r = cc.xy, cc.r
-                    _add_all(
-                        explosions,
-                        new_explosion(xy, .8 * r),
-                        new_explosion(xy, 1.4 * r, 4 + flr(rnd(44)), function()
-                            _sfx_play(_sfx_destroy_boss_final_2)
-                        end),
-                        new_explosion(xy, 1.8 * r, 12 + flr(rnd(36)), function()
-                            _sfx_play(_sfx_destroy_boss_final_3)
-                        end),
-                        new_explosion(xy, 3.5 * r, 30 + flr(rnd(18))),
-                        new_explosion(xy, 5 * r, 50 + flr(rnd(6)))
-                    )
-                end
-            end,
-        }
-    end
-
-    function game.start_boss_fight()
-        -- hack to optimize tokens: we set game.boss_health_max only when boss enters
-        -- fight phase, even if we update game.boss_health earlier on every frame;
-        -- thanks to that we can easily detect if it's time to show boss' health bar
-        game.boss_health_max = boss.health_max
-        boss.start_first_phase()
-    end
-
-    function game.is_boss_defeated()
-        -- assuming we won't call this method before boss fight has started
-        return not boss
-    end
-     */
+  // function game.is_boss_defeated()
+  //     -- assuming we won't call this method before boss fight has started
+  //     return not boss
+  // end
 
   preUpdate(): void {
     if (this._player?.hasFinished) {
@@ -356,14 +372,12 @@ export class Game {
       this._playerBullets = [];
     }
 
-    // TODO
-    /*
-        if boss and boss.has_finished() then
-            -- we assume here there are no enemies on a screen at the same time as boss is,
-            -- therefore we can just remove all enemy bullets when boss is destroyed
-            boss, enemy_bullets = nil, {}
-        end
-        */
+    if (this._boss && this._boss.hasFinished) {
+      // We assume here there are no enemies on a screen at the same time as boss is,
+      // therefore we can just remove all enemy bullets when boss is destroyed.
+      this._boss = null;
+      this._enemyBullets = [];
+    }
 
     // TODO: shockwaves
     this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
@@ -402,7 +416,7 @@ export class Game {
     this._enemyBullets.forEach((eb) => eb.update());
     this._player?.update();
     this._enemies.forEach((e) => e.update());
-    // TODO: boss
+    this._boss?.update();
     this._powerups.forEach((p) => p.update());
     this._explosions.forEach((e) => e.update());
     this._cameraShakeTimer.update();
@@ -496,7 +510,7 @@ export class Game {
 
     // TODO: consider introduction of GameObject with update and draw managed by BeetPx. Moreover, it might need a tree structure to call screen object's update before all game objects inside it and after things like collisions and input handling
     this._level.draw();
-    // TODO: boss
+    this._boss?.draw();
     // Some enemies are placed on a ground and have collision circle smaller than a sprite,
     //   therefore have to be drawn before a player and bullets.
     this._enemies.forEach((e) => e.draw());
@@ -512,16 +526,13 @@ export class Game {
     // TODO
     //   clip()
 
-    // TODO
     if (b.debug) {
       this._enemies.forEach((e) => {
         e.collisionCircles.forEach(Collisions.debugDrawCollisionCircle);
       });
       this._playerBullets.forEach(Collisions.debugDrawCollisionCircle);
       this._enemyBullets.forEach(Collisions.debugDrawCollisionCircle);
-      // TODO
-      // --    boss and boss.collision_circles() or nil,
-      // --        _collisions._debug_draw_collision_circle(game_object_or_collision_circle)
+      this._boss?.collisionCircles.forEach(Collisions.debugDrawCollisionCircle);
       if (this._player) {
         Collisions.debugDrawCollisionCircle(this._player);
       }

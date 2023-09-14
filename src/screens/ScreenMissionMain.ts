@@ -5,6 +5,7 @@ import { SlidingInfo } from "../gui/SlidingInfo";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
 import { ScreenDefeat } from "./ScreenDefeat";
+import { ScreenMissionBoss } from "./ScreenMissionBoss";
 
 export class ScreenMissionMain implements GameScreen {
   private readonly _game: Game;
@@ -76,24 +77,13 @@ export class ScreenMissionMain implements GameScreen {
     //     fade_in = _noop_game_object
     // end
 
-    // TODO
     if (this._missionInfo?.hasFinished) {
       this._missionInfo = null;
       this._game.enterEnemiesPhase();
     }
 
     if (this._game.isReadyToEnterBossPhase()) {
-      // TODO: tmp: make it progress the boss screen instead
-      return new ScreenMissionMain({
-        mission: CurrentMission.next,
-        health: Math.floor(Math.random() * 10 + 0.1),
-        shockwaveCharges: Math.floor(Math.random() * 4 + 0.1),
-        fastMovement: Math.random() < 0.5,
-        fastShoot: Math.random() < 0.5,
-        tripleShoot: Math.random() < 0.5,
-        score: Math.floor(Math.random() * 1000),
-      });
-      // return new_screen_mission_boss(game, hud)
+      return new ScreenMissionBoss({ game: this._game, hud: this._hud });
     }
 
     if (this._game.health <= 0) {

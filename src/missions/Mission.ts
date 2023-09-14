@@ -1,4 +1,5 @@
 import { SolidColor } from "@beetpx/beetpx";
+import { BossProperties } from "../game/BossProperties";
 import { EnemyProperties } from "../game/EnemyProperties";
 
 export interface Mission {
@@ -21,4 +22,5 @@ export interface Mission {
   levelBgDraw(): void;
 
   enemyPropertiesFor(enemyId: string): EnemyProperties;
+  bossProperties(): BossProperties;
 }

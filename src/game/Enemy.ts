@@ -10,7 +10,9 @@ import { EnemyProperties } from "./EnemyProperties";
 
 export class Enemy {
   private readonly _properties: EnemyProperties;
+
   private readonly _movement: Movement;
+
   private readonly _onBulletsSpawned: (
     spawnBulletsFn: (enemyMovement: Movement) => EnemyBullet[],
     enemyMovement: Movement
@@ -41,7 +43,9 @@ export class Enemy {
     ) => void;
   }) {
     this._properties = params.properties;
+
     this._movement = params.properties.movementFactory(params.startXy);
+
     this._onBulletsSpawned = params.onBulletsSpawned;
     this._onDamaged = params.onDamaged;
     this._onDestroyed = params.onDestroyed;

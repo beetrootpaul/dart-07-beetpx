@@ -2698,6 +2698,22 @@
 							"defUid": 138,
 							"px": [0,0],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "level_end",
+							"__grid": [0,22],
+							"__pivot": [0,0],
+							"__tags": ["marker"],
+							"__tile": { "tilesetUid": 2, "x": 0, "y": 32, "w": 8, "h": 8 },
+							"__smartColor": "#BE4A2F",
+							"__worldX": 0,
+							"__worldY": -64,
+							"iid": "1b4b1410-3b70-11ee-bf3c-c3178b3678c9",
+							"width": 96,
+							"height": 16,
+							"defUid": 138,
+							"px": [0,176],
+							"fieldInstances": []
 						}
 					]
 				},

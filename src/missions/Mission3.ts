@@ -1,4 +1,5 @@
-import { SolidColor } from "@beetpx/beetpx";
+import { SolidColor, v_ } from "@beetpx/beetpx";
+import { BossProperties } from "../game/BossProperties";
 import { EnemyProperties } from "../game/EnemyProperties";
 import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
@@ -158,64 +159,48 @@ export class Mission3 implements Mission {
         return u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
     }
   }
-}
 
-// TODO
-//
-// _m_boss_name = "? \-f? \-f?"
-// _m_mission_main_music, _m_mission_boss_music = 0, 1
-//
-// local enemy_bullet_factory = new_enemy_bullet_factory {
-//     bullet_sprite = new_static_sprite "4,4,124,64",
-//     collision_circle_r = 1.5,
-// }
-//
-// -- boss properties:
-// --   - sprites_props_txt = "w,h,x,y|w,h,x,y" -- where 1st set is for a ship sprite, and 2nd – for a damage flash overlay
-// --   - collision_circles_props = {
-// --                    { r, optional_xy_offset }, -- put main/center circle first, since it will be source for explosions etc.
-// --                    { r, optional_xy_offset },
-// --                    { r },
-// --                },
-// --   - phases = {
-// --       - [1] = triggering_health_fraction
-// --       - [2] = score
-// --       - [3] = bullet_fire_timer
-// --       - [4] = spawn_bullets = function(boss_movement, player_collision_circle)
-// --                                 return bullets_table
-// --                               end
-// --       - [5] = movement_factory
-// --     }
-//
-// function _m_boss_properties()
-//     return {
-//         health = 25,
-//         sprites_props_txt = "56,26,4,98|56,26,4,98",
-//         collision_circles_props = {
-//             { 15, _xy(0, -3) },
-//         },
-//         phases = {
-//             -- phase 1:
-//             {
-//                 1,
-//                 1,
-//                 -- DEBUG:
-//                 --32767,
-//                 new_timer "80",
-//                 function(enemy_movement, player_collision_circle)
-//                     _sfx_play(_sfx_enemy_multi_shoot)
-//                     return {
-//                         enemy_bullet_factory(
-//                             new_movement_line_factory {
-//                                 base_speed_y = enemy_movement.speed_xy.y,
-//                                 angle = .75,
-//                                 angled_speed = .5,
-//                             }(enemy_movement.xy.plus(0, 3))
-//                         ),
-//                     }
-//                 end,
-//                 new_movement_fixed_factory(),
-//             },
-//         },
-//     }
-// end
+  // TODO
+  //
+  // _m_boss_name = "? \-f? \-f?"
+  // _m_mission_main_music, _m_mission_boss_music = 0, 1
+
+  // TODO
+  // local enemy_bullet_factory = new_enemy_bullet_factory {
+  //     bullet_sprite = new_static_sprite "4,4,124,64",
+  //     collision_circle_r = 1.5,
+  // }
+
+  bossProperties(): BossProperties {
+    return {
+      health: 25,
+      spriteMain: aspr_(56, 26, [4], 98),
+      spriteFlash: aspr_(56, 26, [4], 98),
+      collisionCirclesProps: [{ r: 15, offset: v_(0, -3) }],
+      // TODO
+      //         phases = {
+      //             -- phase 1:
+      //             {
+      //                 1,
+      //                 1,
+      //                 -- DEBUG:
+      //                 --32767,
+      //                 new_timer "80",
+      //                 function(enemy_movement, player_collision_circle)
+      //                     _sfx_play(_sfx_enemy_multi_shoot)
+      //                     return {
+      //                         enemy_bullet_factory(
+      //                             new_movement_line_factory {
+      //                                 base_speed_y = enemy_movement.speed_xy.y,
+      //                                 angle = .75,
+      //                                 angled_speed = .5,
+      //                             }(enemy_movement.xy.plus(0, 3))
+      //                         ),
+      //                     }
+      //                 end,
+      //                 new_movement_fixed_factory(),
+      //             },
+      //         },
+    };
+  }
+}
