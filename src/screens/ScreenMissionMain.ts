@@ -1,3 +1,4 @@
+import { Fade } from "../Fade";
 import { Game } from "../game/Game";
 import { b } from "../globals";
 import { Hud } from "../gui/Hud";
@@ -5,14 +6,14 @@ import { SlidingInfo } from "../gui/SlidingInfo";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
 import { ScreenDefeat } from "./ScreenDefeat";
+import { ScreenMissionBoss } from "./ScreenMissionBoss";
 
 export class ScreenMissionMain implements GameScreen {
   private readonly _game: Game;
   private readonly _hud: Hud;
   private _missionInfo: SlidingInfo | null;
+  private _fadeIn: Fade | null;
 
-  // TODO
-  // function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
   constructor(params: {
     mission: number;
     health: number;
@@ -52,48 +53,30 @@ export class ScreenMissionMain implements GameScreen {
       mainColor: CurrentMission.m.missionInfoColor,
       waitFrames: fadeInFrames,
       slideInFrames: slidingInfoSlideFrames,
-      presentFrames: Math.max(
-        1,
-        screenFrames - fadeInFrames - 2 * slidingInfoSlideFrames
-      ),
+      presentFrames: screenFrames - fadeInFrames - 2 * slidingInfoSlideFrames,
       slideOutFrames: slidingInfoSlideFrames,
     });
 
-    // TODO
-    // local fade_in, screen = new_fade("in", fade_in_frames), {}
+    this._fadeIn = new Fade("in", { fadeFrames: fadeInFrames });
 
     // TODO
-    // function screen._init()
     //     music(_m_mission_main_music)
-    // end
   }
 
   preUpdate(): GameScreen | undefined {
     this._game.preUpdate();
 
-    // TODO
-    // if fade_in.has_finished() then
-    //     fade_in = _noop_game_object
-    // end
+    if (this._fadeIn?.hasFinished) {
+      this._fadeIn = null;
+    }
 
-    // TODO
     if (this._missionInfo?.hasFinished) {
       this._missionInfo = null;
       this._game.enterEnemiesPhase();
     }
 
     if (this._game.isReadyToEnterBossPhase()) {
-      // TODO: tmp: make it progress the boss screen instead
-      return new ScreenMissionMain({
-        mission: CurrentMission.next,
-        health: Math.floor(Math.random() * 10 + 0.1),
-        shockwaveCharges: Math.floor(Math.random() * 4 + 0.1),
-        fastMovement: Math.random() < 0.5,
-        fastShoot: Math.random() < 0.5,
-        tripleShoot: Math.random() < 0.5,
-        score: Math.floor(Math.random() * 1000),
-      });
-      // return new_screen_mission_boss(game, hud)
+      return new ScreenMissionBoss({ game: this._game, hud: this._hud });
     }
 
     if (this._game.health <= 0) {
@@ -106,8 +89,7 @@ export class ScreenMissionMain implements GameScreen {
     this._hud.update();
 
     this._missionInfo?.update();
-    // TODO
-    // fade_in._update()
+    this._fadeIn?.update();
   }
 
   draw(): void {
@@ -117,7 +99,6 @@ export class ScreenMissionMain implements GameScreen {
     this._hud.draw(this._game);
 
     this._missionInfo?.draw();
-    // TODO
-    // fade_in._draw()
+    this._fadeIn?.draw();
   }
 }

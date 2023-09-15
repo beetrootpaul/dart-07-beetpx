@@ -5,16 +5,19 @@ import { EnemyBullet } from "./EnemyBullet";
 
 export type EnemyProperties = {
   health: number;
+
   score: number;
+  powerupsDistribution: string;
+
   spriteMain: AnimatedSprite;
   spriteFlash: AnimatedSprite;
+
   // put main/center circle first, since it will be source for explosions etc.
   collisionCirclesProps: Array<{
     r: number;
     offset?: Vector2d;
   }>;
-  // TODO
-  //     --   - [5] = powerups_distribution
+
   movementFactory: MovementFactory;
 
   bulletFireTimer?: Timer;

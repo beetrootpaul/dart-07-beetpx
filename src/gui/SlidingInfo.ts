@@ -8,16 +8,16 @@ import { MovementSequence } from "../movement/MovementSequence";
 import { MovementToTarget } from "../movement/MovementToTarget";
 
 export class SlidingInfo {
-  private readonly _text1: string;
+  private readonly _text1: string | undefined;
   private readonly _text2: string;
   private readonly _mainColor: SolidColor;
   private readonly _movement: Movement;
   private _roundingFn: "ceil" | "floor" = "ceil";
 
   constructor(params: {
-    text1: string;
+    text1?: string;
     text2: string;
-    waitFrames: number;
+    waitFrames?: number;
     slideInFrames: number;
     presentFrames: number;
     slideOutFrames: number;
@@ -28,11 +28,13 @@ export class SlidingInfo {
     this._mainColor = params.mainColor;
 
     this._movement = MovementSequence.of([
-      MovementFixed.of({
-        // TODO
-        frames: params.waitFrames,
-        // frames = params.wait_frames or 0,
-      }),
+      ...(params.waitFrames
+        ? [
+            MovementFixed.of({
+              frames: params.waitFrames,
+            }),
+          ]
+        : []),
       MovementToTarget.of({
         targetY: g.gameAreaSize.y / 2,
         frames: params.slideInFrames,
@@ -62,17 +64,17 @@ export class SlidingInfo {
 
   draw(): void {
     const xy = this._movement.xy[this._roundingFn]();
-    // TODO
-    //  if params.text_1 then
-    h.printCentered(
-      this._text1,
-      g.gameAreaSize.div(2).x,
-      xy.y - 17,
-      CurrentMission.m.bgColor,
-      this._mainColor
-    );
-    // TODO
-    // end
+
+    if (this._text1) {
+      h.printCentered(
+        this._text1,
+        g.gameAreaSize.div(2).x,
+        xy.y - 17,
+        CurrentMission.m.bgColor,
+        this._mainColor
+      );
+    }
+
     h.printCentered(
       this._text2,
       g.gameAreaSize.div(2).x,
@@ -80,6 +82,7 @@ export class SlidingInfo {
       CurrentMission.m.bgColor,
       this._mainColor
     );
+
     b.line(xy, v_(g.gameAreaSize.x, 1), this._mainColor);
   }
 }

@@ -8,17 +8,15 @@ export class MovementToTarget implements Movement {
       targetX?: number;
       targetY?: number;
       frames: number;
-      easingFn: EasingFn;
+      easingFn?: EasingFn;
       onFinished?: () => void;
     }): MovementFactory =>
-    // TODO
-    // local easing_fn = params.easing_fn or _easing_linear
     (startXy) =>
       new MovementToTarget(
         startXy,
         v_(params.targetX ?? startXy.x, params.targetY ?? startXy.y),
         params.frames,
-        params.easingFn,
+        params.easingFn ?? Easing.linear,
         params.onFinished
       );
 

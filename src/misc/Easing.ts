@@ -14,7 +14,30 @@ export class Easing {
     return a + (b - a) * t;
   }
 
+  static linear: EasingFn = (t: number) => t;
+
   static inQuartic: EasingFn = (t: number) => t ** 4;
 
   static outQuartic: EasingFn = (t: number) => 1 - (t - 1) ** 4;
 }
+
+// TODO
+// function _easing_easeinquad(t)
+//     return t * t
+// end
+//
+// function _easing_easeoutquad(t)
+//     -- original implementation:
+//     --t = t - 1
+//     --return 1 - t * t
+//
+//     -- implementation optimised for tokens:
+//     return 1 - (t-1)^2
+// end
+//
+//
+// --(finds the t value that would
+// --return v in a lerp between a/b)
+// function _easing_invlerp(a, b, v)
+//     return (v - a) / (b - a)
+// end
