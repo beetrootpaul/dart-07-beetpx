@@ -1,3 +1,4 @@
+import { Fade } from "../Fade";
 import { Game } from "../game/Game";
 import { b, c, g, h } from "../globals";
 import { GameScreen } from "./GameScreen";
@@ -6,12 +7,15 @@ export class ScreenOver implements GameScreen {
   private readonly _game: Game;
   private readonly _isWin: boolean;
 
+  private readonly _fadeIn: Fade;
+
   constructor(params: { game: Game; isWin: boolean }) {
     this._game = params.game;
     this._isWin = params.isWin;
 
     // TODO
-    //     local got_high_score, fade_in, fade_out, retry, proceed, screen = false, new_fade("in", 30), new_fade("out", 30), true, false, {}
+    //     local got_high_score, fade_out, retry, proceed, screen = false, new_fade("out", 30), true, false, {}
+    this._fadeIn = new Fade("in", { fadeFrames: 30 });
 
     if (params.isWin) {
       // TODO
@@ -91,7 +95,8 @@ export class ScreenOver implements GameScreen {
     //         if proceed then
     //             fade_out._update()
     //         else
-    //             fade_in._update()
+    this._fadeIn.update();
+    // TODO
     //         end
   }
 
@@ -121,9 +126,9 @@ export class ScreenOver implements GameScreen {
     //             draw_button("try \-fmission \-f" .. _m_mission_number .. " \-fagain", 81, retry)
     //         end
     //         draw_button("go \-fto \-ftitle \-fscreen", is_win and 85 or 103, not retry or is_win)
-    //
+
+    this._fadeIn.draw();
     // TODO
-    //         fade_in._draw()
     //         fade_out._draw()
   }
 }

@@ -1,3 +1,4 @@
+import { Fade } from "../Fade";
 import { Game } from "../game/Game";
 import { b } from "../globals";
 import { Hud } from "../gui/Hud";
@@ -11,9 +12,8 @@ export class ScreenMissionMain implements GameScreen {
   private readonly _game: Game;
   private readonly _hud: Hud;
   private _missionInfo: SlidingInfo | null;
+  private _fadeIn: Fade | null;
 
-  // TODO
-  // function new_screen_mission_main(health, shockwave_charges, fast_movement, fast_shoot, triple_shoot, score)
   constructor(params: {
     mission: number;
     health: number;
@@ -57,22 +57,18 @@ export class ScreenMissionMain implements GameScreen {
       slideOutFrames: slidingInfoSlideFrames,
     });
 
-    // TODO
-    // local fade_in, screen = new_fade("in", fade_in_frames), {}
+    this._fadeIn = new Fade("in", { fadeFrames: fadeInFrames });
 
     // TODO
-    // function screen._init()
     //     music(_m_mission_main_music)
-    // end
   }
 
   preUpdate(): GameScreen | undefined {
     this._game.preUpdate();
 
-    // TODO
-    // if fade_in.has_finished() then
-    //     fade_in = _noop_game_object
-    // end
+    if (this._fadeIn?.hasFinished) {
+      this._fadeIn = null;
+    }
 
     if (this._missionInfo?.hasFinished) {
       this._missionInfo = null;
@@ -93,8 +89,7 @@ export class ScreenMissionMain implements GameScreen {
     this._hud.update();
 
     this._missionInfo?.update();
-    // TODO
-    // fade_in._update()
+    this._fadeIn?.update();
   }
 
   draw(): void {
@@ -104,7 +99,6 @@ export class ScreenMissionMain implements GameScreen {
     this._hud.draw(this._game);
 
     this._missionInfo?.draw();
-    // TODO
-    // fade_in._draw()
+    this._fadeIn?.draw();
   }
 }
