@@ -1,7 +1,7 @@
 // TODO
 //     local next_id = 0
 
-import { MappingColor, SolidColor, v_, Vector2d } from "@beetpx/beetpx";
+import { v_, Vector2d } from "@beetpx/beetpx";
 import { b, c, g, u } from "../globals";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
@@ -55,18 +55,6 @@ export class Shockwave {
     rInner = u.clamp(Shockwave._rMin, rInner, rOuter);
     if (rInner === rOuter) return;
 
-    // TODO: this approach moves us out of the palette :-/
-    const negativeColorMapping = new MappingColor(({ r, g, b, a }) =>
-      a >= 0xff / 2
-        ? new SolidColor(0xff - r, 0xff - g, 0xff - b)
-        : new SolidColor(r, g, b)
-    );
-
-    // TODO
-    //             -- use screen memory as if it was a sprite sheet (needed for "sspr" and "pal" used below)
-    //             poke(0x5f54, 0x60)
-    //             pal(_palette_negative)
-
     for (let dy = -rOuter; dy <= rOuter; dy++) {
       const sy = this._xy.y + dy;
       const dxOuter = Math.ceil(
@@ -79,19 +67,14 @@ export class Shockwave {
       b.line(
         v_(this._xy.x - dxOuter + 1, sy),
         v_(dxOuter - dxInner, 1),
-        negativeColorMapping
+        g.negativeColor
       );
       b.line(
         v_(this._xy.x + dxOuter - 1, sy),
         v_(dxInner - dxOuter, 1),
-        negativeColorMapping
+        g.negativeColor
       );
     }
-
-    // TODO
-    //             pal()
-    //             -- reset screen memory usage to its normal state
-    //             poke(0x5f54, 0x0)
   }
 
   private _drawCircle(r: number): void {

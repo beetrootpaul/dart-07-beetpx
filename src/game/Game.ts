@@ -415,9 +415,11 @@ export class Game {
       b.isPressed("down"),
       this._fastMovement
     );
+    // TODO: make it work for uppercase X as well
     if (b.isPressed("x")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);
     }
+    // TODO: make it work for uppercase Z as well
     // TODO: this implementation (combined with a throttle inside the player) can end up with incorrectly used charges
     if (b.wasJustPressed("o")) {
       if (this._shockwaveCharges > 0 && this._player) {

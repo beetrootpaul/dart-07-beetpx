@@ -1,4 +1,4 @@
-import { MappingColor, v_ } from "@beetpx/beetpx";
+import { MappingColor, SolidColor, v_ } from "@beetpx/beetpx";
 import { b, c, g, u } from "./globals";
 
 // TODO: rework? It's just a copy paste from my another game
@@ -59,8 +59,12 @@ export class PauseMenu {
     b.rectFilled(
       xy.sub(2),
       wh.add(4),
-      new MappingColor(({ r, g, b, a }) =>
-        r + g + b > (0x100 * 3) / 2 ? c._1_darker_blue : c._0_black
+      new MappingColor((canvasColor) =>
+        canvasColor instanceof SolidColor
+          ? canvasColor.r + canvasColor.g + canvasColor.b >= (0xff * 3) / 2
+            ? c._1_darker_blue
+            : c._0_black
+          : canvasColor
       )
     );
     b.rect(xy.sub(1), wh.add(2), c._7_white);
