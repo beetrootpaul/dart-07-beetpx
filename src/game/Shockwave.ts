@@ -51,33 +51,36 @@ export class Shockwave {
   }
 
   private _drawNegativeRing(rOuter: number, rInner: number): void {
+    rOuter = u.clamp(rInner, rOuter, Shockwave._rMax);
+    rInner = u.clamp(Shockwave._rMin, rInner, rOuter);
+    if (rInner === rOuter) return;
+
     // TODO
-    //             r_outer = mid(r_inner, r_outer, r_max)
-    //             r_inner = mid(r_min, r_inner, r_outer)
-    //             if r_inner == r_outer then return end
-    //
-    //             -- Negative ring implementation below is based on:
-    //             --   - a code snippet from user FReDs72
-    //             --   - a [Circular Clipping Masks article by Krystman](https://www.lexaloffle.com/bbs/?tid=46286)
-    //
     //             -- use screen memory as if it was a sprite sheet (needed for "sspr" and "pal" used below)
     //             poke(0x5f54, 0x60)
     //             pal(_palette_negative)
-    //
-    //             for dy = -r_outer, r_outer do
-    //                 local sy, dx_outer, dx_inner = y + dy, ceil(sqrt(r_outer * r_outer - dy * dy)), ceil(sqrt(r_inner * r_inner - dy * dy))
-    //                 sspr(
-    //                     x - dx_outer, sy,
-    //                     dx_outer - dx_inner, 1,
-    //                     x - dx_outer, sy
-    //                 )
-    //                 sspr(
-    //                     x + dx_inner, sy,
-    //                     dx_outer - dx_inner, 1,
-    //                     x + dx_inner, sy
-    //                 )
-    //             end
-    //
+
+    for (let dy = -rOuter; dy <= rOuter; dy++) {
+      const sy = this._xy.y + dy;
+      const dxOuter = Math.ceil(
+        Math.sqrt(Math.max(0, rOuter * rOuter - dy * dy))
+      );
+      const dxInner = Math.ceil(
+        Math.sqrt(Math.max(0, rInner * rInner - dy * dy))
+      );
+      b.line(
+        v_(this._xy.x - dxOuter + 1, sy),
+        v_(dxOuter - dxInner, 1),
+        c._8_red
+      );
+      b.line(
+        v_(this._xy.x + dxOuter - 1, sy),
+        v_(dxInner - dxOuter, 1),
+        c._8_red
+      );
+    }
+
+    // TODO
     //             pal()
     //             -- reset screen memory usage to its normal state
     //             poke(0x5f54, 0x0)
@@ -92,7 +95,7 @@ export class Shockwave {
   draw(): void {
     const r = Math.ceil(this._rProgress.xy.x);
 
-    // this._drawNegativeRing(r, r - 13);
+    this._drawNegativeRing(r, r - 13);
 
     this._drawCircle(r - 3 * Shockwave._rStep);
 
