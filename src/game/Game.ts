@@ -13,6 +13,7 @@ import { Player } from "./Player";
 import { PlayerBullet } from "./PlayerBullet";
 import { Powerup, PowerupType } from "./Powerup";
 import { Score } from "./Score";
+import { Shockwave } from "./Shockwave";
 
 export class Game {
   private _health: number;
@@ -50,6 +51,7 @@ export class Game {
   // TODO: consider poll of bullets for memory reusage
   private _playerBullets: PlayerBullet[] = [];
   private _enemyBullets: EnemyBullet[] = [];
+  private _shockwaves: Shockwave[] = [];
 
   // TODO: consider poll of floats for memory reusage
   private _explosions: Explosion[] = [];
@@ -80,7 +82,7 @@ export class Game {
     this._tripleShoot = params.tripleShoot;
 
     // TODO
-    // local shockwaves, shockwave_enemy_hits =  {}, {}
+    // local shockwave_enemy_hits =  {}
 
     this._player = new Player({
       // TODO
@@ -90,11 +92,11 @@ export class Game {
         // _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
         this._playerBullets.push(...bullets);
       },
-      // TODO
-      // on_shockwave_triggered = function(shockwave)
-      //     _sfx_play(_sfx_player_shockwave, 2)
-      //     add(shockwaves, shockwave)
-      // end,
+      onShockwaveTriggered: (shockwave) => {
+        // TODO
+        //     _sfx_play(_sfx_player_shockwave, 2)
+        this._shockwaves.push(shockwave);
+      },
       onDamaged: () => {
         // TODO
         //    _sfx_play(_sfx_damage_player, 2)
@@ -396,7 +398,7 @@ export class Game {
       this._enemyBullets = [];
     }
 
-    // TODO: shockwaves
+    this._shockwaves = this._shockwaves.filter((s) => !s.hasFinished);
     this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
     this._enemyBullets = this._enemyBullets.filter((eb) => !eb.hasFinished);
     this._enemies = this._enemies.filter((e) => !e.hasFinished);
@@ -416,19 +418,16 @@ export class Game {
     if (b.isPressed("x")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);
     }
-    // TODO
-    /*
-            if btnp(_button_o) then
-                if game.shockwave_charges > 0 then
-                    game.shockwave_charges = game.shockwave_charges - 1
-                    player.trigger_shockwave()
-                else
-                end
-            end
-        */
+    // TODO: this implementation (combined with a throttle inside the player) can end up with incorrectly used charges
+    if (b.wasJustPressed("o")) {
+      if (this._shockwaveCharges > 0 && this._player) {
+        this._shockwaveCharges -= 1;
+        this._player.triggerShockwave();
+      }
+    }
 
     this._level.update();
-    // TODO: shockwaves
+    this._shockwaves.forEach((s) => s.update());
     this._playerBullets.forEach((pb) => pb.update());
     this._enemyBullets.forEach((eb) => eb.update());
     this._player?.update();
@@ -538,7 +537,7 @@ export class Game {
     this._explosions.forEach((e) => e.draw());
     this._floats.forEach((f) => f.draw());
     // Draw shockwaves on top of everything since they are supposed to affect the final game image.
-    // TODO: shockwaves
+    this._shockwaves.forEach((s) => s.draw());
 
     // TODO
     //   clip()
