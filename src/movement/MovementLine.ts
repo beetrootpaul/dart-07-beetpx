@@ -29,7 +29,7 @@ export class MovementLine implements Movement {
     angle: number,
     angledSpeed: number,
     baseSpeedXy: Vector2d = Vector2d.zero,
-    frames?: number
+    frames: number | undefined
   ) {
     this._xy = startXy;
 
@@ -58,8 +58,6 @@ export class MovementLine implements Movement {
 
   update(): void {
     this._timer.update();
-    // TODO
-    // if timer.ttl > 0 or params.continue_after_finished then
     if (!this._timer.hasFinished) {
       this._xy = this._xy.add(this._speed);
     }

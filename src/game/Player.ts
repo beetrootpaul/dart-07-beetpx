@@ -98,9 +98,7 @@ export class Player {
   }
 
   private _createShockwave(): Shockwave {
-    // TODO
-    //     return new_shockwave(xy, 1)
-    return new Shockwave();
+    return new Shockwave(this._xy);
   }
 
   get hasFinished(): boolean {
@@ -149,7 +147,10 @@ export class Player {
   }
 
   triggerShockwave(): void {
-    this._onShockwaveTriggered.invokeIfReady(6, this._createShockwave);
+    this._onShockwaveTriggered.invokeIfReady(
+      6,
+      this._createShockwave.bind(this)
+    );
   }
 
   isInvincibleAfterDamage(): boolean {
@@ -176,8 +177,7 @@ export class Player {
     this._invincibleAfterDamageTimer?.update();
 
     this._onBulletsSpawned.update();
-    // TODO
-    // on_shockwave_triggered._update()
+    this._onShockwaveTriggered.update();
 
     this._jetSprite?.update();
   }
