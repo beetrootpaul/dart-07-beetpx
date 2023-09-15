@@ -1,7 +1,7 @@
 // TODO
 //     local next_id = 0
 
-import { v_, Vector2d } from "@beetpx/beetpx";
+import { MappingColor, SolidColor, v_, Vector2d } from "@beetpx/beetpx";
 import { b, c, g, u } from "../globals";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
@@ -55,6 +55,13 @@ export class Shockwave {
     rInner = u.clamp(Shockwave._rMin, rInner, rOuter);
     if (rInner === rOuter) return;
 
+    // TODO: this approach moves us out of the palette :-/
+    const negativeColorMapping = new MappingColor(({ r, g, b, a }) =>
+      a >= 0xff / 2
+        ? new SolidColor(0xff - r, 0xff - g, 0xff - b)
+        : new SolidColor(r, g, b)
+    );
+
     // TODO
     //             -- use screen memory as if it was a sprite sheet (needed for "sspr" and "pal" used below)
     //             poke(0x5f54, 0x60)
@@ -68,15 +75,16 @@ export class Shockwave {
       const dxInner = Math.ceil(
         Math.sqrt(Math.max(0, rInner * rInner - dy * dy))
       );
+      // TODO: due to the way we do color mapping, overlapping pixels are negating themselves back. Do something about that overlap (vertical middle line)
       b.line(
         v_(this._xy.x - dxOuter + 1, sy),
         v_(dxOuter - dxInner, 1),
-        c._8_red
+        negativeColorMapping
       );
       b.line(
         v_(this._xy.x + dxOuter - 1, sy),
         v_(dxInner - dxOuter, 1),
-        c._8_red
+        negativeColorMapping
       );
     }
 
