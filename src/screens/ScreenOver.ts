@@ -1,5 +1,5 @@
 import { Game } from "../game/Game";
-import { b, c } from "../globals";
+import { b, c, g, h } from "../globals";
 import { GameScreen } from "./GameScreen";
 
 export class ScreenOver implements GameScreen {
@@ -12,19 +12,17 @@ export class ScreenOver implements GameScreen {
 
     // TODO
     //     local got_high_score, fade_in, fade_out, retry, proceed, screen = false, new_fade("in", 30), new_fade("out", 30), true, false, {}
-    //
-    // TODO
-    //         if is_win then
-    //             _sfx_play(_sfx_game_win)
-    //         end
-    //
+
+    if (params.isWin) {
+      // TODO
+      //             _sfx_play(_sfx_game_win)
+    }
+
     // TODO
     //         local current_score = game.score.raw_value()
     //         local high_score_so_far = dget(0)
     //         got_high_score = current_score > high_score_so_far
     //         dset(0, max(high_score_so_far, current_score))
-    //         -- DEBUG:
-    //         --got_high_score = true
   }
 
   // TODO
@@ -100,15 +98,14 @@ export class ScreenOver implements GameScreen {
   draw(): void {
     b.clearCanvas(this._isWin ? c._3_dark_green : c._2_darker_purple);
 
-    // TODO
-    //         -- heading
-    //         _centered_print(
-    //             is_win and "you \-fmade \-fit!" or "game \-fover",
-    //             22,
-    //             _color_7_white,
-    //             is_win and _color_5_blue_green or _color_8_red
-    //         )
-    //
+    // heading
+    h.printCentered(
+      this._isWin ? "you made it!" : "game over",
+      g.gameAreaSize.div(2).x,
+      22,
+      this._isWin ? c._5_blue_green : c._8_red
+    );
+
     // TODO
     //         -- score
     //         local score_base_y = got_high_score and 42 or 47

@@ -378,11 +378,10 @@ export class Game {
     this._boss.startFirstPhase();
   }
 
-  // TODO
-  // function game.is_boss_defeated()
-  //     -- assuming we won't call this method before boss fight has started
-  //     return not boss
-  // end
+  isBossDefeated(): boolean {
+    // assuming we won't call this method before boss fight has started
+    return !this._boss;
+  }
 
   preUpdate(): void {
     if (this._player?.hasFinished) {

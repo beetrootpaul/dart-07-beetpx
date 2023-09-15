@@ -4,6 +4,8 @@ import { Hud } from "../gui/Hud";
 import { SlidingInfo } from "../gui/SlidingInfo";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
+import { ScreenDefeat } from "./ScreenDefeat";
+import { ScreenMissionEnd } from "./ScreenMissionEnd";
 
 export class ScreenMissionBoss implements GameScreen {
   private readonly _game: Game;
@@ -46,17 +48,13 @@ export class ScreenMissionBoss implements GameScreen {
       this._game.startBossFight();
     }
 
-    // TODO
-    //         if game.health <= 0 then
-    //             return new_screen_defeat(game, hud)
-    //         end
-    //
-    //         if game.is_boss_defeated() then
-    //             return new_screen_mission_end(game, hud)
-    //         end
+    if (this._game.health <= 0) {
+      return new ScreenDefeat({ game: this._game, hud: this._hud });
+    }
 
-    // TODO: tmp
-    return undefined;
+    if (this._game.isBossDefeated()) {
+      return new ScreenMissionEnd({ game: this._game, hud: this._hud });
+    }
   }
 
   update(): void {

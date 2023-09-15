@@ -14,6 +14,7 @@ export class CurrentMission {
     return this._current;
   }
 
+  // TODO: where used?
   static get next(): number {
     // TODO: how to handle the mission after the last one?
     return (this.current % 3) + 1;
