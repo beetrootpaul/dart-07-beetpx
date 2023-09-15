@@ -16,7 +16,7 @@ export class Boss {
   private readonly _onBulletsSpawned: () => void;
   private readonly _onDamaged: () => void;
   private readonly _onEnteredNextPhase: () => void;
-  private readonly _onDestroyed: () => void;
+  private readonly _onDestroyed: (collisionCircles: CollisionCircle[]) => void;
 
   private _invincibleDuringIntro: boolean = true;
   get invincibleDuringIntro(): boolean {
@@ -31,7 +31,7 @@ export class Boss {
     onBulletsSpawned: () => void;
     onDamaged: () => void;
     onEnteredNextPhase: () => void;
-    onDestroyed: () => void;
+    onDestroyed: (collisionCircles: CollisionCircle[]) => void;
   }) {
     // TODO
     //     local phases = boss_properties.phases
@@ -87,7 +87,7 @@ export class Boss {
       this._isDestroyed = true;
       // TODO
       //   on_destroyed(collision_circles(), phases[#phases][2])
-      this._onDestroyed();
+      this._onDestroyed(this.collisionCircles);
     }
   }
 

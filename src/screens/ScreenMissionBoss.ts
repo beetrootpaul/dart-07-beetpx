@@ -1,6 +1,7 @@
 import { Game } from "../game/Game";
-import { b } from "../globals";
+import { b, c } from "../globals";
 import { Hud } from "../gui/Hud";
+import { SlidingInfo } from "../gui/SlidingInfo";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
 
@@ -8,26 +9,26 @@ export class ScreenMissionBoss implements GameScreen {
   private readonly _game: Game;
   private readonly _hud: Hud;
 
+  private _bossInfo: SlidingInfo | null;
+
   constructor(params: { game: Game; hud: Hud }) {
     this._game = params.game;
     this._hud = params.hud;
 
     // TODO
-    //     local boss_info_frames, boss_info_slide_frames, music_start_timer, screen = 180, 50, _noop_game_object, {}
-    //
-    // TODO
-    //     local boss_info = new_sliding_info {
-    //         text_2 = _m_boss_name,
-    //         main_color = _color_8_red,
-    //         slide_in_frames = boss_info_slide_frames,
-    //         present_frames = boss_info_frames - 2 * boss_info_slide_frames,
-    //         slide_out_frames = boss_info_slide_frames,
-    //         -- DEBUG:
-    //         --slide_in_frames = 8,
-    //         --present_frames = 0,
-    //         --slide_out_frames = 8,
-    //     }
-    //
+    //     local music_start_timer =  _noop_game_object
+
+    const bossInfoFrames = 180;
+    const bossInfoSlideFrames = 50;
+
+    this._bossInfo = new SlidingInfo({
+      text2: CurrentMission.m.bossName,
+      mainColor: c._8_red,
+      slideInFrames: bossInfoSlideFrames,
+      presentFrames: bossInfoFrames - 2 * bossInfoSlideFrames,
+      slideOutFrames: bossInfoSlideFrames,
+    });
+
     // TODO
     //         _music_fade_out()
     //         music_start_timer = new_timer(60, function()
@@ -38,15 +39,14 @@ export class ScreenMissionBoss implements GameScreen {
   }
 
   preUpdate(): GameScreen | undefined {
+    this._game.preUpdate();
+
+    if (this._bossInfo?.hasFinished) {
+      this._bossInfo = null;
+      this._game.startBossFight();
+    }
+
     // TODO
-    //         game._post_draw()
-    //
-    //         if boss_info.has_finished() then
-    //             boss_info = _noop_game_object
-    //             game.start_boss_fight()
-    this._game.startBossFight();
-    //         end
-    //
     //         if game.health <= 0 then
     //             return new_screen_defeat(game, hud)
     //         end
@@ -62,18 +62,15 @@ export class ScreenMissionBoss implements GameScreen {
   update(): void {
     this._game.update();
     this._hud.update();
+    this._bossInfo?.update();
     // TODO
-    //         boss_info._update()
     //         music_start_timer._update()
   }
 
   draw(): void {
     b.clearCanvas(CurrentMission.m.bgColor);
-
     this._game.draw();
     this._hud.draw(this._game);
-
-    // TODO
-    //         boss_info._draw()
+    this._bossInfo?.draw();
   }
 }

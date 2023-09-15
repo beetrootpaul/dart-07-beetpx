@@ -83,7 +83,11 @@ export class Explosion {
           } else if (p.r < this._magnitude * 0.8) {
             color = new CompositeColor(c._15_peach, c._9_dark_orange);
           }
-          b.ellipseFilled(g.gameAreaOffset.add(p.xy), v_(2, 2).mul(p.r), color);
+          b.ellipseFilled(
+            g.gameAreaOffset.add(p.xy).sub(p.r),
+            v_(2, 2).mul(p.r),
+            color
+          );
         }
       }
       b.setFillPattern(FillPattern.primaryOnly);

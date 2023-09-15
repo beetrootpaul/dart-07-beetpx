@@ -10,6 +10,7 @@ const aspr_ = AnimatedSprite.for(g.assets.mission2SpritesheetUrl);
 
 export class Mission2 implements Mission {
   readonly missionName: string = "(wip) outpost in space";
+  readonly bossName: string = "cargo guardian";
 
   readonly bgColor: SolidColor = c._1_darker_blue;
   readonly missionInfoColor: SolidColor = c._6_light_grey;
@@ -114,8 +115,6 @@ export class Mission2 implements Mission {
   }
 
   // TODO
-  //
-  // _m_boss_name = "cargo \-fguardian"
   // _m_mission_main_music, _m_mission_boss_music = 0, 1
 
   // TODO

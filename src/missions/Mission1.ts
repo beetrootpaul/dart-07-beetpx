@@ -15,6 +15,7 @@ const eb_ = EnemyBullet.factory(aspr_(4, 4, [124], 64));
 
 export class Mission1 implements Mission {
   readonly missionName: string = "emerald islands";
+  readonly bossName: string = "sentinel zx300";
 
   readonly bgColor: SolidColor = c._4_true_blue;
   readonly missionInfoColor: SolidColor = c._9_dark_orange;
@@ -288,8 +289,6 @@ export class Mission1 implements Mission {
   }
 
   // TODO
-  //
-  // _m_boss_name = "sentinel \-fzx300"
   // _m_mission_main_music, _m_mission_boss_music = 0, 13
 
   // TODO
@@ -305,7 +304,9 @@ export class Mission1 implements Mission {
 
   bossProperties(): BossProperties {
     return {
-      health: 130,
+      // TODO: revert
+      // health: 130,
+      health: 13,
       spriteMain: aspr_(54, 20, [0], 96),
       spriteFlash: aspr_(52, 18, [54], 97),
       collisionCirclesProps: [

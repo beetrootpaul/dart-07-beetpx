@@ -10,6 +10,7 @@ const aspr_ = AnimatedSprite.for(g.assets.mission3SpritesheetUrl);
 
 export class Mission3 implements Mission {
   readonly missionName: string = "(wip) phoslar mine";
+  readonly bossName: string = "? ? ?";
 
   readonly bgColor: SolidColor = c._2_darker_purple;
   readonly missionInfoColor: SolidColor = c._3_dark_green;
@@ -161,8 +162,6 @@ export class Mission3 implements Mission {
   }
 
   // TODO
-  //
-  // _m_boss_name = "? \-f? \-f?"
   // _m_mission_main_music, _m_mission_boss_music = 0, 1
 
   // TODO

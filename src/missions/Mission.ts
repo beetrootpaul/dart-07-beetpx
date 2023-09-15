@@ -4,6 +4,7 @@ import { EnemyProperties } from "../game/EnemyProperties";
 
 export interface Mission {
   readonly missionName: string;
+  readonly bossName: string;
 
   readonly bgColor: SolidColor;
   readonly missionInfoColor: SolidColor;

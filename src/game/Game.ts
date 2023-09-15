@@ -323,26 +323,42 @@ export class Game {
         //                 add(explosions, new_explosion(cc.xy, .75 * cc.r))
         //             end
       },
-      // TODO: params: collision_circles, score_to_add
-      onDestroyed: () => {
+      // TODO: params: score_to_add
+      onDestroyed: (collisionCircles) => {
+        // TODO
         //             _sfx_play(_sfx_destroy_boss_final_1)
         //             game.score.add(score_to_add)
         //             add(floats, new_float(collision_circles[1].xy, score_to_add))
-        //             for cc in all(collision_circles) do
-        //                 local xy, r = cc.xy, cc.r
-        //                 _add_all(
-        //                     explosions,
-        //                     new_explosion(xy, .8 * r),
-        //                     new_explosion(xy, 1.4 * r, 4 + flr(rnd(44)), function()
-        //                         _sfx_play(_sfx_destroy_boss_final_2)
-        //                     end),
-        //                     new_explosion(xy, 1.8 * r, 12 + flr(rnd(36)), function()
-        //                         _sfx_play(_sfx_destroy_boss_final_3)
-        //                     end),
-        //                     new_explosion(xy, 3.5 * r, 30 + flr(rnd(18))),
-        //                     new_explosion(xy, 5 * r, 50 + flr(rnd(6)))
-        //                 )
-        //             end
+
+        for (const cc of collisionCircles) {
+          this._explosions.push(
+            new Explosion({ startXy: cc.center, magnitude: 0.8 * cc.r }),
+            new Explosion({
+              startXy: cc.center,
+              magnitude: 1.4 * cc.r,
+              waitFrames: 4 + Math.random() * 44,
+              // TODO:
+              //   onStarted() { _sfx_play(_sfx_destroy_boss_final_2) },
+            }),
+            new Explosion({
+              startXy: cc.center,
+              magnitude: 1.8 * cc.r,
+              waitFrames: 12 + Math.random() * 36,
+              // TODO:
+              //   onStarted() { _sfx_play(_sfx_destroy_boss_final_3) },
+            }),
+            new Explosion({
+              startXy: cc.center,
+              magnitude: 3.5 * cc.r,
+              waitFrames: 30 + Math.random() * 18,
+            }),
+            new Explosion({
+              startXy: cc.center,
+              magnitude: 5 * cc.r,
+              waitFrames: 50 + Math.random() * 6,
+            })
+          );
+        }
       },
     });
   }
