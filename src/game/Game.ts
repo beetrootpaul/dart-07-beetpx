@@ -283,8 +283,9 @@ export class Game {
     }
   }
 
-  // TODO
-  // game.mission_progress_fraction = level.progress_fraction
+  get missionProgressFraction(): number {
+    return this._level.progressFraction;
+  }
 
   enterEnemiesPhase(): void {
     this._level.enterPhaseMain();

@@ -43,8 +43,7 @@ export class Hud {
   private readonly _shockwaveBarSegmentFull = hudSprite(8, 11, 48, 12);
   private readonly _shockwaveBarSegmentEmpty = hudSprite(2, 11, 54, 12);
 
-  // TODO
-  //         local ship_indicator = new_hud_sprite "3,5,32,15"
+  private readonly _shipIndicator = hudSprite(3, 5, 32, 15);
 
   private readonly _powerups = {
     fastMovement: { off: hudSprite(7, 4, 96, 24), on: hudSprite(7, 4, 96, 28) },
@@ -108,22 +107,15 @@ export class Hud {
     // we have to draw health_bar_start after health_bar_segment_full in order to cover 1st segment's joint with black pixels
     this._healthBarStart.draw(xy.sub(0, 4));
 
-    // TODO
-    //                 -- mission progress
-    //                 local mission_progress_h, mission_progress_x = 35, _gaox + xy.x + 5
-    //                 line(
-    //                     mission_progress_x,
-    //                     4,
-    //                     mission_progress_x,
-    //                     3 + mission_progress_h,
-    //                     _color_13_lavender
-    //                 )
-    //                 ship_indicator._draw(xy.minus(
-    //                     -4,
-    //                     77 + game.mission_progress_fraction() * (mission_progress_h - 3)
-    //                 -- DEBUG:
-    //                 --    77 + .25 * (mission_progress_h - 3)
-    //                 ))
+    //
+    // mission progress
+    //
+    const missionProgressH = 35;
+    const missionProgressX = g.gameAreaOffset.x + xy.x + 5;
+    b.line(v_(missionProgressX, 4), v_(1, missionProgressH), c._13_lavender);
+    this._shipIndicator.draw(
+      xy.sub(-4, 77 + game.missionProgressFraction * (missionProgressH - 3))
+    );
 
     //
     // shockwave charges

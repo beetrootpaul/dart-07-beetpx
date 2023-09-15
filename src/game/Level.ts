@@ -2,13 +2,13 @@
 //   - distance = how many tiles we have scrolled forward (can be fraction)
 //   - lane     = which row of tiles are we talking about, perpendicular to distance
 import { spr_, transparent_, v_, Vector2d } from "@beetpx/beetpx";
-import { b, g } from "../globals";
+import { b, g, u } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { LevelDescriptor } from "./LevelDescriptor";
 
 export class Level {
-  private readonly _leveDescriptor: LevelDescriptor;
+  private readonly _levelDescriptor: LevelDescriptor;
 
   private _phase: "intro" | "main" | "outro" = "intro";
 
@@ -21,8 +21,8 @@ export class Level {
     this._maxVisibleDistance + this._spawnDistanceOffset;
   private _distanceNextSpawn: number = this._maxVisibleDistance;
 
-  constructor(leveDescriptor: LevelDescriptor) {
-    this._leveDescriptor = leveDescriptor;
+  constructor(levelDescriptor: LevelDescriptor) {
+    this._levelDescriptor = levelDescriptor;
   }
 
   enterPhaseMain(): void {
@@ -30,12 +30,14 @@ export class Level {
     b.logDebug("intro -> MAIN");
   }
 
-  // TODO
-  //         progress_fraction = function()
-  //             -- We remove 17 from max_visible_distance in order to make sure progress_fraction is not above 0 during mission intro phase.
-  //             -- We remove 2 from max_defined_distance in order to make sure progress_fraction is not below 1 during mission boss phase.
-  //             return mid(0, (max_visible_distance - 17) / (max_defined_distance - 2), 1)
-  //         end,
+  get progressFraction(): number {
+    return u.clamp(
+      0,
+      (this._minVisibleDistance + g.gameAreaTiles.y) /
+        (this._levelDescriptor.maxDefinedDistance + g.gameAreaTiles.y),
+      1
+    );
+  }
 
   hasScrolledToEnd(): boolean {
     return this._phase === "outro";
@@ -48,7 +50,7 @@ export class Level {
     if (this._phase !== "main") return result;
 
     while (this._distanceNextSpawn < this._distanceNoSpawn) {
-      const row = this._leveDescriptor.enemies[this._distanceNextSpawn];
+      const row = this._levelDescriptor.enemies[this._distanceNextSpawn];
       if (row) {
         for (let lane = 1; lane <= 12; lane++) {
           const enemyId = row[lane];
@@ -75,7 +77,7 @@ export class Level {
 
     if (
       this._phase !== "outro" &&
-      this._minVisibleDistance >= this._leveDescriptor.maxDefinedDistance
+      this._minVisibleDistance >= this._levelDescriptor.maxDefinedDistance
     ) {
       this._phase = "outro";
       b.logDebug("MAIN -> outro");
@@ -91,7 +93,7 @@ export class Level {
         Math.floor(this._maxVisibleDistance) + this._spawnDistanceOffset;
     } else if (this._phase === "outro") {
       this._maxVisibleDistance =
-        this._leveDescriptor.maxDefinedDistance +
+        this._levelDescriptor.maxDefinedDistance +
         1 +
         g.gameAreaTiles.y +
         (this._maxVisibleDistance % 1);
@@ -120,7 +122,7 @@ export class Level {
         distance <= Math.ceil(this._maxVisibleDistance);
         distance++
       ) {
-        const row = this._leveDescriptor.structures[distance];
+        const row = this._levelDescriptor.structures[distance];
         if (row) {
           for (let lane = 1; lane <= 12; lane++) {
             const fgTileId = row[lane];
