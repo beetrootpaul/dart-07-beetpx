@@ -30,8 +30,6 @@ export class Hud {
   private static readonly _safetyBorder = 20;
 
   private static readonly _barSize = v_(16, g.viewportSize.y);
-  // TODO
-  // local boss_health_bar_margin = 2
 
   private readonly _heart = hudSprite(6, 5, 40, 24);
   private readonly _healthBarStart = hudSprite(8, 5, 40, 19);
@@ -42,6 +40,9 @@ export class Hud {
   private readonly _shockwaveBarStart = hudSprite(8, 1, 48, 23);
   private readonly _shockwaveBarSegmentFull = hudSprite(8, 11, 48, 12);
   private readonly _shockwaveBarSegmentEmpty = hudSprite(2, 11, 54, 12);
+
+  private readonly _bossHealthBarStart = hudSprite(4, 4, 27, 20);
+  private readonly _bossHealthBarEnd = hudSprite(4, 4, 31, 20);
 
   private readonly _shipIndicator = hudSprite(3, 5, 32, 15);
 
@@ -150,31 +151,31 @@ export class Hud {
       }
     );
 
-    // TODO
-    //                 -- boss health
-    //                 -- (hack to optimize tokens: we set game.boss_health_max only when boss enters
-    //                 -- fight phase, even if we update game.boss_health earlier on every frame;
-    //                 -- thanks to that we can easily detect if it's time to show boss' health bar)
-    //                 if game.boss_health_max then
-    //                     local health_fraction = game.boss_health / game.boss_health_max
-    //                     boss_health_bar_start._draw(boss_health_bar_margin, boss_health_bar_margin)
-    //                     boss_health_bar_end._draw(_gaw - boss_health_bar_margin - 4, boss_health_bar_margin)
-    //                     line(
-    //                         _gaox + boss_health_bar_margin + 2,
-    //                         boss_health_bar_margin + 2,
-    //                         _gaox + _gaw - boss_health_bar_margin - 3,
-    //                         boss_health_bar_margin + 2,
-    //                         _color_14_mauve
-    //                     )
-    //                     if health_fraction > 0 then
-    //                         line(
-    //                             _gaox + boss_health_bar_margin + 2,
-    //                             boss_health_bar_margin + 1,
-    //                             _gaox + boss_health_bar_margin + 2 + flr(health_fraction * (_gaw - 2 * boss_health_bar_margin - 4)) - 1,
-    //                             boss_health_bar_margin + 1,
-    //                             _color_8_red
-    //                         )
-    //                     end
-    //                 end
+    //
+    // boss health
+    //
+    const bossHealthFraction = game.bossHealthFraction;
+    if (bossHealthFraction != null) {
+      const bossHealthBarMargin = 2;
+      const bossHealthW = g.gameAreaSize.x - 2 * bossHealthBarMargin - 4;
+      this._bossHealthBarStart.draw(
+        v_(bossHealthBarMargin, bossHealthBarMargin)
+      );
+      this._bossHealthBarEnd.draw(
+        v_(g.gameAreaSize.x - bossHealthBarMargin - 4, bossHealthBarMargin)
+      );
+      b.line(
+        g.gameAreaOffset.add(bossHealthBarMargin).add(2, 2),
+        v_(bossHealthW, 1),
+        c._14_mauve
+      );
+      if (bossHealthFraction > 0) {
+        b.line(
+          g.gameAreaOffset.add(bossHealthBarMargin).add(2, 1),
+          v_(bossHealthFraction * bossHealthW, 1),
+          c._8_red
+        );
+      }
+    }
   }
 }

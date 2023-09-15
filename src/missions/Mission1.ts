@@ -304,9 +304,7 @@ export class Mission1 implements Mission {
 
   bossProperties(): BossProperties {
     return {
-      // TODO: revert
-      // health: 130,
-      health: 13,
+      health: 130,
       spriteMain: aspr_(54, 20, [0], 96),
       spriteFlash: aspr_(52, 18, [54], 97),
       collisionCirclesProps: [

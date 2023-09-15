@@ -50,14 +50,14 @@ export class Boss {
 
     // TODO
     //     local current_phase_number, flashing_after_damage_timer = 0, nil
-    //
-    //     --
-    //
-    //     local boss = {
-    //         health_max = boss_properties.health,
-    //     }
 
     this._health = this._properties.health;
+  }
+
+  get healthFraction(): number | null {
+    return this._invincibleDuringIntro
+      ? null
+      : this._health / this._properties.health;
   }
 
   get hasFinished(): boolean {

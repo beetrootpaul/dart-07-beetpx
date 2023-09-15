@@ -74,9 +74,6 @@ export class Game {
   }) {
     this._health = params.health;
     this.score = new Score(params.score);
-    // TODO
-    // boss_health = nil,
-    // boss_health_max = nil,
     this._shockwaveCharges = params.shockwaveCharges;
     this._fastMovement = params.fastMovement;
     this._fastShoot = params.fastShoot;
@@ -362,6 +359,10 @@ export class Game {
         }
       },
     });
+  }
+
+  get bossHealthFraction(): number | null {
+    return this._boss?.healthFraction ?? null;
   }
 
   startBossFight(): void {
