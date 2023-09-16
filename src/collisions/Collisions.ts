@@ -3,7 +3,6 @@ import { b, c, g } from "../globals";
 import { CollisionCircle } from "./CollisionCircle";
 
 export class Collisions {
-  // TODO: params: game_object_or_collision_circle_1, game_object_or_collision_circle_2, opts
   static areColliding(
     cc1: CollisionCircle | { collisionCircle: CollisionCircle },
     cc2: CollisionCircle | { collisionCircle: CollisionCircle },

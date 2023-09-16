@@ -57,7 +57,14 @@ b.init(
       PauseMenu.isGamePaused = false;
       pauseMenu = new PauseMenu();
 
-      // TODO: set repeating?
+      b.setRepeating("left", false);
+      b.setRepeating("right", false);
+      b.setRepeating("up", false);
+      b.setRepeating("down", false);
+      b.setRepeating("x", false);
+      b.setRepeating("o", false);
+      b.setRepeating("menu", false);
+
       // TODO: pause menu
       // TODO: stopAllSounds
 
@@ -138,3 +145,16 @@ b.init(
 // TODO: performance improvements to reach ~55 FPS?
 
 // TODO: use versioned BeetPx from npm
+
+// TODO: polishing: music: mission 2
+// TODO: polishing: music: mission 2 boss
+// TODO: polishing: music: mission 3
+// TODO: polishing: music: mission 3 boss
+// TODO: polishing: sprites: mission 2: enemies
+// TODO: polishing: sprites: mission 2: boss
+// TODO: polishing: sprites: mission 3: enemies
+// TODO: polishing: sprites: mission 3: boss
+// TODO: balancing: powerup distributions: mission 2
+// TODO: balancing: powerup distributions: mission 3
+// TODO: balancing: mission 2: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
+// TODO: balancing: mission 3: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
