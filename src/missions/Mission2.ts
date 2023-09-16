@@ -1,12 +1,21 @@
-import { SolidColor, v_ } from "@beetpx/beetpx";
+import { SolidColor, Timer, v_ } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
+import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
 import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
 import { Mission } from "./Mission";
 
 const aspr_ = AnimatedSprite.for(g.assets.mission2SpritesheetUrl);
+
+const eb_ = EnemyBullet.factory(aspr_(4, 4, [124], 64));
+// TODO
+//    local enemy_bullet_factory = new_enemy_bullet_factory {
+//        bullet_sprite = new_static_sprite "4,4,124,64",
+//        collision_circle_r = 1.5,
+//    }
 
 export class Mission2 implements Mission {
   readonly missionName: string = "(wip) outpost in space";
@@ -135,42 +144,34 @@ export class Mission2 implements Mission {
   // TODO
   // _m_mission_main_music, _m_mission_boss_music = 0, 1
 
-  // TODO
-  //    local enemy_bullet_factory = new_enemy_bullet_factory {
-  //        bullet_sprite = new_static_sprite "4,4,124,64",
-  //        collision_circle_r = 1.5,
-  //    }
-
   bossProperties(): BossProperties {
     return {
       health: 25,
       spriteMain: aspr_(56, 26, [4], 98),
       spriteFlash: aspr_(56, 26, [4], 98),
       collisionCirclesProps: [{ r: 15, offset: v_(0, -3) }],
-      // TODO
-      //         phases = {
-      //             -- phase 1:
-      //             {
-      //                 1,
-      //                 1,
-      //                 -- DEBUG:
-      //                 --32767,
-      //                 new_timer "80",
-      //                 function(enemy_movement, player_collision_circle)
-      //                     _sfx_play(_sfx_enemy_multi_shoot)
-      //                     return {
-      //                         enemy_bullet_factory(
-      //                             new_movement_line_factory {
-      //                                 base_speed_y = enemy_movement.speed_xy.y,
-      //                                 angle = .75,
-      //                                 angled_speed = .5,
-      //                             }(enemy_movement.xy.plus(0, 3))
-      //                         ),
-      //                     }
-      //                 end,
-      //                 new_movement_fixed_factory(),
-      //             },
-      //         },
+      phases: [
+        // phase 1
+        {
+          triggeringHealthFraction: 1,
+          score: 1,
+          movementFactory: MovementFixed.of({}),
+          bulletFireTimer: new Timer({ frames: 80 }),
+          spawnBullets: (bossMovement, playerCollisionCircle) => {
+            // TODO
+            // _sfx_play(_sfx_enemy_multi_shoot)
+            return [
+              eb_(
+                MovementLine.of({
+                  baseSpeedXy: v_(0, bossMovement.speed.y),
+                  angle: 0.25,
+                  angledSpeed: 0.5,
+                })(bossMovement.xy.add(0, 3))
+              ),
+            ];
+          },
+        },
+      ],
     };
   }
 }

@@ -4,7 +4,7 @@ import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
 import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
-import { Movement } from "../movement/Movement";
+import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
 import { MovementSinusoidal } from "../movement/MovementSinusoidal";
 import { Mission } from "./Mission";
@@ -12,6 +12,11 @@ import { Mission } from "./Mission";
 const aspr_ = AnimatedSprite.for(g.assets.mission1SpritesheetUrl);
 
 const eb_ = EnemyBullet.factory(aspr_(4, 4, [124], 64));
+// TODO
+//     local enemy_bullet_factory = new_enemy_bullet_factory {
+//         bullet_sprite = new_static_sprite "4,4,124,64",
+//         collision_circle_r = 1.5,
+//     }
 
 export class Mission1 implements Mission {
   readonly missionName: string = "emerald islands";
@@ -265,7 +270,7 @@ export class Mission1 implements Mission {
             angledSpeed: this.scrollPerFrame,
           }),
           bulletFireTimer: new Timer({ frames: 60 }),
-          spawnBullets: (enemyMovement: Movement) => {
+          spawnBullets: (enemyMovement, playerCollisionCircle) => {
             // TODO
             //                     _sfx_play(_sfx_enemy_multi_shoot)
             const bullets: EnemyBullet[] = [];
@@ -292,21 +297,13 @@ export class Mission1 implements Mission {
   // _m_mission_main_music, _m_mission_boss_music = 0, 13
 
   // TODO
-  //     local enemy_bullet_factory = new_enemy_bullet_factory {
-  //         bullet_sprite = new_static_sprite "4,4,124,64",
-  //         collision_circle_r = 1.5,
-  //     }
-
-  // TODO
   //     local function t_mod_2()
   //         return t() % 2
   //     end
 
   bossProperties(): BossProperties {
     return {
-      // TODO: REVERT
-      // health: 130,
-      health: 13,
+      health: 130,
       spriteMain: aspr_(54, 20, [0], 96),
       spriteFlash: aspr_(52, 18, [54], 97),
       collisionCirclesProps: [
@@ -314,140 +311,150 @@ export class Mission1 implements Mission {
         { r: 6, offset: v_(20, -3) },
         { r: 6, offset: v_(-20, -3) },
       ],
-      // TODO
-      //             phases = {
-      //                 -- phase 1:
-      //                 {
-      //                     1,
-      //                     50,
-      //                     new_timer "8",
-      //                     function(boss_movement)
-      //                         if t_mod_2() < 1 then return {} end
-      //                         _sfx_play(_sfx_enemy_shoot)
-      //                         return {
-      //                             enemy_bullet_factory(
-      //                                 new_movement_line_factory {
-      //                                     angle = .75,
-      //                                     angled_speed = 1.5,
-      //                                 }(boss_movement.xy.plus(0, 3))
-      //                             ),
-      //                         }
-      //                     end,
-      //                     new_movement_fixed_factory(),
-      //                 },
-      //                 -- phase 2:
-      //                 {
-      //                     .8,
-      //                     300,
-      //                     new_timer "28",
-      //                     function(enemy_movement)
-      //                         local bullets = {}
-      //                         if t_mod_2() > .6 then
-      //                             _sfx_play(_sfx_enemy_multi_shoot)
-      //                             for i = 1, 8 do
-      //                                 add(bullets, enemy_bullet_factory(
-      //                                     new_movement_line_factory {
-      //                                         base_speed_y = enemy_movement.speed_xy.y,
-      //                                         angle = t() % 1 + i / 8,
-      //                                     }(enemy_movement.xy)
-      //                                 ))
-      //                             end
-      //                         end
-      //                         return bullets
-      //                     end,
-      //                     new_movement_sequence_factory {
-      //                         new_movement_to_target_factory {
-      //                             target_x = 30,
-      //                             frames = 40,
-      //                             easing_fn = _easing_easeoutquad,
-      //                         },
-      //                         new_movement_loop_factory {
-      //                             new_movement_to_target_factory {
-      //                                 target_x = _gaw - 30,
-      //                                 frames = 80,
-      //                                 easing_fn = _easing_easeoutquad,
-      //                             },
-      //                             new_movement_to_target_factory {
-      //                                 target_x = 30,
-      //                                 frames = 80,
-      //                                 easing_fn = _easing_easeoutquad,
-      //                             },
-      //                         },
-      //                     },
-      //                 },
-      //                 -- phase 3:
-      //                 {
-      //                     .4,
-      //                     650,
-      //                     new_timer "8",
-      //                     function(boss_movement)
-      //                         _sfx_play(_sfx_enemy_shoot)
-      //                         if t_mod_2() > 1.5 then
-      //                             -- side bullets
-      //                             return {
-      //                                 enemy_bullet_factory(
-      //                                     new_movement_line_factory {
-      //                                         angle = .75,
-      //                                         angled_speed = 1.5,
-      //                                     }(boss_movement.xy.plus(-20, -3))
-      //                                 ),
-      //                                 enemy_bullet_factory(
-      //                                     new_movement_line_factory {
-      //                                         angle = .75,
-      //                                         angled_speed = 1.5,
-      //                                     }(boss_movement.xy.plus(20, -3))
-      //                                 ),
-      //                             }
-      //                         elseif t_mod_2() < .9 then
-      //                             -- sinusoidal central bullets
-      //                             return {
-      //                                 enemy_bullet_factory(
-      //                                     new_movement_sinusoidal_factory {
-      //                                         speed_y = 1.5,
-      //                                         age_divisor = 60,
-      //                                         magnitude = 9,
-      //                                     }(boss_movement.xy.plus(0, 3))
-      //                                 ),
-      //                             }
-      //                         end
-      //                     end,
-      //                     new_movement_loop_factory {
-      //                         -- center it
-      //                         new_movement_to_target_factory {
-      //                             target_x = _gawdb2,
-      //                             target_y = 20,
-      //                             frames = 60,
-      //                             easing_fn = _easing_easeoutquad,
-      //                         },
-      //                         -- wait …
-      //                         new_movement_fixed_factory {
-      //                             frames = 30,
-      //                         },
-      //                         -- … and charge!
-      //                         new_movement_to_target_factory {
-      //                             target_y = _gah - 20,
-      //                             frames = 40,
-      //                             easing_fn = _easing_easeinquad,
-      //                         },
-      //                         -- then revert
-      //                         new_movement_to_target_factory {
-      //                             target_y = 20,
-      //                             frames = 120,
-      //                             easing_fn = _easing_linear,
-      //                         },
-      //                         -- go left and right
-      //                         new_movement_to_target_factory {
-      //                             target_x = _gaw - 30,
-      //                             frames = 80,
-      //                             easing_fn = _easing_easeoutquad,
-      //                         },
-      //                         new_movement_to_target_factory {
-      //                             target_x = 30,
-      //                             frames = 80,
-      //                             easing_fn = _easing_easeoutquad,
-      //                         },
-      //                     },
-      //                 }
+      phases: [
+        // phase 1
+        {
+          triggeringHealthFraction: 1,
+          score: 50,
+          movementFactory: MovementFixed.of({}),
+          bulletFireTimer: new Timer({ frames: 8 }),
+          spawnBullets: (bossMovement, playerCollisionCircle) => {
+            return [];
+            // TODO
+            //                         if t_mod_2() < 1 then return {} end
+            //                         _sfx_play(_sfx_enemy_shoot)
+            //                         return {
+            //                             enemy_bullet_factory(
+            //                                 new_movement_line_factory {
+            //                                     angle = .75,
+            //                                     angled_speed = 1.5,
+            //                                 }(boss_movement.xy.plus(0, 3))
+            //                             ),
+            //                         }
+          },
+        },
+        // phase 2
+        {
+          triggeringHealthFraction: 0.8,
+          score: 300,
+          // TODO
+          movementFactory: MovementFixed.of({}),
+          //                     new_movement_sequence_factory {
+          //                         new_movement_to_target_factory {
+          //                             target_x = 30,
+          //                             frames = 40,
+          //                             easing_fn = _easing_easeoutquad,
+          //                         },
+          //                         new_movement_loop_factory {
+          //                             new_movement_to_target_factory {
+          //                                 target_x = _gaw - 30,
+          //                                 frames = 80,
+          //                                 easing_fn = _easing_easeoutquad,
+          //                             },
+          //                             new_movement_to_target_factory {
+          //                                 target_x = 30,
+          //                                 frames = 80,
+          //                                 easing_fn = _easing_easeoutquad,
+          //                             },
+          //                         },
+          //                     },
+          bulletFireTimer: new Timer({ frames: 28 }),
+          spawnBullets: (bossMovement, playerCollisionCircle) => {
+            return [];
+            // TODO
+            //                         local bullets = {}
+            //                         if t_mod_2() > .6 then
+            //                             _sfx_play(_sfx_enemy_multi_shoot)
+            //                             for i = 1, 8 do
+            //                                 add(bullets, enemy_bullet_factory(
+            //                                     new_movement_line_factory {
+            //                                         base_speed_y = enemy_movement.speed_xy.y,
+            //                                         angle = t() % 1 + i / 8,
+            //                                     }(enemy_movement.xy)
+            //                                 ))
+            //                             end
+            //                         end
+            //                         return bullets
+          },
+        },
+        // phase 3
+        {
+          triggeringHealthFraction: 0.4,
+          score: 650,
+          // TODO
+          movementFactory: MovementFixed.of({}),
+          //                     new_movement_loop_factory {
+          //                         -- center it
+          //                         new_movement_to_target_factory {
+          //                             target_x = _gawdb2,
+          //                             target_y = 20,
+          //                             frames = 60,
+          //                             easing_fn = _easing_easeoutquad,
+          //                         },
+          //                         -- wait …
+          //                         new_movement_fixed_factory {
+          //                             frames = 30,
+          //                         },
+          //                         -- … and charge!
+          //                         new_movement_to_target_factory {
+          //                             target_y = _gah - 20,
+          //                             frames = 40,
+          //                             easing_fn = _easing_easeinquad,
+          //                         },
+          //                         -- then revert
+          //                         new_movement_to_target_factory {
+          //                             target_y = 20,
+          //                             frames = 120,
+          //                             easing_fn = _easing_linear,
+          //                         },
+          //                         -- go left and right
+          //                         new_movement_to_target_factory {
+          //                             target_x = _gaw - 30,
+          //                             frames = 80,
+          //                             easing_fn = _easing_easeoutquad,
+          //                         },
+          //                         new_movement_to_target_factory {
+          //                             target_x = 30,
+          //                             frames = 80,
+          //                             easing_fn = _easing_easeoutquad,
+          //                         },
+          //                     },
+          bulletFireTimer: new Timer({ frames: 8 }),
+          spawnBullets: (bossMovement, playerCollisionCircle) => {
+            return [];
+            // TODO
+            //                         _sfx_play(_sfx_enemy_shoot)
+            //                         if t_mod_2() > 1.5 then
+            //                             -- side bullets
+            //                             return {
+            //                                 enemy_bullet_factory(
+            //                                     new_movement_line_factory {
+            //                                         angle = .75,
+            //                                         angled_speed = 1.5,
+            //                                     }(boss_movement.xy.plus(-20, -3))
+            //                                 ),
+            //                                 enemy_bullet_factory(
+            //                                     new_movement_line_factory {
+            //                                         angle = .75,
+            //                                         angled_speed = 1.5,
+            //                                     }(boss_movement.xy.plus(20, -3))
+            //                                 ),
+            //                             }
+            //                         elseif t_mod_2() < .9 then
+            //                             -- sinusoidal central bullets
+            //                             return {
+            //                                 enemy_bullet_factory(
+            //                                     new_movement_sinusoidal_factory {
+            //                                         speed_y = 1.5,
+            //                                         age_divisor = 60,
+            //                                         magnitude = 9,
+            //                                     }(boss_movement.xy.plus(0, 3))
+            //                                 ),
+            //                             }
+            //                         end
+          },
+        },
+      ],
     };
   }
 }

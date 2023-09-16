@@ -12,10 +12,10 @@ export class ScreenSelectMission implements GameScreen {
     if (this._next) {
       return new ScreenMissionMain({
         mission: CurrentMission.first,
-        health: 1,
+        health: 10,
         shockwaveCharges: 4,
-        fastMovement: false,
-        fastShoot: false,
+        fastMovement: true,
+        fastShoot: true,
         tripleShoot: true,
         score: 0,
       });

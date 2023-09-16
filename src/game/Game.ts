@@ -321,22 +321,30 @@ export class Game {
         // TODO
         // _sfx_play(_sfx_damage_enemy, 3)
       },
-      // TODO: params: collision_circles, score_to_add
-      onEnteredNextPhase: () => {
+      onEnteredNextPhase: (collisionCircles, scoreToAdd) => {
         // TODO
         //             _sfx_play(_sfx_destroy_boss_phase)
-        //             game.score.add(score_to_add)
-        //             add(floats, new_float(collision_circles[1].xy, score_to_add))
-        //             for cc in all(collision_circles) do
-        //                 add(explosions, new_explosion(cc.xy, .75 * cc.r))
-        //             end
+
+        this.score.add(scoreToAdd);
+        this._floats.push(
+          new Float({ startXy: collisionCircles[0]!.center, score: scoreToAdd })
+        );
+
+        for (const cc of collisionCircles) {
+          this._explosions.push(
+            new Explosion({ startXy: cc.center, magnitude: 0.75 * cc.r })
+          );
+        }
       },
       // TODO: params: score_to_add
-      onDestroyed: (collisionCircles) => {
+      onDestroyed: (collisionCircles, scoreToAdd) => {
         // TODO
         //             _sfx_play(_sfx_destroy_boss_final_1)
-        //             game.score.add(score_to_add)
-        //             add(floats, new_float(collision_circles[1].xy, score_to_add))
+
+        this.score.add(scoreToAdd);
+        this._floats.push(
+          new Float({ startXy: collisionCircles[0]!.center, score: scoreToAdd })
+        );
 
         for (const cc of collisionCircles) {
           this._explosions.push(
@@ -456,14 +464,11 @@ export class Game {
           properties: CurrentMission.m.enemyPropertiesFor(enemyToSpawn.id),
           startXy: enemyToSpawn.xy,
           onBulletsSpawned: (spawnBulletsFn, enemyMovement) => {
-            // TODO
-            //     if player then
-            // TODO
-            this._enemyBullets.push(...spawnBulletsFn(enemyMovement));
-            //         for seb in all(spawned_enemy_bullets_fn(enemy_movement, player.collision_circle())) do
-            //             add(enemy_bullets, seb)
-            //         end
-            //     end
+            if (this._player) {
+              this._enemyBullets.push(
+                ...spawnBulletsFn(enemyMovement, this._player.collisionCircle)
+              );
+            }
           },
           onDamaged: (mainCollisionCircle) => {
             // TODO

@@ -16,7 +16,10 @@ export class Enemy {
   private readonly _movement: Movement;
 
   private readonly _onBulletsSpawned: (
-    spawnBulletsFn: (enemyMovement: Movement) => EnemyBullet[],
+    spawnBulletsFn: (
+      enemyMovement: Movement,
+      playerCollisionCircle: CollisionCircle
+    ) => EnemyBullet[],
     enemyMovement: Movement
   ) => void;
   private readonly _onDamaged: (mainCollisionCircle: CollisionCircle) => void;
@@ -34,7 +37,10 @@ export class Enemy {
     properties: EnemyProperties;
     startXy: Vector2d;
     onBulletsSpawned: (
-      spawnBulletsFn: (enemyMovement: Movement) => EnemyBullet[],
+      spawnBulletsFn: (
+        enemyMovement: Movement,
+        playerCollisionCircle: CollisionCircle
+      ) => EnemyBullet[],
       enemyMovement: Movement
     ) => void;
     onDamaged: (mainCollisionCircle: CollisionCircle) => void;

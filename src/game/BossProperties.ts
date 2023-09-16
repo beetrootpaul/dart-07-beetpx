@@ -1,5 +1,8 @@
-import { Vector2d } from "@beetpx/beetpx";
+import { Timer, Vector2d } from "@beetpx/beetpx";
+import { CollisionCircle } from "../collisions/CollisionCircle";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Movement, MovementFactory } from "../movement/Movement";
+import { EnemyBullet } from "./EnemyBullet";
 
 export type BossProperties = {
   health: number;
@@ -13,14 +16,17 @@ export type BossProperties = {
     offset?: Vector2d;
   }>;
 
-  // TODO
-  //     --   - phases = {
-  //     --       - [1] = triggering_health_fraction
-  //     --       - [2] = score
-  //     --       - [3] = bullet_fire_timer
-  //     --       - [4] = spawn_bullets = function(boss_movement, player_collision_circle)
-  //     --                                 return bullets_table
-  //     --                               end
-  //     --       - [5] = movement_factory
-  //     --     }
+  phases: Array<{
+    triggeringHealthFraction: number;
+
+    score: number;
+
+    movementFactory: MovementFactory;
+
+    bulletFireTimer: Timer;
+    spawnBullets: (
+      bossMovement: Movement,
+      playerCollisionCircle: CollisionCircle
+    ) => EnemyBullet[];
+  }>;
 };
