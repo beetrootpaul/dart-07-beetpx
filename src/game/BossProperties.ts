@@ -21,12 +21,12 @@ export type BossProperties = {
 
     score: number;
 
-    movementFactory: MovementFactory;
-
     bulletFireTimer: Timer;
     spawnBullets: (
       bossMovement: Movement,
       playerCollisionCircle: CollisionCircle
     ) => EnemyBullet[];
+
+    movementFactory: MovementFactory;
   }>;
 };

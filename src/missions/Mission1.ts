@@ -4,9 +4,12 @@ import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
 import { c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Easing } from "../misc/Easing";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
+import { MovementSequence } from "../movement/MovementSequence";
 import { MovementSinusoidal } from "../movement/MovementSinusoidal";
+import { MovementToTarget } from "../movement/MovementToTarget";
 import { Mission } from "./Mission";
 
 const aspr_ = AnimatedSprite.for(g.assets.mission1SpritesheetUrl);
@@ -316,7 +319,6 @@ export class Mission1 implements Mission {
         {
           triggeringHealthFraction: 1,
           score: 50,
-          movementFactory: MovementFixed.of({}),
           bulletFireTimer: new Timer({ frames: 8 }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             return [];
@@ -332,32 +334,12 @@ export class Mission1 implements Mission {
             //                             ),
             //                         }
           },
+          movementFactory: MovementFixed.of({}),
         },
         // phase 2
         {
           triggeringHealthFraction: 0.8,
           score: 300,
-          // TODO
-          movementFactory: MovementFixed.of({}),
-          //                     new_movement_sequence_factory {
-          //                         new_movement_to_target_factory {
-          //                             target_x = 30,
-          //                             frames = 40,
-          //                             easing_fn = _easing_easeoutquad,
-          //                         },
-          //                         new_movement_loop_factory {
-          //                             new_movement_to_target_factory {
-          //                                 target_x = _gaw - 30,
-          //                                 frames = 80,
-          //                                 easing_fn = _easing_easeoutquad,
-          //                             },
-          //                             new_movement_to_target_factory {
-          //                                 target_x = 30,
-          //                                 frames = 80,
-          //                                 easing_fn = _easing_easeoutquad,
-          //                             },
-          //                         },
-          //                     },
           bulletFireTimer: new Timer({ frames: 28 }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             return [];
@@ -376,49 +358,30 @@ export class Mission1 implements Mission {
             //                         end
             //                         return bullets
           },
+          movementFactory: MovementSequence.of([
+            MovementToTarget.of({
+              targetX: 30,
+              frames: 40,
+              easingFn: Easing.outQuadratic,
+            }),
+            MovementSequence.loopedOf([
+              MovementToTarget.of({
+                targetX: g.gameAreaSize.x - 30,
+                frames: 80,
+                easingFn: Easing.outQuadratic,
+              }),
+              MovementToTarget.of({
+                targetX: 30,
+                frames: 80,
+                easingFn: Easing.outQuadratic,
+              }),
+            ]),
+          ]),
         },
         // phase 3
         {
           triggeringHealthFraction: 0.4,
           score: 650,
-          // TODO
-          movementFactory: MovementFixed.of({}),
-          //                     new_movement_loop_factory {
-          //                         -- center it
-          //                         new_movement_to_target_factory {
-          //                             target_x = _gawdb2,
-          //                             target_y = 20,
-          //                             frames = 60,
-          //                             easing_fn = _easing_easeoutquad,
-          //                         },
-          //                         -- wait …
-          //                         new_movement_fixed_factory {
-          //                             frames = 30,
-          //                         },
-          //                         -- … and charge!
-          //                         new_movement_to_target_factory {
-          //                             target_y = _gah - 20,
-          //                             frames = 40,
-          //                             easing_fn = _easing_easeinquad,
-          //                         },
-          //                         -- then revert
-          //                         new_movement_to_target_factory {
-          //                             target_y = 20,
-          //                             frames = 120,
-          //                             easing_fn = _easing_linear,
-          //                         },
-          //                         -- go left and right
-          //                         new_movement_to_target_factory {
-          //                             target_x = _gaw - 30,
-          //                             frames = 80,
-          //                             easing_fn = _easing_easeoutquad,
-          //                         },
-          //                         new_movement_to_target_factory {
-          //                             target_x = 30,
-          //                             frames = 80,
-          //                             easing_fn = _easing_easeoutquad,
-          //                         },
-          //                     },
           bulletFireTimer: new Timer({ frames: 8 }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             return [];
@@ -453,6 +416,42 @@ export class Mission1 implements Mission {
             //                             }
             //                         end
           },
+          movementFactory: MovementSequence.loopedOf([
+            // center it
+            MovementToTarget.of({
+              targetX: g.gameAreaSize.x / 2,
+              targetY: 20,
+              frames: 60,
+              easingFn: Easing.outQuadratic,
+            }),
+            // wait …
+            MovementFixed.of({
+              frames: 30,
+            }),
+            // … and charge!
+            MovementToTarget.of({
+              targetY: g.gameAreaSize.y - 20,
+              frames: 40,
+              easingFn: Easing.inQuadratic,
+            }),
+            // then revert
+            MovementToTarget.of({
+              targetY: 20,
+              frames: 120,
+              easingFn: Easing.linear,
+            }),
+            // go left and right
+            MovementToTarget.of({
+              targetX: g.gameAreaSize.x - 30,
+              frames: 80,
+              easingFn: Easing.outQuadratic,
+            }),
+            MovementToTarget.of({
+              targetX: 30,
+              frames: 80,
+              easingFn: Easing.outQuadratic,
+            }),
+          ]),
         },
       ],
     };

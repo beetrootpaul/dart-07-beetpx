@@ -184,7 +184,6 @@ export class Mission3 implements Mission {
         {
           triggeringHealthFraction: 1,
           score: 1,
-          movementFactory: MovementFixed.of({}),
           bulletFireTimer: new Timer({ frames: 80 }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             // TODO
@@ -199,6 +198,7 @@ export class Mission3 implements Mission {
               ),
             ];
           },
+          movementFactory: MovementFixed.of({}),
         },
       ],
     };
