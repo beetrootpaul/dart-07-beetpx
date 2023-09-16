@@ -1,14 +1,16 @@
 import { Timer, Vector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
+import { Collisions } from "../collisions/Collisions";
 import { g, u } from "../globals";
 import { Movement } from "../movement/Movement";
 import { EnemyBullet } from "./EnemyBullet";
 import { EnemyProperties } from "./EnemyProperties";
 
-// TODO
-//     local next_id = 0
-
 export class Enemy {
+  private static _nextId = 1;
+
+  readonly id: number = Enemy._nextId++;
+
   private readonly _properties: EnemyProperties;
 
   private readonly _movement: Movement;
@@ -53,13 +55,8 @@ export class Enemy {
     this._health = params.properties.health;
 
     // TODO
-    //         next_id = next_id + 1
-    //
     //         local bullet_fire_timer = enemy_properties.bullet_fire_timer or new_fake_timer()
   }
-
-  // TODO
-  //             id = next_id,
 
   get collisionCircles(): CollisionCircle[] {
     return this._properties.collisionCirclesProps.map(({ r, offset }) => ({
@@ -107,15 +104,16 @@ export class Enemy {
       this._properties.bulletFireTimer.update();
       if (this._properties.bulletFireTimer.hasFinished) {
         if (this._properties.spawnBullets) {
-          // TODO
-          const canSpawnBullets = true;
-          //                     local can_spawn_bullets = false
-          // TODO
-          //                     for cc in all(collision_circles()) do
-          //                         if not _is_collision_circle_nearly_outside_top_edge_of_gameplay_area(cc) then
-          //                             can_spawn_bullets = can_spawn_bullets or true
-          //                         end
-          //                     end
+          let canSpawnBullets = false;
+          for (const cc of this.collisionCircles) {
+            if (
+              !Collisions.isCollisionCircleNearlyOutsideTopEdgeOfGameplayArea(
+                cc
+              )
+            ) {
+              canSpawnBullets ||= true;
+            }
+          }
           if (canSpawnBullets) {
             this._onBulletsSpawned(
               this._properties.spawnBullets,

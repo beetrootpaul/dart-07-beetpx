@@ -53,6 +53,8 @@ export class Game {
   private _enemyBullets: EnemyBullet[] = [];
   private _shockwaves: Shockwave[] = [];
 
+  private readonly _shockwaveEnemyHits: { [combinedId: string]: number } = {};
+
   // TODO: consider poll of floats for memory reusage
   private _explosions: Explosion[] = [];
 
@@ -80,9 +82,6 @@ export class Game {
     this._fastMovement = params.fastMovement;
     this._fastShoot = params.fastShoot;
     this._tripleShoot = params.tripleShoot;
-
-    // TODO
-    // local shockwave_enemy_hits =  {}
 
     this._player = new Player({
       // TODO
@@ -193,19 +192,24 @@ export class Game {
     //
     for (const enemy of this._enemies) {
       for (const enemyCc of enemy.collisionCircles) {
-        // TODO
-        //             for shockwave in all(shockwaves) do
-        //                 local combined_id = shockwave.id .. "-" .. enemy.id
-        //                 shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
-        //                 if not enemy.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
-        //                     if _collisions.are_colliding(shockwave, enemy_cc, {
-        //                         ignore_gameplay_area_check = true,
-        //                     }) then
-        //                         enemy.take_damage(2)
-        //                         shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
-        //                     end
-        //                 end
-        //             end
+        for (const shockwave of this._shockwaves) {
+          const combinedId = `${shockwave.id}-${enemy.id}`;
+          this._shockwaveEnemyHits[combinedId] ??= 0;
+          if (
+            !enemy.hasFinished &&
+            !shockwave.hasFinished &&
+            this._shockwaveEnemyHits[combinedId]! < 8
+          ) {
+            if (
+              Collisions.areColliding(shockwave, enemyCc, {
+                ignoreGameplayAreaCheck: true,
+              })
+            ) {
+              enemy.takeDamage(2);
+              this._shockwaveEnemyHits[combinedId] += 1;
+            }
+          }
+        }
         for (const playerBullet of this._playerBullets) {
           if (!enemy.hasFinished && !playerBullet.hasFinished) {
             if (Collisions.areColliding(playerBullet, enemyCc)) {
@@ -228,19 +232,24 @@ export class Game {
     //
     if (this._boss && !this._boss.invincibleDuringIntro) {
       for (const bossCc of this._boss.collisionCircles) {
-        // TODO
-        //             for shockwave in all(shockwaves) do
-        //                 local combined_id = shockwave.id .. "-boss"
-        //                 shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
-        //                 if not boss.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
-        //                     if _collisions.are_colliding(shockwave, boss_cc, {
-        //                         ignore_gameplay_area_check = true,
-        //                     }) then
-        //                         boss.take_damage(2)
-        //                         shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
-        //                     end
-        //                 end
-        //             end
+        for (const shockwave of this._shockwaves) {
+          const combinedId = `${shockwave.id}-boss`;
+          this._shockwaveEnemyHits[combinedId] ??= 0;
+          if (
+            !this._boss?.hasFinished &&
+            !shockwave.hasFinished &&
+            this._shockwaveEnemyHits[combinedId]! < 8
+          ) {
+            if (
+              Collisions.areColliding(shockwave, bossCc, {
+                ignoreGameplayAreaCheck: true,
+              })
+            ) {
+              this._boss?.takeDamage(2);
+              this._shockwaveEnemyHits[combinedId] += 1;
+            }
+          }
+        }
         for (const playerBullet of this._playerBullets) {
           if (!this._boss.hasFinished && !playerBullet.hasFinished) {
             if (Collisions.areColliding(playerBullet, bossCc)) {
@@ -265,14 +274,13 @@ export class Game {
     // shockwaves vs enemy bullets + player vs enemy bullets
     //
     for (const enemyBullet of this._enemyBullets) {
-      // TODO
-      //         for shockwave in all(shockwaves) do
-      //             if not enemy_bullet.has_finished() and not shockwave.has_finished() then
-      //                 if _collisions.are_colliding(shockwave, enemy_bullet) then
-      //                     enemy_bullet.destroy()
-      //                 end
-      //             end
-      //         end
+      for (const shockwave of this._shockwaves) {
+        if (!enemyBullet.hasFinished && !shockwave.hasFinished) {
+          if (Collisions.areColliding(shockwave, enemyBullet)) {
+            enemyBullet.destroy();
+          }
+        }
+      }
       if (!enemyBullet.hasFinished && !this._player.isInvincibleAfterDamage()) {
         if (Collisions.areColliding(enemyBullet, this._player)) {
           this._handlePlayerDamage();
@@ -555,6 +563,7 @@ export class Game {
         Collisions.debugDrawCollisionCircle(this._player);
       }
       this._powerups.forEach(Collisions.debugDrawCollisionCircle);
+      this._shockwaves.forEach(Collisions.debugDrawCollisionCircle);
     }
 
     if (this._cameraShakeTimer.framesLeft > 0) {

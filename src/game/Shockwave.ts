@@ -2,18 +2,22 @@
 //     local next_id = 0
 
 import { v_, Vector2d } from "@beetpx/beetpx";
+import { CollisionCircle } from "../collisions/CollisionCircle";
 import { b, c, g, u } from "../globals";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
 
 export class Shockwave {
+  private static _nextId = 1;
+
   private static readonly _rMin: number = 11;
   private static readonly _rMax: number = 88;
   private static readonly _rStep: number = 7;
   private static readonly _rSpeed: number = 1;
 
-  private _xy: Vector2d;
+  readonly id: number = Shockwave._nextId++;
 
+  private readonly _center: Vector2d;
   private _rProgress: Movement;
 
   constructor(center: Vector2d) {
@@ -22,7 +26,8 @@ export class Shockwave {
     // TODO
     //             id = next_id,
 
-    this._xy = center.add(g.gameAreaOffset);
+    // this._center = center.add(g.gameAreaOffset);
+    this._center = center;
 
     this._rProgress = MovementLine.of({
       // keep in sync: amount of steps to add to "_rMax" here is taken from the smallest circle drawn in "draw()"
@@ -34,13 +39,12 @@ export class Shockwave {
     })(Vector2d.zero);
   }
 
-  // TODO
-  //             collision_circle = function()
-  //                 return {
-  //                     xy = center_xy,
-  //                     r = min(r_progress.xy.x, r_max),
-  //                 }
-  //             end,
+  get collisionCircle(): CollisionCircle {
+    return {
+      center: this._center,
+      r: Math.min(this._rProgress.xy.x, Shockwave._rMax),
+    };
+  }
 
   get hasFinished(): boolean {
     return this._rProgress.hasFinished;
@@ -56,7 +60,7 @@ export class Shockwave {
     if (rInner === rOuter) return;
 
     for (let dy = -rOuter; dy <= rOuter; dy++) {
-      const sy = this._xy.y + dy;
+      const sy = this._center.y + dy;
       const dxOuter = Math.ceil(
         Math.sqrt(Math.max(0, rOuter * rOuter - dy * dy))
       );
@@ -65,12 +69,12 @@ export class Shockwave {
       );
       // TODO: due to the way we do color mapping, overlapping pixels are negating themselves back. Do something about that overlap (vertical middle line)
       b.line(
-        v_(this._xy.x - dxOuter + 1, sy),
+        g.gameAreaOffset.add(v_(this._center.x - dxOuter + 1, sy)),
         v_(dxOuter - dxInner, 1),
         g.negativeColor
       );
       b.line(
-        v_(this._xy.x + dxOuter - 1, sy),
+        g.gameAreaOffset.add(v_(this._center.x + dxOuter - 1, sy)),
         v_(dxInner - dxOuter, 1),
         g.negativeColor
       );
@@ -79,7 +83,11 @@ export class Shockwave {
 
   private _drawCircle(r: number): void {
     if (r === u.clamp(Shockwave._rMin, r, Shockwave._rMax)) {
-      b.ellipse(this._xy.sub(r), v_(r, r).mul(2), c._6_light_grey);
+      b.ellipse(
+        g.gameAreaOffset.add(this._center).sub(r),
+        v_(r, r).mul(2),
+        c._6_light_grey
+      );
     }
   }
 

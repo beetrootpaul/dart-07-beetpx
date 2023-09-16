@@ -86,7 +86,7 @@ b.init(
       currentScreen = new ScreenMissionMain({
         mission: CurrentMission.first,
         health: 1,
-        shockwaveCharges: 3,
+        shockwaveCharges: 4,
         fastMovement: false,
         fastShoot: false,
         tripleShoot: true,

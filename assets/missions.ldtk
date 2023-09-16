@@ -2701,18 +2701,18 @@
 						},
 						{
 							"__identifier": "level_end",
-							"__grid": [0,24],
+							"__grid": [0,20],
 							"__pivot": [0,0],
 							"__tags": ["marker"],
 							"__tile": { "tilesetUid": 2, "x": 0, "y": 32, "w": 8, "h": 8 },
 							"__smartColor": "#BE4A2F",
 							"__worldX": 0,
-							"__worldY": -48,
-							"iid": "39dc2480-3b70-11ee-a263-09735c187169",
+							"__worldY": -80,
+							"iid": "f615bba0-3b70-11ee-b5a2-05defec9c09e",
 							"width": 96,
 							"height": 16,
 							"defUid": 138,
-							"px": [0,192],
+							"px": [0,160],
 							"fieldInstances": []
 						}
 					]
@@ -3139,6 +3139,22 @@
 							"height": 16,
 							"defUid": 18,
 							"px": [48,32],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "m1e_aimed_triple_shot",
+							"__grid": [0,24],
+							"__pivot": [0,0],
+							"__tags": ["m1"],
+							"__tile": { "tilesetUid": 2, "x": 112, "y": 32, "w": 8, "h": 8 },
+							"__smartColor": "#0099DB",
+							"__worldX": 0,
+							"__worldY": -48,
+							"iid": "fe774570-3b70-11ee-b5a2-d99f3f86d8fc",
+							"width": 16,
+							"height": 16,
+							"defUid": 17,
+							"px": [0,192],
 							"fieldInstances": []
 						}
 					]

@@ -148,7 +148,9 @@ export class Player {
 
   triggerShockwave(): void {
     this._onShockwaveTriggered.invokeIfReady(
-      6,
+      // 31 is the minimal amount of frames to prevent one shockwave's ring
+      //   to apply negative color on the previous shockwave's circles.
+      31,
       this._createShockwave.bind(this)
     );
   }
