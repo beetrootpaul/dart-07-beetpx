@@ -308,14 +308,12 @@ export class Game {
 
   enterBossPhase(): void {
     this._boss = new Boss({
-      // TODO: params: bullets_fn, boss_movement
-      onBulletsSpawned: () => {
-        // TODO
-        //             if player then
-        //                 for b in all(bullets_fn(boss_movement, player.collision_circle())) do
-        //                     add(enemy_bullets, b)
-        //                 end
-        //             end
+      onBulletsSpawned: (spawnBulletsFn, bossMovement) => {
+        if (this._player) {
+          this._enemyBullets.push(
+            ...spawnBulletsFn(bossMovement, this._player.collisionCircle)
+          );
+        }
       },
       onDamaged: () => {
         // TODO
@@ -336,7 +334,6 @@ export class Game {
           );
         }
       },
-      // TODO: params: score_to_add
       onDestroyed: (collisionCircles, scoreToAdd) => {
         // TODO
         //             _sfx_play(_sfx_destroy_boss_final_1)

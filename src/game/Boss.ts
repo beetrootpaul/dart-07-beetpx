@@ -152,16 +152,13 @@ export class Boss {
 
     this._movement.update();
 
-    // TODO
-    //         if current_phase_number > 0 then
-    //             local current_phase = phases[current_phase_number]
-    //             local bullet_fire_timer = current_phase[3] or new_fake_timer()
-    //             bullet_fire_timer._update()
-    //             if bullet_fire_timer.ttl <= 0 then
-    //                 bullet_fire_timer.restart()
-    //                 on_bullets_spawned(current_phase[4], movement)
-    //             end
-    //         end
+    if (this._currentPhaseNumber >= 0) {
+      this._currentPhase.bulletFireTimer.update();
+      if (this._currentPhase.bulletFireTimer.hasFinished) {
+        this._onBulletsSpawned(this._currentPhase.spawnBullets, this._movement);
+        this._currentPhase.bulletFireTimer.restart();
+      }
+    }
 
     if (this._flashingAfterDamageTimer?.hasFinished) {
       this._flashingAfterDamageTimer = null;
