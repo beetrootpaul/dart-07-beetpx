@@ -3,11 +3,10 @@ import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { LevelDescriptor } from "./game/LevelDescriptor";
 import { b, c, g } from "./globals";
-import { CurrentMission } from "./missions/CurrentMission";
 import { Pico8Colors } from "./pico8/Pico8Color";
 import { Pico8Font } from "./pico8/Pico8Font";
 import { GameScreen } from "./screens/GameScreen";
-import { ScreenMissionMain } from "./screens/ScreenMissionMain";
+import { ScreenBrp } from "./screens/ScreenBrp";
 
 let nextScreen: GameScreen | undefined;
 let currentScreen: GameScreen | undefined;
@@ -89,16 +88,7 @@ b.init(
         { from: Pico8Colors._15_lightPeach, to: c._15_peach },
       ]);
 
-      // TODO: tmp: make it start with a real first screen (BRP)
-      currentScreen = new ScreenMissionMain({
-        mission: CurrentMission.first,
-        health: 1,
-        shockwaveCharges: 4,
-        fastMovement: false,
-        fastShoot: false,
-        tripleShoot: true,
-        score: 0,
-      });
+      currentScreen = new ScreenBrp();
     });
 
     b.setOnUpdate(() => {
