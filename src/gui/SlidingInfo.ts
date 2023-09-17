@@ -68,7 +68,7 @@ export class SlidingInfo {
     if (this._text1) {
       h.printCentered(
         this._text1,
-        g.gameAreaSize.div(2).x,
+        g.gameAreaSize.x / 2,
         xy.y - 17,
         CurrentMission.m.bgColor,
         this._mainColor
@@ -77,7 +77,7 @@ export class SlidingInfo {
 
     h.printCentered(
       this._text2,
-      g.gameAreaSize.div(2).x,
+      g.gameAreaSize.x / 2,
       xy.y - 8,
       CurrentMission.m.bgColor,
       this._mainColor

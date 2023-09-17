@@ -31,13 +31,14 @@ export class Score {
     this._text = this._as6DigitsTextWithExtraZero();
   }
 
-  // TODO: params: vertical
-  draw(xy: Vector2d, digitColor: SolidColor, blankColor: SolidColor) {
+  draw(
+    xy: Vector2d,
+    digitColor: SolidColor,
+    blankColor: SolidColor,
+    vertical: boolean
+  ) {
     for (let i = 0; i < this._text.length; i++) {
-      // TODO
-      //       local x = start_x + (not vertical and i or 0) * 4
-      //       local y = start_y + (vertical and i or 0) * 6
-      const digitXy = xy.add(0, i * 6);
+      const digitXy = xy.add((vertical ? 0 : i) * 4, (vertical ? i : 0) * 6);
       b.print("8", digitXy, blankColor);
       b.print(this._text[i]!, digitXy, digitColor);
     }

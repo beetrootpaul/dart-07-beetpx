@@ -1,12 +1,14 @@
 import { transparent_ } from "@beetpx/beetpx";
 import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
+import { Game } from "./game/Game";
 import { LevelDescriptor } from "./game/LevelDescriptor";
 import { b, c, g } from "./globals";
 import { Pico8Colors } from "./pico8/Pico8Color";
 import { Pico8Font } from "./pico8/Pico8Font";
 import { GameScreen } from "./screens/GameScreen";
 import { ScreenBrp } from "./screens/ScreenBrp";
+import { ScreenOver } from "./screens/ScreenOver";
 
 let nextScreen: GameScreen | undefined;
 let currentScreen: GameScreen | undefined;
@@ -88,7 +90,19 @@ b.init(
         { from: Pico8Colors._15_lightPeach, to: c._15_peach },
       ]);
 
+      // TODO: REVERT
       currentScreen = new ScreenBrp();
+      currentScreen = new ScreenOver({
+        game: new Game({
+          tripleShoot: true,
+          fastMovement: true,
+          score: 123,
+          shockwaveCharges: 3,
+          health: 4,
+          fastShoot: true,
+        }),
+        isWin: true,
+      });
     });
 
     b.setOnUpdate(() => {
