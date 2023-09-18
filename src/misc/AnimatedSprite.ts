@@ -73,7 +73,6 @@ export class AnimatedSprite {
     b.sprite(
       // TODO: avoid a call here, pre-create all sprites in constructor
       this._spriteFactory(
-        // TODO: remove "!"
         this._spriteXs[this._frame]!,
         this._spriteY,
         this._spriteW,

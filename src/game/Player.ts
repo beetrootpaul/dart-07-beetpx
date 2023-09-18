@@ -11,6 +11,7 @@ import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Throttle } from "../misc/Throttle";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { PlayerBullet } from "./PlayerBullet";
+import { Shockwave } from "./Shockwave";
 
 export class Player {
   private static readonly _invincibilityFlashFrames: number = 5;
@@ -18,6 +19,9 @@ export class Player {
 
   private readonly _onBulletsSpawned: Throttle<
     (bullets: PlayerBullet[]) => void
+  >;
+  private readonly _onShockwaveTriggered: Throttle<
+    (shockwave: Shockwave) => void
   >;
   private readonly _onDamaged: () => void;
   private readonly _onDestroyed: (playerCc: CollisionCircle) => void;
@@ -62,13 +66,12 @@ export class Player {
 
   constructor(params: {
     onBulletsSpawned: (bullets: PlayerBullet[]) => void;
-
+    onShockwaveTriggered: (shockwave: Shockwave) => void;
     onDamaged: () => void;
     onDestroyed: (playerCc: CollisionCircle) => void;
   }) {
-    // TODO
-    // local on_shockwave_triggered = new_throttle(params.on_shockwave_triggered)
     this._onBulletsSpawned = new Throttle(params.onBulletsSpawned);
+    this._onShockwaveTriggered = new Throttle(params.onShockwaveTriggered);
     this._onDamaged = params.onDamaged;
     this._onDestroyed = params.onDestroyed;
 
@@ -94,10 +97,9 @@ export class Player {
     ];
   }
 
-  // TODO
-  // local function create_shockwave()
-  //     return new_shockwave(xy, 1)
-  // end
+  private _createShockwave(): Shockwave {
+    return new Shockwave(this._xy);
+  }
 
   get hasFinished(): boolean {
     return this._isDestroyed;
@@ -144,15 +146,12 @@ export class Player {
     );
   }
 
-  // TODO
-  // trigger_shockwave = function()
-  //     on_shockwave_triggered.invoke_if_ready(
-  //         6,
-  //         create_shockwave
-  //     )
-  // end,
-  //
-  // collision_circle = collision_circle,
+  triggerShockwave(): void {
+    this._onShockwaveTriggered.invokeIfReady(
+      60,
+      this._createShockwave.bind(this)
+    );
+  }
 
   isInvincibleAfterDamage(): boolean {
     return !!this._invincibleAfterDamageTimer;
@@ -178,8 +177,7 @@ export class Player {
     this._invincibleAfterDamageTimer?.update();
 
     this._onBulletsSpawned.update();
-    // TODO
-    // on_shockwave_triggered._update()
+    this._onShockwaveTriggered.update();
 
     this._jetSprite?.update();
   }

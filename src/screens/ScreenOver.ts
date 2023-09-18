@@ -1,3 +1,4 @@
+import { v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
 import { b, c, g, h } from "../globals";
@@ -106,16 +107,23 @@ export class ScreenOver implements GameScreen {
     // heading
     h.printCentered(
       this._isWin ? "you made it!" : "game over",
-      g.gameAreaSize.div(2).x,
+      g.gameAreaSize.x / 2,
       22,
       this._isWin ? c._5_blue_green : c._8_red
     );
 
+    // score
     // TODO
-    //         -- score
     //         local score_base_y = got_high_score and 42 or 47
-    //         _centered_print("your \-fscore", score_base_y, _color_7_white)
-    //         game.score._draw(52, score_base_y + 10, _color_7_white, is_win and _color_5_blue_green or _color_14_mauve)
+    const scoreBaseY = 47;
+    h.printCentered("your score", g.gameAreaSize.x / 2, scoreBaseY, c._7_white);
+    this._game.score.draw(
+      v_(52, scoreBaseY + 10),
+      c._7_white,
+      this._isWin ? c._5_blue_green : c._14_mauve,
+      false
+    );
+    // TODO
     //         if got_high_score then
     //             _centered_print("new \-fhigh \-fscore!", score_base_y + 20, is_win and _color_15_peach or _color_9_dark_orange)
     //         end

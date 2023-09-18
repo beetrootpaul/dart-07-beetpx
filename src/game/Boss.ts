@@ -1,22 +1,35 @@
 import { Timer, v_, Vector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { g } from "../globals";
+import { g, u } from "../globals";
 import { Easing } from "../misc/Easing";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Movement } from "../movement/Movement";
 import { MovementToTarget } from "../movement/MovementToTarget";
 import { BossProperties } from "./BossProperties";
+import { EnemyBullet } from "./EnemyBullet";
 
 export class Boss {
   private readonly _properties: BossProperties =
     CurrentMission.m.bossProperties();
 
-  private readonly _movement: Movement;
+  private _movement: Movement;
 
-  private readonly _onBulletsSpawned: () => void;
+  private readonly _onBulletsSpawned: (
+    spawnBulletsFn: (
+      bossMovement: Movement,
+      playerCollisionCircle: CollisionCircle
+    ) => EnemyBullet[],
+    bossMovement: Movement
+  ) => void;
   private readonly _onDamaged: () => void;
-  private readonly _onEnteredNextPhase: () => void;
-  private readonly _onDestroyed: (collisionCircles: CollisionCircle[]) => void;
+  private readonly _onEnteredNextPhase: (
+    collisionCircles: CollisionCircle[],
+    scoreToAdd: number
+  ) => void;
+  private readonly _onDestroyed: (
+    collisionCircles: CollisionCircle[],
+    scoreToAdd: number
+  ) => void;
 
   private _invincibleDuringIntro: boolean = true;
   get invincibleDuringIntro(): boolean {
@@ -27,15 +40,26 @@ export class Boss {
   private _isDestroyed: boolean = false;
   private _flashingAfterDamageTimer: Timer | null = null;
 
-  constructor(params: {
-    onBulletsSpawned: () => void;
-    onDamaged: () => void;
-    onEnteredNextPhase: () => void;
-    onDestroyed: (collisionCircles: CollisionCircle[]) => void;
-  }) {
-    // TODO
-    //     local phases = boss_properties.phases
+  private _currentPhaseNumber: number = -1;
 
+  constructor(params: {
+    onBulletsSpawned: (
+      spawnBulletsFn: (
+        bossMovement: Movement,
+        playerCollisionCircle: CollisionCircle
+      ) => EnemyBullet[],
+      bossMovement: Movement
+    ) => void;
+    onDamaged: () => void;
+    onEnteredNextPhase: (
+      collisionCircles: CollisionCircle[],
+      scoreToAdd: number
+    ) => void;
+    onDestroyed: (
+      collisionCircles: CollisionCircle[],
+      scoreToAdd: number
+    ) => void;
+  }) {
     this._movement = MovementToTarget.of({
       targetX: g.gameAreaSize.x / 2,
       targetY: 20,
@@ -47,9 +71,6 @@ export class Boss {
     this._onDamaged = params.onDamaged;
     this._onEnteredNextPhase = params.onEnteredNextPhase;
     this._onDestroyed = params.onDestroyed;
-
-    // TODO
-    //     local current_phase_number, flashing_after_damage_timer = 0, nil
 
     this._health = this._properties.health;
   }
@@ -64,10 +85,29 @@ export class Boss {
     return this._isDestroyed;
   }
 
+  private get _currentPhase(): BossProperties["phases"][0] {
+    return (
+      this._properties.phases[this._currentPhaseNumber] ??
+      u.throwError(
+        `Tried to access non-existent boss phase at index ${this._currentPhaseNumber}`
+      )
+    );
+  }
+
+  private get _nextPhase(): BossProperties["phases"][0] {
+    return (
+      this._properties.phases[this._currentPhaseNumber + 1] ??
+      u.throwError(
+        `Tried to access non-existent boss phase at index ${
+          this._currentPhaseNumber + 1
+        }`
+      )
+    );
+  }
+
   startFirstPhase(): void {
-    // TODO
-    //         current_phase_number = 1
-    //         movement = phases[current_phase_number][5](movement.xy)
+    this._currentPhaseNumber = 0;
+    this._movement = this._currentPhase.movementFactory(this._movement.xy);
     this._invincibleDuringIntro = false;
   }
 
@@ -85,34 +125,40 @@ export class Boss {
       this._onDamaged();
     } else {
       this._isDestroyed = true;
-      // TODO
-      //   on_destroyed(collision_circles(), phases[#phases][2])
-      this._onDestroyed(this.collisionCircles);
+      this._onDestroyed(
+        this.collisionCircles,
+        this._properties.phases[this._properties.phases.length - 1]!.score
+      );
     }
   }
 
   update(): void {
-    // TODO
-    //         if current_phase_number > 0 and current_phase_number < #phases then
-    //             if phases[current_phase_number + 1][1] >= boss.health / boss.health_max then
-    //                 on_entered_next_phase(collision_circles(), phases[current_phase_number][2])
-    //                 current_phase_number = current_phase_number + 1
-    //                 movement = phases[current_phase_number][5](movement.xy)
-    //             end
-    //         end
+    if (
+      this._currentPhaseNumber >= 0 &&
+      this._currentPhaseNumber < this._properties.phases.length - 1
+    ) {
+      if (
+        this._nextPhase.triggeringHealthFraction >=
+        this._health / this._properties.health
+      ) {
+        this._onEnteredNextPhase(
+          this.collisionCircles,
+          this._currentPhase.score
+        );
+        this._currentPhaseNumber += 1;
+        this._movement = this._currentPhase.movementFactory(this._movement.xy);
+      }
+    }
 
     this._movement.update();
 
-    // TODO
-    //         if current_phase_number > 0 then
-    //             local current_phase = phases[current_phase_number]
-    //             local bullet_fire_timer = current_phase[3] or new_fake_timer()
-    //             bullet_fire_timer._update()
-    //             if bullet_fire_timer.ttl <= 0 then
-    //                 bullet_fire_timer.restart()
-    //                 on_bullets_spawned(current_phase[4], movement)
-    //             end
-    //         end
+    if (this._currentPhaseNumber >= 0) {
+      this._currentPhase.bulletFireTimer.update();
+      if (this._currentPhase.bulletFireTimer.hasFinished) {
+        this._onBulletsSpawned(this._currentPhase.spawnBullets, this._movement);
+        this._currentPhase.bulletFireTimer.restart();
+      }
+    }
 
     if (this._flashingAfterDamageTimer?.hasFinished) {
       this._flashingAfterDamageTimer = null;

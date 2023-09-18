@@ -35,8 +35,6 @@ export class MovementSinusoidal implements Movement {
     this._magnitude = magnitude;
 
     this._xy = v_(this.x(), startXy.y);
-    // TODO
-    //    speed_xy = _xy( x() - start_xy.x, params.speed_y or 1 )
     this._speed = v_(this.x() - startXy.x, speedY);
   }
 

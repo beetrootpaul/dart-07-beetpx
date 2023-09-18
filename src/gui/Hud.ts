@@ -137,8 +137,12 @@ export class Hud {
     //
     // score
     //
-    // TODO: param: true
-    game.score.draw(v_(xy.x + 17, 4), c._6_light_grey, c._2_darker_purple);
+    game.score.draw(
+      v_(xy.x + 17, 4),
+      c._6_light_grey,
+      c._2_darker_purple,
+      true
+    );
 
     //
     // powerups

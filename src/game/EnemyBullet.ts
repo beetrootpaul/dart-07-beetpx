@@ -8,18 +8,23 @@ export interface EnemyBulletFactory {
 }
 
 export class EnemyBullet {
-  // TODO: param: collisionCircleR
   static factory =
-    (sprite: AnimatedSprite): EnemyBulletFactory =>
+    (sprite: AnimatedSprite, collisionCircleR: number): EnemyBulletFactory =>
     (movement: Movement) =>
-      new EnemyBullet(sprite, movement);
+      new EnemyBullet(sprite, collisionCircleR, movement);
 
   private readonly _sprite: AnimatedSprite;
+  private readonly _collisionCircleR: number;
   private readonly _movement: Movement;
   private _isDestroyed: boolean = false;
 
-  private constructor(sprite: AnimatedSprite, movement: Movement) {
+  private constructor(
+    sprite: AnimatedSprite,
+    collisionCircleR: number,
+    movement: Movement
+  ) {
     this._sprite = sprite;
+    this._collisionCircleR = collisionCircleR;
     this._movement = movement;
   }
 
@@ -32,9 +37,7 @@ export class EnemyBullet {
   get collisionCircle(): CollisionCircle {
     return {
       center: this._movement.xy,
-      // TODO
-      //                     r = bullet_properties.collision_circle_r,
-      r: 3,
+      r: this._collisionCircleR,
     };
   }
 

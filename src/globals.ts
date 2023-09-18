@@ -1,4 +1,4 @@
-import { BeetPx, Utils, v_ } from "@beetpx/beetpx";
+import { BeetPx, MappingColor, Utils, v_ } from "@beetpx/beetpx";
 import { Helpers } from "./misc/Helpers";
 import { Pico8Colors } from "./pico8/Pico8Color";
 
@@ -49,4 +49,39 @@ export const g = {
 
   healthMax: 10,
   shockwaveChargesMax: 4,
+
+  negativeColor: new MappingColor((canvasColor) => {
+    switch (canvasColor.id) {
+      case c._0_black.id:
+        return c._7_white;
+      case c._1_darker_blue.id:
+        return c._6_light_grey;
+      case c._2_darker_purple.id:
+        return c._13_lavender;
+      case c._3_dark_green.id:
+        return c._14_mauve;
+      case c._4_true_blue.id:
+        return c._9_dark_orange;
+      case c._5_blue_green.id:
+        return c._15_peach;
+      case c._6_light_grey.id:
+        return c._1_darker_blue;
+      case c._7_white.id:
+        return c._0_black;
+      case c._8_red.id:
+        return c._12_blue;
+      case c._9_dark_orange.id:
+        return c._4_true_blue;
+      case c._12_blue.id:
+        return c._8_red;
+      case c._13_lavender.id:
+        return c._2_darker_purple;
+      case c._14_mauve.id:
+        return c._3_dark_green;
+      case c._15_peach.id:
+        return c._5_blue_green;
+      default:
+        return canvasColor;
+    }
+  }),
 };

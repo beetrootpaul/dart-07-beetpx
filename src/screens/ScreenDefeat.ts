@@ -1,4 +1,5 @@
 import { Timer } from "@beetpx/beetpx";
+import { Fade } from "../Fade";
 import { Game } from "../game/Game";
 import { b } from "../globals";
 import { Hud } from "../gui/Hud";
@@ -10,18 +11,19 @@ export class ScreenDefeat implements GameScreen {
   private readonly _game: Game;
   private readonly _hud: Hud;
 
+  private readonly _fadeOut: Fade;
   private readonly _screenTimer: Timer;
 
   constructor(params: { game: Game; hud: Hud }) {
     this._game = params.game;
     this._hud = params.hud;
 
-    // TODO: REVERT
-    // const screenFrames = 120;
-    const screenFrames = 30;
+    const screenFrames = 120;
     const fadeOutFrames = 30;
-    // TODO
-    //     local fade_out, screen_timer = new_fade("out", fade_out_frames, screen_frames - fade_out_frames), new_timer(screen_frames)
+    this._fadeOut = new Fade("out", {
+      waitFrames: screenFrames - fadeOutFrames,
+      fadeFrames: fadeOutFrames,
+    });
     this._screenTimer = new Timer({ frames: screenFrames });
 
     // TODO
@@ -39,8 +41,7 @@ export class ScreenDefeat implements GameScreen {
   update(): void {
     this._game.update();
     this._hud.update();
-    // TODO
-    //         fade_out._update()
+    this._fadeOut.update();
     this._screenTimer.update();
   }
 
@@ -49,7 +50,6 @@ export class ScreenDefeat implements GameScreen {
 
     this._game.draw();
     this._hud.draw(this._game);
-    // TODO
-    //         fade_out._draw()
+    this._fadeOut.draw();
   }
 }

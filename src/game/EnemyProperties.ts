@@ -1,4 +1,5 @@
 import { Timer, Vector2d } from "@beetpx/beetpx";
+import { CollisionCircle } from "../collisions/CollisionCircle";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Movement, MovementFactory } from "../movement/Movement";
 import { EnemyBullet } from "./EnemyBullet";
@@ -21,6 +22,8 @@ export type EnemyProperties = {
   movementFactory: MovementFactory;
 
   bulletFireTimer?: Timer;
-  // TODO: params: player_collision_circle
-  spawnBullets?: (enemyMovement: Movement) => EnemyBullet[];
+  spawnBullets?: (
+    enemyMovement: Movement,
+    playerCollisionCircle: CollisionCircle
+  ) => EnemyBullet[];
 };

@@ -13,6 +13,7 @@ import { Player } from "./Player";
 import { PlayerBullet } from "./PlayerBullet";
 import { Powerup, PowerupType } from "./Powerup";
 import { Score } from "./Score";
+import { Shockwave } from "./Shockwave";
 
 export class Game {
   private _health: number;
@@ -50,6 +51,9 @@ export class Game {
   // TODO: consider poll of bullets for memory reusage
   private _playerBullets: PlayerBullet[] = [];
   private _enemyBullets: EnemyBullet[] = [];
+  private _shockwaves: Shockwave[] = [];
+
+  private readonly _shockwaveEnemyHits: { [combinedId: string]: number } = {};
 
   // TODO: consider poll of floats for memory reusage
   private _explosions: Explosion[] = [];
@@ -79,22 +83,18 @@ export class Game {
     this._fastShoot = params.fastShoot;
     this._tripleShoot = params.tripleShoot;
 
-    // TODO
-    // local shockwaves, shockwave_enemy_hits =  {}, {}
-
     this._player = new Player({
-      // TODO
       onBulletsSpawned: (bullets) => {
         // TODO: consider not playing a bullet sound at all
         // TODO
-        // _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
+        //   _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
         this._playerBullets.push(...bullets);
       },
-      // TODO
-      // on_shockwave_triggered = function(shockwave)
-      //     _sfx_play(_sfx_player_shockwave, 2)
-      //     add(shockwaves, shockwave)
-      // end,
+      onShockwaveTriggered: (shockwave) => {
+        // TODO
+        //     _sfx_play(_sfx_player_shockwave, 2)
+        this._shockwaves.push(shockwave);
+      },
       onDamaged: () => {
         // TODO
         //    _sfx_play(_sfx_damage_player, 2)
@@ -191,19 +191,24 @@ export class Game {
     //
     for (const enemy of this._enemies) {
       for (const enemyCc of enemy.collisionCircles) {
-        // TODO
-        //             for shockwave in all(shockwaves) do
-        //                 local combined_id = shockwave.id .. "-" .. enemy.id
-        //                 shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
-        //                 if not enemy.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
-        //                     if _collisions.are_colliding(shockwave, enemy_cc, {
-        //                         ignore_gameplay_area_check = true,
-        //                     }) then
-        //                         enemy.take_damage(2)
-        //                         shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
-        //                     end
-        //                 end
-        //             end
+        for (const shockwave of this._shockwaves) {
+          const combinedId = `${shockwave.id}-${enemy.id}`;
+          this._shockwaveEnemyHits[combinedId] ??= 0;
+          if (
+            !enemy.hasFinished &&
+            !shockwave.hasFinished &&
+            this._shockwaveEnemyHits[combinedId]! < 8
+          ) {
+            if (
+              Collisions.areColliding(shockwave, enemyCc, {
+                ignoreGameplayAreaCheck: true,
+              })
+            ) {
+              enemy.takeDamage(2);
+              this._shockwaveEnemyHits[combinedId] += 1;
+            }
+          }
+        }
         for (const playerBullet of this._playerBullets) {
           if (!enemy.hasFinished && !playerBullet.hasFinished) {
             if (Collisions.areColliding(playerBullet, enemyCc)) {
@@ -226,19 +231,24 @@ export class Game {
     //
     if (this._boss && !this._boss.invincibleDuringIntro) {
       for (const bossCc of this._boss.collisionCircles) {
-        // TODO
-        //             for shockwave in all(shockwaves) do
-        //                 local combined_id = shockwave.id .. "-boss"
-        //                 shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] or 0
-        //                 if not boss.has_finished() and not shockwave.has_finished() and shockwave_enemy_hits[combined_id] < 8 then
-        //                     if _collisions.are_colliding(shockwave, boss_cc, {
-        //                         ignore_gameplay_area_check = true,
-        //                     }) then
-        //                         boss.take_damage(2)
-        //                         shockwave_enemy_hits[combined_id] = shockwave_enemy_hits[combined_id] + 1
-        //                     end
-        //                 end
-        //             end
+        for (const shockwave of this._shockwaves) {
+          const combinedId = `${shockwave.id}-boss`;
+          this._shockwaveEnemyHits[combinedId] ??= 0;
+          if (
+            !this._boss?.hasFinished &&
+            !shockwave.hasFinished &&
+            this._shockwaveEnemyHits[combinedId]! < 8
+          ) {
+            if (
+              Collisions.areColliding(shockwave, bossCc, {
+                ignoreGameplayAreaCheck: true,
+              })
+            ) {
+              this._boss?.takeDamage(2);
+              this._shockwaveEnemyHits[combinedId] += 1;
+            }
+          }
+        }
         for (const playerBullet of this._playerBullets) {
           if (!this._boss.hasFinished && !playerBullet.hasFinished) {
             if (Collisions.areColliding(playerBullet, bossCc)) {
@@ -263,14 +273,13 @@ export class Game {
     // shockwaves vs enemy bullets + player vs enemy bullets
     //
     for (const enemyBullet of this._enemyBullets) {
-      // TODO
-      //         for shockwave in all(shockwaves) do
-      //             if not enemy_bullet.has_finished() and not shockwave.has_finished() then
-      //                 if _collisions.are_colliding(shockwave, enemy_bullet) then
-      //                     enemy_bullet.destroy()
-      //                 end
-      //             end
-      //         end
+      for (const shockwave of this._shockwaves) {
+        if (!enemyBullet.hasFinished && !shockwave.hasFinished) {
+          if (Collisions.areColliding(shockwave, enemyBullet)) {
+            enemyBullet.destroy();
+          }
+        }
+      }
       if (!enemyBullet.hasFinished && !this._player.isInvincibleAfterDamage()) {
         if (Collisions.areColliding(enemyBullet, this._player)) {
           this._handlePlayerDamage();
@@ -298,35 +307,40 @@ export class Game {
 
   enterBossPhase(): void {
     this._boss = new Boss({
-      // TODO: params: bullets_fn, boss_movement
-      onBulletsSpawned: () => {
-        // TODO
-        //             if player then
-        //                 for b in all(bullets_fn(boss_movement, player.collision_circle())) do
-        //                     add(enemy_bullets, b)
-        //                 end
-        //             end
+      onBulletsSpawned: (spawnBulletsFn, bossMovement) => {
+        if (this._player) {
+          this._enemyBullets.push(
+            ...spawnBulletsFn(bossMovement, this._player.collisionCircle)
+          );
+        }
       },
       onDamaged: () => {
         // TODO
-        // _sfx_play(_sfx_damage_enemy, 3)
+        //   _sfx_play(_sfx_damage_enemy, 3)
       },
-      // TODO: params: collision_circles, score_to_add
-      onEnteredNextPhase: () => {
+      onEnteredNextPhase: (collisionCircles, scoreToAdd) => {
         // TODO
         //             _sfx_play(_sfx_destroy_boss_phase)
-        //             game.score.add(score_to_add)
-        //             add(floats, new_float(collision_circles[1].xy, score_to_add))
-        //             for cc in all(collision_circles) do
-        //                 add(explosions, new_explosion(cc.xy, .75 * cc.r))
-        //             end
+
+        this.score.add(scoreToAdd);
+        this._floats.push(
+          new Float({ startXy: collisionCircles[0]!.center, score: scoreToAdd })
+        );
+
+        for (const cc of collisionCircles) {
+          this._explosions.push(
+            new Explosion({ startXy: cc.center, magnitude: 0.75 * cc.r })
+          );
+        }
       },
-      // TODO: params: score_to_add
-      onDestroyed: (collisionCircles) => {
+      onDestroyed: (collisionCircles, scoreToAdd) => {
         // TODO
         //             _sfx_play(_sfx_destroy_boss_final_1)
-        //             game.score.add(score_to_add)
-        //             add(floats, new_float(collision_circles[1].xy, score_to_add))
+
+        this.score.add(scoreToAdd);
+        this._floats.push(
+          new Float({ startXy: collisionCircles[0]!.center, score: scoreToAdd })
+        );
 
         for (const cc of collisionCircles) {
           this._explosions.push(
@@ -335,15 +349,19 @@ export class Game {
               startXy: cc.center,
               magnitude: 1.4 * cc.r,
               waitFrames: 4 + Math.random() * 44,
-              // TODO:
-              //   onStarted() { _sfx_play(_sfx_destroy_boss_final_2) },
+              onStarted: () => {
+                // TODO:
+                //   _sfx_play(_sfx_destroy_boss_final_2)
+              },
             }),
             new Explosion({
               startXy: cc.center,
               magnitude: 1.8 * cc.r,
               waitFrames: 12 + Math.random() * 36,
-              // TODO:
-              //   onStarted() { _sfx_play(_sfx_destroy_boss_final_3) },
+              onStarted: () => {
+                // TODO:
+                //   _sfx_play(_sfx_destroy_boss_final_3)
+              },
             }),
             new Explosion({
               startXy: cc.center,
@@ -366,12 +384,6 @@ export class Game {
   }
 
   startBossFight(): void {
-    // TODO
-    // -- hack to optimize tokens: we set game.boss_health_max only when boss enters
-    // -- fight phase, even if we update game.boss_health earlier on every frame;
-    // -- thanks to that we can easily detect if it's time to show boss' health bar
-    // game.boss_health_max = boss.health_max
-
     if (!this._boss) {
       throw Error(`Boss was not instantiated before calling the boss fight`);
     }
@@ -396,7 +408,7 @@ export class Game {
       this._enemyBullets = [];
     }
 
-    // TODO: shockwaves
+    this._shockwaves = this._shockwaves.filter((s) => !s.hasFinished);
     this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
     this._enemyBullets = this._enemyBullets.filter((eb) => !eb.hasFinished);
     this._enemies = this._enemies.filter((e) => !e.hasFinished);
@@ -413,22 +425,21 @@ export class Game {
       b.isPressed("down"),
       this._fastMovement
     );
+    // TODO: make it work for uppercase X as well
     if (b.isPressed("x")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);
     }
-    // TODO
-    /*
-            if btnp(_button_o) then
-                if game.shockwave_charges > 0 then
-                    game.shockwave_charges = game.shockwave_charges - 1
-                    player.trigger_shockwave()
-                else
-                end
-            end
-        */
+    // TODO: make it work for uppercase Z as well
+    // TODO: this implementation (combined with a throttle inside the player) can end up with incorrectly used charges
+    if (b.wasJustPressed("o")) {
+      if (this._shockwaveCharges > 0 && this._player) {
+        this._shockwaveCharges -= 1;
+        this._player.triggerShockwave();
+      }
+    }
 
     this._level.update();
-    // TODO: shockwaves
+    this._shockwaves.forEach((s) => s.update());
     this._playerBullets.forEach((pb) => pb.update());
     this._enemyBullets.forEach((eb) => eb.update());
     this._player?.update();
@@ -447,14 +458,11 @@ export class Game {
           properties: CurrentMission.m.enemyPropertiesFor(enemyToSpawn.id),
           startXy: enemyToSpawn.xy,
           onBulletsSpawned: (spawnBulletsFn, enemyMovement) => {
-            // TODO
-            //     if player then
-            // TODO
-            this._enemyBullets.push(...spawnBulletsFn(enemyMovement));
-            //         for seb in all(spawned_enemy_bullets_fn(enemy_movement, player.collision_circle())) do
-            //             add(enemy_bullets, seb)
-            //         end
-            //     end
+            if (this._player) {
+              this._enemyBullets.push(
+                ...spawnBulletsFn(enemyMovement, this._player.collisionCircle)
+              );
+            }
           },
           onDamaged: (mainCollisionCircle) => {
             // TODO
@@ -494,16 +502,6 @@ export class Game {
       );
     }
 
-    // TODO
-    /*
-        if boss then
-            -- hack to optimize tokens: we set game.boss_health_max only when boss enters
-            -- fight phase, even if we update game.boss_health earlier on every frame;
-            -- thanks to that we can easily detect if it's time to show boss' health bar
-            game.boss_health = boss.health
-        end
-     */
-
     // TODO: log everything that might matter
     b.logDebug(
       "e:",
@@ -538,7 +536,7 @@ export class Game {
     this._explosions.forEach((e) => e.draw());
     this._floats.forEach((f) => f.draw());
     // Draw shockwaves on top of everything since they are supposed to affect the final game image.
-    // TODO: shockwaves
+    this._shockwaves.forEach((s) => s.draw());
 
     // TODO
     //   clip()
@@ -554,6 +552,7 @@ export class Game {
         Collisions.debugDrawCollisionCircle(this._player);
       }
       this._powerups.forEach(Collisions.debugDrawCollisionCircle);
+      this._shockwaves.forEach(Collisions.debugDrawCollisionCircle);
     }
 
     if (this._cameraShakeTimer.framesLeft > 0) {

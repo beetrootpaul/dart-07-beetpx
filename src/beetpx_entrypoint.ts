@@ -3,11 +3,10 @@ import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { LevelDescriptor } from "./game/LevelDescriptor";
 import { b, c, g } from "./globals";
-import { CurrentMission } from "./missions/CurrentMission";
 import { Pico8Colors } from "./pico8/Pico8Color";
 import { Pico8Font } from "./pico8/Pico8Font";
 import { GameScreen } from "./screens/GameScreen";
-import { ScreenMissionMain } from "./screens/ScreenMissionMain";
+import { ScreenBrp } from "./screens/ScreenBrp";
 
 let nextScreen: GameScreen | undefined;
 let currentScreen: GameScreen | undefined;
@@ -57,7 +56,14 @@ b.init(
       PauseMenu.isGamePaused = false;
       pauseMenu = new PauseMenu();
 
-      // TODO: set repeating?
+      b.setRepeating("left", false);
+      b.setRepeating("right", false);
+      b.setRepeating("up", false);
+      b.setRepeating("down", false);
+      b.setRepeating("x", false);
+      b.setRepeating("o", false);
+      b.setRepeating("menu", false);
+
       // TODO: pause menu
       // TODO: stopAllSounds
 
@@ -82,16 +88,33 @@ b.init(
         { from: Pico8Colors._15_lightPeach, to: c._15_peach },
       ]);
 
-      // TODO: tmp: make it start with a real first screen (BRP)
-      currentScreen = new ScreenMissionMain({
-        mission: CurrentMission.first,
-        health: 1,
-        shockwaveCharges: 3,
-        fastMovement: false,
-        fastShoot: false,
-        tripleShoot: true,
-        score: 0,
-      });
+      // TODO: REVERT
+      currentScreen = new ScreenBrp();
+      // currentScreen = new ScreenOver({
+      //   game: new Game({
+      //     tripleShoot: true,
+      //     fastMovement: true,
+      //     score: 123,
+      //     shockwaveCharges: 3,
+      //     health: 4,
+      //     fastShoot: true,
+      //   }),
+      //   isWin: true,
+      // });
+      // currentScreen = new ScreenMissionEnd({
+      //   game: new Game({
+      //     tripleShoot: true,
+      //     fastMovement: true,
+      //     score: 123,
+      //     shockwaveCharges: 3,
+      //     health: 4,
+      //     fastShoot: true,
+      //   }),
+      //   hud: new Hud({
+      //     waitFrames: 1,
+      //     slideInFrames: 1,
+      //   }),
+      // });
     });
 
     b.setOnUpdate(() => {
@@ -138,3 +161,19 @@ b.init(
 // TODO: performance improvements to reach ~55 FPS?
 
 // TODO: use versioned BeetPx from npm
+
+// TODO: polishing: music: mission 2
+// TODO: polishing: music: mission 2 boss
+// TODO: polishing: music: mission 3
+// TODO: polishing: music: mission 3 boss
+// TODO: polishing: sprites: mission 2: enemies
+// TODO: polishing: sprites: mission 2: boss
+// TODO: polishing: sprites: mission 3: enemies
+// TODO: polishing: sprites: mission 3: boss
+// TODO: balancing: powerup distributions: mission 2
+// TODO: balancing: powerup distributions: mission 3
+// TODO: balancing: mission 2: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
+// TODO: balancing: mission 3: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
+
+// TODO: pause menu: controls test
+// TODO: pause menu: music on/off/volume

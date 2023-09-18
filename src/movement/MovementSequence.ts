@@ -6,13 +6,24 @@ export class MovementSequence implements Movement {
   static of =
     (sequence: MovementFactory[]): MovementFactory =>
     (startXy) =>
-      new MovementSequence(startXy, sequence);
+      new MovementSequence(startXy, false, sequence);
 
+  static loopedOf =
+    (sequence: MovementFactory[]): MovementFactory =>
+    (startXy) =>
+      new MovementSequence(startXy, true, sequence);
+
+  private readonly _looped: boolean;
   private readonly _sequence: MovementFactory[];
   private _sequenceIndex: number;
   private _currentSubMovement: Movement;
 
-  private constructor(startXy: Vector2d, sequence: MovementFactory[]) {
+  private constructor(
+    startXy: Vector2d,
+    looped: boolean,
+    sequence: MovementFactory[]
+  ) {
+    this._looped = looped;
     this._sequence = sequence.length > 0 ? sequence : [MovementFixed.of({})];
     this._sequenceIndex = 0;
     this._currentSubMovement = this._sequence[this._sequenceIndex]!(startXy);
@@ -27,10 +38,7 @@ export class MovementSequence implements Movement {
   }
 
   get hasFinished(): boolean {
-    // TODO
-    //if loop then
-    //     return false
-    // end
+    if (this._looped) return false;
     return (
       this._sequenceIndex >= this._sequence.length - 1 &&
       this._currentSubMovement.hasFinished
@@ -46,12 +54,12 @@ export class MovementSequence implements Movement {
         this._currentSubMovement = this._sequence[this._sequenceIndex]!(
           this._currentSubMovement.xy
         );
+      } else if (this._looped) {
+        this._sequenceIndex = 0;
+        this._currentSubMovement = this._sequence[this._sequenceIndex]!(
+          this._currentSubMovement.xy
+        );
       }
-      // TODO
-      //     elseif loop then
-      //         sequence_index = 1
-      //         current_sub_movement = sequence[sequence_index](current_sub_movement.xy)
-      //     end
     }
   }
 }
