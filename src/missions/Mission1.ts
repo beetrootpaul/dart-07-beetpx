@@ -14,12 +14,7 @@ import { Mission } from "./Mission";
 
 const aspr_ = AnimatedSprite.for(g.assets.mission1SpritesheetUrl);
 
-const eb_ = EnemyBullet.factory(aspr_(4, 4, [124], 64));
-// TODO
-//     local enemy_bullet_factory = new_enemy_bullet_factory {
-//         bullet_sprite = new_static_sprite "4,4,124,64",
-//         collision_circle_r = 1.5,
-//     }
+const eb_ = EnemyBullet.factory(aspr_(4, 4, [124], 64), 2);
 
 function t(): number {
   return b.frameNumber / g.fps;
@@ -88,9 +83,8 @@ export class Mission1 implements Mission {
         return {
           health: 1,
           score: 2,
-          // TODO: REVERT
-          // powerupsDistribution: "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
-          powerupsDistribution: "h,f,t,s,m",
+          powerupsDistribution:
+            "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
           spriteMain: aspr_(8, 8, [0], 88),
           spriteFlash: aspr_(6, 6, [22], 79),
           collisionCirclesProps: [{ r: 3, offset: v_(0, 1) }],
@@ -103,9 +97,8 @@ export class Mission1 implements Mission {
         return {
           health: 2,
           score: 5,
-          // TODO: REVERT
-          // powerupsDistribution: "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
-          powerupsDistribution: "h,f,t,s,m",
+          powerupsDistribution:
+            "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
           spriteMain: aspr_(10, 10, [22], 86),
           spriteFlash: aspr_(8, 8, [13], 88),
           collisionCirclesProps: [{ r: 4 }],
@@ -142,6 +135,7 @@ export class Mission1 implements Mission {
             angle: 0.25,
             angledSpeed: 1.5,
           }),
+          // TODO
           //                 new_movement_sequence_factory {
           //                     new_movement_line_factory {
           //                         frames = 80,
@@ -222,6 +216,7 @@ export class Mission1 implements Mission {
             angle: 0.25,
             angledSpeed: 1.5,
           }),
+          // TODO
           //                 new_movement_sequence_factory({
           //                     new_movement_to_target_factory {
           //                         target_y = 80,
@@ -302,11 +297,6 @@ export class Mission1 implements Mission {
 
   // TODO
   // _m_mission_main_music, _m_mission_boss_music = 0, 13
-
-  // TODO
-  //     local function t_mod_2()
-  //         return t() % 2
-  //     end
 
   bossProperties(): BossProperties {
     return {

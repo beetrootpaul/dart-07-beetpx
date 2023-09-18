@@ -1,6 +1,3 @@
-// TODO
-//     local next_id = 0
-
 import { v_, Vector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { b, c, g, u } from "../globals";
@@ -21,12 +18,6 @@ export class Shockwave {
   private _rProgress: Movement;
 
   constructor(center: Vector2d) {
-    // TODO
-    //         next_id = next_id + 1
-    // TODO
-    //             id = next_id,
-
-    // this._center = center.add(g.gameAreaOffset);
     this._center = center;
 
     this._rProgress = MovementLine.of({
@@ -67,7 +58,12 @@ export class Shockwave {
       const dxInner = Math.ceil(
         Math.sqrt(Math.max(0, rInner * rInner - dy * dy))
       );
-      // TODO: due to the way we do color mapping, overlapping pixels are negating themselves back. Do something about that overlap (vertical middle line)
+      // TODO: due to the way we do color mapping, overlapping pixels are negating themselves back.
+      //       Do something about that overlap (vertical middle line)?
+      //       BTW it might be problematic in a future. It would be better to do a mapping
+      //       of a one frame buffer to another. Imagine multiple enemies in a game
+      //       having a negative color aura around them. We would had no easy option to
+      //       prevent them from overlapping.
       b.line(
         g.gameAreaOffset.add(v_(this._center.x - dxOuter + 1, sy)),
         v_(dxOuter - dxInner, 1),

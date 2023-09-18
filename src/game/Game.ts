@@ -84,11 +84,10 @@ export class Game {
     this._tripleShoot = params.tripleShoot;
 
     this._player = new Player({
-      // TODO
       onBulletsSpawned: (bullets) => {
         // TODO: consider not playing a bullet sound at all
         // TODO
-        // _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
+        //   _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
         this._playerBullets.push(...bullets);
       },
       onShockwaveTriggered: (shockwave) => {
@@ -317,7 +316,7 @@ export class Game {
       },
       onDamaged: () => {
         // TODO
-        // _sfx_play(_sfx_damage_enemy, 3)
+        //   _sfx_play(_sfx_damage_enemy, 3)
       },
       onEnteredNextPhase: (collisionCircles, scoreToAdd) => {
         // TODO
@@ -350,15 +349,19 @@ export class Game {
               startXy: cc.center,
               magnitude: 1.4 * cc.r,
               waitFrames: 4 + Math.random() * 44,
-              // TODO:
-              //   onStarted() { _sfx_play(_sfx_destroy_boss_final_2) },
+              onStarted: () => {
+                // TODO:
+                //   _sfx_play(_sfx_destroy_boss_final_2)
+              },
             }),
             new Explosion({
               startXy: cc.center,
               magnitude: 1.8 * cc.r,
               waitFrames: 12 + Math.random() * 36,
-              // TODO:
-              //   onStarted() { _sfx_play(_sfx_destroy_boss_final_3) },
+              onStarted: () => {
+                // TODO:
+                //   _sfx_play(_sfx_destroy_boss_final_3)
+              },
             }),
             new Explosion({
               startXy: cc.center,
@@ -381,12 +384,6 @@ export class Game {
   }
 
   startBossFight(): void {
-    // TODO
-    // -- hack to optimize tokens: we set game.boss_health_max only when boss enters
-    // -- fight phase, even if we update game.boss_health earlier on every frame;
-    // -- thanks to that we can easily detect if it's time to show boss' health bar
-    // game.boss_health_max = boss.health_max
-
     if (!this._boss) {
       throw Error(`Boss was not instantiated before calling the boss fight`);
     }
@@ -504,16 +501,6 @@ export class Game {
         })
       );
     }
-
-    // TODO
-    /*
-        if boss then
-            -- hack to optimize tokens: we set game.boss_health_max only when boss enters
-            -- fight phase, even if we update game.boss_health earlier on every frame;
-            -- thanks to that we can easily detect if it's time to show boss' health bar
-            game.boss_health = boss.health
-        end
-     */
 
     // TODO: log everything that might matter
     b.logDebug(

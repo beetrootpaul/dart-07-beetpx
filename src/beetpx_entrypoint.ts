@@ -1,14 +1,12 @@
 import { transparent_ } from "@beetpx/beetpx";
 import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
-import { Game } from "./game/Game";
 import { LevelDescriptor } from "./game/LevelDescriptor";
 import { b, c, g } from "./globals";
 import { Pico8Colors } from "./pico8/Pico8Color";
 import { Pico8Font } from "./pico8/Pico8Font";
 import { GameScreen } from "./screens/GameScreen";
 import { ScreenBrp } from "./screens/ScreenBrp";
-import { ScreenOver } from "./screens/ScreenOver";
 
 let nextScreen: GameScreen | undefined;
 let currentScreen: GameScreen | undefined;
@@ -92,17 +90,31 @@ b.init(
 
       // TODO: REVERT
       currentScreen = new ScreenBrp();
-      currentScreen = new ScreenOver({
-        game: new Game({
-          tripleShoot: true,
-          fastMovement: true,
-          score: 123,
-          shockwaveCharges: 3,
-          health: 4,
-          fastShoot: true,
-        }),
-        isWin: true,
-      });
+      // currentScreen = new ScreenOver({
+      //   game: new Game({
+      //     tripleShoot: true,
+      //     fastMovement: true,
+      //     score: 123,
+      //     shockwaveCharges: 3,
+      //     health: 4,
+      //     fastShoot: true,
+      //   }),
+      //   isWin: true,
+      // });
+      // currentScreen = new ScreenMissionEnd({
+      //   game: new Game({
+      //     tripleShoot: true,
+      //     fastMovement: true,
+      //     score: 123,
+      //     shockwaveCharges: 3,
+      //     health: 4,
+      //     fastShoot: true,
+      //   }),
+      //   hud: new Hud({
+      //     waitFrames: 1,
+      //     slideInFrames: 1,
+      //   }),
+      // });
     });
 
     b.setOnUpdate(() => {
@@ -162,3 +174,6 @@ b.init(
 // TODO: balancing: powerup distributions: mission 3
 // TODO: balancing: mission 2: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 // TODO: balancing: mission 3: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
+
+// TODO: pause menu: controls test
+// TODO: pause menu: music on/off/volume

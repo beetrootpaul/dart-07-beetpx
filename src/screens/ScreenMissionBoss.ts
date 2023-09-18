@@ -1,3 +1,4 @@
+import { Timer } from "@beetpx/beetpx";
 import { Game } from "../game/Game";
 import { b, c } from "../globals";
 import { Hud } from "../gui/Hud";
@@ -12,6 +13,8 @@ export class ScreenMissionBoss implements GameScreen {
   private readonly _hud: Hud;
 
   private _bossInfo: SlidingInfo | null;
+
+  private _musicStartTimer: Timer | null;
 
   constructor(params: { game: Game; hud: Hud }) {
     this._game = params.game;
@@ -31,12 +34,8 @@ export class ScreenMissionBoss implements GameScreen {
       slideOutFrames: bossInfoSlideFrames,
     });
 
-    // TODO
-    //         _music_fade_out()
-    //         music_start_timer = new_timer(60, function()
-    //             music(_m_mission_boss_music)
-    //         end)
-    //
+    this._musicStartTimer = new Timer({ frames: 60 });
+
     this._game.enterBossPhase();
   }
 
@@ -58,11 +57,16 @@ export class ScreenMissionBoss implements GameScreen {
   }
 
   update(): void {
+    if (this._musicStartTimer?.hasFinished) {
+      this._musicStartTimer = null;
+      // TODO
+      // music(_m_mission_boss_music)
+    }
+
     this._game.update();
     this._hud.update();
     this._bossInfo?.update();
-    // TODO
-    //         music_start_timer._update()
+    this._musicStartTimer?.update();
   }
 
   draw(): void {

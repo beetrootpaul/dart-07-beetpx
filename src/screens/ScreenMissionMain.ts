@@ -34,13 +34,9 @@ export class ScreenMissionMain implements GameScreen {
       score: params.score,
     });
 
-    // TODO: REVERT
-    // const fadeInFrames = 30;
-    // const slidingInfoSlideFrames = 50;
-    // const screenFrames = 200;
     const fadeInFrames = 30;
     const slidingInfoSlideFrames = 50;
-    const screenFrames = 100;
+    const screenFrames = 200;
 
     this._hud = new Hud({
       waitFrames: screenFrames - 10,

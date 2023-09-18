@@ -1,4 +1,5 @@
 import { Timer } from "@beetpx/beetpx";
+import { Fade } from "../Fade";
 import { Game } from "../game/Game";
 import { b } from "../globals";
 import { Hud } from "../gui/Hud";
@@ -10,14 +11,14 @@ export class ScreenMissionEnd implements GameScreen {
   private readonly _game: Game;
   private readonly _hud: Hud;
 
+  private readonly _fadeOut: Fade;
   private readonly _screenTimer: Timer;
 
   constructor(params: { game: Game; hud: Hud }) {
     this._game = params.game;
     this._hud = params.hud;
 
-    // TODO
-    //     local fade_out = new_fade("out", 30, 90)
+    this._fadeOut = new Fade("out", { waitFrames: 90, fadeFrames: 30 });
     this._screenTimer = new Timer({ frames: 120 });
 
     // TODO
@@ -49,8 +50,7 @@ export class ScreenMissionEnd implements GameScreen {
   update(): void {
     this._game.update();
     this._hud.update();
-    // TODO
-    //         fade_out._update()
+    this._fadeOut.update();
     this._screenTimer.update();
   }
 
@@ -58,7 +58,6 @@ export class ScreenMissionEnd implements GameScreen {
     b.clearCanvas(CurrentMission.m.bgColor);
     this._game.draw();
     this._hud.draw(this._game);
-    // TODO
-    //         fade_out._draw()
+    this._fadeOut.draw();
   }
 }

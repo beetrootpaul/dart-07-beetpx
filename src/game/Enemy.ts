@@ -59,9 +59,6 @@ export class Enemy {
     this._onDestroyed = params.onDestroyed;
 
     this._health = params.properties.health;
-
-    // TODO
-    //         local bullet_fire_timer = enemy_properties.bullet_fire_timer or new_fake_timer()
   }
 
   get collisionCircles(): CollisionCircle[] {

@@ -14,10 +14,10 @@ export class Score {
     this._text = this._as6DigitsTextWithExtraZero();
   }
 
-  // TODO getter
-  //         raw_value = function()
-  //             return current
-  //         end,
+  // TODO: is it used?
+  get rawValue(): number {
+    return this._value;
+  }
 
   private _as6DigitsTextWithExtraZero(): string {
     return this._value.toFixed(0).padStart(6, " ");

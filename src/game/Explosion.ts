@@ -21,17 +21,21 @@ type Particle = {
 export class Explosion {
   private readonly _waitTimer: Timer;
   private readonly _magnitude: number;
+  private _onStarted: (() => void) | null;
+
   private readonly _particles: Particle[] = [];
 
-  // TODO: params: on_started
   constructor(params: {
     startXy: Vector2d;
     magnitude: number;
     waitFrames?: number;
+    onStarted?: () => void;
   }) {
     this._waitTimer = new Timer({ frames: params.waitFrames ?? 0 });
 
     this._magnitude = params.magnitude;
+
+    this._onStarted = params.onStarted ?? null;
 
     u.repeatN(9, () => {
       this._particles.push({
@@ -51,8 +55,10 @@ export class Explosion {
   update(): void {
     this._waitTimer.update();
     if (this._waitTimer.hasFinished) {
-      // TODO
-      //  (on_started or _noop)()
+      if (this._onStarted) {
+        this._onStarted();
+        this._onStarted = null;
+      }
       for (const p of this._particles) {
         if (p.r > 0) {
           p.angle = p.angle + 0.1 * randNegPos05();

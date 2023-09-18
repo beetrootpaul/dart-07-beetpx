@@ -37,9 +37,7 @@ export class MovementToTarget implements Movement {
   ) {
     this._startXy = startXy;
     this._targetXy = targetXy;
-    // TODO
     this._timer = new Timer({ frames });
-    // local timer = new_timer(params.frames, params.on_finished or nil
     this._easingFn = easingFn;
     this._onFinished = onFinished;
 

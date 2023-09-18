@@ -3172,6 +3172,22 @@
 							"defUid": 17,
 							"px": [0,192],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "m1e_stationary",
+							"__grid": [4,26],
+							"__pivot": [0,0],
+							"__tags": ["m1"],
+							"__tile": { "tilesetUid": 2, "x": 120, "y": 32, "w": 8, "h": 8 },
+							"__smartColor": "#FEE761",
+							"__worldX": 32,
+							"__worldY": -32,
+							"iid": "5413e0a0-3b70-11ee-b5a2-c7b75d32e645",
+							"width": 16,
+							"height": 16,
+							"defUid": 18,
+							"px": [32,208],
+							"fieldInstances": []
 						}
 					]
 				},

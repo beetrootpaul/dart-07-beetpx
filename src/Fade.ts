@@ -1,6 +1,7 @@
 import { CompositeColor, FillPattern, transparent_, v_ } from "@beetpx/beetpx";
 import { b, c, g } from "./globals";
 import { Movement } from "./movement/Movement";
+import { MovementFixed } from "./movement/MovementFixed";
 import { MovementSequence } from "./movement/MovementSequence";
 import { MovementToTarget } from "./movement/MovementToTarget";
 
@@ -31,8 +32,10 @@ export class Fade {
     g.viewportSize.y,
   ];
 
-  // TODO: params.waitFrames
-  constructor(direction: FadeDirection, params: { fadeFrames: number }) {
+  constructor(
+    direction: FadeDirection,
+    params: { waitFrames?: number; fadeFrames: number }
+  ) {
     this._direction = direction;
 
     let yMin = 0;
@@ -41,10 +44,13 @@ export class Fade {
     }
 
     this._movement = MovementSequence.of([
-      // TODO
-      //         new_movement_fixed_factory {
-      //             frames = wait_frames or 0,
-      //         },
+      ...(params.waitFrames
+        ? [
+            MovementFixed.of({
+              frames: params.waitFrames,
+            }),
+          ]
+        : []),
       MovementToTarget.of({
         frames: params.fadeFrames,
         targetY: 0,

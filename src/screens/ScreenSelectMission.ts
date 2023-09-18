@@ -41,6 +41,8 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   update(): void {
+    // TODO: pressing "x" to select mission makes the first bullet shot. Fix it!
+
     // TODO: remove this temporary code
     if (b.wasJustPressed("x")) {
       this._next = true;
