@@ -107,20 +107,20 @@ export class Mission1 implements Mission {
             ageDivisor: 120,
             magnitude: 14,
           }),
-          // TODO
-          //                 bullet_fire_timer = new_timer "40",
-          //                 spawn_bullets = function(enemy_movement)
-          //                     _sfx_play(_sfx_enemy_shoot)
-          //                     return {
-          //                         enemy_bullet_factory(
-          //                             new_movement_line_factory({
-          //                                 base_speed_y = enemy_movement.speed_xy.y,
-          //                                 angle = .75,
-          //                             })(enemy_movement.xy)
-          //                         )
-          //                     }
-          //                 end,
-          //             },
+          bulletFireTimer: new Timer({ frames: 40 }),
+          spawnBullets: (enemyMovement, playerCollisionCircle) => {
+            // TODO
+            //                     _sfx_play(_sfx_enemy_shoot)
+            return [
+              eb_(
+                MovementLine.of({
+                  baseSpeedXy: v_(0, enemyMovement.speed.y),
+                  angle: 0.25,
+                  angledSpeed: 1,
+                })(enemyMovement.xy)
+              ),
+            ];
+          },
         };
       case "m1e_wait_and_charge":
         return {
@@ -130,23 +130,17 @@ export class Mission1 implements Mission {
           spriteMain: aspr_(16, 14, [22], 64),
           spriteFlash: aspr_(14, 12, [32], 84),
           collisionCirclesProps: [{ r: 7 }],
-          // TODO: TMP
-          movementFactory: MovementLine.of({
-            angle: 0.25,
-            angledSpeed: 1.5,
-          }),
-          // TODO
-          //                 new_movement_sequence_factory {
-          //                     new_movement_line_factory {
-          //                         frames = 80,
-          //                         angle = .75,
-          //                         angled_speed = .5,
-          //                     },
-          //                     new_movement_line_factory {
-          //                         angle = .75,
-          //                     },
-          //                 },
-          //             },
+          movementFactory: MovementSequence.of([
+            MovementLine.of({
+              frames: 80,
+              angle: 0.25,
+              angledSpeed: 0.5,
+            }),
+            MovementLine.of({
+              angle: 0.25,
+              angledSpeed: 1,
+            }),
+          ]),
         };
       case "m1e_big":
         return {
@@ -161,43 +155,40 @@ export class Mission1 implements Mission {
             { r: 5, offset: v_(7, 0) },
             { r: 5, offset: v_(0, -4) },
           ],
-          // TODO: TMP
-          movementFactory: MovementLine.of({
-            angle: 0.25,
-            angledSpeed: 1.5,
-          }),
-          //                 new_movement_sequence_factory {
-          //                     new_movement_to_target_factory {
-          //                         target_y = 32,
-          //                         frames = 120,
-          //                         easing_fn = _easing_easeoutquart,
-          //                     },
-          //                     new_movement_fixed_factory {
-          //                         target_y = 32,
-          //                         frames = 480,
-          //                     },
-          //                     new_movement_to_target_factory {
-          //                         target_y = 140,
-          //                         frames = 120,
-          //                         easing_fn = _easing_easeinquart,
-          //                     },
-          //                 },
-          // TODO
-          //                 bullet_fire_timer = new_timer "33",
-          //                 spawn_bullets = function(enemy_movement)
-          //                     _sfx_play(_sfx_enemy_multi_shoot)
-          //                     local bullets = {}
-          //                     for i = 1, 8 do
-          //                         add(bullets, enemy_bullet_factory(
-          //                             new_movement_line_factory {
-          //                                 base_speed_y = enemy_movement.speed_xy.y,
-          //                                 angle = t() % 1 + i / 8,
-          //                             }(enemy_movement.xy)
-          //                         ))
-          //                     end
-          //                     return bullets
-          //                 end,
-          //             },
+          movementFactory: MovementSequence.of([
+            MovementToTarget.of({
+              targetY: 32,
+              frames: 120,
+              easingFn: Easing.outQuartic,
+            }),
+            MovementFixed.of({
+              frames: 480,
+            }),
+            MovementToTarget.of({
+              targetY: 140,
+              frames: 120,
+              easingFn: Easing.inQuartic,
+            }),
+          ]),
+          // TODO: it would be nice to have some Timer creation helper, a short one, like `timer_(33)`
+          bulletFireTimer: new Timer({ frames: 33 }),
+          spawnBullets: (enemyMovement, playerCollisionCircle) => {
+            // TODO
+            //    _sfx_play(_sfx_enemy_multi_shoot)
+            const bullets: EnemyBullet[] = [];
+            for (let i = 1; i <= 8; i++) {
+              bullets.push(
+                eb_(
+                  MovementLine.of({
+                    baseSpeedXy: enemyMovement.speed,
+                    angle: (t() % 1) + i / 8,
+                    angledSpeed: 1,
+                  })(enemyMovement.xy)
+                )
+              );
+            }
+            return bullets;
+          },
         };
       case "m1e_aimed_triple_shot":
         return {
@@ -211,53 +202,49 @@ export class Mission1 implements Mission {
             { r: 4, offset: v_(0, 7) },
             { r: 4, offset: v_(0, -7) },
           ],
-          // TODO: TMP
-          movementFactory: MovementLine.of({
-            angle: 0.25,
-            angledSpeed: 1.5,
-          }),
-          // TODO
-          //                 new_movement_sequence_factory({
-          //                     new_movement_to_target_factory {
-          //                         target_y = 80,
-          //                         frames = 150,
-          //                         easing_fn = _easing_easeoutquad,
-          //                     },
-          //                     new_movement_to_target_factory {
-          //                         target_y = 30,
-          //                         frames = 80,
-          //                     },
-          //                     new_movement_to_target_factory {
-          //                         target_y = 160,
-          //                         frames = 150,
-          //                         easing_fn = _easing_easeinquad,
-          //                     },
-          //                 }),
-          // TODO
-          //                 bullet_fire_timer = new_timer "60",
-          //                 spawn_bullets = function(enemy_movement, player_collision_circle)
-          //                     _sfx_play(_sfx_enemy_shoot)
-          //                     local enemy_xy = enemy_movement.xy
-          //                     local player_xy = player_collision_circle.xy
-          //                     return {
-          //                         enemy_bullet_factory(
-          //                             new_movement_line_factory {
-          //                                 target_xy = player_xy,
-          //                             }(enemy_xy.minus(0, 7))
-          //                         ),
-          //                         enemy_bullet_factory(
-          //                             new_movement_line_factory {
-          //                                 target_xy = player_xy,
-          //                             }(enemy_xy.minus(0, 1))
-          //                         ),
-          //                         enemy_bullet_factory(
-          //                             new_movement_line_factory {
-          //                                 target_xy = player_xy,
-          //                             }(enemy_xy.plus(0, 5))
-          //                         ),
-          //                     }
-          //                 end,
-          //             },
+          movementFactory: MovementSequence.of([
+            MovementToTarget.of({
+              targetY: 80,
+              frames: 150,
+              easingFn: Easing.outQuadratic,
+            }),
+            MovementToTarget.of({
+              targetY: 30,
+              frames: 80,
+            }),
+            MovementToTarget.of({
+              targetY: 180,
+              frames: 150,
+              easingFn: Easing.inQuadratic,
+            }),
+          ]),
+          bulletFireTimer: new Timer({ frames: 60 }),
+          spawnBullets: (enemyMovement, playerCollisionCircle) => {
+            // TODO
+            //   _sfx_play(_sfx_enemy_shoot)
+            const enemyXy = enemyMovement.xy;
+            const playerXy = playerCollisionCircle.center;
+            return [
+              eb_(
+                MovementLine.of({
+                  targetXy: playerXy,
+                  angledSpeed: 1,
+                })(enemyXy.sub(0, 7))
+              ),
+              eb_(
+                MovementLine.of({
+                  targetXy: playerXy,
+                  angledSpeed: 1,
+                })(enemyXy.sub(0, 1))
+              ),
+              eb_(
+                MovementLine.of({
+                  targetXy: playerXy,
+                  angledSpeed: 1,
+                })(enemyXy.add(0, 5))
+              ),
+            ];
+          },
         };
       case "m1e_stationary":
         return {

@@ -143,22 +143,24 @@ export class Mission3 implements Mission {
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          // TODO
-          //             bullet_fire_timer = new_timer "40",
-          //             spawn_bullets = function(enemy_movement, player_collision_circle)
-          //                 _sfx_play(_sfx_enemy_multi_shoot)
-          //                 local bullets = {}
-          //                 for i = 1, 8 do
-          //                     add(bullets, enemy_bullet_factory(
-          //                         new_movement_line_factory {
-          //                             base_speed_y = enemy_movement.speed_xy.y,
-          //                             angle = .0625 + i / 8,
-          //                         }(enemy_movement.xy)
-          //                     ))
-          //                 end
-          //                 return bullets
-          //             end,
-          //         },
+          bulletFireTimer: new Timer({ frames: 40 }),
+          spawnBullets: (enemyMovement, playerCollisionCircle) => {
+            // TODO
+            //                     _sfx_play(_sfx_enemy_multi_shoot)
+            const bullets: EnemyBullet[] = [];
+            for (let i = 1; i <= 8; i++) {
+              bullets.push(
+                eb_(
+                  MovementLine.of({
+                    baseSpeedXy: enemyMovement.speed,
+                    angle: 1 / 16 + i / 8,
+                    angledSpeed: 1,
+                  })(enemyMovement.xy)
+                )
+              );
+            }
+            return bullets;
+          },
         };
       default:
         return u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
