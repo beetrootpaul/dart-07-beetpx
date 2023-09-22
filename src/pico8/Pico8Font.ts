@@ -46,6 +46,7 @@ export class Pico8Font implements Font {
     ["9"]: glyph(9, 3),
     //
     ["@"]: glyph(0, 4),
+    ["?"]: glyph(15, 3),
     //
     ["a"]: glyph(1, 6),
     ["b"]: glyph(2, 6),

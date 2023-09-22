@@ -5,12 +5,12 @@
 		"doc": "https://ldtk.io/json",
 		"schema": "https://ldtk.io/files/JSON_SCHEMA.json",
 		"appAuthor": "Sebastien 'deepnight' Benard",
-		"appVersion": "1.3.4",
+		"appVersion": "1.4.0",
 		"url": "https://ldtk.io"
 	},
 	"iid": "3e81ce10-3b70-11ee-9e8d-47799584d6ed",
-	"jsonVersion": "1.3.4",
-	"appBuildId": 470178,
+	"jsonVersion": "1.4.0",
+	"appBuildId": 470941,
 	"nextUid": 140,
 	"identifierStyle": "Lowercase",
 	"toc": [],
@@ -65,6 +65,7 @@
 			"requiredTags": ["marker"],
 			"excludedTags": [],
 			"intGridValues": [],
+			"intGridValuesGroups": [],
 			"autoRuleGroups": [],
 			"autoSourceLayerDefUid": null,
 			"tilesetDefUid": null,
@@ -95,6 +96,7 @@
 			"requiredTags": ["m1"],
 			"excludedTags": [],
 			"intGridValues": [],
+			"intGridValuesGroups": [],
 			"autoRuleGroups": [],
 			"autoSourceLayerDefUid": null,
 			"tilesetDefUid": null,
@@ -125,6 +127,7 @@
 			"requiredTags": ["m2"],
 			"excludedTags": [],
 			"intGridValues": [],
+			"intGridValuesGroups": [],
 			"autoRuleGroups": [],
 			"autoSourceLayerDefUid": null,
 			"tilesetDefUid": null,
@@ -155,6 +158,7 @@
 			"requiredTags": ["m3"],
 			"excludedTags": [],
 			"intGridValues": [],
+			"intGridValuesGroups": [],
 			"autoRuleGroups": [],
 			"autoSourceLayerDefUid": null,
 			"tilesetDefUid": null,
@@ -184,9 +188,10 @@
 			"parallaxScaling": true,
 			"requiredTags": [],
 			"excludedTags": [],
-			"intGridValues": [{ "value": 1, "identifier": "land", "color": "#265C42", "tile": { "tilesetUid": 2, "x": 40, "y": 40, "w": 8, "h": 8 } }],
+			"intGridValues": [{ "value": 1, "identifier": "land", "color": "#265C42", "tile": { "tilesetUid": 2, "x": 40, "y": 40, "w": 8, "h": 8 }, "groupUid": 0 }],
+			"intGridValuesGroups": [],
 			"autoRuleGroups": [
-				{ "uid": 32, "name": "convex", "active": true, "isOptional": false, "rules": [
+				{ "uid": 32, "name": "convex", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 33,
 						"active": true,
@@ -312,7 +317,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 42, "name": "concave left top", "active": true, "isOptional": false, "rules": [
+				{ "uid": 42, "name": "concave left top", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 43,
 						"active": true,
@@ -407,7 +412,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 46, "name": "concave right top", "active": true, "isOptional": false, "rules": [
+				{ "uid": 46, "name": "concave right top", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 47,
 						"active": true,
@@ -502,7 +507,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 50, "name": "concave right bottom", "active": true, "isOptional": false, "rules": [
+				{ "uid": 50, "name": "concave right bottom", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 51,
 						"active": true,
@@ -597,7 +602,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 54, "name": "concave left bottom", "active": true, "isOptional": false, "rules": [
+				{ "uid": 54, "name": "concave left bottom", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 55,
 						"active": true,
@@ -692,7 +697,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 37, "name": "edges", "active": true, "isOptional": false, "rules": [
+				{ "uid": 37, "name": "edges", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 38,
 						"active": true,
@@ -818,7 +823,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 63, "name": "base", "active": true, "isOptional": false, "rules": [
+				{ "uid": 63, "name": "base", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 66,
 						"active": true,
@@ -880,9 +885,10 @@
 			"parallaxScaling": true,
 			"requiredTags": [],
 			"excludedTags": [],
-			"intGridValues": [{ "value": 1, "identifier": "land", "color": "#265C42", "tile": { "tilesetUid": 4, "x": 40, "y": 40, "w": 8, "h": 8 } }],
+			"intGridValues": [{ "value": 1, "identifier": "land", "color": "#265C42", "tile": { "tilesetUid": 4, "x": 40, "y": 40, "w": 8, "h": 8 }, "groupUid": 0 }],
+			"intGridValuesGroups": [],
 			"autoRuleGroups": [
-				{ "uid": 79, "name": "convex", "active": true, "isOptional": false, "rules": [
+				{ "uid": 79, "name": "convex", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 80,
 						"active": true,
@@ -1008,7 +1014,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 84, "name": "concave left top", "active": true, "isOptional": false, "rules": [
+				{ "uid": 84, "name": "concave left top", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 85,
 						"active": true,
@@ -1103,7 +1109,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 88, "name": "concave right top", "active": true, "isOptional": false, "rules": [
+				{ "uid": 88, "name": "concave right top", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 89,
 						"active": true,
@@ -1198,7 +1204,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 92, "name": "concave right bottom", "active": true, "isOptional": false, "rules": [
+				{ "uid": 92, "name": "concave right bottom", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 93,
 						"active": true,
@@ -1293,7 +1299,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 96, "name": "concave left bottom", "active": true, "isOptional": false, "rules": [
+				{ "uid": 96, "name": "concave left bottom", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 97,
 						"active": true,
@@ -1388,7 +1394,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 100, "name": "edges", "active": true, "isOptional": false, "rules": [
+				{ "uid": 100, "name": "edges", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 101,
 						"active": true,
@@ -1514,7 +1520,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 105, "name": "base", "active": true, "isOptional": false, "rules": [
+				{ "uid": 105, "name": "base", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 106,
 						"active": true,
@@ -1576,9 +1582,10 @@
 			"parallaxScaling": true,
 			"requiredTags": [],
 			"excludedTags": [],
-			"intGridValues": [{ "value": 1, "identifier": "land", "color": "#265C42", "tile": { "tilesetUid": 5, "x": 40, "y": 40, "w": 8, "h": 8 } }],
+			"intGridValues": [{ "value": 1, "identifier": "land", "color": "#265C42", "tile": { "tilesetUid": 5, "x": 40, "y": 40, "w": 8, "h": 8 }, "groupUid": 0 }],
+			"intGridValuesGroups": [],
 			"autoRuleGroups": [
-				{ "uid": 108, "name": "convex", "active": true, "isOptional": false, "rules": [
+				{ "uid": 108, "name": "convex", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 109,
 						"active": true,
@@ -1704,7 +1711,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 113, "name": "concave left top", "active": true, "isOptional": false, "rules": [
+				{ "uid": 113, "name": "concave left top", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 114,
 						"active": true,
@@ -1799,7 +1806,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 117, "name": "concave right top", "active": true, "isOptional": false, "rules": [
+				{ "uid": 117, "name": "concave right top", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 118,
 						"active": true,
@@ -1894,7 +1901,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 121, "name": "concave right bottom", "active": true, "isOptional": false, "rules": [
+				{ "uid": 121, "name": "concave right bottom", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 122,
 						"active": true,
@@ -1989,7 +1996,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 125, "name": "concave left bottom", "active": true, "isOptional": false, "rules": [
+				{ "uid": 125, "name": "concave left bottom", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 126,
 						"active": true,
@@ -2084,7 +2091,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 129, "name": "edges", "active": true, "isOptional": false, "rules": [
+				{ "uid": 129, "name": "edges", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 130,
 						"active": true,
@@ -2210,7 +2217,7 @@
 						"perlinOctaves": 2
 					}
 				], "usesWizard": false },
-				{ "uid": 134, "name": "base", "active": true, "isOptional": false, "rules": [
+				{ "uid": 134, "name": "base", "color": null, "icon": null, "active": true, "isOptional": false, "rules": [
 					{
 						"uid": 135,
 						"active": true,
@@ -2275,6 +2282,7 @@
 			"tilesetId": 2,
 			"tileRenderMode": "FitInside",
 			"tileRect": { "tilesetUid": 2, "x": 80, "y": 32, "w": 8, "h": 8 },
+			"uiTileRect": null,
 			"nineSliceBorders": [],
 			"maxCount": 0,
 			"limitScope": "PerLevel",
@@ -2308,6 +2316,7 @@
 			"tilesetId": 2,
 			"tileRenderMode": "FitInside",
 			"tileRect": { "tilesetUid": 2, "x": 88, "y": 32, "w": 8, "h": 8 },
+			"uiTileRect": null,
 			"nineSliceBorders": [],
 			"maxCount": 0,
 			"limitScope": "PerLevel",
@@ -2341,6 +2350,7 @@
 			"tilesetId": 2,
 			"tileRenderMode": "FitInside",
 			"tileRect": { "tilesetUid": 2, "x": 96, "y": 32, "w": 8, "h": 8 },
+			"uiTileRect": null,
 			"nineSliceBorders": [],
 			"maxCount": 0,
 			"limitScope": "PerLevel",
@@ -2374,6 +2384,7 @@
 			"tilesetId": 2,
 			"tileRenderMode": "FitInside",
 			"tileRect": { "tilesetUid": 2, "x": 104, "y": 32, "w": 8, "h": 8 },
+			"uiTileRect": null,
 			"nineSliceBorders": [],
 			"maxCount": 0,
 			"limitScope": "PerLevel",
@@ -2407,6 +2418,7 @@
 			"tilesetId": 2,
 			"tileRenderMode": "FitInside",
 			"tileRect": { "tilesetUid": 2, "x": 112, "y": 32, "w": 8, "h": 8 },
+			"uiTileRect": null,
 			"nineSliceBorders": [],
 			"maxCount": 0,
 			"limitScope": "PerLevel",
@@ -2440,6 +2452,7 @@
 			"tilesetId": 2,
 			"tileRenderMode": "FitInside",
 			"tileRect": { "tilesetUid": 2, "x": 120, "y": 32, "w": 8, "h": 8 },
+			"uiTileRect": null,
 			"nineSliceBorders": [],
 			"maxCount": 0,
 			"limitScope": "PerLevel",
@@ -2473,6 +2486,7 @@
 			"tilesetId": 4,
 			"tileRenderMode": "FitInside",
 			"tileRect": { "tilesetUid": 4, "x": 120, "y": 32, "w": 8, "h": 8 },
+			"uiTileRect": null,
 			"nineSliceBorders": [],
 			"maxCount": 0,
 			"limitScope": "PerLevel",
@@ -2506,6 +2520,7 @@
 			"tilesetId": 5,
 			"tileRenderMode": "FitInside",
 			"tileRect": { "tilesetUid": 5, "x": 120, "y": 32, "w": 8, "h": 8 },
+			"uiTileRect": null,
 			"nineSliceBorders": [],
 			"maxCount": 0,
 			"limitScope": "PerLevel",
@@ -2539,6 +2554,7 @@
 			"tilesetId": 2,
 			"tileRenderMode": "Repeat",
 			"tileRect": { "tilesetUid": 2, "x": 0, "y": 32, "w": 8, "h": 8 },
+			"uiTileRect": null,
 			"nineSliceBorders": [],
 			"maxCount": 0,
 			"limitScope": "PerLevel",

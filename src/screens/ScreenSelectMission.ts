@@ -11,7 +11,7 @@ export class ScreenSelectMission implements GameScreen {
     // TODO: remove this temporary code
     if (this._next) {
       return new ScreenMissionMain({
-        mission: CurrentMission.first + 1,
+        mission: CurrentMission.first + 2,
         health: 10,
         shockwaveCharges: 4,
         fastMovement: true,
