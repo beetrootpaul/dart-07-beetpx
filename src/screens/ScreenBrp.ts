@@ -1,97 +1,87 @@
-import { b, c } from "../globals";
+import { spr_, Sprite, Timer } from "@beetpx/beetpx";
+import { b, c, g } from "../globals";
+import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenBrp implements GameScreen {
-  // TODO: remove this temporary code
-  private _next: boolean = false;
+  private readonly _brpLogo: Sprite = spr_(g.assets.mainSpritesheetUrl)(
+    99,
+    114,
+    29,
+    14
+  );
+
+  private readonly _screenTimer: Timer;
+  private readonly _fadeInTimer: Timer;
+  private readonly _presentTimer: Timer;
+  private readonly _fadeOutTimer: Timer;
+
+  constructor() {
+    const screenFrames = 150;
+    const fadeFrames = 24;
+
+    // TODO: make it `new Timer(framesValue)`
+    this._screenTimer = new Timer({ frames: screenFrames });
+    this._fadeInTimer = new Timer({ frames: fadeFrames });
+    this._presentTimer = new Timer({
+      frames: screenFrames - 2 * fadeFrames - 20,
+    });
+    this._fadeOutTimer = new Timer({ frames: fadeFrames });
+
+    // TODO:
+    //         music(0)
+  }
 
   preUpdate(): GameScreen | undefined {
-    // TODO: remove this temporary code
-    if (this._next) {
+    if (this._screenTimer.hasFinished) {
+      // TODO: params: 1, false, true, false
       return new ScreenTitle();
-
-      // TODO
-      //         if screen_timer.ttl <= 0 then
-      //             return new_screen_title(1, false, true, false)
-      //         end
     }
   }
 
   update(): void {
-    // TODO: remove this temporary code
-    if (b.wasJustPressed("x")) {
-      this._next = true;
-    }
+    this._screenTimer.update();
 
-    // TODO
-    //         screen_timer._update()
-    //
-    //         if fade_in_timer.ttl > 0 then
-    //             fade_in_timer._update()
-    //         elseif present_timer.ttl > 0 then
-    //             present_timer._update()
-    //         else
-    //             fade_out_timer._update()
-    //         end
+    if (!this._fadeInTimer.hasFinished) {
+      this._fadeInTimer.update();
+    } else if (!this._presentTimer.hasFinished) {
+      this._presentTimer.update();
+    } else {
+      this._fadeOutTimer.update();
+    }
   }
 
   draw(): void {
     b.clearCanvas(c._0_black);
 
-    // TODO
-    //         local bg_pattern = 0xffff
-    //         local brp_color = _color_15_peach
-    //         if fade_in_timer.passed_fraction() < .33 then
-    //             bg_pattern = 0x0000
-    //             brp_color = _color_2_darker_purple
-    //         elseif fade_in_timer.passed_fraction() < .66 then
-    //             bg_pattern = 0x0f00
-    //             brp_color = _color_14_mauve
-    //         elseif fade_in_timer.passed_fraction() < 1 then
-    //             bg_pattern = 0x0f0f
-    //             brp_color = _color_13_lavender
-    //         elseif present_timer.passed_fraction() < 1 then
-    //         elseif fade_out_timer.passed_fraction() < .33 then
-    //             bg_pattern = 0x0f0f
-    //             brp_color = _color_13_lavender
-    //         elseif fade_out_timer.passed_fraction() < .66 then
-    //             bg_pattern = 0x0f00
-    //             brp_color = _color_14_mauve
-    //         else
-    //             bg_pattern = 0x0000
-    //             brp_color = _color_2_darker_purple
-    //         end
-    //
-    //         if fade_out_timer.passed_fraction() < 1 then
-    //             pal(_color_10_unused, brp_color)
-    //             sspr(
-    //                 99, 114,
-    //                 29, 14,
-    //                 (_vs - 29 * 2) / 2, (_vs - 14 * 2) / 2,
-    //                 29 * 2, 14 * 2
-    //             )
-    //             pal(1)
-    //         end
+    let logoColor = c._15_peach;
+    if (this._fadeInTimer.progress < 0.33) {
+      logoColor = c._2_darker_purple;
+    } else if (this._fadeInTimer.progress < 0.66) {
+      logoColor = c._14_mauve;
+    } else if (this._fadeInTimer.progress < 1) {
+      logoColor = c._13_lavender;
+    } else if (this._presentTimer.progress < 1) {
+      // do nothing
+    } else if (this._fadeOutTimer.progress < 0.33) {
+      logoColor = c._13_lavender;
+    } else if (this._fadeOutTimer.progress < 0.66) {
+      logoColor = c._14_mauve;
+    } else {
+      logoColor = c._2_darker_purple;
+    }
+
+    if (!this._fadeOutTimer.hasFinished) {
+      const prevMapping = b.mapSpriteColors([
+        { from: Pico8Colors._10_yellow, to: logoColor },
+      ]);
+      b.sprite(
+        this._brpLogo,
+        g.viewportSize.sub(this._brpLogo.size().mul(2)).div(2)
+        // TODO: scale x2
+      );
+      b.mapSpriteColors(prevMapping);
+    }
   }
 }
-
-// TODO
-// function new_screen_brp()
-//     local screen_frames = 150
-//     local fade_frames = 24
-//     local screen_timer = new_timer(screen_frames)
-//     local fade_in_timer = new_timer(fade_frames)
-//     local present_timer = new_timer(screen_frames - 2 * fade_frames - 20)
-//     local fade_out_timer = new_timer(fade_frames)
-//
-//     --
-//
-//     local screen = {}
-//
-//     function screen._init()
-//         music(0)
-//     end
-//
-//     return screen
-// end
