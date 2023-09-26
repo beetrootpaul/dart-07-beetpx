@@ -1,224 +1,243 @@
-import { b, c } from "../globals";
-import { CurrentMission } from "../missions/CurrentMission";
+import { Vector2d, spr_, v_ } from "@beetpx/beetpx";
+import { Fade } from "../Fade";
+import { b, c, g, h, u } from "../globals";
+import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Movement } from "../movement/Movement";
+import { MovementToTarget } from "../movement/MovementToTarget";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
+import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenSelectMission implements GameScreen {
-  // TODO: remove this temporary code
-  private _next: boolean = false;
+  private readonly _fadeOut: Fade = new Fade("out", { fadeFrames: 30 });
+  private readonly _shipSprite: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    10,
+    10,
+    [19],
+    0
+  );
+  private readonly _jetSprite: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    4,
+    20,
+    [0, 0, 0, 0, 4, 4, 4, 4],
+    9
+  );
+  private readonly _xSprite: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [56],
+    0,
+    true
+  );
+  private readonly _xSpritePressed: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [56],
+    6,
+    true
+  );
+
+  // 0 = back button, 1-3 = missions from 1 to 3
+  private _selectedMission: number = 1;
+
+  private _shipMovement: Movement | null = null;
+  private _proceed: boolean = false;
+
+  // TODO: param: selected_mission
+  constructor() {
+    this._initShipMovement();
+  }
 
   preUpdate(): GameScreen | undefined {
-    // TODO: remove this temporary code
-    if (this._next) {
+    if (this._proceed && this._selectedMission === 0) {
+      // TODO: params: 1, false, false, false
+      return new ScreenTitle();
+    }
+
+    if (
+      this._proceed &&
+      this._selectedMission > 0 &&
+      this._fadeOut.hasFinished
+    ) {
       return new ScreenMissionMain({
-        mission: CurrentMission.first + 2,
-        health: 10,
-        shockwaveCharges: 4,
-        fastMovement: true,
-        fastShoot: true,
-        tripleShoot: true,
+        mission: this._selectedMission,
+        health: g.healthDefault,
+        shockwaveCharges: g.shockwaveChargesDefault,
+        fastMovement: false,
+        fastShoot: false,
+        tripleShoot: false,
         score: 0,
       });
     }
+  }
 
-    // TODO
-    //         if proceed and selected_mission == 0 then
-    //             return new_screen_title(1, false, false, false)
-    //         end
-    //
-    //         if fade_out.has_finished() then
-    //             _copy_shared_assets_from_transferable_ram()
-    //             _load_mission_cart(
-    //                 selected_mission,
-    //                 _health_default,
-    //                 _shockwave_charges_default,
-    //                 false,
-    //                 false,
-    //                 false,
-    //                 0
-    //             )
-    //         end
+  private _initShipMovement(): void {
+    const [buttonXy, buttonWh] = this._missionButtonXyWh(this._selectedMission);
+    this._shipMovement = MovementToTarget.of({
+      targetY: buttonXy.sub(0, 10).y,
+      frames: 20,
+    })(buttonXy.sub(g.gameAreaOffset).add(buttonWh.x / 2, buttonWh.y - 6));
+  }
+
+  private _missionButtonXyWh(mission: number): [Vector2d, Vector2d] {
+    // place missions 1..N at positions 0..N-1, then place the back button (identified as mission 0) at position N
+    const position = (mission + 4 - 1) % 4;
+    return [
+      g.gameAreaOffset.add(0, 12 + position * 31),
+      v_(g.gameAreaSize.x, 16),
+    ];
   }
 
   update(): void {
     // TODO: pressing "x" to select mission makes the first bullet shot. Fix it!
 
-    // TODO: remove this temporary code
-    if (b.wasJustPressed("x")) {
-      this._next = true;
+    // TODO: something doesn't work here
+    if (b.wasJustPressed("up")) {
+      // TODO
+      //  _sfx_play(_sfx_options_change)
+      this._selectedMission = (this._selectedMission + 4 - 1) % 4;
+      this._initShipMovement();
+    }
+    // TODO: something doesn't work here
+    if (b.wasJustPressed("down")) {
+      // TODO
+      //  _sfx_play(_sfx_options_change)
+      this._selectedMission = (this._selectedMission + 1) % 4;
+      this._initShipMovement();
     }
 
-    // TODO
-    //         if btnp(_button_up) then
-    //             _sfx_play(_sfx_options_change)
-    //             selected_mission = (selected_mission - 1) % 4
-    //             init_ship_movement()
-    //         end
-    //         if btnp(_button_down) then
-    //             _sfx_play(_sfx_options_change)
-    //             selected_mission = (selected_mission + 1) % 4
-    //             init_ship_movement()
-    //         end
-    //
-    //         if btnp(_button_x) then
-    //             _sfx_play(_sfx_options_confirm)
-    //             if selected_mission > 0 then
-    //                 _music_fade_out()
-    //             end
-    //             proceed = true
-    //         end
-    //
-    //         ship_sprite._update()
-    //         jet_sprite._update()
-    //
-    //         if proceed then
-    //             if ship_movement.has_finished() then
-    //                 fade_out._update()
-    //             else
-    //                 ship_movement._update()
-    //             end
-    //         end
+    if (b.wasJustPressed("x")) {
+      // TODO
+      // _sfx_play(_sfx_options_confirm)
+      if (this._selectedMission > 0) {
+        // TODO
+        // _music_fade_out()
+      }
+      this._proceed = true;
+    }
+
+    this._shipSprite.update();
+    this._jetSprite.update();
+
+    if (this._proceed) {
+      if (this._shipMovement?.hasFinished) {
+        this._fadeOut.update();
+      } else {
+        this._shipMovement?.update();
+      }
+    }
+  }
+
+  private _drawMissionButton(mission: number): void {
+    const selected = mission === this._selectedMission;
+
+    const [buttonXy1, buttonWh] = this._missionButtonXyWh(mission);
+    // TODO: used?
+    const buttonXy2 = buttonXy1.add(buttonWh);
+
+    // draw button shape
+    b.sprite(
+      spr_(g.assets.mainSpritesheetUrl)(selected ? 38 : 39, 12, 1, 19),
+      buttonXy1.sub(1)
+      // TODO: stretch the sprite to the width of `buttonWh.x + 2`
+    );
+
+    // draw level sample
+    const sy = 80 + (mission - 1) * 16;
+    b.sprite(
+      spr_(g.assets.mainSpritesheetUrl)(
+        0,
+        selected ? sy : sy - 48,
+        buttonWh.x,
+        buttonWh.y
+      ),
+      buttonXy1
+    );
+
+    if (mission > 1) {
+      // draw WIP info
+      h.printCentered(
+        "under development",
+        g.gameAreaSize.x / 2,
+        buttonXy1.y + 2,
+        selected ? c._7_white : c._6_light_grey,
+        selected ? c._9_dark_orange : c._13_lavender
+      );
+    }
+
+    // draw label
+    b.print(
+      `mission ${mission}`,
+      buttonXy1.add(0, buttonWh.y + 4),
+      selected ? c._7_white : c._13_lavender
+    );
+
+    if (selected) {
+      // draw "x" button press incentive and its label
+      b.print("start", buttonXy1.add(buttonWh).add(-37, 4), c._7_white);
+      const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+        ? this._xSprite
+        : this._xSpritePressed;
+      sprite.draw(buttonXy1.add(buttonWh.add(-15, 3)).sub(g.gameAreaOffset));
+    }
+  }
+
+  private _drawBackButton(): void {
+    const selected = 0 === this._selectedMission;
+
+    const [buttonXy1, buttonWh] = this._missionButtonXyWh(0);
+
+    // button shape
+    b.sprite(
+      spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
+      buttonXy1.sub(1)
+      // TODO: stretch it to `button_wh.x + 2
+    );
+
+    // button text
+    b.print("back", buttonXy1.add(3, 2), c._14_mauve);
+
+    if (selected) {
+      // draw "x" button press incentive
+      const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+        ? this._xSprite
+        : this._xSpritePressed;
+      sprite.draw(
+        buttonXy1.add(buttonWh.x, 0).add(-16, 13).sub(g.gameAreaOffset)
+      );
+    }
+  }
+
+  private _drawShip(): void {
+    const [buttonXy, buttonWh] = this._missionButtonXyWh(this._selectedMission);
+    b.setClippingRegion(buttonXy, buttonWh);
+
+    if (this._shipMovement) {
+      this._shipSprite.draw(this._shipMovement.xy);
+      this._jetSprite.draw(this._shipMovement.xy);
+    }
+
+    b.removeClippingRegion();
   }
 
   draw(): void {
     b.clearCanvas(c._1_darker_blue);
 
-    // TODO: remove this temporary code
-    //         for i = 1, 3 do
-    //             draw_mission_button(i)
-    //         end
-    //         draw_back_button()
-    //         if selected_mission > 0 then
-    //             draw_ship()
-    //         end
-    //
-    //         fade_out._draw()
+    this._drawMissionButton(1);
+    this._drawMissionButton(2);
+    this._drawMissionButton(3);
+
+    this._drawBackButton();
+
+    console.log(this._selectedMission);
+    if (this._selectedMission > 0) {
+      this._drawShip();
+    }
+
+    this._fadeOut.draw();
   }
 }
-
-// TODO
-// function new_screen_select_mission(selected_mission)
-//     local fade_out = new_fade("out", 30)
-//     local ship_movement
-//
-//     local proceed = false
-//
-//     local x_sprite = new_static_sprite("15,6,56,0", true)
-//     local x_pressed_sprite = new_static_sprite("15,6,56,6", true)
-//
-//     local ship_sprite = new_static_sprite "10,10,19,0"
-//     local jet_sprite = new_animated_sprite(
-//         4,
-//         4,
-//         split("0,0,0,0,4,4,4,4"),
-//         8
-//     )
-//
-//     local function mission_button_xy_wh(mission_number)
-//         -- place missions 1..N at positions 0..N-1, then place back button (identified as mission 0) at position N
-//         local position = (mission_number - 1) % 4
-//         return _xy(_gaox, 12 + position * 31), _xy(_gaw, 16)
-//     end
-//
-//     local function draw_back_button()
-//         local selected = selected_mission == 0
-//
-//         local button_xy1, button_wh = mission_button_xy_wh(0)
-//
-//         -- button shape
-//         sspr(
-//             selected and 35 or 36, 12,
-//             1, 12,
-//             button_xy1.x - 1, button_xy1.y - 1,
-//             button_wh.x + 2, 12
-//         )
-//
-//         -- button text
-//         print("back", button_xy1.x + 3, button_xy1.y + 2, _color_14_mauve)
-//
-//         -- "x" press incentive
-//         if selected then
-//             local sprite = _alternating_0_and_1() == 0 and x_sprite or x_pressed_sprite
-//             sprite._draw(-_gaox + button_xy1.x + button_wh.x - 16, button_xy1.y + 13)
-//         end
-//     end
-//
-//     local function draw_mission_button(mission_number)
-//         local selected = selected_mission == mission_number
-//
-//         local button_xy1, button_wh = mission_button_xy_wh(mission_number)
-//         local button_xy2 = button_xy1.plus(button_wh)
-//
-//         -- draw button shape
-//         sspr(
-//             selected and 38 or 39, 12,
-//             1, 19,
-//             button_xy1.x - 1, button_xy1.y - 1,
-//             button_wh.x + 2, 19
-//         )
-//
-//         -- draw level sample
-//         local sy = 80 + (mission_number - 1) * 16
-//         sspr(
-//             0, selected and sy or (sy - 48),
-//             button_wh.x, button_wh.y,
-//             button_xy1.x, button_xy1.y
-//         )
-//
-//         if mission_number > 1 then
-//             -- draw WIP info
-//             _centered_print(
-//                 "under \-fdevelopment",
-//                 button_xy1.y + 2,
-//                 selected and _color_7_white or _color_6_light_grey,
-//                 selected and _color_9_dark_orange or _color_13_lavender
-//             )
-//         end
-//
-//         -- draw label
-//         print(
-//             "mission " .. mission_number,
-//             button_xy1.x, button_xy2.y + 4,
-//             selected and _color_7_white or _color_13_lavender
-//         )
-//
-//         -- draw "x" button press incentive and its label
-//         if selected then
-//             print(
-//                 "start",
-//                 button_xy2.x - 37, button_xy2.y + 4,
-//                 _color_7_white
-//             )
-//             local sprite = _alternating_0_and_1() == 0 and x_sprite or x_pressed_sprite
-//             sprite._draw(-_gaox + button_xy2.x - 15, button_xy2.y + 3)
-//         end
-//     end
-//
-//     local function draw_ship()
-//         local button_xy, button_wh = mission_button_xy_wh(selected_mission)
-//         clip(button_xy.x, button_xy.y, button_wh.x, button_wh.y)
-//
-//         ship_sprite._draw(ship_movement.xy)
-//         jet_sprite._draw(ship_movement.xy.plus(0, 8))
-//
-//         clip()
-//     end
-//
-//     local function init_ship_movement()
-//         local button_xy, button_wh = mission_button_xy_wh(selected_mission)
-//         ship_movement = new_movement_to_target_factory {
-//             target_y = button_xy.minus(0, 10).y,
-//             frames = 20,
-//         }(button_xy.plus(-_gaox + button_wh.x / 2, button_wh.y - 6))
-//     end
-//
-//     --
-//
-//     local screen = {}
-//
-//     function screen._init()
-//         init_ship_movement()
-//     end
-//
-//     return screen
-// end

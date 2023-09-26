@@ -47,7 +47,9 @@ export const g = {
     mission3SpritesheetUrl: "spritesheet_mission_3.png",
   },
 
+  healthDefault: 3,
   healthMax: 10,
+  shockwaveChargesDefault: 2,
   shockwaveChargesMax: 4,
 
   negativeColor: new MappingColor((canvasColor) => {

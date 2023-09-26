@@ -17,6 +17,8 @@ export class ScreenBrp implements GameScreen {
   private readonly _presentTimer: Timer;
   private readonly _fadeOutTimer: Timer;
 
+  private _skip: boolean = false;
+
   constructor() {
     const screenFrames = 150;
     const fadeFrames = 24;
@@ -34,13 +36,17 @@ export class ScreenBrp implements GameScreen {
   }
 
   preUpdate(): GameScreen | undefined {
-    if (this._screenTimer.hasFinished) {
+    if (this._skip || this._screenTimer.hasFinished) {
       // TODO: params: 1, false, true, false
       return new ScreenTitle();
     }
   }
 
   update(): void {
+    if (b.wasJustPressed("x") || b.wasJustPressed("o")) {
+      this._skip = true;
+    }
+
     this._screenTimer.update();
 
     if (!this._fadeInTimer.hasFinished) {
