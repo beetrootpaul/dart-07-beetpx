@@ -1,107 +1,123 @@
-import { b, c } from "../globals";
+import { spr_, v_ } from "@beetpx/beetpx";
+import { b, c, g, u } from "../globals";
+import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
 
+// TODO: rework controls? Rework them in general in BeetPx?
+
 export class ScreenControls implements GameScreen {
-  // TODO: remove this temporary code
-  private _next: boolean = false;
+  private readonly _xSprite: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [56],
+    0,
+    true
+  );
+  private readonly _xSpritePressed: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [56],
+    6,
+    true
+  );
+  private readonly _coSprite: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [56],
+    24,
+    true
+  );
+  private readonly _pauseSprite: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [41],
+    0,
+    true
+  );
+
+  private _proceed: boolean = false;
+
+  // TODO: params: preselected_mission
+  constructor() {}
 
   preUpdate(): GameScreen | undefined {
-    // TODO: remove this temporary code
-    if (this._next) {
+    if (this._proceed) {
+      // TODO: params: preselected_mission, false, false, true
       return new ScreenTitle();
     }
-
-    // TODO
-    //         if proceed then
-    //             return new_screen_title(preselected_mission, false, false, true)
-    //         end
   }
 
   update(): void {
-    // TODO: remove this temporary code
     if (b.wasJustPressed("x")) {
-      this._next = true;
+      // TODO
+      //             _sfx_play(_sfx_options_confirm)
+      this._proceed = true;
     }
+  }
 
-    // TODO
-    //         if btnp(_button_x) then
-    //             _sfx_play(_sfx_options_confirm)
-    //             proceed = true
-    //         end
+  private _drawBackButton(baseX: number, baseY: number): void {
+    const w = g.viewportSize.x - 2 * baseX;
+
+    // button shape
+    b.sprite(
+      spr_(g.assets.mainSpritesheetUrl)(35, 12, 1, 12),
+      // TODO: stretch to `w`
+      v_(baseX, baseY)
+    );
+
+    // button text
+    b.print("back", v_(baseX + 4, baseY + 3), c._14_mauve);
+
+    // "x" press incentive
+    const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+      ? this._xSprite
+      : this._xSpritePressed;
+    sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
+  }
+
+  private _drawControls(baseX: number, baseY: number): void {
+    let y = baseY;
+
+    b.print("in game:", v_(baseX, y), c._15_peach);
+    y += 10;
+
+    b.print("use arrows to move", v_(baseX, y), c._6_light_grey);
+    y += 10;
+
+    b.print("press & hold", v_(baseX, y), c._6_light_grey);
+    this._xSprite.draw(v_(baseX + 49, y - 1).sub(g.gameAreaOffset));
+    b.print("to fire", v_(baseX + 67, y), c._6_light_grey);
+    y += 10;
+
+    b.print("press", v_(baseX, y), c._6_light_grey);
+    this._coSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
+    b.print("to trigger", v_(baseX + 41, y), c._6_light_grey);
+    b.print("a schockwave", v_(baseX, y + 7), c._6_light_grey);
+    y += 20;
+
+    b.print("other:", v_(baseX, y), c._15_peach);
+    y += 10;
+
+    b.print("press", v_(baseX, y), c._6_light_grey);
+    this._pauseSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
+    b.print("to open", v_(baseX + 41, y), c._6_light_grey);
+    b.print("the pause menu", v_(baseX, y + 7), c._6_light_grey);
+    y += 17;
+
+    b.print("press", v_(baseX, y), c._6_light_grey);
+    this._xSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
+    b.print("to confirm", v_(baseX + 41, y), c._6_light_grey);
   }
 
   draw(): void {
     b.clearCanvas(c._1_darker_blue);
 
-    // TODO
-    //         draw_controls(15, 12)
-    //         draw_back_button(15, 104)
+    this._drawControls(15, 15);
+    this._drawBackButton(15, 104);
   }
 }
-
-// TODO
-// function new_screen_controls(preselected_mission)
-//     local x_sprite = new_static_sprite("15,6,56,0", true)
-//     local x_pressed_sprite = new_static_sprite("15,6,56,6", true)
-//     local c_o_sprite = new_static_sprite("15,6,56,24", true)
-//     local pause_sprite = new_static_sprite("15,6,41,0", true)
-//
-//     local proceed = false
-//
-//     local function draw_controls(base_x, base_y)
-//         local y = base_y
-//
-//         print("in \-fgame:", base_x, y, _color_15_peach)
-//         y = y + 10
-//
-//         print("use \-farrows \-fto \-fmove", base_x, y, _color_6_light_grey)
-//         y = y + 10
-//
-//         print("press \-f& \-fhold", base_x, y, _color_6_light_grey)
-//         x_sprite._draw(-_gaox + base_x + 49, y - 1)
-//         print("to \-ffire", base_x + 67, y, _color_6_light_grey)
-//         y = y + 10
-//
-//         print("press", base_x, y, _color_6_light_grey)
-//         c_o_sprite._draw(-_gaox + base_x + 23, y - 1)
-//         print("to \-ftrigger", base_x + 41, y, _color_6_light_grey)
-//         print("a \-fshockwave", base_x, y + 7, _color_6_light_grey)
-//         y = y + 20
-//
-//         print("other:", base_x, y, _color_15_peach)
-//         y = y + 10
-//
-//         print("press", base_x, y, _color_6_light_grey)
-//         pause_sprite._draw(-_gaox + base_x + 23, y - 1)
-//         print("to \-fopen", base_x + 41, y, _color_6_light_grey)
-//         print("the \-fpause \-fmenu", base_x, y + 6, _color_6_light_grey)
-//         y = y + 16
-//
-//         print("press", base_x, y, _color_6_light_grey)
-//         x_sprite._draw(-_gaox + base_x + 23, y - 1)
-//         print("to \-fconfirm", base_x + 41, y, _color_6_light_grey)
-//     end
-//
-//     local function draw_back_button(base_x, base_y)
-//         local w = _vs - 2 * base_x
-//
-//         -- button shape
-//         sspr(35, 12, 1, 12, base_x, base_y, w, 12)
-//
-//         -- button text
-//         print("back", base_x + 4, base_y + 3, _color_14_mauve)
-//
-//         -- "x" press incentive
-//         local sprite = _alternating_0_and_1() == 0 and x_sprite or x_pressed_sprite
-//         sprite._draw(-_gaox + base_x + w - 16, base_y + 13)
-//     end
-//
-//     --
-//
-//     local screen = {
-//         _init = _noop,
-//     }
-//
-//     return screen
-// end
