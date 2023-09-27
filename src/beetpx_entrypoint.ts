@@ -88,33 +88,7 @@ b.init(
         { from: Pico8Colors._15_lightPeach, to: c._15_peach },
       ]);
 
-      // TODO: REVERT
       currentScreen = new ScreenBrp();
-      // currentScreen = new ScreenOver({
-      //   game: new Game({
-      //     tripleShoot: true,
-      //     fastMovement: true,
-      //     score: 123,
-      //     shockwaveCharges: 3,
-      //     health: 4,
-      //     fastShoot: true,
-      //   }),
-      //   isWin: true,
-      // });
-      // currentScreen = new ScreenMissionEnd({
-      //   game: new Game({
-      //     tripleShoot: true,
-      //     fastMovement: true,
-      //     score: 123,
-      //     shockwaveCharges: 3,
-      //     health: 4,
-      //     fastShoot: true,
-      //   }),
-      //   hud: new Hud({
-      //     waitFrames: 1,
-      //     slideInFrames: 1,
-      //   }),
-      // });
     });
 
     b.setOnUpdate(() => {
