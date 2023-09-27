@@ -233,7 +233,6 @@ export class ScreenSelectMission implements GameScreen {
 
     this._drawBackButton();
 
-    console.log(this._selectedMission);
     if (this._selectedMission > 0) {
       this._drawShip();
     }

@@ -28,6 +28,8 @@ export const h = Helpers;
 
 // TODO: inline
 export const g = {
+  gameVersion: "V0.4.0",
+
   // TODO: do we use it anywhere else than BeetPx config? Can we inline it?
   fps: 60 as const,
 
