@@ -54,8 +54,6 @@ export class MovementLine implements Movement {
       angledSpeed * Math.sin(angle * Math.PI * 2)
     );
 
-    // TODO
-    // local angle = params.target_xy and _angle_between(start_xy, params.target_xy) or params.angle
     this._timer = frames ? new Timer({ frames }) : new TimerInfinite();
   }
 

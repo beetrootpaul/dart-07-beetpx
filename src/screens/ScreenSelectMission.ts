@@ -97,25 +97,22 @@ export class ScreenSelectMission implements GameScreen {
 
     // TODO: something doesn't work here
     if (b.wasJustPressed("up")) {
-      // TODO
-      //  _sfx_play(_sfx_options_change)
+      b.playSoundOnce(g.assets.sfxOptionsChange);
       this._selectedMission = (this._selectedMission + 4 - 1) % 4;
       this._initShipMovement();
     }
     // TODO: something doesn't work here
     if (b.wasJustPressed("down")) {
-      // TODO
-      //  _sfx_play(_sfx_options_change)
+      b.playSoundOnce(g.assets.sfxOptionsChange);
       this._selectedMission = (this._selectedMission + 1) % 4;
       this._initShipMovement();
     }
 
     if (b.wasJustPressed("x")) {
-      // TODO
-      // _sfx_play(_sfx_options_confirm)
+      b.playSoundOnce(g.assets.sfxOptionsConfirm);
       if (this._selectedMission > 0) {
-        // TODO
-        // _music_fade_out()
+        // TODO: replace this with a fade out of a music only over 500 ms
+        b.stopAllSounds();
       }
       this._proceed = true;
     }
@@ -136,8 +133,6 @@ export class ScreenSelectMission implements GameScreen {
     const selected = mission === this._selectedMission;
 
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(mission);
-    // TODO: used?
-    const buttonXy2 = buttonXy1.add(buttonWh);
 
     // draw button shape
     b.sprite(

@@ -54,8 +54,7 @@ export class ScreenControls implements GameScreen {
 
   update(): void {
     if (b.wasJustPressed("x")) {
-      // TODO
-      //             _sfx_play(_sfx_options_confirm)
+      b.playSoundOnce(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }
   }

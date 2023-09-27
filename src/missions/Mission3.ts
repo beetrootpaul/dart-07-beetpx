@@ -2,7 +2,7 @@ import { SolidColor, Timer, v_, Vector2d } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
-import { c, g, u } from "../globals";
+import { b, c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
@@ -139,8 +139,7 @@ export class Mission3 implements Mission {
           }),
           bulletFireTimer: new Timer({ frames: 40 }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            // TODO
-            //                     _sfx_play(_sfx_enemy_multi_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -177,8 +176,7 @@ export class Mission3 implements Mission {
           score: 1,
           bulletFireTimer: new Timer({ frames: 80 }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            // TODO
-            // _sfx_play(_sfx_enemy_multi_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             return [
               eb_(
                 MovementLine.of({

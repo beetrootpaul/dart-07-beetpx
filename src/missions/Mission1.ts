@@ -109,8 +109,7 @@ export class Mission1 implements Mission {
           }),
           bulletFireTimer: new Timer({ frames: 40 }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            // TODO
-            //                     _sfx_play(_sfx_enemy_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyShoot);
             return [
               eb_(
                 MovementLine.of({
@@ -173,8 +172,7 @@ export class Mission1 implements Mission {
           // TODO: it would be nice to have some Timer creation helper, a short one, like `timer_(33)`
           bulletFireTimer: new Timer({ frames: 33 }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            // TODO
-            //    _sfx_play(_sfx_enemy_multi_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -220,8 +218,7 @@ export class Mission1 implements Mission {
           ]),
           bulletFireTimer: new Timer({ frames: 60 }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            // TODO
-            //   _sfx_play(_sfx_enemy_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyShoot);
             const enemyXy = enemyMovement.xy;
             const playerXy = playerCollisionCircle.center;
             return [
@@ -260,8 +257,7 @@ export class Mission1 implements Mission {
           }),
           bulletFireTimer: new Timer({ frames: 60 }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            // TODO
-            //                     _sfx_play(_sfx_enemy_multi_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -304,8 +300,7 @@ export class Mission1 implements Mission {
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             if (t() % 2 < 1) return [];
 
-            // TODO
-            //                         _sfx_play(_sfx_enemy_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyShoot);
 
             return [
               eb_(
@@ -326,8 +321,7 @@ export class Mission1 implements Mission {
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             const bullets: EnemyBullet[] = [];
             if (t() > 0.6) {
-              // TODO
-              //                             _sfx_play(_sfx_enemy_multi_shoot)
+              b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
               for (let i = 1; i <= 8; i++) {
                 bullets.push(
                   eb_(
@@ -368,8 +362,7 @@ export class Mission1 implements Mission {
           score: 650,
           bulletFireTimer: new Timer({ frames: 8 }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            // TODO
-            //                         _sfx_play(_sfx_enemy_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyShoot);
             if (t() % 2 > 1.5) {
               // side bullets
               return [

@@ -97,8 +97,7 @@ export class Mission2 implements Mission {
           }),
           bulletFireTimer: new Timer({ frames: 40 }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            // TODO
-            //                     _sfx_play(_sfx_enemy_multi_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -153,8 +152,7 @@ export class Mission2 implements Mission {
           score: 1,
           bulletFireTimer: new Timer({ frames: 80 }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            // TODO
-            // _sfx_play(_sfx_enemy_multi_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             return [
               eb_(
                 MovementLine.of({

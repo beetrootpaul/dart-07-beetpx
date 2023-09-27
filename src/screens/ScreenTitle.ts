@@ -106,14 +106,12 @@ export class ScreenTitle implements GameScreen {
 
   update(): void {
     if (b.wasJustPressed("up") || b.wasJustPressed("down")) {
-      // TODO
-      // _sfx_play(_sfx_options_change)
+      b.playSoundOnce(g.assets.sfxOptionsChange);
       this._play = !this._play;
     }
 
     if (b.wasJustPressed("x")) {
-      // TODO
-      // _sfx_play(_sfx_options_confirm)
+      b.playSoundOnce(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }
 

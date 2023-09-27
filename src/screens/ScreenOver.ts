@@ -61,8 +61,7 @@ export class ScreenOver implements GameScreen {
     this._fadeOut = new Fade("out", { fadeFrames: 30 });
 
     if (params.isWin) {
-      // TODO
-      //             _sfx_play(_sfx_game_win)
+      b.playSoundOnce(g.assets.sfxGameWin);
     }
 
     const currentScore = this._game.score.rawValue;
@@ -101,15 +100,14 @@ export class ScreenOver implements GameScreen {
   update(): void {
     if (!this._isWin) {
       if (b.wasJustPressed("up") || b.wasJustPressed("down")) {
-        // TODO
-        //                 _sfx_play(_sfx_options_change)
+        b.playSoundOnce(g.assets.sfxOptionsChange);
         this._retry = !this._retry;
       }
     }
 
     if (b.wasJustPressed("x")) {
-      // TODO
-      //             _music_fade_out()
+      // TODO: replace this with a fade out of a music only over 500 ms
+      b.stopAllSounds();
       this._proceed = true;
     }
 

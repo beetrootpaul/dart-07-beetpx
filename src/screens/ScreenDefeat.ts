@@ -26,8 +26,8 @@ export class ScreenDefeat implements GameScreen {
     });
     this._screenTimer = new Timer({ frames: screenFrames });
 
-    // TODO
-    //         _music_fade_out()
+    // TODO: replace this with a fade out of a music only over 500 ms
+    b.stopAllSounds();
   }
 
   preUpdate(): GameScreen | undefined {
