@@ -62,7 +62,12 @@ export class ScreenTitle implements GameScreen {
     //
     // TODO
     //         if start_music then
-    //             music(2)
+    // TODO:
+    //         music(2)
+    // SEQ:
+    // loop:
+    //   34 36
+    //   35 37
     //         end
 
     // TODO: use better names for storage API. `load` is very unclear in context of `BeetPx`

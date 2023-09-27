@@ -279,7 +279,32 @@ export class Mission1 implements Mission {
   }
 
   // TODO
-  // _m_mission_main_music, _m_mission_boss_music = 0, 13
+  // _m_mission_main_music = 0
+  // SEQ:
+  // intro:
+  //   43 48
+  //   40 49
+  //   40 49
+  //   40 50
+  // loop:
+  //   40 49 41
+  //   40 49 41
+  //   40 50 42
+  //   40 49 41
+  //   40 49 41 51
+  //   40 49 41 51
+  //   40 50 42 52
+  //   40 49    51
+  //
+  // _m_mission_boss_music = 13
+  // SEQ:
+  // intro:
+  //   44
+  // loop:
+  //   45 53
+  //   45 54
+  //   45 55
+  //   45 56
 
   bossProperties(): BossProperties {
     return {

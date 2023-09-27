@@ -33,6 +33,13 @@ export class ScreenBrp implements GameScreen {
 
     // TODO:
     //         music(0)
+    // SEQ:
+    // intro:
+    //   32
+    //   33
+    // loop:
+    //   34 36
+    //   35 37
   }
 
   preUpdate(): GameScreen | undefined {

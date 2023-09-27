@@ -161,7 +161,15 @@ export class Mission3 implements Mission {
   }
 
   // TODO
-  // _m_mission_main_music, _m_mission_boss_music = 0, 1
+  // _m_mission_main_music = 0
+  // SEQ:
+  // loop:
+  //   32
+  //
+  // _m_mission_boss_music = 1
+  // SEQ:
+  // loop:
+  //   33
 
   bossProperties(): BossProperties {
     return {
