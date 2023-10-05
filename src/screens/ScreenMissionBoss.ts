@@ -1,6 +1,6 @@
-import { BpxTimer, timer_ } from "@beetpx/beetpx";
+import { b_, BpxTimer, timer_ } from "@beetpx/beetpx";
 import { Game } from "../game/Game";
-import { b, c } from "../globals";
+import { c } from "../globals";
 import { Hud } from "../gui/Hud";
 import { SlidingInfo } from "../gui/SlidingInfo";
 import { CurrentMission } from "../missions/CurrentMission";
@@ -70,7 +70,7 @@ export class ScreenMissionBoss implements GameScreen {
   }
 
   draw(): void {
-    b.clearCanvas(CurrentMission.m.bgColor);
+    b_.clearCanvas(CurrentMission.m.bgColor);
     this._game.draw();
     this._hud.draw(this._game);
     this._bossInfo?.draw();

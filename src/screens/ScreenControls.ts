@@ -1,5 +1,5 @@
-import { spr_, v_ } from "@beetpx/beetpx";
-import { b, c, g, u } from "../globals";
+import { b_, spr_, u_, v_ } from "@beetpx/beetpx";
+import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
 import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
@@ -53,8 +53,8 @@ export class ScreenControls implements GameScreen {
   }
 
   update(): void {
-    if (b.wasJustPressed("x")) {
-      b.playSoundOnce(g.assets.sfxOptionsConfirm);
+    if (b_.wasJustPressed("x")) {
+      b_.playSoundOnce(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }
   }
@@ -63,17 +63,17 @@ export class ScreenControls implements GameScreen {
     const w = g.viewportSize.x - 2 * baseX;
 
     // button shape
-    b.sprite(
+    b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(35, 12, 1, 12),
       v_(baseX, baseY),
       v_(w, 1)
     );
 
     // button text
-    b.print("back", v_(baseX + 4, baseY + 3), c._14_mauve);
+    b_.print("back", v_(baseX + 4, baseY + 3), c._14_mauve);
 
     // "x" press incentive
-    const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+    const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
       ? this._xSprite
       : this._xSpritePressed;
     sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
@@ -82,39 +82,39 @@ export class ScreenControls implements GameScreen {
   private _drawControls(baseX: number, baseY: number): void {
     let y = baseY;
 
-    b.print("in game:", v_(baseX, y), c._15_peach);
+    b_.print("in game:", v_(baseX, y), c._15_peach);
     y += 10;
 
-    b.print("use arrows to move", v_(baseX, y), c._6_light_grey);
+    b_.print("use arrows to move", v_(baseX, y), c._6_light_grey);
     y += 10;
 
-    b.print("press & hold", v_(baseX, y), c._6_light_grey);
+    b_.print("press & hold", v_(baseX, y), c._6_light_grey);
     this._xSprite.draw(v_(baseX + 49, y - 1).sub(g.gameAreaOffset));
-    b.print("to fire", v_(baseX + 67, y), c._6_light_grey);
+    b_.print("to fire", v_(baseX + 67, y), c._6_light_grey);
     y += 10;
 
-    b.print("press", v_(baseX, y), c._6_light_grey);
+    b_.print("press", v_(baseX, y), c._6_light_grey);
     this._coSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
-    b.print("to trigger", v_(baseX + 41, y), c._6_light_grey);
-    b.print("a schockwave", v_(baseX, y + 7), c._6_light_grey);
+    b_.print("to trigger", v_(baseX + 41, y), c._6_light_grey);
+    b_.print("a schockwave", v_(baseX, y + 7), c._6_light_grey);
     y += 20;
 
-    b.print("other:", v_(baseX, y), c._15_peach);
+    b_.print("other:", v_(baseX, y), c._15_peach);
     y += 10;
 
-    b.print("press", v_(baseX, y), c._6_light_grey);
+    b_.print("press", v_(baseX, y), c._6_light_grey);
     this._pauseSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
-    b.print("to open", v_(baseX + 41, y), c._6_light_grey);
-    b.print("the pause menu", v_(baseX, y + 7), c._6_light_grey);
+    b_.print("to open", v_(baseX + 41, y), c._6_light_grey);
+    b_.print("the pause menu", v_(baseX, y + 7), c._6_light_grey);
     y += 17;
 
-    b.print("press", v_(baseX, y), c._6_light_grey);
+    b_.print("press", v_(baseX, y), c._6_light_grey);
     this._xSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
-    b.print("to confirm", v_(baseX + 41, y), c._6_light_grey);
+    b_.print("to confirm", v_(baseX + 41, y), c._6_light_grey);
   }
 
   draw(): void {
-    b.clearCanvas(c._1_darker_blue);
+    b_.clearCanvas(c._1_darker_blue);
 
     this._drawControls(15, 15);
     this._drawBackButton(15, 104);

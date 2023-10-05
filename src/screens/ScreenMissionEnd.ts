@@ -1,7 +1,6 @@
-import { BpxTimer, timer_ } from "@beetpx/beetpx";
+import { b_, BpxTimer, timer_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
-import { b } from "../globals";
 import { Hud } from "../gui/Hud";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
@@ -56,7 +55,7 @@ export class ScreenMissionEnd implements GameScreen {
   }
 
   draw(): void {
-    b.clearCanvas(CurrentMission.m.bgColor);
+    b_.clearCanvas(CurrentMission.m.bgColor);
     this._game.draw();
     this._hud.draw(this._game);
     this._fadeOut.draw();

@@ -1,8 +1,8 @@
-import { BpxSolidColor, BpxVector2d, timer_, v_ } from "@beetpx/beetpx";
+import { b_, BpxSolidColor, BpxVector2d, timer_, u_, v_ } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
-import { b, c, g, u } from "../globals";
+import { c, g } from "../globals";
 import { Sprite } from "../misc/Sprite";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
@@ -49,7 +49,7 @@ export class Mission2 implements Mission {
 
   private _maybeAddStar(y: number): void {
     if (Math.random() < 0.1) {
-      const speed = u.randomElementOf([0.25, 0.5, 0.75])!;
+      const speed = u_.randomElementOf([0.25, 0.5, 0.75])!;
       const star = {
         xy: v_(Math.ceil(1 + Math.random() * g.gameAreaSize.x - 3), y),
         speed: speed,
@@ -76,7 +76,7 @@ export class Mission2 implements Mission {
 
   levelBgDraw(): void {
     for (const star of this._stars) {
-      b.pixel(g.gameAreaOffset.add(star.xy), star.color);
+      b_.pixel(g.gameAreaOffset.add(star.xy), star.color);
     }
   }
 
@@ -96,7 +96,7 @@ export class Mission2 implements Mission {
           }),
           bulletFireTimer: timer_(40),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -131,7 +131,7 @@ export class Mission2 implements Mission {
       // --    }),
       // --},
       default:
-        return u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
+        return u_.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
     }
   }
 
@@ -159,7 +159,7 @@ export class Mission2 implements Mission {
           score: 1,
           bulletFireTimer: timer_(80),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             return [
               eb_(
                 MovementLine.of({

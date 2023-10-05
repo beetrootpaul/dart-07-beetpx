@@ -1,5 +1,5 @@
-import { BpxMappingColor, BpxSolidColor, v_ } from "@beetpx/beetpx";
-import { b, c, g, u } from "./globals";
+import { b_, BpxMappingColor, BpxSolidColor, u_, v_ } from "@beetpx/beetpx";
+import { c, g } from "./globals";
 
 // TODO: rework? It's just a copy paste from my another game
 export class PauseMenu {
@@ -20,24 +20,24 @@ export class PauseMenu {
   private _pressedIndex = -1;
 
   update(): void {
-    if (b.isPressed("x") || b.isPressed("o")) {
+    if (b_.isPressed("x") || b_.isPressed("o")) {
       this._pressedIndex = this._selected;
     } else {
       this._pressedIndex = -1;
     }
 
-    if (b.wasJustPressed("up")) {
+    if (b_.wasJustPressed("up")) {
       this._selected = Math.max(0, this._selected - 1);
     }
-    if (b.wasJustPressed("down")) {
+    if (b_.wasJustPressed("down")) {
       this._selected = Math.min(1, this._selected + 1);
     }
 
-    if (b.wasJustReleased("x") || b.wasJustReleased("o")) {
+    if (b_.wasJustReleased("x") || b_.wasJustReleased("o")) {
       if (this._selected === 0) {
         PauseMenu.isGamePaused = false;
       } else if (this._selected === 1) {
-        b.restart();
+        b_.restart();
       }
     }
   }
@@ -45,8 +45,8 @@ export class PauseMenu {
   draw(): void {
     const textContinue = "continue";
     const textRestart = "restart";
-    const textContinueWh = u.measureText(textContinue);
-    const textRestartWh = u.measureText(textRestart);
+    const textContinueWh = u_.measureText(textContinue);
+    const textRestartWh = u_.measureText(textRestart);
 
     const padding = 6;
     const gapBetweenLines = 4;
@@ -57,7 +57,7 @@ export class PauseMenu {
     );
     const xy = g.viewportSize.sub(wh).div(2);
 
-    b.rectFilled(
+    b_.rectFilled(
       xy.sub(2),
       wh.add(4),
       new BpxMappingColor((canvasColor) =>
@@ -68,8 +68,8 @@ export class PauseMenu {
           : canvasColor
       )
     );
-    b.rect(xy.sub(1), wh.add(2), c._7_white);
-    b.print(
+    b_.rect(xy.sub(1), wh.add(2), c._7_white);
+    b_.print(
       "continue",
       xy.add(
         padding + (this._selected === 0 ? 1 : 0),
@@ -77,7 +77,7 @@ export class PauseMenu {
       ),
       this._pressedIndex === 0 ? c._15_peach : c._7_white
     );
-    b.print(
+    b_.print(
       "restart",
       xy.add(
         padding + (this._selected === 1 ? 1 : 0),
@@ -89,7 +89,7 @@ export class PauseMenu {
       this._pressedIndex === 1 ? c._15_peach : c._7_white
     );
     for (const offset of PauseMenu.#arrowPixelsOffsets) {
-      b.pixel(
+      b_.pixel(
         xy
           .add(
             padding,

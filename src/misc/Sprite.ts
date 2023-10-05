@@ -1,5 +1,13 @@
-import { BpxImageUrl, BpxSprite, BpxVector2d, spr_, v_ } from "@beetpx/beetpx";
-import { b, g, u } from "../globals";
+import {
+  b_,
+  BpxImageUrl,
+  BpxSprite,
+  BpxVector2d,
+  spr_,
+  u_,
+  v_,
+} from "@beetpx/beetpx";
+import { g } from "../globals";
 
 export abstract class Sprite {
   static for(spritesheetUrl: BpxImageUrl) {
@@ -67,7 +75,7 @@ export class StaticSprite implements Sprite {
   update(): void {}
 
   draw(xy: BpxVector2d): void {
-    b.sprite(this._sprite, xy.add(g.gameAreaOffset).add(this._drawOffset));
+    b_.sprite(this._sprite, xy.add(g.gameAreaOffset).add(this._drawOffset));
   }
 }
 
@@ -89,7 +97,7 @@ export class AnimatedSprite implements Sprite {
   ) {
     this._maxFrame = spriteXs.length;
 
-    u.repeatN(this._maxFrame, (frame) => {
+    u_.repeatN(this._maxFrame, (frame) => {
       this._sprites.push(
         spr_(spritesheetUrl)(spriteXs[frame]!, spriteY, spriteW, spriteH)
       );
@@ -105,7 +113,7 @@ export class AnimatedSprite implements Sprite {
   }
 
   draw(xy: BpxVector2d): void {
-    b.sprite(
+    b_.sprite(
       this._sprites[this._frame]!,
       xy.add(g.gameAreaOffset).add(this._drawOffset)
     );

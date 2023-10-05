@@ -1,8 +1,8 @@
-import { BpxSolidColor, BpxVector2d, timer_, v_ } from "@beetpx/beetpx";
+import { b_, BpxSolidColor, BpxVector2d, timer_, u_, v_ } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
-import { b, c, g, u } from "../globals";
+import { c, g } from "../globals";
 import { Sprite } from "../misc/Sprite";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
@@ -66,7 +66,7 @@ export class Mission3 implements Mission {
   private _maybeAddParticle(y: number): void {
     if (Math.random() < 0.4) {
       // TODO: introduce a BeetPx util to pick a random array element
-      const whxy = u.randomElementOf([
+      const whxy = u_.randomElementOf([
         // particle 1
         [3, 4, 24, 56],
         [3, 4, 24, 56],
@@ -139,7 +139,7 @@ export class Mission3 implements Mission {
           }),
           bulletFireTimer: timer_(40),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -156,7 +156,7 @@ export class Mission3 implements Mission {
           },
         };
       default:
-        return u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
+        return u_.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
     }
   }
 
@@ -184,7 +184,7 @@ export class Mission3 implements Mission {
           score: 1,
           bulletFireTimer: timer_(80),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             return [
               eb_(
                 MovementLine.of({

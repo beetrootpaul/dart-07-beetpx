@@ -1,5 +1,5 @@
-import { BpxSprite, BpxTimer, spr_, timer_, v_ } from "@beetpx/beetpx";
-import { b, c, g } from "../globals";
+import { b_, BpxSprite, BpxTimer, spr_, timer_, v_ } from "@beetpx/beetpx";
+import { c, g } from "../globals";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
@@ -47,7 +47,7 @@ export class ScreenBrp implements GameScreen {
   }
 
   update(): void {
-    if (b.wasJustPressed("x") || b.wasJustPressed("o")) {
+    if (b_.wasJustPressed("x") || b_.wasJustPressed("o")) {
       this._skip = true;
     }
 
@@ -63,7 +63,7 @@ export class ScreenBrp implements GameScreen {
   }
 
   draw(): void {
-    b.clearCanvas(c._0_black);
+    b_.clearCanvas(c._0_black);
 
     let logoColor = c._15_peach;
     if (this._fadeInTimer.progress < 0.33) {
@@ -83,15 +83,15 @@ export class ScreenBrp implements GameScreen {
     }
 
     if (!this._fadeOutTimer.hasFinished) {
-      const prevMapping = b.mapSpriteColors([
+      const prevMapping = b_.mapSpriteColors([
         { from: Pico8Colors._10_yellow, to: logoColor },
       ]);
-      b.sprite(
+      b_.sprite(
         this._brpLogo,
         g.viewportSize.sub(this._brpLogo.size().mul(2)).div(2),
         v_(2, 2)
       );
-      b.mapSpriteColors(prevMapping);
+      b_.mapSpriteColors(prevMapping);
     }
   }
 }

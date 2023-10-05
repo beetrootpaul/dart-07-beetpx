@@ -1,9 +1,6 @@
-import { BeetPx, BpxMappingColor, BpxUtils, v_ } from "@beetpx/beetpx";
+import { BpxMappingColor, v_ } from "@beetpx/beetpx";
 import { Helpers } from "./misc/Helpers";
 import { Pico8Colors } from "./pico8/Pico8Color";
-
-// TODO: use b_ from BeetPx
-export const b = BeetPx;
 
 // TODO: rework PICO-8 color names and these names here? Context: palette is "0,129,130,3,140,131,6,7,8,137,10,11,12,13,141,143"
 export const c = {
@@ -22,9 +19,6 @@ export const c = {
   _14_mauve: Pico8Colors._141_mauve,
   _15_peach: Pico8Colors._143_peach,
 };
-
-// TODO: use u_ from BeetPx
-export const u = BpxUtils;
 
 export const h = Helpers;
 

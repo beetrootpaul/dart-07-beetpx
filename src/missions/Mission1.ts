@@ -1,8 +1,8 @@
-import { BpxEasing, BpxSolidColor, timer_, v_ } from "@beetpx/beetpx";
+import { b_, BpxEasing, BpxSolidColor, timer_, u_, v_ } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
-import { b, c, g, u } from "../globals";
+import { c, g } from "../globals";
 import { Sprite } from "../misc/Sprite";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
@@ -17,7 +17,7 @@ const sspr_ = Sprite.for(g.assets.mission1SpritesheetUrl).static;
 const eb_ = EnemyBullet.factory(sspr_(4, 4, 124, 64), 2);
 
 function t(): number {
-  return b.frameNumber / g.fps;
+  return b_.frameNumber / g.fps;
 }
 
 export class Mission1 implements Mission {
@@ -109,7 +109,7 @@ export class Mission1 implements Mission {
           }),
           bulletFireTimer: timer_(40),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyShoot);
             return [
               eb_(
                 MovementLine.of({
@@ -172,7 +172,7 @@ export class Mission1 implements Mission {
           // TODO: it would be nice to have some BpxTimer creation helper, a short one, like `timer_(33)`
           bulletFireTimer: timer_(33),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -218,7 +218,7 @@ export class Mission1 implements Mission {
           ]),
           bulletFireTimer: timer_(60),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyShoot);
             const enemyXy = enemyMovement.xy;
             const playerXy = playerCollisionCircle.center;
             return [
@@ -257,7 +257,7 @@ export class Mission1 implements Mission {
           }),
           bulletFireTimer: timer_(60),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -274,7 +274,7 @@ export class Mission1 implements Mission {
           },
         };
       default:
-        return u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
+        return u_.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
     }
   }
 
@@ -325,7 +325,7 @@ export class Mission1 implements Mission {
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             if (t() % 2 < 1) return [];
 
-            b.playSoundOnce(g.assets.sfxEnemyShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyShoot);
 
             return [
               eb_(
@@ -346,7 +346,7 @@ export class Mission1 implements Mission {
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             const bullets: EnemyBullet[] = [];
             if (t() > 0.6) {
-              b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+              b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
               for (let i = 1; i <= 8; i++) {
                 bullets.push(
                   eb_(
@@ -387,7 +387,7 @@ export class Mission1 implements Mission {
           score: 650,
           bulletFireTimer: timer_(8),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyShoot);
             if (t() % 2 > 1.5) {
               // side bullets
               return [

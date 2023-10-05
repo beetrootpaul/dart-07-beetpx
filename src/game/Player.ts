@@ -1,4 +1,5 @@
 import {
+  b_,
   BpxColorMapping,
   BpxTimer,
   BpxVector2d,
@@ -7,7 +8,7 @@ import {
   v_,
 } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { b, c, g } from "../globals";
+import { c, g } from "../globals";
 import { AnimatedSprite, Sprite, StaticSprite } from "../misc/Sprite";
 import { Throttle } from "../misc/Throttle";
 import { Pico8Colors } from "../pico8/Pico8Color";
@@ -191,7 +192,7 @@ export class Player {
         (2 * Player._invincibilityFlashFrames) <
         Player._invincibilityFlashFrames
     ) {
-      prevMapping = b.mapSpriteColors([
+      prevMapping = b_.mapSpriteColors([
         { from: Pico8Colors._0_black, to: c._7_white },
         { from: Pico8Colors._1_darkBlue, to: c._1_darker_blue },
         { from: Pico8Colors._2_darkPurple, to: c._7_white },
@@ -216,7 +217,7 @@ export class Player {
     this._jetSprite?.draw(this._xy);
 
     if (prevMapping) {
-      b.mapSpriteColors(prevMapping);
+      b_.mapSpriteColors(prevMapping);
     }
   }
 }

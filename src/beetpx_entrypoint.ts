@@ -1,8 +1,8 @@
-import { transparent_ } from "@beetpx/beetpx";
+import { b_, transparent_ } from "@beetpx/beetpx";
 import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { LevelDescriptor } from "./game/LevelDescriptor";
-import { b, c, g } from "./globals";
+import { c, g } from "./globals";
 import { Pico8Colors } from "./pico8/Pico8Color";
 import { Pico8Font } from "./pico8/Pico8Font";
 import { GameScreen } from "./screens/GameScreen";
@@ -15,7 +15,7 @@ let pauseMenu: PauseMenu | undefined;
 
 const debugGameInfo: DebugGameInfo = new DebugGameInfo();
 
-b.init(
+b_.init(
   {
     gameCanvasSize: "128x128",
     desiredUpdateFps: g.fps,
@@ -59,27 +59,27 @@ b.init(
     jsons: [{ url: g.assets.levelsJson }],
   }
 ).then(({ startGame }) => {
-  LevelDescriptor.tmpJson = b.getJsonAsset(g.assets.levelsJson).json;
+  LevelDescriptor.tmpJson = b_.getJsonAsset(g.assets.levelsJson).json;
 
-  b.setOnStarted(() => {
+  b_.setOnStarted(() => {
     // TODO: rework pause menu
     PauseMenu.isGamePaused = false;
     pauseMenu = new PauseMenu();
 
-    b.setRepeating("left", false);
-    b.setRepeating("right", false);
-    b.setRepeating("up", false);
-    b.setRepeating("down", false);
-    b.setRepeating("x", false);
-    b.setRepeating("o", false);
-    b.setRepeating("menu", false);
+    b_.setRepeating("left", false);
+    b_.setRepeating("right", false);
+    b_.setRepeating("up", false);
+    b_.setRepeating("down", false);
+    b_.setRepeating("x", false);
+    b_.setRepeating("o", false);
+    b_.setRepeating("menu", false);
 
     // TODO: pause menu
     // TODO: stopAllSounds
 
-    b.setFont(g.assets.pico8FontId);
+    b_.setFont(g.assets.pico8FontId);
 
-    b.mapSpriteColors([
+    b_.mapSpriteColors([
       { from: Pico8Colors._0_black, to: c._0_black },
       { from: Pico8Colors._1_darkBlue, to: c._1_darker_blue },
       { from: Pico8Colors._2_darkPurple, to: c._2_darker_purple },
@@ -101,11 +101,11 @@ b.init(
     currentScreen = new ScreenBrp();
   });
 
-  b.setOnUpdate(() => {
+  b_.setOnUpdate(() => {
     debugGameInfo.update();
 
     // TODO: rework pause menu
-    if (b.wasJustPressed("menu")) {
+    if (b_.wasJustPressed("menu")) {
       PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
     }
 
@@ -122,7 +122,7 @@ b.init(
     }
   });
 
-  b.setOnDraw(() => {
+  b_.setOnDraw(() => {
     // TODO: clear canvas
     // TODO: map colors
     // TODO: print audiocontext state and FPS
@@ -135,7 +135,7 @@ b.init(
     }
 
     debugGameInfo.preDraw();
-    if (b.debug) debugGameInfo.draw();
+    if (b_.debug) debugGameInfo.draw();
     debugGameInfo.postDraw();
   });
 

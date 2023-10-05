@@ -1,5 +1,4 @@
-import { BpxVector2d, v_ } from "@beetpx/beetpx";
-import { u } from "../globals";
+import { BpxVector2d, u_, v_ } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 
 export class MovementSinusoidal implements Movement {
@@ -42,7 +41,7 @@ export class MovementSinusoidal implements Movement {
   private x(): number {
     return (
       this._startXy.x +
-      this._magnitude * u.trigSin(this._age / this._ageDivisor + 0.5)
+      this._magnitude * u_.trigSin(this._age / this._ageDivisor + 0.5)
     );
   }
 

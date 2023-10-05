@@ -1,6 +1,6 @@
+import { b_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
-import { b } from "../globals";
 import { Hud } from "../gui/Hud";
 import { SlidingInfo } from "../gui/SlidingInfo";
 import { CurrentMission } from "../missions/CurrentMission";
@@ -89,7 +89,7 @@ export class ScreenMissionMain implements GameScreen {
   }
 
   draw(): void {
-    b.clearCanvas(CurrentMission.m.bgColor);
+    b_.clearCanvas(CurrentMission.m.bgColor);
 
     this._game.draw();
     this._hud.draw(this._game);

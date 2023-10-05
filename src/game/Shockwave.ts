@@ -1,6 +1,6 @@
-import { BpxVector2d, v_ } from "@beetpx/beetpx";
+import { b_, BpxVector2d, u_, v_ } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { b, c, g, u } from "../globals";
+import { c, g } from "../globals";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
 
@@ -46,8 +46,8 @@ export class Shockwave {
   }
 
   private _drawNegativeRing(rOuter: number, rInner: number): void {
-    rOuter = u.clamp(rInner, rOuter, Shockwave._rMax);
-    rInner = u.clamp(Shockwave._rMin, rInner, rOuter);
+    rOuter = u_.clamp(rInner, rOuter, Shockwave._rMax);
+    rInner = u_.clamp(Shockwave._rMin, rInner, rOuter);
     if (rInner === rOuter) return;
 
     for (let dy = -rOuter; dy <= rOuter; dy++) {
@@ -64,12 +64,12 @@ export class Shockwave {
       //       of a one frame buffer to another. Imagine multiple enemies in a game
       //       having a negative color aura around them. We would had no easy option to
       //       prevent them from overlapping.
-      b.line(
+      b_.line(
         g.gameAreaOffset.add(v_(this._center.x - dxOuter + 1, sy)),
         v_(dxOuter - dxInner, 1),
         g.negativeColor
       );
-      b.line(
+      b_.line(
         g.gameAreaOffset.add(v_(this._center.x + dxOuter - 1, sy)),
         v_(dxInner - dxOuter, 1),
         g.negativeColor
@@ -78,8 +78,8 @@ export class Shockwave {
   }
 
   private _drawCircle(r: number): void {
-    if (r === u.clamp(Shockwave._rMin, r, Shockwave._rMax)) {
-      b.ellipse(
+    if (r === u_.clamp(Shockwave._rMin, r, Shockwave._rMax)) {
+      b_.ellipse(
         g.gameAreaOffset.add(this._center).sub(r),
         v_(r, r).mul(2),
         c._6_light_grey

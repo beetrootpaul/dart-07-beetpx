@@ -1,6 +1,6 @@
-import { BpxVector2d, spr_, v_ } from "@beetpx/beetpx";
+import { b_, BpxVector2d, spr_, u_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
-import { b, c, g, u } from "../globals";
+import { c, g } from "../globals";
 import { AnimatedSprite, Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementToTarget } from "../movement/MovementToTarget";
@@ -96,23 +96,23 @@ export class ScreenSelectMission implements GameScreen {
     // TODO: pressing "x" to select mission makes the first bullet shot. Fix it!
 
     // TODO: something doesn't work here
-    if (b.wasJustPressed("up")) {
-      b.playSoundOnce(g.assets.sfxOptionsChange);
+    if (b_.wasJustPressed("up")) {
+      b_.playSoundOnce(g.assets.sfxOptionsChange);
       this._selectedMission = (this._selectedMission + 4 - 1) % 4;
       this._initShipMovement();
     }
     // TODO: something doesn't work here
-    if (b.wasJustPressed("down")) {
-      b.playSoundOnce(g.assets.sfxOptionsChange);
+    if (b_.wasJustPressed("down")) {
+      b_.playSoundOnce(g.assets.sfxOptionsChange);
       this._selectedMission = (this._selectedMission + 1) % 4;
       this._initShipMovement();
     }
 
-    if (b.wasJustPressed("x")) {
-      b.playSoundOnce(g.assets.sfxOptionsConfirm);
+    if (b_.wasJustPressed("x")) {
+      b_.playSoundOnce(g.assets.sfxOptionsConfirm);
       if (this._selectedMission > 0) {
         // TODO: replace this with a fade out of a music only over 500 ms
-        b.stopAllSounds();
+        b_.stopAllSounds();
       }
       this._proceed = true;
     }
@@ -135,7 +135,7 @@ export class ScreenSelectMission implements GameScreen {
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(mission);
 
     // draw button shape
-    b.sprite(
+    b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 38 : 39, 12, 1, 19),
       buttonXy1.sub(1),
       v_(buttonWh.x + 2, 1)
@@ -143,7 +143,7 @@ export class ScreenSelectMission implements GameScreen {
 
     // draw level sample
     const sy = 80 + (mission - 1) * 16;
-    b.sprite(
+    b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(
         0,
         selected ? sy : sy - 48,
@@ -155,7 +155,7 @@ export class ScreenSelectMission implements GameScreen {
 
     if (mission > 1) {
       // draw WIP info
-      u.printWithOutline(
+      u_.printWithOutline(
         "under development",
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, buttonXy1.y + 2),
         selected ? c._7_white : c._6_light_grey,
@@ -165,7 +165,7 @@ export class ScreenSelectMission implements GameScreen {
     }
 
     // draw label
-    b.print(
+    b_.print(
       `mission ${mission}`,
       buttonXy1.add(0, buttonWh.y + 4),
       selected ? c._7_white : c._13_lavender
@@ -173,8 +173,8 @@ export class ScreenSelectMission implements GameScreen {
 
     if (selected) {
       // draw "x" button press incentive and its label
-      b.print("start", buttonXy1.add(buttonWh).add(-37, 4), c._7_white);
-      const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+      b_.print("start", buttonXy1.add(buttonWh).add(-37, 4), c._7_white);
+      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? this._xSprite
         : this._xSpritePressed;
       sprite.draw(buttonXy1.add(buttonWh.add(-15, 3)).sub(g.gameAreaOffset));
@@ -187,18 +187,18 @@ export class ScreenSelectMission implements GameScreen {
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(0);
 
     // button shape
-    b.sprite(
+    b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
       buttonXy1.sub(1),
       v_(buttonWh.x + 2, 1)
     );
 
     // button text
-    b.print("back", buttonXy1.add(3, 2), c._14_mauve);
+    b_.print("back", buttonXy1.add(3, 2), c._14_mauve);
 
     if (selected) {
       // draw "x" button press incentive
-      const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? this._xSprite
         : this._xSpritePressed;
       sprite.draw(
@@ -209,18 +209,18 @@ export class ScreenSelectMission implements GameScreen {
 
   private _drawShip(): void {
     const [buttonXy, buttonWh] = this._missionButtonXyWh(this._selectedMission);
-    b.setClippingRegion(buttonXy, buttonWh);
+    b_.setClippingRegion(buttonXy, buttonWh);
 
     if (this._shipMovement) {
       this._shipSprite.draw(this._shipMovement.xy);
       this._jetSprite.draw(this._shipMovement.xy);
     }
 
-    b.removeClippingRegion();
+    b_.removeClippingRegion();
   }
 
   draw(): void {
-    b.clearCanvas(c._1_darker_blue);
+    b_.clearCanvas(c._1_darker_blue);
 
     this._drawMissionButton(1);
     this._drawMissionButton(2);

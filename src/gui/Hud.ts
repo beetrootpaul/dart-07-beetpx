@@ -1,6 +1,6 @@
-import { BpxEasing, v_ } from "@beetpx/beetpx";
+import { b_, BpxEasing, v_ } from "@beetpx/beetpx";
 import { Game } from "../game/Game";
-import { b, c, g } from "../globals";
+import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementFixed } from "../movement/MovementFixed";
@@ -71,19 +71,19 @@ export class Hud {
   }
 
   draw(game: Game): void {
-    b.rectFilled(
+    b_.rectFilled(
       v_(0, 0).sub(Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
       c._0_black
     );
-    b.rectFilled(
+    b_.rectFilled(
       g.viewportSize.sub(Hud._barSize).sub(0, Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
       c._0_black
     );
-    if (b.debug) {
-      b.rectFilled(v_(0, 0), Hud._barSize, c._5_blue_green);
-      b.rectFilled(
+    if (b_.debug) {
+      b_.rectFilled(v_(0, 0), Hud._barSize, c._5_blue_green);
+      b_.rectFilled(
         g.viewportSize.sub(Hud._barSize),
         Hud._barSize,
         c._5_blue_green
@@ -111,7 +111,7 @@ export class Hud {
     //
     const missionProgressH = 35;
     const missionProgressX = g.gameAreaOffset.x + xy.x + 5;
-    b.line(v_(missionProgressX, 4), v_(1, missionProgressH), c._13_lavender);
+    b_.line(v_(missionProgressX, 4), v_(1, missionProgressH), c._13_lavender);
     this._shipIndicator.draw(
       xy.sub(-4, 77 + game.missionProgressFraction * (missionProgressH - 3))
     );
@@ -166,13 +166,13 @@ export class Hud {
       this._bossHealthBarEnd.draw(
         v_(g.gameAreaSize.x - bossHealthBarMargin - 4, bossHealthBarMargin)
       );
-      b.line(
+      b_.line(
         g.gameAreaOffset.add(bossHealthBarMargin).add(2, 2),
         v_(bossHealthW, 1),
         c._14_mauve
       );
       if (bossHealthFraction > 0) {
-        b.line(
+        b_.line(
           g.gameAreaOffset.add(bossHealthBarMargin).add(2, 1),
           v_(bossHealthFraction * bossHealthW, 1),
           c._8_red

@@ -1,7 +1,7 @@
-import { BpxTimer, BpxVector2d, timer_ } from "@beetpx/beetpx";
+import { BpxTimer, BpxVector2d, timer_, u_ } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { Collisions } from "../collisions/Collisions";
-import { g, u } from "../globals";
+import { g } from "../globals";
 import { Movement } from "../movement/Movement";
 import { EnemyBullet } from "./EnemyBullet";
 import { EnemyProperties } from "./EnemyProperties";
@@ -71,7 +71,7 @@ export class Enemy {
   takeDamage(damage: number): void {
     const mainCollisionCircle =
       this.collisionCircles[0] ??
-      u.throwError(`Enemy has no main collision circle`);
+      u_.throwError(`Enemy has no main collision circle`);
 
     this._health = Math.max(0, this._health - damage);
     if (this._health > 0) {
@@ -81,7 +81,7 @@ export class Enemy {
       this._isDestroyed = true;
       const powerupTypesToPickFrom =
         this._properties.powerupsDistribution.split(",");
-      const powerupType = u.randomElementOf(powerupTypesToPickFrom)!;
+      const powerupType = u_.randomElementOf(powerupTypesToPickFrom)!;
       this._onDestroyed(
         mainCollisionCircle,
         this._properties.score,

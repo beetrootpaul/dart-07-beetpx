@@ -1,8 +1,8 @@
 // To avoid thinking in x and y we talk here about:
 //   - distance = how many tiles we have scrolled forward (can be fraction)
 //   - lane     = which row of tiles are we talking about, perpendicular to distance
-import { BpxVector2d, spr_, transparent_, v_ } from "@beetpx/beetpx";
-import { b, g, u } from "../globals";
+import { b_, BpxVector2d, spr_, transparent_, u_, v_ } from "@beetpx/beetpx";
+import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { LevelDescriptor } from "./LevelDescriptor";
@@ -27,11 +27,11 @@ export class Level {
 
   enterPhaseMain(): void {
     this._phase = "main";
-    b.logDebug("intro -> MAIN");
+    b_.logDebug("intro -> MAIN");
   }
 
   get progressFraction(): number {
-    return u.clamp(
+    return u_.clamp(
       0,
       (this._minVisibleDistance + g.gameAreaTiles.y) /
         (this._levelDescriptor.maxDefinedDistance + g.gameAreaTiles.y),
@@ -80,7 +80,7 @@ export class Level {
       this._minVisibleDistance >= this._levelDescriptor.maxDefinedDistance
     ) {
       this._phase = "outro";
-      b.logDebug("MAIN -> outro");
+      b_.logDebug("MAIN -> outro");
     }
 
     this._maxVisibleDistance =
@@ -101,7 +101,7 @@ export class Level {
 
     this._minVisibleDistance = this._maxVisibleDistance - g.gameAreaTiles.y - 1;
 
-    b.logDebug(
+    b_.logDebug(
       "visible distance: " +
         this._minVisibleDistance.toFixed(2) +
         " : " +
@@ -113,7 +113,7 @@ export class Level {
     CurrentMission.m.levelBgDraw();
 
     if (this._phase === "main") {
-      const prevMapping = b.mapSpriteColors([
+      const prevMapping = b_.mapSpriteColors([
         { from: Pico8Colors._0_black, to: transparent_ },
       ]);
 
@@ -133,7 +133,7 @@ export class Level {
         }
       }
 
-      b.mapSpriteColors(prevMapping);
+      b_.mapSpriteColors(prevMapping);
     }
   }
 
@@ -141,7 +141,7 @@ export class Level {
   private _drawTile(tileId: number, distance: number, lane: number): void {
     // TODO: rework: cache sprites. Use some cache exported from BeetPx for that?
     // TODO: rework: decouple sheet width and height?
-    b.sprite(
+    b_.sprite(
       spr_(CurrentMission.m.ldtk.tilesetPng)(
         (tileId % 16) * g.tileSize.x,
         Math.floor(tileId / 16) * g.tileSize.y,

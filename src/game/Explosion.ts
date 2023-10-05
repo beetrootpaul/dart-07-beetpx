@@ -1,12 +1,14 @@
 import {
+  b_,
   BpxCompositeColor,
   BpxFillPattern,
   BpxTimer,
   BpxVector2d,
   timer_,
+  u_,
   v_,
 } from "@beetpx/beetpx";
-import { b, c, g, u } from "../globals";
+import { c, g } from "../globals";
 
 function randNegPos05(): number {
   return Math.random() - 0.5;
@@ -38,7 +40,7 @@ export class Explosion {
 
     this._onStarted = params.onStarted ?? null;
 
-    u.repeatN(9, () => {
+    u_.repeatN(9, () => {
       this._particles.push({
         angle: 0.75 + 0.5 * randNegPos05(),
         xy: params.startXy.add(
@@ -73,7 +75,7 @@ export class Explosion {
 
   draw(): void {
     if (this._waitTimer.hasFinished) {
-      b.setFillPattern(BpxFillPattern.of(0xa5a5));
+      b_.setFillPattern(BpxFillPattern.of(0xa5a5));
       for (const p of this._particles) {
         if (p.r > 0) {
           let color = new BpxCompositeColor(c._9_dark_orange, c._8_red);
@@ -86,14 +88,14 @@ export class Explosion {
           } else if (p.r < this._magnitude * 0.8) {
             color = new BpxCompositeColor(c._15_peach, c._9_dark_orange);
           }
-          b.ellipseFilled(
+          b_.ellipseFilled(
             g.gameAreaOffset.add(p.xy).sub(p.r),
             v_(2, 2).mul(p.r),
             color
           );
         }
       }
-      b.setFillPattern(BpxFillPattern.primaryOnly);
+      b_.setFillPattern(BpxFillPattern.primaryOnly);
     }
   }
 }

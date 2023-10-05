@@ -1,5 +1,4 @@
-import { BpxSolidColor, BpxVector2d } from "@beetpx/beetpx";
-import { b } from "../globals";
+import { b_, BpxSolidColor, BpxVector2d } from "@beetpx/beetpx";
 
 export class Score {
   private static _valueLimit: number = 999_999;
@@ -38,8 +37,8 @@ export class Score {
   ) {
     for (let i = 0; i < this._text.length; i++) {
       const digitXy = xy.add((vertical ? 0 : i) * 4, (vertical ? i : 0) * 6);
-      b.print("8", digitXy, blankColor);
-      b.print(this._text[i]!, digitXy, digitColor);
+      b_.print("8", digitXy, blankColor);
+      b_.print(this._text[i]!, digitXy, digitColor);
     }
   }
 }

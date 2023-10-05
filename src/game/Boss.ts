@@ -1,6 +1,13 @@
-import { BpxEasing, BpxTimer, BpxVector2d, timer_, v_ } from "@beetpx/beetpx";
+import {
+  BpxEasing,
+  BpxTimer,
+  BpxVector2d,
+  timer_,
+  u_,
+  v_,
+} from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { g, u } from "../globals";
+import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Movement } from "../movement/Movement";
 import { MovementToTarget } from "../movement/MovementToTarget";
@@ -87,7 +94,7 @@ export class Boss {
   private get _currentPhase(): BossProperties["phases"][0] {
     return (
       this._properties.phases[this._currentPhaseNumber] ??
-      u.throwError(
+      u_.throwError(
         `Tried to access non-existent boss phase at index ${this._currentPhaseNumber}`
       )
     );
@@ -96,7 +103,7 @@ export class Boss {
   private get _nextPhase(): BossProperties["phases"][0] {
     return (
       this._properties.phases[this._currentPhaseNumber + 1] ??
-      u.throwError(
+      u_.throwError(
         `Tried to access non-existent boss phase at index ${
           this._currentPhaseNumber + 1
         }`

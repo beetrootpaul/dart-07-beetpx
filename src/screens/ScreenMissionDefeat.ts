@@ -1,7 +1,6 @@
-import { BpxTimer, timer_ } from "@beetpx/beetpx";
+import { b_, BpxTimer, timer_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
-import { b } from "../globals";
 import { Hud } from "../gui/Hud";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
@@ -27,7 +26,7 @@ export class ScreenMissionDefeat implements GameScreen {
     this._screenTimer = timer_(screenFrames);
 
     // TODO: replace this with a fade out of a music only over 500 ms
-    b.stopAllSounds();
+    b_.stopAllSounds();
   }
 
   preUpdate(): GameScreen | undefined {
@@ -46,7 +45,7 @@ export class ScreenMissionDefeat implements GameScreen {
   }
 
   draw(): void {
-    b.clearCanvas(CurrentMission.m.bgColor);
+    b_.clearCanvas(CurrentMission.m.bgColor);
 
     this._game.draw();
     this._hud.draw(this._game);

@@ -1,6 +1,6 @@
-import { BpxTimer, BpxVector2d, timer_, v_ } from "@beetpx/beetpx";
+import { b_, BpxTimer, BpxVector2d, timer_, v_ } from "@beetpx/beetpx";
 import { Collisions } from "../collisions/Collisions";
-import { b, g } from "../globals";
+import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Boss } from "./Boss";
 import { Enemy } from "./Enemy";
@@ -86,7 +86,7 @@ export class Game {
     this._player = new Player({
       onBulletsSpawned: (bullets) => {
         // TODO: consider not playing a bullet sound at all
-        b.playSoundOnce(
+        b_.playSoundOnce(
           this._tripleShoot
             ? g.assets.sfxPlayerTripleShoot
             : g.assets.sfxPlayerShoot
@@ -94,14 +94,14 @@ export class Game {
         this._playerBullets.push(...bullets);
       },
       onShockwaveTriggered: (shockwave) => {
-        b.playSoundOnce(g.assets.sfxPlayerShockwave);
+        b_.playSoundOnce(g.assets.sfxPlayerShockwave);
         this._shockwaves.push(shockwave);
       },
       onDamaged: () => {
-        b.playSoundOnce(g.assets.sfxDamagePlayer);
+        b_.playSoundOnce(g.assets.sfxDamagePlayer);
       },
       onDestroyed: (playerCc) => {
-        b.playSoundOnce(g.assets.sfxDestroyPlayer);
+        b_.playSoundOnce(g.assets.sfxDestroyPlayer);
         this._explosions.push(
           new Explosion({ startXy: playerCc.center, magnitude: playerCc.r }),
           new Explosion({
@@ -162,7 +162,7 @@ export class Game {
       this.score.add(10);
       this._floats.push(new Float({ startXy: xy, score: 10 }));
     }
-    b.playSoundOnce(
+    b_.playSoundOnce(
       hasEffect ? g.assets.sfxPowerupPicked : g.assets.sfxPowerupNoEffect
     );
   }
@@ -313,10 +313,10 @@ export class Game {
         }
       },
       onDamaged: () => {
-        b.playSoundOnce(g.assets.sfxDamageEnemy);
+        b_.playSoundOnce(g.assets.sfxDamageEnemy);
       },
       onEnteredNextPhase: (collisionCircles, scoreToAdd) => {
-        b.playSoundOnce(g.assets.sfxDestroyBossPhase);
+        b_.playSoundOnce(g.assets.sfxDestroyBossPhase);
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -330,7 +330,7 @@ export class Game {
         }
       },
       onDestroyed: (collisionCircles, scoreToAdd) => {
-        b.playSoundOnce(g.assets.sfxDestroyBossFinal1);
+        b_.playSoundOnce(g.assets.sfxDestroyBossFinal1);
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -345,7 +345,7 @@ export class Game {
               magnitude: 1.4 * cc.r,
               waitFrames: 4 + Math.random() * 44,
               onStarted: () => {
-                b.playSoundOnce(g.assets.sfxDestroyBossFinal2);
+                b_.playSoundOnce(g.assets.sfxDestroyBossFinal2);
               },
             }),
             new Explosion({
@@ -353,7 +353,7 @@ export class Game {
               magnitude: 1.8 * cc.r,
               waitFrames: 12 + Math.random() * 36,
               onStarted: () => {
-                b.playSoundOnce(g.assets.sfxDestroyBossFinal3);
+                b_.playSoundOnce(g.assets.sfxDestroyBossFinal3);
               },
             }),
             new Explosion({
@@ -412,17 +412,17 @@ export class Game {
 
   update(): void {
     this._player?.setMovement(
-      b.isPressed("left"),
-      b.isPressed("right"),
-      b.isPressed("up"),
-      b.isPressed("down"),
+      b_.isPressed("left"),
+      b_.isPressed("right"),
+      b_.isPressed("up"),
+      b_.isPressed("down"),
       this._fastMovement
     );
-    if (b.isPressed("x")) {
+    if (b_.isPressed("x")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);
     }
     // TODO: this implementation (combined with a throttle inside the player) can end up with incorrectly used charges
-    if (b.wasJustPressed("o")) {
+    if (b_.wasJustPressed("o")) {
       if (this._shockwaveCharges > 0 && this._player) {
         this._shockwaveCharges -= 1;
         this._player.triggerShockwave();
@@ -456,7 +456,7 @@ export class Game {
             }
           },
           onDamaged: (mainCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxDamagePlayer);
+            b_.playSoundOnce(g.assets.sfxDamagePlayer);
             this._explosions.push(
               new Explosion({
                 startXy: mainCollisionCircle.center,
@@ -465,7 +465,7 @@ export class Game {
             );
           },
           onDestroyed: (mainCollisionCircle, scoreToAdd, powerupType) => {
-            b.playSoundOnce(g.assets.sfxDestroyEnemy);
+            b_.playSoundOnce(g.assets.sfxDestroyEnemy);
             this.score.add(scoreToAdd);
             this._floats.push(
               new Float({
@@ -492,7 +492,7 @@ export class Game {
     }
 
     // TODO: log everything that might matter
-    b.logDebug(
+    b_.logDebug(
       "e:",
       this._enemies.length,
       "pb:",
@@ -531,7 +531,7 @@ export class Game {
     // TODO
     //   clip()
 
-    if (b.debug) {
+    if (b_.debug) {
       this._enemies.forEach((e) => {
         e.collisionCircles.forEach(Collisions.debugDrawCollisionCircle);
       });
@@ -548,7 +548,7 @@ export class Game {
     if (this._cameraShakeTimer.framesLeft > 0) {
       // subtracting 1 here makes the last factor always equal to 0, which makes camera reset to its neutral position
       const factor = this._cameraShakeTimer.framesLeft - 1;
-      b.setCameraOffset(
+      b_.setCameraOffset(
         v_((Math.random() - 0.5) * factor, (Math.random() - 0.5) * factor)
       );
     }

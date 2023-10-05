@@ -1,7 +1,7 @@
-import { spr_, v_ } from "@beetpx/beetpx";
+import { b_, spr_, u_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
-import { b, c, g, u } from "../globals";
+import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
@@ -61,14 +61,14 @@ export class ScreenOver implements GameScreen {
     this._fadeOut = new Fade("out", { fadeFrames: 30 });
 
     if (params.isWin) {
-      b.playSoundOnce(g.assets.sfxGameWin);
+      b_.playSoundOnce(g.assets.sfxGameWin);
     }
 
     const currentScore = this._game.score.rawValue;
-    const highScoreSoFar = b.load<{ highScore: number }>()?.highScore ?? 0;
+    const highScoreSoFar = b_.load<{ highScore: number }>()?.highScore ?? 0;
     this._gotHighScore = currentScore > highScoreSoFar;
     // TODO: fix BeetPx to NOT store at the same time to `game_stored_state` and `game_stored_state2`
-    b.store<{ highScore: number }>({
+    b_.store<{ highScore: number }>({
       highScore: Math.max(highScoreSoFar, currentScore),
     });
   }
@@ -99,15 +99,15 @@ export class ScreenOver implements GameScreen {
 
   update(): void {
     if (!this._isWin) {
-      if (b.wasJustPressed("up") || b.wasJustPressed("down")) {
-        b.playSoundOnce(g.assets.sfxOptionsChange);
+      if (b_.wasJustPressed("up") || b_.wasJustPressed("down")) {
+        b_.playSoundOnce(g.assets.sfxOptionsChange);
         this._retry = !this._retry;
       }
     }
 
-    if (b.wasJustPressed("x")) {
+    if (b_.wasJustPressed("x")) {
       // TODO: replace this with a fade out of a music only over 500 ms
-      b.stopAllSounds();
+      b_.stopAllSounds();
       this._proceed = true;
     }
 
@@ -123,7 +123,7 @@ export class ScreenOver implements GameScreen {
     const x = 24;
 
     // button shape
-    b.sprite(
+    b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(
         selected ? (this._isWin ? 37 : 35) : 36,
         12,
@@ -135,7 +135,7 @@ export class ScreenOver implements GameScreen {
     );
 
     // button text
-    b.print(
+    b_.print(
       text,
       v_(x + 4, y + 3),
       this._isWin ? c._5_blue_green : c._14_mauve
@@ -147,7 +147,7 @@ export class ScreenOver implements GameScreen {
       const xSpritePressed = this._isWin
         ? this._xSpritePressedWin
         : this._xSpritePressed;
-      const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? xSprite
         : xSpritePressed;
       sprite.draw(v_(x + w - 16, y + 13).sub(g.gameAreaOffset));
@@ -155,10 +155,10 @@ export class ScreenOver implements GameScreen {
   }
 
   draw(): void {
-    b.clearCanvas(this._isWin ? c._3_dark_green : c._2_darker_purple);
+    b_.clearCanvas(this._isWin ? c._3_dark_green : c._2_darker_purple);
 
     // heading
-    b.print(
+    b_.print(
       this._isWin ? "you made it!" : "game over",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, 22),
       this._isWin ? c._5_blue_green : c._8_red,
@@ -167,7 +167,7 @@ export class ScreenOver implements GameScreen {
 
     // score
     const scoreBaseY = this._gotHighScore ? 42 : 47;
-    b.print(
+    b_.print(
       "your score",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY),
       c._7_white,
@@ -180,7 +180,7 @@ export class ScreenOver implements GameScreen {
       false
     );
     if (this._gotHighScore) {
-      b.print(
+      b_.print(
         "new high score!",
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY + 20),
         this._isWin ? c._15_peach : c._9_dark_orange,
