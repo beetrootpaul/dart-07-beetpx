@@ -1,4 +1,4 @@
-import { Vector2d } from "@beetpx/beetpx";
+import { BpxVector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g, h } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
@@ -18,7 +18,7 @@ export class PlayerBullet {
 
   private _isDestroyed: boolean = false;
 
-  constructor(startXy: Vector2d) {
+  constructor(startXy: BpxVector2d) {
     this._movement = MovementLine.of({
       angle: 0.75,
       angledSpeed: 2.5,

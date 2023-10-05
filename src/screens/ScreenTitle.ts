@@ -1,14 +1,14 @@
 import {
-  SolidColor,
+  BpxSolidColor,
+  BpxSprite,
+  BpxVector2d,
   spr_,
-  Sprite,
   transparent_,
   v_,
-  Vector2d,
 } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Score } from "../game/Score";
-import { b, c, g, h, u } from "../globals";
+import { b, c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
@@ -19,7 +19,7 @@ export class ScreenTitle implements GameScreen {
   // TODO: still needed?
   private static readonly _cartLabelMode: boolean = false;
 
-  private readonly _brpLogo: Sprite = spr_(g.assets.mainSpritesheetUrl)(
+  private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(
     99,
     114,
     29,
@@ -47,8 +47,8 @@ export class ScreenTitle implements GameScreen {
   private readonly _highScore: Score;
 
   private _stars: Array<{
-    xy: Vector2d;
-    color: SolidColor;
+    xy: BpxVector2d;
+    color: BpxSolidColor;
     speed: number;
   }> = [];
 
@@ -84,7 +84,7 @@ export class ScreenTitle implements GameScreen {
   private _maybeAddStar(y: number): void {
     if (Math.random() < 0.1) {
       // TODO: introduce a BeetPx util to pick a random array element
-      const speed = [0.25, 0.5, 0.75][Math.floor(Math.random() * 3)]!;
+      const speed = u.randomElementOf([0.25, 0.5, 0.75])!;
       const star = {
         xy: v_(Math.ceil(1 + Math.random() * g.viewportSize.x - 3), y),
         speed: speed,
@@ -132,7 +132,12 @@ export class ScreenTitle implements GameScreen {
   }
 
   private _drawVersion(baseY: number): void {
-    h.printCentered(g.gameVersion, g.gameAreaSize.x / 2, baseY, c._14_mauve);
+    b.print(
+      g.gameVersion,
+      g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
+      c._14_mauve,
+      [true, false]
+    );
   }
 
   private _drawTitle(baseY: number): void {
@@ -155,7 +160,12 @@ export class ScreenTitle implements GameScreen {
   }
 
   private _drawHighScore(baseY: number): void {
-    h.printCentered("high score", g.gameAreaSize.x / 2, baseY, c._6_light_grey);
+    b.print(
+      "high score",
+      g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
+      c._6_light_grey,
+      [true, false]
+    );
     this._highScore.draw(v_(52, baseY + 10), c._7_white, c._14_mauve, false);
   }
 
@@ -169,8 +179,8 @@ export class ScreenTitle implements GameScreen {
     // button shape
     b.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
-      // TODO: stretch to `w`
-      v_(baseX, baseY)
+      v_(baseX, baseY),
+      v_(w, 1)
     );
 
     // button text
@@ -206,8 +216,8 @@ export class ScreenTitle implements GameScreen {
       ]);
       b.sprite(
         this._brpLogo,
-        v_((g.viewportSize.x - this._brpLogo.size().x * 2) / 2, 6)
-        // TODO: scale x2
+        v_((g.viewportSize.x - this._brpLogo.size().x * 2) / 2, 6),
+        v_(2, 2)
       );
       b.mapSpriteColors(prevMapping);
 

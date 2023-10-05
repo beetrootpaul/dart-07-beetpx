@@ -1,8 +1,6 @@
 import { v_ } from "@beetpx/beetpx";
 import { b, c, g, u } from "../globals";
 
-// TODO: update calls visualization
-
 export class DebugGameInfo {
   private readonly _updateCallsData = {
     history: Array.from(

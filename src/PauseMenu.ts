@@ -1,10 +1,11 @@
-import { MappingColor, SolidColor, v_ } from "@beetpx/beetpx";
+import { BpxMappingColor, BpxSolidColor, v_ } from "@beetpx/beetpx";
 import { b, c, g, u } from "./globals";
 
 // TODO: rework? It's just a copy paste from my another game
 export class PauseMenu {
   static isGamePaused: boolean = false;
 
+  // TODO: introduce BeetPx util for drawing a glyph based on array of pixels
   // TODO: better arrows? There are some glyphs ready on the font's image
   static #arrowPixelsOffsets = [
     v_(0, 0),
@@ -59,8 +60,8 @@ export class PauseMenu {
     b.rectFilled(
       xy.sub(2),
       wh.add(4),
-      new MappingColor((canvasColor) =>
-        canvasColor instanceof SolidColor
+      new BpxMappingColor((canvasColor) =>
+        canvasColor instanceof BpxSolidColor
           ? canvasColor.r + canvasColor.g + canvasColor.b >= (0xff * 3) / 2
             ? c._1_darker_blue
             : c._0_black

@@ -1,21 +1,21 @@
-import { spr_, Sprite, Timer } from "@beetpx/beetpx";
+import { BpxSprite, BpxTimer, spr_, timer_, v_ } from "@beetpx/beetpx";
 import { b, c, g } from "../globals";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenBrp implements GameScreen {
-  private readonly _brpLogo: Sprite = spr_(g.assets.mainSpritesheetUrl)(
+  private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(
     99,
     114,
     29,
     14
   );
 
-  private readonly _screenTimer: Timer;
-  private readonly _fadeInTimer: Timer;
-  private readonly _presentTimer: Timer;
-  private readonly _fadeOutTimer: Timer;
+  private readonly _screenTimer: BpxTimer;
+  private readonly _fadeInTimer: BpxTimer;
+  private readonly _presentTimer: BpxTimer;
+  private readonly _fadeOutTimer: BpxTimer;
 
   private _skip: boolean = false;
 
@@ -23,13 +23,10 @@ export class ScreenBrp implements GameScreen {
     const screenFrames = 150;
     const fadeFrames = 24;
 
-    // TODO: make it `new Timer(framesValue)`
-    this._screenTimer = new Timer({ frames: screenFrames });
-    this._fadeInTimer = new Timer({ frames: fadeFrames });
-    this._presentTimer = new Timer({
-      frames: screenFrames - 2 * fadeFrames - 20,
-    });
-    this._fadeOutTimer = new Timer({ frames: fadeFrames });
+    this._screenTimer = timer_(screenFrames);
+    this._fadeInTimer = timer_(fadeFrames);
+    this._presentTimer = timer_(screenFrames - 2 * fadeFrames - 20);
+    this._fadeOutTimer = timer_(fadeFrames);
 
     // TODO:
     //         music(0)
@@ -91,8 +88,8 @@ export class ScreenBrp implements GameScreen {
       ]);
       b.sprite(
         this._brpLogo,
-        g.viewportSize.sub(this._brpLogo.size().mul(2)).div(2)
-        // TODO: scale x2
+        g.viewportSize.sub(this._brpLogo.size().mul(2)).div(2),
+        v_(2, 2)
       );
       b.mapSpriteColors(prevMapping);
     }

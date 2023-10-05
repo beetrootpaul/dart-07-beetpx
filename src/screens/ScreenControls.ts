@@ -65,8 +65,8 @@ export class ScreenControls implements GameScreen {
     // button shape
     b.sprite(
       spr_(g.assets.mainSpritesheetUrl)(35, 12, 1, 12),
-      // TODO: stretch to `w`
-      v_(baseX, baseY)
+      v_(baseX, baseY),
+      v_(w, 1)
     );
 
     // button text

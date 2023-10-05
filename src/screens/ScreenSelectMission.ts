@@ -1,6 +1,6 @@
-import { Vector2d, spr_, v_ } from "@beetpx/beetpx";
+import { BpxVector2d, spr_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
-import { b, c, g, h, u } from "../globals";
+import { b, c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Movement } from "../movement/Movement";
 import { MovementToTarget } from "../movement/MovementToTarget";
@@ -83,7 +83,7 @@ export class ScreenSelectMission implements GameScreen {
     })(buttonXy.sub(g.gameAreaOffset).add(buttonWh.x / 2, buttonWh.y - 6));
   }
 
-  private _missionButtonXyWh(mission: number): [Vector2d, Vector2d] {
+  private _missionButtonXyWh(mission: number): [BpxVector2d, BpxVector2d] {
     // place missions 1..N at positions 0..N-1, then place the back button (identified as mission 0) at position N
     const position = (mission + 4 - 1) % 4;
     return [
@@ -137,8 +137,8 @@ export class ScreenSelectMission implements GameScreen {
     // draw button shape
     b.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 38 : 39, 12, 1, 19),
-      buttonXy1.sub(1)
-      // TODO: stretch the sprite to the width of `buttonWh.x + 2`
+      buttonXy1.sub(1),
+      v_(buttonWh.x + 2, 1)
     );
 
     // draw level sample
@@ -155,12 +155,12 @@ export class ScreenSelectMission implements GameScreen {
 
     if (mission > 1) {
       // draw WIP info
-      h.printCentered(
+      u.printWithOutline(
         "under development",
-        g.gameAreaSize.x / 2,
-        buttonXy1.y + 2,
+        g.gameAreaOffset.add(g.gameAreaSize.x / 2, buttonXy1.y + 2),
         selected ? c._7_white : c._6_light_grey,
-        selected ? c._9_dark_orange : c._13_lavender
+        selected ? c._9_dark_orange : c._13_lavender,
+        [true, false]
       );
     }
 
@@ -189,8 +189,8 @@ export class ScreenSelectMission implements GameScreen {
     // button shape
     b.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
-      buttonXy1.sub(1)
-      // TODO: stretch it to `button_wh.x + 2
+      buttonXy1.sub(1),
+      v_(buttonWh.x + 2, 1)
     );
 
     // button text

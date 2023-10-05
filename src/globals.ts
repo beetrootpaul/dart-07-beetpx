@@ -1,7 +1,8 @@
-import { BeetPx, MappingColor, Utils, v_ } from "@beetpx/beetpx";
+import { BeetPx, BpxMappingColor, BpxUtils, v_ } from "@beetpx/beetpx";
 import { Helpers } from "./misc/Helpers";
 import { Pico8Colors } from "./pico8/Pico8Color";
 
+// TODO: use b_ from BeetPx
 export const b = BeetPx;
 
 // TODO: rework PICO-8 color names and these names here? Context: palette is "0,129,130,3,140,131,6,7,8,137,10,11,12,13,141,143"
@@ -22,7 +23,8 @@ export const c = {
   _15_peach: Pico8Colors._143_peach,
 };
 
-export const u = Utils;
+// TODO: use u_ from BeetPx
+export const u = BpxUtils;
 
 export const h = Helpers;
 
@@ -51,6 +53,9 @@ export const g = {
     mission2SpritesheetUrl: "spritesheet_mission_2.png",
     mission3SpritesheetUrl: "spritesheet_mission_3.png",
 
+    // levels
+    levelsJson: "missions.json",
+
     // SFX
     sfxOptionsChange: "sfx_main_0.wav",
     sfxOptionsConfirm: "sfx_main_2.wav",
@@ -77,7 +82,7 @@ export const g = {
   shockwaveChargesDefault: 2,
   shockwaveChargesMax: 4,
 
-  negativeColor: new MappingColor((canvasColor) => {
+  negativeColor: new BpxMappingColor((canvasColor) => {
     switch (canvasColor.id) {
       case c._0_black.id:
         return c._7_white;

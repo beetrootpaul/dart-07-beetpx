@@ -1,4 +1,4 @@
-import { Timer, v_, Vector2d } from "@beetpx/beetpx";
+import { BpxTimer, BpxVector2d, timer_, v_ } from "@beetpx/beetpx";
 import { Collisions } from "../collisions/Collisions";
 import { b, g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
@@ -44,7 +44,7 @@ export class Game {
   private readonly _level: Level = new Level(new LevelDescriptor());
 
   private _player: Player | null;
-  // TODO: consider poll of enemies for memory reusage
+  // TODO: consider poll of enemies for memory reusage. Maybe create a poll in BeetPx?
   private _enemies: Enemy[] = [];
   private _boss: Boss | null = null;
 
@@ -66,7 +66,7 @@ export class Game {
 
   readonly score: Score;
 
-  private _cameraShakeTimer: Timer = new Timer({ frames: 0 });
+  private _cameraShakeTimer: BpxTimer = timer_(0);
 
   constructor(params: {
     health: number;
@@ -120,7 +120,7 @@ export class Game {
   }
 
   private _handlePlayerDamage(): void {
-    this._cameraShakeTimer = new Timer({ frames: 12 });
+    this._cameraShakeTimer = timer_(12);
 
     this._health -= 1;
     this._fastMovement = false;
@@ -130,7 +130,7 @@ export class Game {
     this._player?.takeDamage(this._health);
   }
 
-  private _handlePowerup(type: PowerupType, xy: Vector2d): void {
+  private _handlePowerup(type: PowerupType, xy: BpxVector2d): void {
     let hasEffect = false;
     if (type === PowerupType.Health) {
       if (this._health < g.healthMax) {
@@ -418,11 +418,9 @@ export class Game {
       b.isPressed("down"),
       this._fastMovement
     );
-    // TODO: make it work for uppercase X as well
     if (b.isPressed("x")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);
     }
-    // TODO: make it work for uppercase Z as well
     // TODO: this implementation (combined with a throttle inside the player) can end up with incorrectly used charges
     if (b.wasJustPressed("o")) {
       if (this._shockwaveCharges > 0 && this._player) {

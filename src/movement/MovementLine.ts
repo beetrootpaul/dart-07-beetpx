@@ -1,4 +1,4 @@
-import { Timer, Vector2d } from "@beetpx/beetpx";
+import { BpxTimer, BpxVector2d, timer_ } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 import { TimerInfinite } from "./MovementFixed";
 
@@ -7,15 +7,15 @@ export class MovementLine implements Movement {
     (
       params:
         | {
-            baseSpeedXy?: Vector2d;
+            baseSpeedXy?: BpxVector2d;
             // angle: 0 = right, .25 = down, .5 = left, .75 = up
             angle: number;
             angledSpeed: number;
             frames?: number;
           }
         | {
-            baseSpeedXy?: Vector2d;
-            targetXy: Vector2d;
+            baseSpeedXy?: BpxVector2d;
+            targetXy: BpxVector2d;
             angledSpeed: number;
             frames?: number;
           }
@@ -25,43 +25,37 @@ export class MovementLine implements Movement {
         startXy,
         "angle" in params
           ? params.angle
-          : Math.atan2(
-              params.targetXy.sub(startXy).y,
-              params.targetXy.sub(startXy).x
-            ) /
-            Math.PI /
-            2,
+          : params.targetXy.sub(startXy).toAngle(),
         params.angledSpeed,
         params.baseSpeedXy,
         params.frames
       );
 
-  private _xy: Vector2d;
-  private readonly _speed: Vector2d;
-  private readonly _timer: Timer;
+  private _xy: BpxVector2d;
+  private readonly _speed: BpxVector2d;
+  private readonly _timer: BpxTimer;
 
   private constructor(
-    startXy: Vector2d,
+    startXy: BpxVector2d,
     angle: number,
     angledSpeed: number,
-    baseSpeedXy: Vector2d = Vector2d.zero,
+    baseSpeedXy: BpxVector2d = BpxVector2d.zero,
     frames: number | undefined
   ) {
     this._xy = startXy;
 
     this._speed = baseSpeedXy.add(
-      angledSpeed * Math.cos(angle * Math.PI * 2),
-      angledSpeed * Math.sin(angle * Math.PI * 2)
+      BpxVector2d.unitFromAngle(angle).mul(angledSpeed)
     );
 
-    this._timer = frames ? new Timer({ frames }) : new TimerInfinite();
+    this._timer = frames ? timer_(frames) : new TimerInfinite();
   }
 
-  get xy(): Vector2d {
+  get xy(): BpxVector2d {
     return this._xy;
   }
 
-  get speed(): Vector2d {
+  get speed(): BpxVector2d {
     return this._speed;
   }
 

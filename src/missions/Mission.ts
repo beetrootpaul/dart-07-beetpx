@@ -1,4 +1,4 @@
-import { SolidColor } from "@beetpx/beetpx";
+import { BpxSolidColor } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyProperties } from "../game/EnemyProperties";
 
@@ -6,8 +6,8 @@ export interface Mission {
   readonly missionName: string;
   readonly bossName: string;
 
-  readonly bgColor: SolidColor;
-  readonly missionInfoColor: SolidColor;
+  readonly bgColor: BpxSolidColor;
+  readonly missionInfoColor: BpxSolidColor;
 
   readonly scrollPerFrame: number;
 

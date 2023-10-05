@@ -1,4 +1,4 @@
-import { Vector2d } from "@beetpx/beetpx";
+import { BpxVector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g, h } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
@@ -14,7 +14,7 @@ export enum PowerupType {
 }
 
 export class Powerup {
-  static for(type: string, startXy: Vector2d): Powerup | null {
+  static for(type: string, startXy: BpxVector2d): Powerup | null {
     switch (type) {
       case "-":
         return null;
@@ -41,7 +41,7 @@ export class Powerup {
 
   private _isPicked: boolean = false;
 
-  constructor(type: PowerupType, startXy: Vector2d) {
+  constructor(type: PowerupType, startXy: BpxVector2d) {
     this.type = type;
 
     this._movement = MovementLine.of({

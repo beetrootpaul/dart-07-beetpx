@@ -1,4 +1,4 @@
-import { SolidColor, Timer, v_, Vector2d } from "@beetpx/beetpx";
+import { BpxSolidColor, BpxVector2d, timer_, v_ } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
@@ -16,8 +16,8 @@ export class Mission2 implements Mission {
   readonly missionName: string = "(wip) outpost in space";
   readonly bossName: string = "cargo guardian";
 
-  readonly bgColor: SolidColor = c._1_darker_blue;
-  readonly missionInfoColor: SolidColor = c._6_light_grey;
+  readonly bgColor: BpxSolidColor = c._1_darker_blue;
+  readonly missionInfoColor: BpxSolidColor = c._6_light_grey;
 
   readonly scrollPerFrame: number = 1;
 
@@ -36,8 +36,8 @@ export class Mission2 implements Mission {
   };
 
   private _stars: Array<{
-    xy: Vector2d;
-    color: SolidColor;
+    xy: BpxVector2d;
+    color: BpxSolidColor;
     speed: number;
   }> = [];
 
@@ -49,8 +49,7 @@ export class Mission2 implements Mission {
 
   private _maybeAddStar(y: number): void {
     if (Math.random() < 0.1) {
-      // TODO: introduce a BeetPx util to pick a random array element
-      const speed = [0.25, 0.5, 0.75][Math.floor(Math.random() * 3)]!;
+      const speed = u.randomElementOf([0.25, 0.5, 0.75])!;
       const star = {
         xy: v_(Math.ceil(1 + Math.random() * g.gameAreaSize.x - 3), y),
         speed: speed,
@@ -95,7 +94,7 @@ export class Mission2 implements Mission {
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          bulletFireTimer: new Timer({ frames: 40 }),
+          bulletFireTimer: timer_(40),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
             b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
@@ -158,7 +157,7 @@ export class Mission2 implements Mission {
         {
           triggeringHealthFraction: 1,
           score: 1,
-          bulletFireTimer: new Timer({ frames: 80 }),
+          bulletFireTimer: timer_(80),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             return [

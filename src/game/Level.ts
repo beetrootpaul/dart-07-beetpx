@@ -1,7 +1,7 @@
 // To avoid thinking in x and y we talk here about:
 //   - distance = how many tiles we have scrolled forward (can be fraction)
 //   - lane     = which row of tiles are we talking about, perpendicular to distance
-import { spr_, transparent_, v_, Vector2d } from "@beetpx/beetpx";
+import { BpxVector2d, spr_, transparent_, v_ } from "@beetpx/beetpx";
 import { b, g, u } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Pico8Colors } from "../pico8/Pico8Color";
@@ -44,8 +44,8 @@ export class Level {
     //             return phase == "main" and max_visible_distance >= max_defined_distance + 1 or phase == "outro"
   }
 
-  enemiesToSpawn(): Array<{ id: string; xy: Vector2d }> {
-    const result: Array<{ id: string; xy: Vector2d }> = [];
+  enemiesToSpawn(): Array<{ id: string; xy: BpxVector2d }> {
+    const result: Array<{ id: string; xy: BpxVector2d }> = [];
 
     if (this._phase !== "main") return result;
 
@@ -137,8 +137,9 @@ export class Level {
     }
   }
 
+  // TODO: cobblestone'ing happens sometimes :(
   private _drawTile(tileId: number, distance: number, lane: number): void {
-    // TODO: rework: cache sprites
+    // TODO: rework: cache sprites. Use some cache exported from BeetPx for that?
     // TODO: rework: decouple sheet width and height?
     b.sprite(
       spr_(CurrentMission.m.ldtk.tilesetPng)(

@@ -1,4 +1,4 @@
-import { Timer } from "@beetpx/beetpx";
+import { BpxTimer, timer_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
 import { b } from "../globals";
@@ -13,14 +13,14 @@ export class ScreenMissionEnd implements GameScreen {
   private readonly _hud: Hud;
 
   private readonly _fadeOut: Fade;
-  private readonly _screenTimer: Timer;
+  private readonly _screenTimer: BpxTimer;
 
   constructor(params: { game: Game; hud: Hud }) {
     this._game = params.game;
     this._hud = params.hud;
 
     this._fadeOut = new Fade("out", { waitFrames: 90, fadeFrames: 30 });
-    this._screenTimer = new Timer({ frames: 120 });
+    this._screenTimer = timer_(120);
 
     // TODO
     //         _music_fade_out()

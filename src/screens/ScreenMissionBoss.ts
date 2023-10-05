@@ -1,11 +1,11 @@
-import { Timer } from "@beetpx/beetpx";
+import { BpxTimer, timer_ } from "@beetpx/beetpx";
 import { Game } from "../game/Game";
 import { b, c } from "../globals";
 import { Hud } from "../gui/Hud";
 import { SlidingInfo } from "../gui/SlidingInfo";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
-import { ScreenDefeat } from "./ScreenDefeat";
+import { ScreenMissionDefeat } from "./ScreenMissionDefeat";
 import { ScreenMissionEnd } from "./ScreenMissionEnd";
 
 export class ScreenMissionBoss implements GameScreen {
@@ -14,7 +14,7 @@ export class ScreenMissionBoss implements GameScreen {
 
   private _bossInfo: SlidingInfo | null;
 
-  private _musicStartTimer: Timer | null;
+  private _musicStartTimer: BpxTimer | null;
 
   constructor(params: { game: Game; hud: Hud }) {
     this._game = params.game;
@@ -34,7 +34,7 @@ export class ScreenMissionBoss implements GameScreen {
       slideOutFrames: bossInfoSlideFrames,
     });
 
-    this._musicStartTimer = new Timer({ frames: 60 });
+    this._musicStartTimer = timer_(60);
 
     this._game.enterBossPhase();
   }
@@ -48,7 +48,7 @@ export class ScreenMissionBoss implements GameScreen {
     }
 
     if (this._game.health <= 0) {
-      return new ScreenDefeat({ game: this._game, hud: this._hud });
+      return new ScreenMissionDefeat({ game: this._game, hud: this._hud });
     }
 
     if (this._game.isBossDefeated()) {

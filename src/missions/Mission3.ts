@@ -1,4 +1,4 @@
-import { SolidColor, Timer, v_, Vector2d } from "@beetpx/beetpx";
+import { BpxSolidColor, BpxVector2d, timer_, v_ } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
@@ -16,8 +16,8 @@ export class Mission3 implements Mission {
   readonly missionName: string = "(wip) phoslar mine";
   readonly bossName: string = "? ? ?";
 
-  readonly bgColor: SolidColor = c._2_darker_purple;
-  readonly missionInfoColor: SolidColor = c._3_dark_green;
+  readonly bgColor: BpxSolidColor = c._2_darker_purple;
+  readonly missionInfoColor: BpxSolidColor = c._3_dark_green;
 
   readonly scrollPerFrame: number = 1;
 
@@ -52,7 +52,7 @@ export class Mission3 implements Mission {
   private _tubeTilesOffsetY: number = 0;
 
   private _particles: Array<{
-    xy: Vector2d;
+    xy: BpxVector2d;
     sprite: AnimatedSprite;
   }> = [];
   private _particleStepCounter: number = 0;
@@ -66,7 +66,7 @@ export class Mission3 implements Mission {
   private _maybeAddParticle(y: number): void {
     if (Math.random() < 0.4) {
       // TODO: introduce a BeetPx util to pick a random array element
-      const whxy = [
+      const whxy = u.randomElementOf([
         // particle 1
         [3, 4, 24, 56],
         [3, 4, 24, 56],
@@ -83,7 +83,7 @@ export class Mission3 implements Mission {
         [5, 4, 28, 60],
         // particle 6
         [4, 4, 34, 60],
-      ][Math.floor(Math.random() * 10)]!;
+      ])!;
       const particle = {
         xy: v_(Math.floor(4 + Math.random() * g.gameAreaSize.x - 2 * 4), y),
         sprite: aspr_(whxy[0]!, whxy[1]!, [whxy[2]!], whxy[3]!),
@@ -137,7 +137,7 @@ export class Mission3 implements Mission {
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          bulletFireTimer: new Timer({ frames: 40 }),
+          bulletFireTimer: timer_(40),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
             b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
@@ -182,7 +182,7 @@ export class Mission3 implements Mission {
         {
           triggeringHealthFraction: 1,
           score: 1,
-          bulletFireTimer: new Timer({ frames: 80 }),
+          bulletFireTimer: timer_(80),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             return [

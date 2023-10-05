@@ -1,4 +1,4 @@
-import { SolidColor, Vector2d } from "@beetpx/beetpx";
+import { BpxSolidColor, BpxVector2d } from "@beetpx/beetpx";
 import { b } from "../globals";
 
 export class Score {
@@ -31,9 +31,9 @@ export class Score {
   }
 
   draw(
-    xy: Vector2d,
-    digitColor: SolidColor,
-    blankColor: SolidColor,
+    xy: BpxVector2d,
+    digitColor: BpxSolidColor,
+    blankColor: BpxSolidColor,
     vertical: boolean
   ) {
     for (let i = 0; i < this._text.length; i++) {

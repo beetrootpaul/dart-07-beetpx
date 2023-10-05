@@ -1,6 +1,5 @@
-import { SolidColor, v_ } from "@beetpx/beetpx";
-import { b, g, h } from "../globals";
-import { Easing } from "../misc/Easing";
+import { BpxEasing, BpxSolidColor, v_ } from "@beetpx/beetpx";
+import { b, g, u } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Movement } from "../movement/Movement";
 import { MovementFixed } from "../movement/MovementFixed";
@@ -10,7 +9,7 @@ import { MovementToTarget } from "../movement/MovementToTarget";
 export class SlidingInfo {
   private readonly _text1: string | undefined;
   private readonly _text2: string;
-  private readonly _mainColor: SolidColor;
+  private readonly _mainColor: BpxSolidColor;
   private readonly _movement: Movement;
   private _roundingFn: "ceil" | "floor" = "ceil";
 
@@ -21,7 +20,7 @@ export class SlidingInfo {
     slideInFrames: number;
     presentFrames: number;
     slideOutFrames: number;
-    mainColor: SolidColor;
+    mainColor: BpxSolidColor;
   }) {
     this._text1 = params.text1;
     this._text2 = params.text2;
@@ -38,7 +37,7 @@ export class SlidingInfo {
       MovementToTarget.of({
         targetY: g.gameAreaSize.y / 2,
         frames: params.slideInFrames,
-        easingFn: Easing.outQuartic,
+        easingFn: BpxEasing.outQuartic,
         onFinished: () => {
           this._roundingFn = "floor";
         },
@@ -49,7 +48,7 @@ export class SlidingInfo {
       MovementToTarget.of({
         targetY: g.gameAreaSize.y + 18,
         frames: params.slideOutFrames,
-        easingFn: Easing.inQuartic,
+        easingFn: BpxEasing.inQuartic,
       }),
     ])(g.gameAreaOffset.sub(0, 18));
   }
@@ -66,21 +65,21 @@ export class SlidingInfo {
     const xy = this._movement.xy[this._roundingFn]();
 
     if (this._text1) {
-      h.printCentered(
+      u.printWithOutline(
         this._text1,
-        g.gameAreaSize.x / 2,
-        xy.y - 17,
+        g.gameAreaOffset.add(g.gameAreaSize.x / 2, xy.y - 17),
         CurrentMission.m.bgColor,
-        this._mainColor
+        this._mainColor,
+        [true, false]
       );
     }
 
-    h.printCentered(
+    u.printWithOutline(
       this._text2,
-      g.gameAreaSize.x / 2,
-      xy.y - 8,
+      g.gameAreaOffset.add(g.gameAreaSize.x / 2, xy.y - 8),
       CurrentMission.m.bgColor,
-      this._mainColor
+      this._mainColor,
+      [true, false]
     );
 
     b.line(xy, v_(g.gameAreaSize.x, 1), this._mainColor);

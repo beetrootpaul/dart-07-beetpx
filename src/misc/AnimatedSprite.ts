@@ -1,13 +1,11 @@
-import { ImageUrl, spr_, Sprite, Vector2d } from "@beetpx/beetpx";
+import { BpxImageUrl, BpxSprite, BpxVector2d, spr_ } from "@beetpx/beetpx";
 import { b, g } from "../globals";
-
-// TODO: consider renaming BeetPx's Sprite to SpriteData in order to allow totally different Sprite implementation in games
 
 // TODO: introduce StaticSprite
 
 export class AnimatedSprite {
   static for(
-    spritesheetUrl: ImageUrl
+    spritesheetUrl: BpxImageUrl
   ): (
     spriteW: number,
     spriteH: number,
@@ -31,7 +29,7 @@ export class AnimatedSprite {
     y1: number,
     w: number,
     h: number
-  ) => Sprite;
+  ) => BpxSprite;
 
   private readonly _spriteW: number;
   private readonly _spriteH: number;
@@ -44,7 +42,7 @@ export class AnimatedSprite {
   private readonly _maxFrame: number;
 
   constructor(
-    spritesheetUrl: ImageUrl,
+    spritesheetUrl: BpxImageUrl,
     spriteW: number,
     spriteH: number,
     spriteXs: number[],
@@ -67,7 +65,7 @@ export class AnimatedSprite {
     this._frame = (this._frame + 1) % this._maxFrame;
   }
 
-  draw(xy: Vector2d): void {
+  draw(xy: BpxVector2d): void {
     xy = this._fromLeftTopCorner
       ? xy
       : xy.sub(this._spriteW / 2, this._spriteH / 2);

@@ -1,9 +1,10 @@
 import {
-  ColorMapping,
-  Timer,
+  BpxColorMapping,
+  BpxTimer,
+  BpxVector2d,
+  timer_,
   transparent_,
   v_,
-  Vector2d,
 } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { b, c, g } from "../globals";
@@ -15,7 +16,7 @@ import { Shockwave } from "./Shockwave";
 
 export class Player {
   private static readonly _invincibilityFlashFrames: number = 5;
-  private static readonly _size: Vector2d = v_(10, 12);
+  private static readonly _size: BpxVector2d = v_(10, 12);
 
   private readonly _onBulletsSpawned: Throttle<
     (bullets: PlayerBullet[]) => void
@@ -58,9 +59,9 @@ export class Player {
   );
   private _jetSprite: AnimatedSprite | null = null;
 
-  private _xy: Vector2d;
+  private _xy: BpxVector2d;
 
-  private _invincibleAfterDamageTimer: Timer | null = null;
+  private _invincibleAfterDamageTimer: BpxTimer | null = null;
 
   private _isDestroyed: boolean = false;
 
@@ -159,9 +160,9 @@ export class Player {
 
   takeDamage(updatedHealth: number): void {
     if (updatedHealth > 0) {
-      this._invincibleAfterDamageTimer = new Timer({
-        frames: 5 * Player._invincibilityFlashFrames,
-      });
+      this._invincibleAfterDamageTimer = timer_(
+        5 * Player._invincibilityFlashFrames
+      );
       this._onDamaged();
     } else {
       this._isDestroyed = true;
@@ -183,7 +184,7 @@ export class Player {
   }
 
   draw(): void {
-    let prevMapping: ColorMapping | undefined;
+    let prevMapping: BpxColorMapping | undefined;
     if (
       this._invincibleAfterDamageTimer &&
       this._invincibleAfterDamageTimer.framesLeft %

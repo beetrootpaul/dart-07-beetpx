@@ -2868,6 +2868,22 @@
 							"defUid": 17,
 							"px": [80,144],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "m1e_sinusoidal",
+							"__grid": [6,22],
+							"__pivot": [0,0],
+							"__tags": ["m1"],
+							"__tile": { "tilesetUid": 2, "x": 88, "y": 32, "w": 8, "h": 8 },
+							"__smartColor": "#F6757A",
+							"__worldX": 48,
+							"__worldY": -64,
+							"iid": "5f7b6280-6280-11ee-959f-777c097e9f28",
+							"width": 16,
+							"height": 16,
+							"defUid": 14,
+							"px": [48,176],
+							"fieldInstances": []
 						}
 					]
 				},

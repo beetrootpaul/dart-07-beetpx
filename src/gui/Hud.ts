@@ -1,9 +1,7 @@
-import { AnimatedSprite } from "../misc/AnimatedSprite";
-
-import { v_ } from "@beetpx/beetpx";
+import { BpxEasing, v_ } from "@beetpx/beetpx";
 import { Game } from "../game/Game";
 import { b, c, g } from "../globals";
-import { Easing } from "../misc/Easing";
+import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Movement } from "../movement/Movement";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementSequence } from "../movement/MovementSequence";
@@ -63,7 +61,7 @@ export class Hud {
       MovementToTarget.of({
         targetX: 0,
         frames: params.slideInFrames,
-        easingFn: Easing.outQuartic,
+        easingFn: BpxEasing.outQuartic,
       }),
     ])(v_(-20, 0));
   }

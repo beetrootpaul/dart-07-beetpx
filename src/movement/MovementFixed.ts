@@ -1,8 +1,8 @@
-import { Timer, Vector2d } from "@beetpx/beetpx";
+import { BpxTimer, BpxVector2d, timer_ } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 
 // TODO: rework it and extract to BeetPx and rework. Or just remove and inline needed functionality?
-export class TimerInfinite extends Timer {
+export class TimerInfinite extends BpxTimer {
   constructor() {
     super({ frames: 1 });
   }
@@ -24,21 +24,21 @@ export class MovementFixed implements Movement {
     (startXy) =>
       new MovementFixed(startXy, params.frames);
 
-  private readonly _timer: Timer;
-  private readonly _xy: Vector2d;
+  private readonly _timer: BpxTimer;
+  private readonly _xy: BpxVector2d;
 
-  private constructor(startXy: Vector2d, frames?: number) {
+  private constructor(startXy: BpxVector2d, frames?: number) {
     // TODO: do we ever use a case of no `frames`?
-    this._timer = frames ? new Timer({ frames }) : new TimerInfinite();
+    this._timer = frames ? timer_(frames) : new TimerInfinite();
     this._xy = startXy;
   }
 
-  get xy(): Vector2d {
+  get xy(): BpxVector2d {
     return this._xy;
   }
 
-  get speed(): Vector2d {
-    return Vector2d.zero;
+  get speed(): BpxVector2d {
+    return BpxVector2d.zero;
   }
 
   get hasFinished(): boolean {

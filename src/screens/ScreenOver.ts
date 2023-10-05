@@ -1,7 +1,7 @@
 import { spr_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
-import { b, c, g, h, u } from "../globals";
+import { b, c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
@@ -130,8 +130,8 @@ export class ScreenOver implements GameScreen {
         1,
         12
       ),
-      // TODO: stretch to `w`
-      v_(x, y)
+      v_(x, y),
+      v_(w, 1)
     );
 
     // button text
@@ -158,16 +158,21 @@ export class ScreenOver implements GameScreen {
     b.clearCanvas(this._isWin ? c._3_dark_green : c._2_darker_purple);
 
     // heading
-    h.printCentered(
+    b.print(
       this._isWin ? "you made it!" : "game over",
-      g.gameAreaSize.x / 2,
-      22,
-      this._isWin ? c._5_blue_green : c._8_red
+      g.gameAreaOffset.add(g.gameAreaSize.x / 2, 22),
+      this._isWin ? c._5_blue_green : c._8_red,
+      [true, false]
     );
 
     // score
     const scoreBaseY = this._gotHighScore ? 42 : 47;
-    h.printCentered("your score", g.gameAreaSize.x / 2, scoreBaseY, c._7_white);
+    b.print(
+      "your score",
+      g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY),
+      c._7_white,
+      [true, false]
+    );
     this._game.score.draw(
       v_(52, scoreBaseY + 10),
       c._7_white,
@@ -175,11 +180,11 @@ export class ScreenOver implements GameScreen {
       false
     );
     if (this._gotHighScore) {
-      h.printCentered(
+      b.print(
         "new high score!",
-        g.gameAreaSize.x / 2,
-        scoreBaseY + 20,
-        this._isWin ? c._15_peach : c._9_dark_orange
+        g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY + 20),
+        this._isWin ? c._15_peach : c._9_dark_orange,
+        [true, false]
       );
     }
 

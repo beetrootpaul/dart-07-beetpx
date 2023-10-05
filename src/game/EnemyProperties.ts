@@ -1,4 +1,4 @@
-import { Timer, Vector2d } from "@beetpx/beetpx";
+import { BpxTimer, BpxVector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { Movement, MovementFactory } from "../movement/Movement";
@@ -16,12 +16,12 @@ export type EnemyProperties = {
   // put main/center circle first, since it will be source for explosions etc.
   collisionCirclesProps: Array<{
     r: number;
-    offset?: Vector2d;
+    offset?: BpxVector2d;
   }>;
 
   movementFactory: MovementFactory;
 
-  bulletFireTimer?: Timer;
+  bulletFireTimer?: BpxTimer;
   spawnBullets?: (
     enemyMovement: Movement,
     playerCollisionCircle: CollisionCircle

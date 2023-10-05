@@ -56,100 +56,91 @@ b.init(
       { url: g.assets.sfxDestroyBossFinal3 },
       { url: g.assets.sfxGameWin },
     ],
+    jsons: [{ url: g.assets.levelsJson }],
   }
-)
-  // TODO: rework, move JSON fetch to BeetPx
-  .then(({ startGame }) => {
-    return fetch("missions.json")
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        LevelDescriptor.tmpJson = json;
-      })
-      .then(() => ({ startGame }));
-  })
-  .then(({ startGame }) => {
-    b.setOnStarted(() => {
-      // TODO: rework pause menu
-      PauseMenu.isGamePaused = false;
-      pauseMenu = new PauseMenu();
+).then(({ startGame }) => {
+  LevelDescriptor.tmpJson = b.getJsonAsset(g.assets.levelsJson).json;
 
-      b.setRepeating("left", false);
-      b.setRepeating("right", false);
-      b.setRepeating("up", false);
-      b.setRepeating("down", false);
-      b.setRepeating("x", false);
-      b.setRepeating("o", false);
-      b.setRepeating("menu", false);
+  b.setOnStarted(() => {
+    // TODO: rework pause menu
+    PauseMenu.isGamePaused = false;
+    pauseMenu = new PauseMenu();
 
-      // TODO: pause menu
-      // TODO: stopAllSounds
+    b.setRepeating("left", false);
+    b.setRepeating("right", false);
+    b.setRepeating("up", false);
+    b.setRepeating("down", false);
+    b.setRepeating("x", false);
+    b.setRepeating("o", false);
+    b.setRepeating("menu", false);
 
-      b.setFont(g.assets.pico8FontId);
+    // TODO: pause menu
+    // TODO: stopAllSounds
 
-      b.mapSpriteColors([
-        { from: Pico8Colors._0_black, to: c._0_black },
-        { from: Pico8Colors._1_darkBlue, to: c._1_darker_blue },
-        { from: Pico8Colors._2_darkPurple, to: c._2_darker_purple },
-        { from: Pico8Colors._3_darkGreen, to: c._3_dark_green },
-        { from: Pico8Colors._4_brown, to: c._4_true_blue },
-        { from: Pico8Colors._5_darkGrey, to: c._5_blue_green },
-        { from: Pico8Colors._6_lightGrey, to: c._6_light_grey },
-        { from: Pico8Colors._7_white, to: c._7_white },
-        { from: Pico8Colors._8_red, to: c._8_red },
-        { from: Pico8Colors._9_orange, to: c._9_dark_orange },
-        { from: Pico8Colors._10_yellow, to: transparent_ },
-        { from: Pico8Colors._11_green, to: transparent_ },
-        { from: Pico8Colors._12_blue, to: c._12_blue },
-        { from: Pico8Colors._13_lavender, to: c._13_lavender },
-        { from: Pico8Colors._14_pink, to: c._14_mauve },
-        { from: Pico8Colors._15_lightPeach, to: c._15_peach },
-      ]);
+    b.setFont(g.assets.pico8FontId);
 
-      currentScreen = new ScreenBrp();
-    });
+    b.mapSpriteColors([
+      { from: Pico8Colors._0_black, to: c._0_black },
+      { from: Pico8Colors._1_darkBlue, to: c._1_darker_blue },
+      { from: Pico8Colors._2_darkPurple, to: c._2_darker_purple },
+      { from: Pico8Colors._3_darkGreen, to: c._3_dark_green },
+      { from: Pico8Colors._4_brown, to: c._4_true_blue },
+      { from: Pico8Colors._5_darkGrey, to: c._5_blue_green },
+      { from: Pico8Colors._6_lightGrey, to: c._6_light_grey },
+      { from: Pico8Colors._7_white, to: c._7_white },
+      { from: Pico8Colors._8_red, to: c._8_red },
+      { from: Pico8Colors._9_orange, to: c._9_dark_orange },
+      { from: Pico8Colors._10_yellow, to: transparent_ },
+      { from: Pico8Colors._11_green, to: transparent_ },
+      { from: Pico8Colors._12_blue, to: c._12_blue },
+      { from: Pico8Colors._13_lavender, to: c._13_lavender },
+      { from: Pico8Colors._14_pink, to: c._14_mauve },
+      { from: Pico8Colors._15_lightPeach, to: c._15_peach },
+    ]);
 
-    b.setOnUpdate(() => {
-      debugGameInfo.update();
-
-      // TODO: rework pause menu
-      if (b.wasJustPressed("menu")) {
-        PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
-      }
-
-      // TODO: rework pause menu
-      if (PauseMenu.isGamePaused) {
-        pauseMenu?.update();
-      } else {
-        // TODO: consider a dedicated `setOnPreUpdate` in BeetPx
-        nextScreen = currentScreen?.preUpdate();
-        if (nextScreen) {
-          currentScreen = nextScreen;
-        }
-        currentScreen?.update();
-      }
-    });
-
-    b.setOnDraw(() => {
-      // TODO: clear canvas
-      // TODO: map colors
-      // TODO: print audiocontext state and FPS
-
-      currentScreen?.draw();
-
-      // TODO: rework pause menu
-      if (PauseMenu.isGamePaused) {
-        pauseMenu?.draw();
-      }
-
-      debugGameInfo.preDraw();
-      if (b.debug) debugGameInfo.draw();
-      debugGameInfo.postDraw();
-    });
-
-    startGame();
+    currentScreen = new ScreenBrp();
   });
+
+  b.setOnUpdate(() => {
+    debugGameInfo.update();
+
+    // TODO: rework pause menu
+    if (b.wasJustPressed("menu")) {
+      PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
+    }
+
+    // TODO: rework pause menu
+    if (PauseMenu.isGamePaused) {
+      pauseMenu?.update();
+    } else {
+      // TODO: consider a dedicated `setOnPreUpdate` in BeetPx
+      nextScreen = currentScreen?.preUpdate();
+      if (nextScreen) {
+        currentScreen = nextScreen;
+      }
+      currentScreen?.update();
+    }
+  });
+
+  b.setOnDraw(() => {
+    // TODO: clear canvas
+    // TODO: map colors
+    // TODO: print audiocontext state and FPS
+
+    currentScreen?.draw();
+
+    // TODO: rework pause menu
+    if (PauseMenu.isGamePaused) {
+      pauseMenu?.draw();
+    }
+
+    debugGameInfo.preDraw();
+    if (b.debug) debugGameInfo.draw();
+    debugGameInfo.postDraw();
+  });
+
+  startGame();
+});
 
 // TODO: performance improvements to reach ~55 FPS?
 

@@ -1,4 +1,4 @@
-import { v_, Vector2d } from "@beetpx/beetpx";
+import { BpxVector2d, v_ } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { b, c, g, u } from "../globals";
 import { Movement } from "../movement/Movement";
@@ -14,10 +14,10 @@ export class Shockwave {
 
   readonly id: number = Shockwave._nextId++;
 
-  private readonly _center: Vector2d;
+  private readonly _center: BpxVector2d;
   private _rProgress: Movement;
 
-  constructor(center: Vector2d) {
+  constructor(center: BpxVector2d) {
     this._center = center;
 
     this._rProgress = MovementLine.of({
@@ -27,7 +27,7 @@ export class Shockwave {
       ),
       angle: 0,
       angledSpeed: Shockwave._rSpeed,
-    })(Vector2d.zero);
+    })(BpxVector2d.zero);
   }
 
   get collisionCircle(): CollisionCircle {

@@ -1,4 +1,5 @@
-import { v_, Vector2d } from "@beetpx/beetpx";
+import { BpxVector2d, v_ } from "@beetpx/beetpx";
+import { u } from "../globals";
 import { Movement, MovementFactory } from "./Movement";
 
 export class MovementSinusoidal implements Movement {
@@ -16,16 +17,16 @@ export class MovementSinusoidal implements Movement {
         params.magnitude
       );
 
-  private readonly _startXy: Vector2d;
+  private readonly _startXy: BpxVector2d;
   private readonly _ageDivisor: number;
   private readonly _magnitude: number;
 
   private _age: number = 0;
-  private _speed: Vector2d;
-  private _xy: Vector2d;
+  private _speed: BpxVector2d;
+  private _xy: BpxVector2d;
 
   private constructor(
-    startXy: Vector2d,
+    startXy: BpxVector2d,
     speedY: number,
     ageDivisor: number,
     magnitude: number
@@ -41,16 +42,15 @@ export class MovementSinusoidal implements Movement {
   private x(): number {
     return (
       this._startXy.x +
-      this._magnitude *
-        Math.sin((this._age / this._ageDivisor) * Math.PI * 2 + Math.PI)
+      this._magnitude * u.trigSin(this._age / this._ageDivisor + 0.5)
     );
   }
 
-  get xy(): Vector2d {
+  get xy(): BpxVector2d {
     return this._xy;
   }
 
-  get speed(): Vector2d {
+  get speed(): BpxVector2d {
     return this._speed;
   }
 
