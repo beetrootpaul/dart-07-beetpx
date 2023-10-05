@@ -63,23 +63,23 @@ export class ScreenBrp implements GameScreen {
   }
 
   draw(): void {
-    b_.clearCanvas(c._0_black);
+    b_.clearCanvas(c.black);
 
-    let logoColor = c._15_peach;
+    let logoColor = c.peach;
     if (this._fadeInTimer.progress < 0.33) {
-      logoColor = c._2_darker_purple;
+      logoColor = c.darkerPurple;
     } else if (this._fadeInTimer.progress < 0.66) {
-      logoColor = c._14_mauve;
+      logoColor = c.mauve;
     } else if (this._fadeInTimer.progress < 1) {
-      logoColor = c._13_lavender;
+      logoColor = c.lavender;
     } else if (this._presentTimer.progress < 1) {
       // do nothing
     } else if (this._fadeOutTimer.progress < 0.33) {
-      logoColor = c._13_lavender;
+      logoColor = c.lavender;
     } else if (this._fadeOutTimer.progress < 0.66) {
-      logoColor = c._14_mauve;
+      logoColor = c.mauve;
     } else {
-      logoColor = c._2_darker_purple;
+      logoColor = c.darkerPurple;
     }
 
     if (!this._fadeOutTimer.hasFinished) {

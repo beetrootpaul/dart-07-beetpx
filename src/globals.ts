@@ -2,22 +2,21 @@ import { BpxSolidColor, BpxTransparentColor, v_ } from "@beetpx/beetpx";
 import { Helpers } from "./misc/Helpers";
 import { Pico8Colors } from "./pico8/Pico8Color";
 
-// TODO: rework PICO-8 color names and these names here? Context: palette is "0,129,130,3,140,131,6,7,8,137,10,11,12,13,141,143"
 export const c = {
-  _0_black: Pico8Colors._0_black,
-  _1_darker_blue: Pico8Colors._129_darkerBlue,
-  _2_darker_purple: Pico8Colors._130_darkerPurple,
-  _3_dark_green: Pico8Colors._3_darkGreen,
-  _4_true_blue: Pico8Colors._140_trueBlue,
-  _5_blue_green: Pico8Colors._131_blueGreen,
-  _6_light_grey: Pico8Colors._6_lightGrey,
-  _7_white: Pico8Colors._7_white,
-  _8_red: Pico8Colors._8_red,
-  _9_dark_orange: Pico8Colors._137_darkOrange,
-  _12_blue: Pico8Colors._12_blue,
-  _13_lavender: Pico8Colors._13_lavender,
-  _14_mauve: Pico8Colors._141_mauve,
-  _15_peach: Pico8Colors._143_peach,
+  black: Pico8Colors._0_black,
+  darkerBlue: Pico8Colors._129_darkerBlue,
+  darkerPurple: Pico8Colors._130_darkerPurple,
+  darkGreen: Pico8Colors._3_darkGreen,
+  trueBlue: Pico8Colors._140_trueBlue,
+  blueGreen: Pico8Colors._131_blueGreen,
+  lightGrey: Pico8Colors._6_lightGrey,
+  white: Pico8Colors._7_white,
+  red: Pico8Colors._8_red,
+  darkOrange: Pico8Colors._137_darkOrange,
+  blue: Pico8Colors._12_blue,
+  lavender: Pico8Colors._13_lavender,
+  mauve: Pico8Colors._141_mauve,
+  peach: Pico8Colors._143_peach,
 };
 
 export const h = Helpers;
@@ -78,34 +77,34 @@ export const g = {
     canvasColor: BpxSolidColor | BpxTransparentColor
   ): BpxSolidColor | BpxTransparentColor => {
     switch (canvasColor.id) {
-      case c._0_black.id:
-        return c._7_white;
-      case c._1_darker_blue.id:
-        return c._6_light_grey;
-      case c._2_darker_purple.id:
-        return c._13_lavender;
-      case c._3_dark_green.id:
-        return c._14_mauve;
-      case c._4_true_blue.id:
-        return c._9_dark_orange;
-      case c._5_blue_green.id:
-        return c._15_peach;
-      case c._6_light_grey.id:
-        return c._1_darker_blue;
-      case c._7_white.id:
-        return c._0_black;
-      case c._8_red.id:
-        return c._12_blue;
-      case c._9_dark_orange.id:
-        return c._4_true_blue;
-      case c._12_blue.id:
-        return c._8_red;
-      case c._13_lavender.id:
-        return c._2_darker_purple;
-      case c._14_mauve.id:
-        return c._3_dark_green;
-      case c._15_peach.id:
-        return c._5_blue_green;
+      case c.black.id:
+        return c.white;
+      case c.darkerBlue.id:
+        return c.lightGrey;
+      case c.darkerPurple.id:
+        return c.lavender;
+      case c.darkGreen.id:
+        return c.mauve;
+      case c.trueBlue.id:
+        return c.darkOrange;
+      case c.blueGreen.id:
+        return c.peach;
+      case c.lightGrey.id:
+        return c.darkerBlue;
+      case c.white.id:
+        return c.black;
+      case c.red.id:
+        return c.blue;
+      case c.darkOrange.id:
+        return c.trueBlue;
+      case c.blue.id:
+        return c.red;
+      case c.lavender.id:
+        return c.darkerPurple;
+      case c.mauve.id:
+        return c.darkGreen;
+      case c.peach.id:
+        return c.blueGreen;
       default:
         return canvasColor;
     }

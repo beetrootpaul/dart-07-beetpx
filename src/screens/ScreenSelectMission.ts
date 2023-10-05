@@ -156,8 +156,8 @@ export class ScreenSelectMission implements GameScreen {
       u_.printWithOutline(
         "under development",
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, buttonXy1.y + 2),
-        selected ? c._7_white : c._6_light_grey,
-        selected ? c._9_dark_orange : c._13_lavender,
+        selected ? c.white : c.lightGrey,
+        selected ? c.darkOrange : c.lavender,
         [true, false]
       );
     }
@@ -166,12 +166,12 @@ export class ScreenSelectMission implements GameScreen {
     b_.print(
       `mission ${mission}`,
       buttonXy1.add(0, buttonWh.y + 4),
-      selected ? c._7_white : c._13_lavender
+      selected ? c.white : c.lavender
     );
 
     if (selected) {
       // draw "x" button press incentive and its label
-      b_.print("start", buttonXy1.add(buttonWh).add(-37, 4), c._7_white);
+      b_.print("start", buttonXy1.add(buttonWh).add(-37, 4), c.white);
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? this._xSprite
         : this._xSpritePressed;
@@ -192,7 +192,7 @@ export class ScreenSelectMission implements GameScreen {
     );
 
     // button text
-    b_.print("back", buttonXy1.add(3, 2), c._14_mauve);
+    b_.print("back", buttonXy1.add(3, 2), c.mauve);
 
     if (selected) {
       // draw "x" button press incentive
@@ -218,7 +218,7 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   draw(): void {
-    b_.clearCanvas(c._1_darker_blue);
+    b_.clearCanvas(c.darkerBlue);
 
     this._drawMissionButton(1);
     this._drawMissionButton(2);

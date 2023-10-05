@@ -12,6 +12,7 @@ import { Fade } from "../Fade";
 import { Score } from "../game/Score";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
+import { PersistedState } from "../PersistedState";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
 import { ScreenControls } from "./ScreenControls";
@@ -73,10 +74,7 @@ export class ScreenTitle implements GameScreen {
     //         end
 
     // TODO: use better names for storage API. `load` is very unclear in context of `BeetPx`
-    this._highScore = new Score(
-      // TODO: extract storage type
-      b_.load<{ highScore: number }>()?.highScore ?? 0
-    );
+    this._highScore = new Score(b_.load<PersistedState>()?.highScore ?? 0);
 
     for (let y = 0; y < g.viewportSize.y; y++) {
       this._maybeAddStar(y);
@@ -90,11 +88,7 @@ export class ScreenTitle implements GameScreen {
         xy: v_(Math.ceil(1 + Math.random() * g.viewportSize.x - 3), y),
         speed: speed,
         color:
-          speed >= 0.75
-            ? c._6_light_grey
-            : speed >= 0.5
-            ? c._13_lavender
-            : c._14_mauve,
+          speed >= 0.75 ? c.lightGrey : speed >= 0.5 ? c.lavender : c.mauve,
       };
       this._stars.push(star);
     }
@@ -136,7 +130,7 @@ export class ScreenTitle implements GameScreen {
     b_.print(
       g.gameVersion,
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
-      c._14_mauve,
+      c.mauve,
       [true, false]
     );
   }
@@ -164,10 +158,10 @@ export class ScreenTitle implements GameScreen {
     b_.print(
       "high score",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
-      c._6_light_grey,
+      c.lightGrey,
       [true, false]
     );
-    this._highScore.draw(v_(52, baseY + 10), c._7_white, c._14_mauve, false);
+    this._highScore.draw(v_(52, baseY + 10), c.white, c.mauve, false);
   }
 
   private _drawButton(
@@ -185,7 +179,7 @@ export class ScreenTitle implements GameScreen {
     );
 
     // button text
-    b_.print(text, v_(baseX + 4, baseY + 3), c._14_mauve);
+    b_.print(text, v_(baseX + 4, baseY + 3), c.mauve);
 
     // "x" press incentive
     if (selected) {
@@ -197,7 +191,7 @@ export class ScreenTitle implements GameScreen {
   }
 
   draw(): void {
-    b_.clearCanvas(c._1_darker_blue);
+    b_.clearCanvas(c.darkerBlue);
 
     for (const star of this._stars) {
       b_.pixel(star.xy, star.color);
@@ -213,7 +207,7 @@ export class ScreenTitle implements GameScreen {
       // BRP
       const prevMapping = b_.mapSpriteColors([
         { from: Pico8Colors._0_black, to: transparent_ },
-        { from: Pico8Colors._10_yellow, to: c._14_mauve },
+        { from: Pico8Colors._10_yellow, to: c.mauve },
       ]);
       b_.sprite(
         this._brpLogo,

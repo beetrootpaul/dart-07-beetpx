@@ -29,7 +29,7 @@ export class Float {
     b_.print(
       this._scoreText,
       g.gameAreaOffset.add(this._movement.xy),
-      c._7_white,
+      c.white,
       [true, false]
     );
   }

@@ -65,19 +65,19 @@ export class PauseMenu {
       new BpxMappingColor(b_.takeCanvasSnapshot(), (canvasColor) =>
         canvasColor instanceof BpxSolidColor
           ? canvasColor.r + canvasColor.g + canvasColor.b >= (0xff * 3) / 2
-            ? c._1_darker_blue
-            : c._0_black
+            ? c.darkerBlue
+            : c.black
           : canvasColor
       )
     );
-    b_.rect(xy.sub(1), wh.add(2), c._7_white);
+    b_.rect(xy.sub(1), wh.add(2), c.white);
     b_.print(
       "continue",
       xy.add(
         padding + (this._selected === 0 ? 1 : 0),
         padding + (this._pressedIndex === 0 ? 1 : 0)
       ),
-      this._pressedIndex === 0 ? c._15_peach : c._7_white
+      this._pressedIndex === 0 ? c.peach : c.white
     );
     b_.print(
       "restart",
@@ -88,7 +88,7 @@ export class PauseMenu {
           gapBetweenLines +
           (this._pressedIndex === 1 ? 1 : 0)
       ),
-      this._pressedIndex === 1 ? c._15_peach : c._7_white
+      this._pressedIndex === 1 ? c.peach : c.white
     );
     for (const offset of PauseMenu.#arrowPixelsOffsets) {
       b_.pixel(
@@ -100,7 +100,7 @@ export class PauseMenu {
           )
           .sub(4, 0)
           .add(offset),
-        c._7_white
+        c.white
       );
     }
   }

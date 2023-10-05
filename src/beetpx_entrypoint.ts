@@ -31,8 +31,8 @@ b_.init(
     fonts: [
       {
         font: new Pico8Font(),
-        imageTextColor: c._7_white,
-        imageBgColor: c._0_black,
+        imageTextColor: c.white,
+        imageBgColor: c.black,
       },
     ],
     sounds: [
@@ -77,22 +77,22 @@ b_.init(
     b_.setFont(g.assets.pico8FontId);
 
     b_.mapSpriteColors([
-      { from: Pico8Colors._0_black, to: c._0_black },
-      { from: Pico8Colors._1_darkBlue, to: c._1_darker_blue },
-      { from: Pico8Colors._2_darkPurple, to: c._2_darker_purple },
-      { from: Pico8Colors._3_darkGreen, to: c._3_dark_green },
-      { from: Pico8Colors._4_brown, to: c._4_true_blue },
-      { from: Pico8Colors._5_darkGrey, to: c._5_blue_green },
-      { from: Pico8Colors._6_lightGrey, to: c._6_light_grey },
-      { from: Pico8Colors._7_white, to: c._7_white },
-      { from: Pico8Colors._8_red, to: c._8_red },
-      { from: Pico8Colors._9_orange, to: c._9_dark_orange },
+      { from: Pico8Colors._0_black, to: c.black },
+      { from: Pico8Colors._1_darkBlue, to: c.darkerBlue },
+      { from: Pico8Colors._2_darkPurple, to: c.darkerPurple },
+      { from: Pico8Colors._3_darkGreen, to: c.darkGreen },
+      { from: Pico8Colors._4_brown, to: c.trueBlue },
+      { from: Pico8Colors._5_darkGrey, to: c.blueGreen },
+      { from: Pico8Colors._6_lightGrey, to: c.lightGrey },
+      { from: Pico8Colors._7_white, to: c.white },
+      { from: Pico8Colors._8_red, to: c.red },
+      { from: Pico8Colors._9_orange, to: c.darkOrange },
       { from: Pico8Colors._10_yellow, to: transparent_ },
       { from: Pico8Colors._11_green, to: transparent_ },
-      { from: Pico8Colors._12_blue, to: c._12_blue },
-      { from: Pico8Colors._13_lavender, to: c._13_lavender },
-      { from: Pico8Colors._14_pink, to: c._14_mauve },
-      { from: Pico8Colors._15_lightPeach, to: c._15_peach },
+      { from: Pico8Colors._12_blue, to: c.blue },
+      { from: Pico8Colors._13_lavender, to: c.lavender },
+      { from: Pico8Colors._14_pink, to: c.mauve },
+      { from: Pico8Colors._15_lightPeach, to: c.peach },
     ]);
 
     currentScreen = new ScreenBrp();

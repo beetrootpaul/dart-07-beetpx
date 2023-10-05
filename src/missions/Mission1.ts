@@ -24,8 +24,8 @@ export class Mission1 implements Mission {
   readonly missionName: string = "emerald islands";
   readonly bossName: string = "sentinel zx300";
 
-  readonly bgColor: BpxSolidColor = c._4_true_blue;
-  readonly missionInfoColor: BpxSolidColor = c._9_dark_orange;
+  readonly bgColor: BpxSolidColor = c.trueBlue;
+  readonly missionInfoColor: BpxSolidColor = c.darkOrange;
 
   readonly scrollPerFrame: number = 0.5;
 
@@ -169,7 +169,6 @@ export class Mission1 implements Mission {
               easingFn: BpxEasing.inQuartic,
             }),
           ]),
-          // TODO: it would be nice to have some BpxTimer creation helper, a short one, like `timer_(33)`
           bulletFireTimer: timer_(33),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
             b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);

@@ -192,22 +192,22 @@ export class Player {
         Player._invincibilityFlashFrames
     ) {
       prevMapping = b_.mapSpriteColors([
-        { from: Pico8Colors._0_black, to: c._7_white },
-        { from: Pico8Colors._1_darkBlue, to: c._1_darker_blue },
-        { from: Pico8Colors._2_darkPurple, to: c._7_white },
-        { from: Pico8Colors._3_darkGreen, to: c._7_white },
-        { from: Pico8Colors._4_brown, to: c._7_white },
-        { from: Pico8Colors._5_darkGrey, to: c._7_white },
-        { from: Pico8Colors._6_lightGrey, to: c._7_white },
-        { from: Pico8Colors._7_white, to: c._7_white },
-        { from: Pico8Colors._8_red, to: c._7_white },
-        { from: Pico8Colors._9_orange, to: c._7_white },
+        { from: Pico8Colors._0_black, to: c.white },
+        { from: Pico8Colors._1_darkBlue, to: c.darkerBlue },
+        { from: Pico8Colors._2_darkPurple, to: c.white },
+        { from: Pico8Colors._3_darkGreen, to: c.white },
+        { from: Pico8Colors._4_brown, to: c.white },
+        { from: Pico8Colors._5_darkGrey, to: c.white },
+        { from: Pico8Colors._6_lightGrey, to: c.white },
+        { from: Pico8Colors._7_white, to: c.white },
+        { from: Pico8Colors._8_red, to: c.white },
+        { from: Pico8Colors._9_orange, to: c.white },
         { from: Pico8Colors._10_yellow, to: transparent_ },
         { from: Pico8Colors._11_green, to: transparent_ },
-        { from: Pico8Colors._12_blue, to: c._7_white },
-        { from: Pico8Colors._13_lavender, to: c._7_white },
-        { from: Pico8Colors._14_pink, to: c._7_white },
-        { from: Pico8Colors._15_lightPeach, to: c._7_white },
+        { from: Pico8Colors._12_blue, to: c.white },
+        { from: Pico8Colors._13_lavender, to: c.white },
+        { from: Pico8Colors._14_pink, to: c.white },
+        { from: Pico8Colors._15_lightPeach, to: c.white },
       ]);
     }
 

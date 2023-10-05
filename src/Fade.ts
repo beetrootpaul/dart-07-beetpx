@@ -88,7 +88,7 @@ export class Fade {
       b_.rectFilled(
         v_(0, y),
         v_(g.viewportSize.x, stripH),
-        new BpxCompositeColor(c._0_black, transparent_)
+        new BpxCompositeColor(c.black, transparent_)
       );
       b_.setFillPattern(BpxFillPattern.primaryOnly);
     }

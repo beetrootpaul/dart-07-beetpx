@@ -78,15 +78,15 @@ export class Explosion {
       b_.setFillPattern(BpxFillPattern.of(0xa5a5));
       for (const p of this._particles) {
         if (p.r > 0) {
-          let color = new BpxCompositeColor(c._9_dark_orange, c._8_red);
+          let color = new BpxCompositeColor(c.darkOrange, c.red);
           if (p.r < this._magnitude * 0.2) {
-            color = new BpxCompositeColor(c._13_lavender, c._14_mauve);
+            color = new BpxCompositeColor(c.lavender, c.mauve);
           } else if (p.r < this._magnitude * 0.4) {
-            color = new BpxCompositeColor(c._6_light_grey, c._13_lavender);
+            color = new BpxCompositeColor(c.lightGrey, c.lavender);
           } else if (p.r < this._magnitude * 0.6) {
-            color = new BpxCompositeColor(c._6_light_grey, c._15_peach);
+            color = new BpxCompositeColor(c.lightGrey, c.peach);
           } else if (p.r < this._magnitude * 0.8) {
-            color = new BpxCompositeColor(c._15_peach, c._9_dark_orange);
+            color = new BpxCompositeColor(c.peach, c.darkOrange);
           }
           b_.ellipseFilled(
             g.gameAreaOffset.add(p.xy).sub(p.r),

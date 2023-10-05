@@ -1,5 +1,6 @@
 import { b_, spr_, u_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
+import { PersistedState } from "../PersistedState";
 import { Game } from "../game/Game";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
@@ -65,9 +66,9 @@ export class ScreenOver implements GameScreen {
     }
 
     const currentScore = this._game.score.rawValue;
-    const highScoreSoFar = b_.load<{ highScore: number }>()?.highScore ?? 0;
+    const highScoreSoFar = b_.load<PersistedState>()?.highScore ?? 0;
     this._gotHighScore = currentScore > highScoreSoFar;
-    b_.store<{ highScore: number }>({
+    b_.store<PersistedState>({
       highScore: Math.max(highScoreSoFar, currentScore),
     });
   }
@@ -134,11 +135,7 @@ export class ScreenOver implements GameScreen {
     );
 
     // button text
-    b_.print(
-      text,
-      v_(x + 4, y + 3),
-      this._isWin ? c._5_blue_green : c._14_mauve
-    );
+    b_.print(text, v_(x + 4, y + 3), this._isWin ? c.blueGreen : c.mauve);
 
     // "x" press incentive
     if (selected) {
@@ -154,13 +151,13 @@ export class ScreenOver implements GameScreen {
   }
 
   draw(): void {
-    b_.clearCanvas(this._isWin ? c._3_dark_green : c._2_darker_purple);
+    b_.clearCanvas(this._isWin ? c.darkGreen : c.darkerPurple);
 
     // heading
     b_.print(
       this._isWin ? "you made it!" : "game over",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, 22),
-      this._isWin ? c._5_blue_green : c._8_red,
+      this._isWin ? c.blueGreen : c.red,
       [true, false]
     );
 
@@ -169,20 +166,20 @@ export class ScreenOver implements GameScreen {
     b_.print(
       "your score",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY),
-      c._7_white,
+      c.white,
       [true, false]
     );
     this._game.score.draw(
       v_(52, scoreBaseY + 10),
-      c._7_white,
-      this._isWin ? c._5_blue_green : c._14_mauve,
+      c.white,
+      this._isWin ? c.blueGreen : c.mauve,
       false
     );
     if (this._gotHighScore) {
       b_.print(
         "new high score!",
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY + 20),
-        this._isWin ? c._15_peach : c._9_dark_orange,
+        this._isWin ? c.peach : c.darkOrange,
         [true, false]
       );
     }

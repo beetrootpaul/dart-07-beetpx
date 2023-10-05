@@ -78,7 +78,7 @@ export class Shockwave {
       b_.ellipse(
         g.gameAreaOffset.add(this._center).sub(r),
         v_(r, r).mul(2),
-        c._6_light_grey
+        c.lightGrey
       );
     }
   }

@@ -16,8 +16,8 @@ export class Mission2 implements Mission {
   readonly missionName: string = "(wip) outpost in space";
   readonly bossName: string = "cargo guardian";
 
-  readonly bgColor: BpxSolidColor = c._1_darker_blue;
-  readonly missionInfoColor: BpxSolidColor = c._6_light_grey;
+  readonly bgColor: BpxSolidColor = c.darkerBlue;
+  readonly missionInfoColor: BpxSolidColor = c.lightGrey;
 
   readonly scrollPerFrame: number = 1;
 
@@ -54,11 +54,7 @@ export class Mission2 implements Mission {
         xy: v_(Math.ceil(1 + Math.random() * g.gameAreaSize.x - 3), y),
         speed: speed,
         color:
-          speed >= 0.75
-            ? c._6_light_grey
-            : speed >= 0.5
-            ? c._13_lavender
-            : c._14_mauve,
+          speed >= 0.75 ? c.lightGrey : speed >= 0.5 ? c.lavender : c.mauve,
       };
       this._stars.push(star);
     }

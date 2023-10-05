@@ -28,7 +28,7 @@ export class ScreenMissionBoss implements GameScreen {
 
     this._bossInfo = new SlidingInfo({
       text2: CurrentMission.m.bossName,
-      mainColor: c._8_red,
+      mainColor: c.red,
       slideInFrames: bossInfoSlideFrames,
       presentFrames: bossInfoFrames - 2 * bossInfoSlideFrames,
       slideOutFrames: bossInfoSlideFrames,

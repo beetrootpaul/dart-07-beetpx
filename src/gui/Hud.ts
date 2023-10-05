@@ -74,19 +74,19 @@ export class Hud {
     b_.rectFilled(
       v_(0, 0).sub(Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
-      c._0_black
+      c.black
     );
     b_.rectFilled(
       g.viewportSize.sub(Hud._barSize).sub(0, Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
-      c._0_black
+      c.black
     );
     if (b_.debug) {
-      b_.rectFilled(v_(0, 0), Hud._barSize, c._5_blue_green);
+      b_.rectFilled(v_(0, 0), Hud._barSize, c.blueGreen);
       b_.rectFilled(
         g.viewportSize.sub(Hud._barSize),
         Hud._barSize,
-        c._5_blue_green
+        c.blueGreen
       );
     }
 
@@ -111,7 +111,7 @@ export class Hud {
     //
     const missionProgressH = 35;
     const missionProgressX = g.gameAreaOffset.x + xy.x + 5;
-    b_.line(v_(missionProgressX, 4), v_(1, missionProgressH), c._13_lavender);
+    b_.line(v_(missionProgressX, 4), v_(1, missionProgressH), c.lavender);
     this._shipIndicator.draw(
       xy.sub(-4, 77 + game.missionProgressFraction * (missionProgressH - 3))
     );
@@ -135,12 +135,7 @@ export class Hud {
     //
     // score
     //
-    game.score.draw(
-      v_(xy.x + 17, 4),
-      c._6_light_grey,
-      c._2_darker_purple,
-      true
-    );
+    game.score.draw(v_(xy.x + 17, 4), c.lightGrey, c.darkerPurple, true);
 
     //
     // powerups
@@ -169,13 +164,13 @@ export class Hud {
       b_.line(
         g.gameAreaOffset.add(bossHealthBarMargin).add(2, 2),
         v_(bossHealthW, 1),
-        c._14_mauve
+        c.mauve
       );
       if (bossHealthFraction > 0) {
         b_.line(
           g.gameAreaOffset.add(bossHealthBarMargin).add(2, 1),
           v_(bossHealthFraction * bossHealthW, 1),
-          c._8_red
+          c.red
         );
       }
     }

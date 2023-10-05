@@ -16,8 +16,8 @@ export class Mission3 implements Mission {
   readonly missionName: string = "(wip) phoslar mine";
   readonly bossName: string = "? ? ?";
 
-  readonly bgColor: BpxSolidColor = c._2_darker_purple;
-  readonly missionInfoColor: BpxSolidColor = c._3_dark_green;
+  readonly bgColor: BpxSolidColor = c.darkerPurple;
+  readonly missionInfoColor: BpxSolidColor = c.darkGreen;
 
   readonly scrollPerFrame: number = 1;
 

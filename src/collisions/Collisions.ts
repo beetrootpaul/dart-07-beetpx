@@ -43,7 +43,7 @@ export class Collisions {
     b_.ellipse(
       g.gameAreaOffset.add(cc.center).sub(cc.r),
       v_(2, 2).mul(cc.r),
-      c._3_dark_green
+      c.darkGreen
     );
   }
 }

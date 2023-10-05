@@ -51,7 +51,7 @@ export class DebugGameInfo {
       for (let dot = 0; dot < calls; dot++) {
         b_.pixel(
           v_(1 + column * 2, 1 + dot * 2),
-          column === this._updateCallsData.index ? c._7_white : c._13_lavender
+          column === this._updateCallsData.index ? c.white : c.lavender
         );
       }
     }
@@ -66,10 +66,10 @@ export class DebugGameInfo {
         b_.pixel(
           v_(1 + column * 2, g.viewportSize.y - 2 - dot * 2),
           column === this._fpsData.index
-            ? c._7_white
+            ? c.white
             : (dot + 1) % 3 === 0
-            ? c._15_peach
-            : c._13_lavender
+            ? c.peach
+            : c.lavender
         );
       }
     }
@@ -91,7 +91,7 @@ export class DebugGameInfo {
     b_.print(
       audioStateText,
       v_(g.viewportSize.x - u_.measureText(audioStateText).x, 0),
-      c._7_white
+      c.white
     );
   }
 }
