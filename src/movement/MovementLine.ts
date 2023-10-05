@@ -1,6 +1,5 @@
 import { BpxTimer, BpxVector2d, timer_ } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
-import { TimerInfinite } from "./MovementFixed";
 
 export class MovementLine implements Movement {
   static of =
@@ -33,7 +32,7 @@ export class MovementLine implements Movement {
 
   private _xy: BpxVector2d;
   private readonly _speed: BpxVector2d;
-  private readonly _timer: BpxTimer;
+  private readonly _timer: BpxTimer | null;
 
   private constructor(
     startXy: BpxVector2d,
@@ -48,7 +47,7 @@ export class MovementLine implements Movement {
       BpxVector2d.unitFromAngle(angle).mul(angledSpeed)
     );
 
-    this._timer = frames ? timer_(frames) : new TimerInfinite();
+    this._timer = frames ? timer_(frames) : null;
   }
 
   get xy(): BpxVector2d {
@@ -60,12 +59,12 @@ export class MovementLine implements Movement {
   }
 
   get hasFinished(): boolean {
-    return this._timer.hasFinished;
+    return this._timer ? this._timer.hasFinished : false;
   }
 
   update(): void {
-    this._timer.update();
-    if (!this._timer.hasFinished) {
+    this._timer?.update();
+    if (!this._timer || !this._timer.hasFinished) {
       this._xy = this._xy.add(this._speed);
     }
   }
