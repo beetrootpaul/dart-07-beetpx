@@ -1,6 +1,8 @@
 import { b_, BpxMappingColor, BpxSolidColor, u_, v_ } from "@beetpx/beetpx";
 import { c, g } from "./globals";
 
+// TODO: add an ability to restart the current mission
+
 // TODO: rework? It's just a copy paste from my another game
 export class PauseMenu {
   static isGamePaused: boolean = false;

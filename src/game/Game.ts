@@ -481,7 +481,9 @@ export class Game {
             );
             const powerup = Powerup.for(
               powerupType,
-              mainCollisionCircle.center
+              this._level.syncWithLevelScrollFractionalPart(
+                mainCollisionCircle.center
+              )
             );
             if (powerup) {
               this._powerups.push(powerup);

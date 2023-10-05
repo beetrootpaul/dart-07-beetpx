@@ -123,7 +123,6 @@ export class Powerup {
   }
 
   draw(): void {
-    // TODO: cobblestone'ing happens for some powreups… :-(
     this._sprite.draw(this._movement.xy);
   }
 }

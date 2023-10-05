@@ -25,6 +25,13 @@ export class Level {
     this._levelDescriptor = levelDescriptor;
   }
 
+  syncWithLevelScrollFractionalPart(v: BpxVector2d): BpxVector2d {
+    return v_(
+      v.x,
+      Math.floor(v.y) + ((this._maxVisibleDistance * g.tileSize.y) % 1)
+    );
+  }
+
   enterPhaseMain(): void {
     this._phase = "main";
     b_.logDebug("intro -> MAIN");
@@ -137,7 +144,6 @@ export class Level {
     }
   }
 
-  // TODO: cobblestone'ing happens sometimes :(
   private _drawTile(tileId: number, distance: number, lane: number): void {
     // TODO: rework: cache sprites. Use some cache exported from BeetPx for that?
     // TODO: rework: decouple sheet width and height?
