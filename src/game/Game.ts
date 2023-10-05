@@ -523,9 +523,10 @@ export class Game {
     this._player?.draw();
     this._powerups.forEach((p) => p.draw());
     this._explosions.forEach((e) => e.draw());
-    this._floats.forEach((f) => f.draw());
-    // Draw shockwaves on top of everything since they are supposed to affect the final game image.
+    // Draw shockwaves on top of all in-world objects, since they are supposed to affect what is seen.
     this._shockwaves.forEach((s) => s.draw());
+    // But keep GUI elements (floats) on top of shockwaves.
+    this._floats.forEach((f) => f.draw());
 
     // TODO
     //   clip()
