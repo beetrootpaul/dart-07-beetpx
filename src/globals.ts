@@ -1,4 +1,4 @@
-import { BpxMappingColor, v_ } from "@beetpx/beetpx";
+import { BpxSolidColor, BpxTransparentColor, v_ } from "@beetpx/beetpx";
 import { Helpers } from "./misc/Helpers";
 import { Pico8Colors } from "./pico8/Pico8Color";
 
@@ -76,7 +76,9 @@ export const g = {
   shockwaveChargesDefault: 2,
   shockwaveChargesMax: 4,
 
-  negativeColor: new BpxMappingColor((canvasColor) => {
+  negativeColorMapping: (
+    canvasColor: BpxSolidColor | BpxTransparentColor
+  ): BpxSolidColor | BpxTransparentColor => {
     switch (canvasColor.id) {
       case c._0_black.id:
         return c._7_white;
@@ -109,5 +111,5 @@ export const g = {
       default:
         return canvasColor;
     }
-  }),
+  },
 };

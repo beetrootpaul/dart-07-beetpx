@@ -62,7 +62,7 @@ export class PauseMenu {
     b_.rectFilled(
       xy.sub(2),
       wh.add(4),
-      new BpxMappingColor((canvasColor) =>
+      new BpxMappingColor(b_.takeCanvasSnapshot(), (canvasColor) =>
         canvasColor instanceof BpxSolidColor
           ? canvasColor.r + canvasColor.g + canvasColor.b >= (0xff * 3) / 2
             ? c._1_darker_blue

@@ -65,7 +65,6 @@ export class Mission3 implements Mission {
 
   private _maybeAddParticle(y: number): void {
     if (Math.random() < 0.4) {
-      // TODO: introduce a BeetPx util to pick a random array element
       const whxy = u_.randomElementOf([
         // particle 1
         [3, 4, 24, 56],

@@ -31,7 +31,6 @@ export class ScreenMissionEnd implements GameScreen {
     if (this._screenTimer.hasFinished) {
       // TODO: change 1 to 2 once mission 2 is ready and 2 to 3 when mission 3 is ready as well
       if (CurrentMission.current < 1) {
-        // TODO: test it
         return new ScreenMissionMain({
           mission: CurrentMission.next,
           health: this._game.health,

@@ -29,7 +29,7 @@
     "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "devDependencies": {
-    "@beetpx/beetpx": "git+ssh://git@github.com:beetrootpaul/beetpx#908a2c6bc8ae46640b104b4d46ad87cdbcc50d8c",
+    "@beetpx/beetpx": "git+ssh://git@github.com:beetrootpaul/beetpx#43bbecc1145f000f75b063190e65a8aa8fc23ddc",
     "@jest/globals": "29.5.0",
     "husky": "8.0.3",
     "jest": "29.6.2",
