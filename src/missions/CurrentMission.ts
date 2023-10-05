@@ -10,14 +10,11 @@ export class CurrentMission {
   private static _current: number = CurrentMission.first;
   private static _m: Mission = new Mission1();
 
-  // TODO: where used?
   static get current(): number {
     return this._current;
   }
 
-  // TODO: where used?
   static get next(): number {
-    // TODO: how to handle the mission after the last one?
     return (this.current % 3) + 1;
   }
 

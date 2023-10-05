@@ -1,7 +1,6 @@
 import { b_, transparent_ } from "@beetpx/beetpx";
 import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
-import { LevelDescriptor } from "./game/LevelDescriptor";
 import { c, g } from "./globals";
 import { Pico8Colors } from "./pico8/Pico8Color";
 import { Pico8Font } from "./pico8/Pico8Font";
@@ -59,8 +58,6 @@ b_.init(
     jsons: [{ url: g.assets.levelsJson }],
   }
 ).then(({ startGame }) => {
-  LevelDescriptor.tmpJson = b_.getJsonAsset(g.assets.levelsJson).json;
-
   b_.setOnStarted(() => {
     // TODO: rework pause menu
     PauseMenu.isGamePaused = false;
@@ -113,7 +110,6 @@ b_.init(
     if (PauseMenu.isGamePaused) {
       pauseMenu?.update();
     } else {
-      // TODO: consider a dedicated `setOnPreUpdate` in BeetPx
       nextScreen = currentScreen?.preUpdate();
       if (nextScreen) {
         currentScreen = nextScreen;
@@ -155,5 +151,5 @@ b_.init(
 // TODO: balancing: mission 2: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 // TODO: balancing: mission 3: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 
-// TODO: pause menu: controls test
+// TODO: pause menu: input tester
 // TODO: pause menu: music on/off/volume

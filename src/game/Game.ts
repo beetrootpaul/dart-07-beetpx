@@ -41,7 +41,7 @@ export class Game {
     return this._tripleShoot;
   }
 
-  private readonly _level: Level = new Level(new LevelDescriptor());
+  private readonly _level: Level;
 
   private _player: Player | null;
   private _enemies: Enemy[] = [];
@@ -77,6 +77,10 @@ export class Game {
     this._fastMovement = params.fastMovement;
     this._fastShoot = params.fastShoot;
     this._tripleShoot = params.tripleShoot;
+
+    this._level = new Level(
+      new LevelDescriptor(b_.getJsonAsset(g.assets.levelsJson).json)
+    );
 
     this._player = new Player({
       onBulletsSpawned: (bullets) => {
@@ -488,7 +492,6 @@ export class Game {
       );
     }
 
-    // TODO: log everything that might matter
     b_.logDebug(
       "e:",
       this._enemies.length,
@@ -501,7 +504,9 @@ export class Game {
       "p:",
       this._powerups.length,
       "f:",
-      this._floats.length
+      this._floats.length,
+      "s:",
+      this._shockwaves.length
     );
   }
 

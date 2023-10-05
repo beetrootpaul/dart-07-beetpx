@@ -1,10 +1,28 @@
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 
-export class LevelDescriptor {
-  // TODO: REMOVE
-  static tmpJson: any;
+type LevelsJson = {
+  jsonVersion: string;
+  externalLevels: boolean;
+  simplifiedExport: boolean;
+  levels: Array<{
+    identifier: string;
+    pxHei: number;
+    layerInstances: Array<{
+      __identifier: string;
+      autoLayerTiles: Array<{
+        px: [number, number];
+        t: number;
+      }>;
+      entityInstances: Array<{
+        __identifier: string;
+        __grid: [number, number];
+      }>;
+    }>;
+  }>;
+};
 
+export class LevelDescriptor {
   readonly maxDefinedDistance: number;
 
   // FYI: structures[distance = 0] and  structures[distance][lane = 0] are unused.
@@ -13,42 +31,41 @@ export class LevelDescriptor {
   readonly structures: (number | null)[][];
   readonly enemies: (string | null)[][];
 
-  // TODO: !!! REWORK this !!! , this is a temporary implementation
-  constructor() {
+  constructor(levelsJson: LevelsJson) {
     const tileMarginY = 2;
     // because enemies occupy 2 tiles in Y and their are placed on the further one, but we want to detect them on the closer one
     const enemyOffsetY = 1;
 
     const expectedVersion = "1.4.0";
-    if (LevelDescriptor.tmpJson.jsonVersion !== expectedVersion) {
+    if (levelsJson.jsonVersion !== expectedVersion) {
       throw Error(
-        `Levels JSON generated from unexpected Ldtk version: "${LevelDescriptor.tmpJson.jsonVersion}" (expected: "${expectedVersion}").`
+        `Levels JSON generated from unexpected Ldtk version: "${levelsJson.jsonVersion}" (expected: "${expectedVersion}").`
       );
     }
-    if (LevelDescriptor.tmpJson.externalLevels !== false) {
+    if (levelsJson.externalLevels) {
       throw Error(
         `Levels JSON has "externalLevels" set to "true", which is unsupported in this game`
       );
     }
-    if (LevelDescriptor.tmpJson.simplifiedExport !== false) {
+    if (levelsJson.simplifiedExport) {
       throw Error(
         `Levels JSON has "simplifiedExport" set to "true", which is unsupported in this game`
       );
     }
 
     this.maxDefinedDistance =
-      LevelDescriptor.tmpJson.levels.find(
+      levelsJson.levels.find(
         (l: any) => l.identifier === CurrentMission.m.ldtk.level
-      ).pxHei /
+      )!.pxHei /
         g.tileSize.y -
       2 * tileMarginY;
 
     const tiles: Array<{ tileY: number; tileX: number; id: number }> =
-      LevelDescriptor.tmpJson.levels
-        .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)
+      levelsJson.levels
+        .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)!
         .layerInstances.find(
           (li: any) => li.__identifier === CurrentMission.m.ldtk.landLayer
-        )
+        )!
         .autoLayerTiles.map((alt: any) => ({
           tileY: alt.px[1] / 8 - tileMarginY,
           tileX: alt.px[0] / 8,
@@ -60,11 +77,11 @@ export class LevelDescriptor {
     const lanes = 12;
 
     const enemies: Array<{ tileY: number; tileX: number; id: string }> =
-      LevelDescriptor.tmpJson.levels
-        .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)
+      levelsJson.levels
+        .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)!
         .layerInstances.find(
           (li: any) => li.__identifier === CurrentMission.m.ldtk.enemiesLayer
-        )
+        )!
         .entityInstances.map((ei: any) => ({
           id: ei.__identifier,
           tileX: ei.__grid[0],
@@ -92,12 +109,12 @@ export class LevelDescriptor {
     });
 
     const markerOffsetY = 2;
-    const levelEndMarkerTileY: number = LevelDescriptor.tmpJson.levels
-      .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)
+    const levelEndMarkerTileY: number = levelsJson.levels
+      .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)!
       .layerInstances.find(
         (li: any) =>
           li.__identifier === CurrentMission.m.ldtk.progressionMarkersLayer
-      )
+      )!
       .entityInstances.filter((ei: any) => ei.__identifier === "level_end")
       .map((ei: any) => ({
         tileY: ei.__grid[1] - tileMarginY,

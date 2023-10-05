@@ -60,12 +60,6 @@ export class Shockwave {
       const dxInner = Math.ceil(
         Math.sqrt(Math.max(0, rInner * rInner - dy * dy))
       );
-      // TODO: due to the way we do color mapping, overlapping pixels are negating themselves back.
-      //       Do something about that overlap (vertical middle line)?
-      //       BTW it might be problematic in a future. It would be better to do a mapping
-      //       of a one frame buffer to another. Imagine multiple enemies in a game
-      //       having a negative color aura around them. We would had no easy option to
-      //       prevent them from overlapping.
       b_.line(
         g.gameAreaOffset.add(v_(this._center.x - dxOuter + 1, sy)),
         v_(dxOuter - dxInner, 1),
