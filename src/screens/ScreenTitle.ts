@@ -9,7 +9,7 @@ import {
 import { Fade } from "../Fade";
 import { Score } from "../game/Score";
 import { b, c, g, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite, StaticSprite } from "../misc/Sprite";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
 import { ScreenControls } from "./ScreenControls";
@@ -25,19 +25,19 @@ export class ScreenTitle implements GameScreen {
     29,
     14
   );
-  private readonly _xSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     0,
     true
   );
-  private readonly _xSpritePressed: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     6,
     true
   );
@@ -224,7 +224,7 @@ export class ScreenTitle implements GameScreen {
       this._drawTitle(55);
 
       // ship
-      new AnimatedSprite(g.assets.mainSpritesheetUrl, 10, 10, [18], 0).draw(
+      new StaticSprite(g.assets.mainSpritesheetUrl, 10, 10, 18, 0).draw(
         v_(g.gameAreaSize.x / 2, 110)
       );
     } else {

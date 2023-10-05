@@ -1,7 +1,7 @@
 import { BpxEasing, v_ } from "@beetpx/beetpx";
 import { Game } from "../game/Game";
 import { b, c, g } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementSequence } from "../movement/MovementSequence";
@@ -12,12 +12,12 @@ function hudSprite(
   spriteH: number,
   spriteX: number,
   spriteY: number
-): AnimatedSprite {
-  return new AnimatedSprite(
+): Sprite {
+  return new StaticSprite(
     g.assets.mainSpritesheetUrl,
     spriteW,
     spriteH,
-    [spriteX],
+    spriteX,
     spriteY,
     true
   );

@@ -8,7 +8,7 @@ import {
 } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { b, c, g } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { AnimatedSprite, Sprite, StaticSprite } from "../misc/Sprite";
 import { Throttle } from "../misc/Throttle";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { PlayerBullet } from "./PlayerBullet";
@@ -27,37 +27,37 @@ export class Player {
   private readonly _onDamaged: () => void;
   private readonly _onDestroyed: (playerCc: CollisionCircle) => void;
 
-  private readonly _shipSpriteNeutral: AnimatedSprite = new AnimatedSprite(
+  private readonly _shipSpriteNeutral: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
-    [19],
+    19,
     0
   );
-  private readonly _shipSpriteFlyingLeft: AnimatedSprite = new AnimatedSprite(
+  private readonly _shipSpriteFlyingLeft: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
-    [9],
+    9,
     0
   );
-  private readonly _shipSpriteFlyingRight: AnimatedSprite = new AnimatedSprite(
+  private readonly _shipSpriteFlyingRight: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
-    [29],
+    29,
     0
   );
-  private _shipSpriteCurrent: AnimatedSprite = this._shipSpriteNeutral;
+  private _shipSpriteCurrent: Sprite = this._shipSpriteNeutral;
 
-  private readonly _jetSpriteVisible: AnimatedSprite = new AnimatedSprite(
+  private readonly _jetSpriteVisible: Sprite = new AnimatedSprite(
     g.assets.mainSpritesheetUrl,
     4,
     20,
     [0, 0, 0, 0, 4, 4, 4, 4],
     9
   );
-  private _jetSprite: AnimatedSprite | null = null;
+  private _jetSprite: Sprite | null = null;
 
   private _xy: BpxVector2d;
 

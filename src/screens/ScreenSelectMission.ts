@@ -1,7 +1,7 @@
 import { BpxVector2d, spr_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { b, c, g, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { AnimatedSprite, Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementToTarget } from "../movement/MovementToTarget";
 import { GameScreen } from "./GameScreen";
@@ -10,33 +10,33 @@ import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenSelectMission implements GameScreen {
   private readonly _fadeOut: Fade = new Fade("out", { fadeFrames: 30 });
-  private readonly _shipSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _shipSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
-    [19],
+    19,
     0
   );
-  private readonly _jetSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _jetSprite: Sprite = new AnimatedSprite(
     g.assets.mainSpritesheetUrl,
     4,
     20,
     [0, 0, 0, 0, 4, 4, 4, 4],
     9
   );
-  private readonly _xSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     0,
     true
   );
-  private readonly _xSpritePressed: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     6,
     true
   );

@@ -3,7 +3,7 @@ import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
 import { b, c, g, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite } from "../misc/Sprite";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
 import { MovementSequence } from "../movement/MovementSequence";
@@ -11,9 +11,10 @@ import { MovementSinusoidal } from "../movement/MovementSinusoidal";
 import { MovementToTarget } from "../movement/MovementToTarget";
 import { Mission } from "./Mission";
 
-const aspr_ = AnimatedSprite.for(g.assets.mission1SpritesheetUrl);
+const aspr_ = Sprite.for(g.assets.mission1SpritesheetUrl).animated;
+const sspr_ = Sprite.for(g.assets.mission1SpritesheetUrl).static;
 
-const eb_ = EnemyBullet.factory(aspr_(4, 4, [124], 64), 2);
+const eb_ = EnemyBullet.factory(sspr_(4, 4, 124, 64), 2);
 
 function t(): number {
   return b.frameNumber / g.fps;
@@ -42,7 +43,7 @@ export class Mission1 implements Mission {
     progressionMarkersLayer: "progression_markers",
   };
 
-  private readonly _waveTile: AnimatedSprite = aspr_(
+  private readonly _waveTile: Sprite = aspr_(
     8,
     8,
     [
@@ -84,8 +85,8 @@ export class Mission1 implements Mission {
           score: 2,
           powerupsDistribution:
             "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
-          spriteMain: aspr_(8, 8, [0], 88),
-          spriteFlash: aspr_(6, 6, [22], 79),
+          spriteMain: sspr_(8, 8, 0, 88),
+          spriteFlash: sspr_(6, 6, 22, 79),
           collisionCirclesProps: [{ r: 3, offset: v_(0, 1) }],
           movementFactory: MovementLine.of({
             angle: 0.25,
@@ -98,8 +99,8 @@ export class Mission1 implements Mission {
           score: 5,
           powerupsDistribution:
             "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
-          spriteMain: aspr_(10, 10, [22], 86),
-          spriteFlash: aspr_(8, 8, [13], 88),
+          spriteMain: sspr_(10, 10, 22, 86),
+          spriteFlash: sspr_(8, 8, 13, 88),
           collisionCirclesProps: [{ r: 4 }],
           movementFactory: MovementSinusoidal.of({
             speedY: 0.75,
@@ -125,8 +126,8 @@ export class Mission1 implements Mission {
           health: 7,
           score: 20,
           powerupsDistribution: "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
-          spriteMain: aspr_(16, 14, [22], 64),
-          spriteFlash: aspr_(14, 12, [32], 84),
+          spriteMain: sspr_(16, 14, 22, 64),
+          spriteFlash: sspr_(14, 12, 32, 84),
           collisionCirclesProps: [{ r: 7 }],
           movementFactory: MovementSequence.of([
             MovementLine.of({
@@ -145,8 +146,8 @@ export class Mission1 implements Mission {
           health: 40,
           score: 100,
           powerupsDistribution: "h,s",
-          spriteMain: aspr_(24, 20, [64], 64),
-          spriteFlash: aspr_(22, 18, [88], 65),
+          spriteMain: sspr_(24, 20, 64, 64),
+          spriteFlash: sspr_(22, 18, 88, 65),
           collisionCirclesProps: [
             { r: 10, offset: v_(0, 1) },
             { r: 5, offset: v_(-7, 0) },
@@ -192,8 +193,8 @@ export class Mission1 implements Mission {
           health: 4,
           score: 40,
           powerupsDistribution: "-,-,-,-,-,-,h,m,m,f,f,f,t,t,s",
-          spriteMain: aspr_(8, 22, [50], 64),
-          spriteFlash: aspr_(6, 20, [58], 65),
+          spriteMain: sspr_(8, 22, 50, 64),
+          spriteFlash: sspr_(6, 20, 58, 65),
           collisionCirclesProps: [
             { r: 4 },
             { r: 4, offset: v_(0, 7) },
@@ -247,8 +248,8 @@ export class Mission1 implements Mission {
           health: 10,
           score: 50,
           powerupsDistribution: "-,-,-,h,h,m,f,t,t,s,s,s",
-          spriteMain: aspr_(22, 24, [0], 64),
-          spriteFlash: aspr_(12, 12, [38], 64),
+          spriteMain: sspr_(22, 24, 0, 64),
+          spriteFlash: sspr_(12, 12, 38, 64),
           collisionCirclesProps: [{ r: 6 }],
           movementFactory: MovementLine.of({
             angle: 0.25,
@@ -308,8 +309,8 @@ export class Mission1 implements Mission {
   bossProperties(): BossProperties {
     return {
       health: 130,
-      spriteMain: aspr_(54, 20, [0], 96),
-      spriteFlash: aspr_(52, 18, [54], 97),
+      spriteMain: sspr_(54, 20, 0, 96),
+      spriteFlash: sspr_(52, 18, 54, 97),
       collisionCirclesProps: [
         { r: 11 },
         { r: 6, offset: v_(20, -3) },

@@ -3,14 +3,14 @@ import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
 import { b, c, g, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite } from "../misc/Sprite";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
 import { Mission } from "./Mission";
 
-const aspr_ = AnimatedSprite.for(g.assets.mission2SpritesheetUrl);
+const sspr_ = Sprite.for(g.assets.mission2SpritesheetUrl).static;
 
-const eb_ = EnemyBullet.factory(aspr_(4, 4, [124], 64), 2);
+const eb_ = EnemyBullet.factory(sspr_(4, 4, 124, 64), 2);
 
 export class Mission2 implements Mission {
   readonly missionName: string = "(wip) outpost in space";
@@ -86,8 +86,8 @@ export class Mission2 implements Mission {
         return {
           health: 5,
           score: 1,
-          spriteMain: aspr_(28, 28, [0], 64),
-          spriteFlash: aspr_(28, 28, [28], 64),
+          spriteMain: sspr_(28, 28, 0, 64),
+          spriteFlash: sspr_(28, 28, 28, 64),
           collisionCirclesProps: [{ r: 5 }],
           powerupsDistribution: "h,m,f,t,s",
           movementFactory: MovementLine.of({
@@ -149,8 +149,8 @@ export class Mission2 implements Mission {
   bossProperties(): BossProperties {
     return {
       health: 25,
-      spriteMain: aspr_(56, 26, [4], 98),
-      spriteFlash: aspr_(56, 26, [4], 98),
+      spriteMain: sspr_(56, 26, 4, 98),
+      spriteFlash: sspr_(56, 26, 4, 98),
       collisionCirclesProps: [{ r: 15, offset: v_(0, -3) }],
       phases: [
         // phase 1

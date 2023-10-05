@@ -1,6 +1,6 @@
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { h } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 
 export interface EnemyBulletFactory {
@@ -9,17 +9,17 @@ export interface EnemyBulletFactory {
 
 export class EnemyBullet {
   static factory =
-    (sprite: AnimatedSprite, collisionCircleR: number): EnemyBulletFactory =>
+    (sprite: Sprite, collisionCircleR: number): EnemyBulletFactory =>
     (movement: Movement) =>
       new EnemyBullet(sprite, collisionCircleR, movement);
 
-  private readonly _sprite: AnimatedSprite;
+  private readonly _sprite: Sprite;
   private readonly _collisionCircleR: number;
   private readonly _movement: Movement;
   private _isDestroyed: boolean = false;
 
   private constructor(
-    sprite: AnimatedSprite,
+    sprite: Sprite,
     collisionCircleR: number,
     movement: Movement
   ) {

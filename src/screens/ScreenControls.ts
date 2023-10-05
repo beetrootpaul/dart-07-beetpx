@@ -1,41 +1,41 @@
 import { spr_, v_ } from "@beetpx/beetpx";
 import { b, c, g, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite, StaticSprite } from "../misc/Sprite";
 import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
 
 // TODO: rework controls? Rework them in general in BeetPx?
 
 export class ScreenControls implements GameScreen {
-  private readonly _xSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     0,
     true
   );
-  private readonly _xSpritePressed: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     6,
     true
   );
-  private readonly _coSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _coSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     24,
     true
   );
-  private readonly _pauseSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _pauseSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [41],
+    41,
     0,
     true
   );

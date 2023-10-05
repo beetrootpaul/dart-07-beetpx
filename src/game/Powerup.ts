@@ -1,7 +1,7 @@
 import { BpxVector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g, h } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
 
@@ -37,7 +37,7 @@ export class Powerup {
 
   private readonly _movement: Movement;
   // TODO: introduce StaticSprite
-  private readonly _sprite: AnimatedSprite;
+  private readonly _sprite: Sprite;
 
   private _isPicked: boolean = false;
 
@@ -51,51 +51,51 @@ export class Powerup {
 
     switch (type) {
       case PowerupType.Health: {
-        this._sprite = new AnimatedSprite(
+        this._sprite = new StaticSprite(
           g.assets.mainSpritesheetUrl,
           9,
           8,
-          [18],
+          18,
           16
         );
         break;
       }
       case PowerupType.FastMovement: {
-        this._sprite = new AnimatedSprite(
+        this._sprite = new StaticSprite(
           g.assets.mainSpritesheetUrl,
           9,
           8,
-          [9],
+          9,
           16
         );
         break;
       }
       case PowerupType.TripleShoot: {
-        this._sprite = new AnimatedSprite(
+        this._sprite = new StaticSprite(
           g.assets.mainSpritesheetUrl,
           9,
           8,
-          [18],
+          18,
           24
         );
         break;
       }
       case PowerupType.FastShoot: {
-        this._sprite = new AnimatedSprite(
+        this._sprite = new StaticSprite(
           g.assets.mainSpritesheetUrl,
           9,
           8,
-          [9],
+          9,
           24
         );
         break;
       }
       case PowerupType.ShockwaveCharge: {
-        this._sprite = new AnimatedSprite(
+        this._sprite = new StaticSprite(
           g.assets.mainSpritesheetUrl,
           9,
           8,
-          [27],
+          27,
           24
         );
         break;

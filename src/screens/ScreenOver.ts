@@ -2,42 +2,42 @@ import { spr_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
 import { b, c, g, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite, StaticSprite } from "../misc/Sprite";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenOver implements GameScreen {
-  private readonly _xSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     0,
     true
   );
-  private readonly _xSpritePressed: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     6,
     true
   );
-  private readonly _xSpriteWin: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSpriteWin: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     12,
     true
   );
-  private readonly _xSpritePressedWin: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSpritePressedWin: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     18,
     true
   );

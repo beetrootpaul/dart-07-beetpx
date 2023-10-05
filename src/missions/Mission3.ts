@@ -3,14 +3,14 @@ import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
 import { b, c, g, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite } from "../misc/Sprite";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
 import { Mission } from "./Mission";
 
-const aspr_ = AnimatedSprite.for(g.assets.mission3SpritesheetUrl);
+const sspr_ = Sprite.for(g.assets.mission2SpritesheetUrl).static;
 
-const eb_ = EnemyBullet.factory(aspr_(4, 4, [124], 64), 2);
+const eb_ = EnemyBullet.factory(sspr_(4, 4, 124, 64), 2);
 
 export class Mission3 implements Mission {
   readonly missionName: string = "(wip) phoslar mine";
@@ -35,25 +35,25 @@ export class Mission3 implements Mission {
     progressionMarkersLayer: "progression_markers",
   };
 
-  private readonly _tubeTiles: AnimatedSprite[] = [
-    aspr_(8, 8, [56], 32, true),
-    aspr_(8, 8, [64], 32, true),
-    aspr_(8, 8, [56], 40, true),
-    aspr_(8, 8, [64], 40, true),
-    aspr_(8, 8, [48], 56, true),
-    aspr_(8, 8, [48], 56, true),
-    aspr_(8, 8, [48], 56, true),
-    aspr_(8, 8, [48], 56, true),
-    aspr_(8, 8, [56], 48, true),
-    aspr_(8, 8, [64], 48, true),
-    aspr_(8, 8, [56], 56, true),
-    aspr_(8, 8, [64], 56, true),
+  private readonly _tubeTiles: Sprite[] = [
+    sspr_(8, 8, 56, 32, true),
+    sspr_(8, 8, 64, 32, true),
+    sspr_(8, 8, 56, 40, true),
+    sspr_(8, 8, 64, 40, true),
+    sspr_(8, 8, 48, 56, true),
+    sspr_(8, 8, 48, 56, true),
+    sspr_(8, 8, 48, 56, true),
+    sspr_(8, 8, 48, 56, true),
+    sspr_(8, 8, 56, 48, true),
+    sspr_(8, 8, 64, 48, true),
+    sspr_(8, 8, 56, 56, true),
+    sspr_(8, 8, 64, 56, true),
   ];
   private _tubeTilesOffsetY: number = 0;
 
   private _particles: Array<{
     xy: BpxVector2d;
-    sprite: AnimatedSprite;
+    sprite: Sprite;
   }> = [];
   private _particleStepCounter: number = 0;
 
@@ -86,7 +86,7 @@ export class Mission3 implements Mission {
       ])!;
       const particle = {
         xy: v_(Math.floor(4 + Math.random() * g.gameAreaSize.x - 2 * 4), y),
-        sprite: aspr_(whxy[0]!, whxy[1]!, [whxy[2]!], whxy[3]!),
+        sprite: sspr_(whxy[0]!, whxy[1]!, whxy[2]!, whxy[3]!),
       };
       this._particles.push(particle);
     }
@@ -130,8 +130,8 @@ export class Mission3 implements Mission {
           health: 5,
           score: 1,
           powerupsDistribution: "h,m,f,t,s",
-          spriteMain: aspr_(16, 16, [0], 64),
-          spriteFlash: aspr_(10, 10, [16], 64),
+          spriteMain: sspr_(16, 16, 0, 64),
+          spriteFlash: sspr_(10, 10, 16, 64),
           collisionCirclesProps: [{ r: 5 }],
           movementFactory: MovementLine.of({
             angle: 0.25,
@@ -174,8 +174,8 @@ export class Mission3 implements Mission {
   bossProperties(): BossProperties {
     return {
       health: 25,
-      spriteMain: aspr_(56, 26, [4], 98),
-      spriteFlash: aspr_(56, 26, [4], 98),
+      spriteMain: sspr_(56, 26, 4, 98),
+      spriteFlash: sspr_(56, 26, 4, 98),
       collisionCirclesProps: [{ r: 15, offset: v_(0, -3) }],
       phases: [
         // phase 1
