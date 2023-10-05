@@ -28,6 +28,8 @@ export const h = Helpers;
 
 // TODO: inline
 export const g = {
+  gameVersion: "V0.4.0",
+
   // TODO: do we use it anywhere else than BeetPx config? Can we inline it?
   fps: 60 as const,
 
@@ -39,15 +41,40 @@ export const g = {
   tileSize: v_(8, 8),
 
   assets: {
+    // PICO-8 font
     pico8FontId: "pico8",
     pico8FontImage: "pico-8-font.png",
+
+    // sprite sheets
     mainSpritesheetUrl: "spritesheet_main.png",
     mission1SpritesheetUrl: "spritesheet_mission_1.png",
     mission2SpritesheetUrl: "spritesheet_mission_2.png",
     mission3SpritesheetUrl: "spritesheet_mission_3.png",
+
+    // SFX
+    sfxOptionsChange: "sfx_main_0.wav",
+    sfxOptionsConfirm: "sfx_main_2.wav",
+    sfxPowerupNoEffect: "sfx_main_5.wav",
+    sfxPowerupPicked: "sfx_main_6.wav",
+    sfxPlayerShoot: "sfx_main_10.wav",
+    sfxPlayerTripleShoot: "sfx_main_11.wav",
+    sfxPlayerShockwave: "sfx_main_12.wav",
+    sfxEnemyShoot: "sfx_main_13.wav",
+    sfxEnemyMultiShoot: "sfx_main_14.wav",
+    sfxDamagePlayer: "sfx_main_16.wav",
+    sfxDamageEnemy: "sfx_main_17.wav",
+    sfxDestroyPlayer: "sfx_main_19.wav",
+    sfxDestroyEnemy: "sfx_main_20.wav",
+    sfxDestroyBossPhase: "sfx_main_21.wav",
+    sfxDestroyBossFinal1: "sfx_main_22.wav",
+    sfxDestroyBossFinal2: "sfx_main_23.wav",
+    sfxDestroyBossFinal3: "sfx_main_24.wav",
+    sfxGameWin: "sfx_main_25.wav",
   },
 
+  healthDefault: 3,
   healthMax: 10,
+  shockwaveChargesDefault: 2,
   shockwaveChargesMax: 4,
 
   negativeColor: new MappingColor((canvasColor) => {

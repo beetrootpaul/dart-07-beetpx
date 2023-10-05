@@ -14,7 +14,6 @@ export class Score {
     this._text = this._as6DigitsTextWithExtraZero();
   }
 
-  // TODO: is it used?
   get rawValue(): number {
     return this._value;
   }

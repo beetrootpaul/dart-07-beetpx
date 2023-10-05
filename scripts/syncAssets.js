@@ -6,6 +6,10 @@ const fs = require("fs");
 
 const watchForChanges = process.argv[2] === "watch";
 
+// TODO: describe in README how to export PICO-8 SFX files (because could not automate due to headless export error)
+//       /Applications/PICO-8.app/Contents/MacOS/pico8 assets/sounds_main.p8 -root_path public
+//       inside: export sfx_main_%d.wav
+
 // TODO: describe in README that this script requires Aseprite installed globally
 // this path is specific to the project's author machine
 const asperiteCli = "/Applications/Aseprite.app/Contents/MacOS/aseprite";

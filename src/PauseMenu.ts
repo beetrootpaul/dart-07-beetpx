@@ -102,3 +102,26 @@ export class PauseMenu {
     }
   }
 }
+
+// TODO
+// function _init()
+//     menuitem(1, "exit to title", function()
+//         fade_out = new_fade("out", 30)
+//     end)
+// end
+
+// TODO
+// function _update60()
+//     if fade_out.has_finished() then
+//         _load_main_cart(_m_mission_number)
+//     end
+//
+//     ...
+//
+//     fade_out._update()
+// end
+
+// TODO
+// function _draw()
+//     fade_out._draw()
+// end

@@ -1,8 +1,8 @@
-import { SolidColor, Timer, v_ } from "@beetpx/beetpx";
+import { SolidColor, Timer, v_, Vector2d } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
-import { c, g, u } from "../globals";
+import { b, c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
@@ -35,51 +35,50 @@ export class Mission2 implements Mission {
     progressionMarkersLayer: "progression_markers",
   };
 
-  // TODO
-  // local function maybe_add_star(y)
-  //     if rnd() < .1 then
-  //         local star = {
-  //             x = ceil(1 + rnd(_gaw - 3)),
-  //             y = y,
-  //             speed = rnd { .25, .5, .75 }
-  //         }
-  //         star.color = star.speed == .75 and _color_6_light_grey or (star.speed == .5 and _color_13_lavender or _color_14_mauve)
-  //         add(stars, star)
-  //     end
-  // end
+  private _stars: Array<{
+    xy: Vector2d;
+    color: SolidColor;
+    speed: number;
+  }> = [];
 
   constructor() {
-    // TODO
-    // stars = {}
-    //
-    // TODO
-    // for y = 0, _gah - 1 do
-    //   maybe_add_star(y)
-    // end
+    for (let y = 0; y < g.gameAreaSize.y; y++) {
+      this._maybeAddStar(y);
+    }
+  }
+
+  private _maybeAddStar(y: number): void {
+    if (Math.random() < 0.1) {
+      // TODO: introduce a BeetPx util to pick a random array element
+      const speed = [0.25, 0.5, 0.75][Math.floor(Math.random() * 3)]!;
+      const star = {
+        xy: v_(Math.ceil(1 + Math.random() * g.gameAreaSize.x - 3), y),
+        speed: speed,
+        color:
+          speed >= 0.75
+            ? c._6_light_grey
+            : speed >= 0.5
+            ? c._13_lavender
+            : c._14_mauve,
+      };
+      this._stars.push(star);
+    }
   }
 
   levelBgUpdate(): void {
-    // TODO
-    // for star in all(stars) do
-    //     star.y = star.y + star.speed
-    //     if star.y >= _gah then
-    //         del(stars, star)
-    //     end
-    // end
-    //
-    // TODO
-    // maybe_add_star(0)
+    for (const star of this._stars) {
+      star.xy = star.xy.add(0, star.speed);
+    }
+
+    this._stars = this._stars.filter((s) => s.xy.y <= g.gameAreaSize.y);
+
+    this._maybeAddStar(0);
   }
 
   levelBgDraw(): void {
-    // TODO
-    // for star in all(stars) do
-    //     pset(
-    //         _gaox + star.x,
-    //         star.y,
-    //         star.color
-    //     )
-    // end
+    for (const star of this._stars) {
+      b.pixel(g.gameAreaOffset.add(star.xy), star.color);
+    }
   }
 
   enemyPropertiesFor(enemyId: string): EnemyProperties {
@@ -96,22 +95,23 @@ export class Mission2 implements Mission {
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          // TODO
-          //             bullet_fire_timer = new_timer "40",
-          //             spawn_bullets = function(enemy_movement, player_collision_circle)
-          //                 _sfx_play(_sfx_enemy_multi_shoot)
-          //                 local bullets = {}
-          //                 for i = 1, 8 do
-          //                     add(bullets, enemy_bullet_factory(
-          //                         new_movement_line_factory {
-          //                             base_speed_y = enemy_movement.speed_xy.y,
-          //                             angle = .0625 + i / 8,
-          //                         }(enemy_movement.xy)
-          //                     ))
-          //                 end
-          //                 return bullets
-          //             end,
-          //         },
+          bulletFireTimer: new Timer({ frames: 40 }),
+          spawnBullets: (enemyMovement, playerCollisionCircle) => {
+            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            const bullets: EnemyBullet[] = [];
+            for (let i = 1; i <= 8; i++) {
+              bullets.push(
+                eb_(
+                  MovementLine.of({
+                    baseSpeedXy: enemyMovement.speed,
+                    angle: 1 / 16 + i / 8,
+                    angledSpeed: 1,
+                  })(enemyMovement.xy)
+                )
+              );
+            }
+            return bullets;
+          },
         };
       // TODO: consider this left-right enemy type for mission 2
       // -- enemy: left-right
@@ -137,7 +137,15 @@ export class Mission2 implements Mission {
   }
 
   // TODO
-  // _m_mission_main_music, _m_mission_boss_music = 0, 1
+  // _m_mission_main_music = 0
+  // SEQ:
+  // loop:
+  //   32
+  //
+  // _m_mission_boss_music = 1
+  // SEQ:
+  // loop:
+  //   33
 
   bossProperties(): BossProperties {
     return {
@@ -152,8 +160,7 @@ export class Mission2 implements Mission {
           score: 1,
           bulletFireTimer: new Timer({ frames: 80 }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            // TODO
-            // _sfx_play(_sfx_enemy_multi_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             return [
               eb_(
                 MovementLine.of({

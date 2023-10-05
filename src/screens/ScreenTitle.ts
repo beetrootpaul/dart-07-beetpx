@@ -1,199 +1,235 @@
-import { b, c } from "../globals";
+import {
+  SolidColor,
+  spr_,
+  Sprite,
+  transparent_,
+  v_,
+  Vector2d,
+} from "@beetpx/beetpx";
+import { Fade } from "../Fade";
+import { Score } from "../game/Score";
+import { b, c, g, h, u } from "../globals";
+import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
 import { ScreenControls } from "./ScreenControls";
 import { ScreenSelectMission } from "./ScreenSelectMission";
 
 export class ScreenTitle implements GameScreen {
-  // TODO: remove this temporary code
-  private _next1: boolean = false;
-  private _next2: boolean = false;
+  // TODO: still needed?
+  private static readonly _cartLabelMode: boolean = false;
+
+  private readonly _brpLogo: Sprite = spr_(g.assets.mainSpritesheetUrl)(
+    99,
+    114,
+    29,
+    14
+  );
+  private readonly _xSprite: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [56],
+    0,
+    true
+  );
+  private readonly _xSpritePressed: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [56],
+    6,
+    true
+  );
+
+  private readonly _fadeIn: Fade = new Fade("in", { fadeFrames: 30 });
+
+  private readonly _highScore: Score;
+
+  private _stars: Array<{
+    xy: Vector2d;
+    color: SolidColor;
+    speed: number;
+  }> = [];
+
+  private _proceed: boolean = false;
+  private _play: boolean = true;
+
+  // TODO: params: preselected_mission, start_music, start_fade_in, select_controls
+  constructor() {
+    // TODO
+    //     local play = not select_controls
+    //
+    // TODO
+    //         if start_music then
+    // TODO:
+    //         music(2)
+    // SEQ:
+    // loop:
+    //   34 36
+    //   35 37
+    //         end
+
+    // TODO: use better names for storage API. `load` is very unclear in context of `BeetPx`
+    this._highScore = new Score(
+      // TODO: extract storage type
+      b.load<{ highScore: number }>()?.highScore ?? 0
+    );
+
+    for (let y = 0; y < g.viewportSize.y; y++) {
+      this._maybeAddStar(y);
+    }
+  }
+
+  private _maybeAddStar(y: number): void {
+    if (Math.random() < 0.1) {
+      // TODO: introduce a BeetPx util to pick a random array element
+      const speed = [0.25, 0.5, 0.75][Math.floor(Math.random() * 3)]!;
+      const star = {
+        xy: v_(Math.ceil(1 + Math.random() * g.viewportSize.x - 3), y),
+        speed: speed,
+        color:
+          speed >= 0.75
+            ? c._6_light_grey
+            : speed >= 0.5
+            ? c._13_lavender
+            : c._14_mauve,
+      };
+      this._stars.push(star);
+    }
+  }
 
   preUpdate(): GameScreen | undefined {
-    // TODO: remove this temporary code
-    if (this._next1) {
-      return new ScreenSelectMission();
+    if (this._proceed) {
+      return this._play
+        ? // TODO: param: preselected_mission
+          new ScreenSelectMission()
+        : // TODO: param: preselected_mission
+          new ScreenControls();
     }
-    if (this._next2) {
-      return new ScreenControls();
-    }
-
-    // TODO
-    //         if proceed then
-    //             if play then
-    //                 return new_screen_select_mission(preselected_mission)
-    //             else
-    //                 return new_screen_controls(preselected_mission)
-    //             end
-    //         end
   }
 
   update(): void {
-    // TODO: remove this temporary code
-    if (b.wasJustPressed("x")) {
-      this._next1 = true;
-    }
-    if (b.wasJustPressed("o")) {
-      this._next2 = true;
+    if (b.wasJustPressed("up") || b.wasJustPressed("down")) {
+      b.playSoundOnce(g.assets.sfxOptionsChange);
+      this._play = !this._play;
     }
 
-    // TODO
-    //         if btnp(_button_up) or btnp(_button_down) then
-    //             _sfx_play(_sfx_options_change)
-    //             play = not play
-    //         end
-    //
-    //         if btnp(_button_x) then
-    //             _sfx_play(_sfx_options_confirm)
-    //             proceed = true
-    //         end
-    //
-    //         for star in all(stars) do
-    //             star.y = star.y + star.speed
-    //             if star.y >= _vs then
-    //                 del(stars, star)
-    //             end
-    //         end
-    //         maybe_add_star(0)
-    //
-    //         fade_in._update()
+    if (b.wasJustPressed("x")) {
+      b.playSoundOnce(g.assets.sfxOptionsConfirm);
+      this._proceed = true;
+    }
+
+    for (const star of this._stars) {
+      star.xy = star.xy.add(0, star.speed);
+    }
+
+    this._stars = this._stars.filter((s) => s.xy.y <= g.gameAreaSize.y);
+
+    this._maybeAddStar(0);
+
+    this._fadeIn.update();
+  }
+
+  private _drawVersion(baseY: number): void {
+    h.printCentered(g.gameVersion, g.gameAreaSize.x / 2, baseY, c._14_mauve);
+  }
+
+  private _drawTitle(baseY: number): void {
+    const prevMapping = b.mapSpriteColors([
+      { from: Pico8Colors._0_black, to: transparent_ },
+    ]);
+    b.sprite(
+      spr_(g.assets.mainSpritesheetUrl)(96, 32, 32, 26),
+      v_((g.viewportSize.x - 96) / 2, baseY)
+    );
+    b.sprite(
+      spr_(g.assets.mainSpritesheetUrl)(96, 58, 32, 26),
+      v_((g.viewportSize.x - 96) / 2 + 32, baseY)
+    );
+    b.sprite(
+      spr_(g.assets.mainSpritesheetUrl)(96, 84, 32, 26),
+      v_((g.viewportSize.x - 96) / 2 + 64, baseY)
+    );
+    b.mapSpriteColors(prevMapping);
+  }
+
+  private _drawHighScore(baseY: number): void {
+    h.printCentered("high score", g.gameAreaSize.x / 2, baseY, c._6_light_grey);
+    this._highScore.draw(v_(52, baseY + 10), c._7_white, c._14_mauve, false);
+  }
+
+  private _drawButton(
+    text: string,
+    w: number,
+    baseX: number,
+    baseY: number,
+    selected: boolean
+  ): void {
+    // button shape
+    b.sprite(
+      spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
+      // TODO: stretch to `w`
+      v_(baseX, baseY)
+    );
+
+    // button text
+    b.print(text, v_(baseX + 4, baseY + 3), c._14_mauve);
+
+    // "x" press incentive
+    if (selected) {
+      const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+        ? this._xSprite
+        : this._xSpritePressed;
+      sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
+    }
   }
 
   draw(): void {
     b.clearCanvas(c._1_darker_blue);
 
+    for (const star of this._stars) {
+      b.pixel(star.xy, star.color);
+    }
+
     // TODO
-    //         for star in all(stars) do
-    //             pset(star.x, star.y, star.color)
-    //         end
-    //
     //         map(cart_label_mode and 16 or 0, 0, 0, 0, 16, 16)
-    //
-    //         if cart_label_mode then
-    //             map(16, 0, 0, 0, 16, 16)
-    //
-    //             -- brp
-    //             pal(_color_10_unused, _color_14_mauve)
-    //             sspr(
-    //                 99, 114,
-    //                 29, 14,
-    //                 (_vs - 29 * 2) / 2, 6,
-    //                 29 * 2, 14 * 2
-    //             )
-    //             pal(1)
-    //
-    //             draw_title(55)
-    //
-    //             -- ship
-    //             new_static_sprite("10,10,18,0")._draw(_gawdb2, 110)
-    //         else
-    //             map(0, 0, 0, 0, 16, 16)
-    //             draw_version(1)
-    //             draw_title(15)
-    //             draw_high_score(57)
-    //             draw_button("play", 98, 15, 82, play)
-    //             draw_button("controls", 98, 15, 104, not play)
-    //         end
-    //
-    //         if not cart_label_mode and start_fade_in then
-    //             fade_in._draw()
-    //         end
+
+    if (ScreenTitle._cartLabelMode) {
+      // TODO
+      //             map(16, 0, 0, 0, 16, 16)
+
+      // BRP
+      const prevMapping = b.mapSpriteColors([
+        { from: Pico8Colors._0_black, to: transparent_ },
+        { from: Pico8Colors._10_yellow, to: c._14_mauve },
+      ]);
+      b.sprite(
+        this._brpLogo,
+        v_((g.viewportSize.x - this._brpLogo.size().x * 2) / 2, 6)
+        // TODO: scale x2
+      );
+      b.mapSpriteColors(prevMapping);
+
+      this._drawTitle(55);
+
+      // ship
+      new AnimatedSprite(g.assets.mainSpritesheetUrl, 10, 10, [18], 0).draw(
+        v_(g.gameAreaSize.x / 2, 110)
+      );
+    } else {
+      // TODO
+      //             map(0, 0, 0, 0, 16, 16)
+      this._drawVersion(1);
+      this._drawTitle(15);
+      this._drawHighScore(57);
+      this._drawButton("play", 98, 15, 82, this._play);
+      this._drawButton("controls", 98, 15, 104, !this._play);
+    }
+
+    // TODO: `&& start_fade_in` inside `if`
+    if (!ScreenTitle._cartLabelMode) {
+      this._fadeIn.draw();
+    }
   }
 }
-
-// TODO
-// function new_screen_title(preselected_mission, start_music, start_fade_in, select_controls)
-//     local cart_label_mode = false
-//     -- DEBUG: enable this to show an image to create a cart label image from it
-//     --cart_label_mode = true
-//
-//     local high_score
-//
-//     local fade_in = new_fade("in", 30)
-//
-//     local x_sprite = new_static_sprite("15,6,56,0", true)
-//     local x_pressed_sprite = new_static_sprite("15,6,56,6", true)
-//
-//     local play = not select_controls
-//
-//     local proceed = false
-//
-//     local stars = {}
-//
-//     local function maybe_add_star(y)
-//         if rnd() < .1 then
-//             local star = {
-//                 x = ceil(1 + rnd(_vs - 3)),
-//                 y = y,
-//                 speed = rnd { .25, .5, .75 }
-//             }
-//             star.color = star.speed == .75 and _color_6_light_grey or (star.speed == .5 and _color_13_lavender or _color_14_mauve)
-//             add(stars, star)
-//         end
-//     end
-//
-//     local function draw_version(base_y)
-//         _centered_print(_game_version, base_y, _color_14_mauve)
-//     end
-//
-//     local function draw_title(base_y)
-//         sspr(
-//             96, 32,
-//             32, 26,
-//             (_vs - 96) / 2, base_y
-//         )
-//         sspr(
-//             96, 58,
-//             32, 26,
-//             (_vs - 96) / 2 + 32, base_y
-//         )
-//         sspr(
-//             96, 84,
-//             32, 26,
-//             (_vs - 96) / 2 + 64, base_y
-//         )
-//     end
-//
-//     local function draw_high_score(base_y)
-//         _centered_print("high \-fscore", base_y, _color_6_light_grey)
-//         new_score(high_score)._draw(52, base_y + 10, _color_7_white, _color_14_mauve)
-//     end
-//
-//     local function draw_button(text, w, base_x, base_y, selected)
-//         -- button shape
-//         sspr(
-//             selected and 35 or 36, 12,
-//             1, 12,
-//             base_x, base_y,
-//             w, 12
-//         )
-//
-//         -- button text
-//         print(text, base_x + 4, base_y + 3, _color_14_mauve)
-//
-//         -- "x" press incentive
-//         if selected then
-//             local sprite = _alternating_0_and_1() == 0 and x_sprite or x_pressed_sprite
-//             sprite._draw(-_gaox + base_x + w - 16, base_y + 13)
-//         end
-//     end
-//
-//     --
-//
-//     local screen = {}
-//
-//     function screen._init()
-//         if start_music then
-//             music(2)
-//         end
-//
-//         high_score = dget(0)
-//         -- DEBUG:
-//         --high_score = 123
-//
-//         for y = 0, _vs - 1 do
-//             maybe_add_star(y)
-//         end
-//     end
-//
-//     return screen
-// end

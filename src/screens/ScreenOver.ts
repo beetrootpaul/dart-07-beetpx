@@ -1,104 +1,157 @@
-import { v_ } from "@beetpx/beetpx";
+import { spr_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
-import { b, c, g, h } from "../globals";
+import { b, c, g, h, u } from "../globals";
+import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
+import { ScreenMissionMain } from "./ScreenMissionMain";
+import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenOver implements GameScreen {
+  private readonly _xSprite: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [56],
+    0,
+    true
+  );
+  private readonly _xSpritePressed: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [56],
+    6,
+    true
+  );
+  private readonly _xSpriteWin: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [56],
+    12,
+    true
+  );
+  private readonly _xSpritePressedWin: AnimatedSprite = new AnimatedSprite(
+    g.assets.mainSpritesheetUrl,
+    15,
+    6,
+    [56],
+    18,
+    true
+  );
+
   private readonly _game: Game;
   private readonly _isWin: boolean;
 
   private readonly _fadeIn: Fade;
+  private readonly _fadeOut: Fade;
+
+  private readonly _gotHighScore: boolean;
+
+  private _proceed: boolean = false;
+  private _retry: boolean = true;
 
   constructor(params: { game: Game; isWin: boolean }) {
     this._game = params.game;
     this._isWin = params.isWin;
 
-    // TODO
-    //     local got_high_score, fade_out, retry, proceed, screen = false, new_fade("out", 30), true, false, {}
     this._fadeIn = new Fade("in", { fadeFrames: 30 });
+    this._fadeOut = new Fade("out", { fadeFrames: 30 });
 
     if (params.isWin) {
-      // TODO
-      //             _sfx_play(_sfx_game_win)
+      b.playSoundOnce(g.assets.sfxGameWin);
     }
 
-    // TODO
-    //         local current_score = game.score.raw_value()
-    //         local high_score_so_far = dget(0)
-    //         got_high_score = current_score > high_score_so_far
-    //         dset(0, max(high_score_so_far, current_score))
+    const currentScore = this._game.score.rawValue;
+    const highScoreSoFar = b.load<{ highScore: number }>()?.highScore ?? 0;
+    this._gotHighScore = currentScore > highScoreSoFar;
+    // TODO: fix BeetPx to NOT store at the same time to `game_stored_state` and `game_stored_state2`
+    b.store<{ highScore: number }>({
+      highScore: Math.max(highScoreSoFar, currentScore),
+    });
   }
 
-  // TODO
-  //     local function draw_button(text, y, selected)
-  //         local w, x = 80, 24
-  //
-  //         -- button shape
-  //         sspr(
-  //             selected and (is_win and 37 or 35) or 36, 12,
-  //             1, 12,
-  //             x, y,
-  //             w, 12
-  //         )
-  //
-  //         -- button text
-  //         print(
-  //             text,
-  //             x + 4, y + 3,
-  //             is_win and _color_5_blue_green or _color_14_mauve
-  //         )
-  //
-  //         -- "x" press incentive
-  //         if selected then
-  //             new_static_sprite(
-  //                 "15,6,56," .. (is_win and 12 or 0) + _alternating_0_and_1() * 6,
-  //                 true
-  //             )._draw(x + w - 16 - _gaox, y + 13)
-  //         end
-  //     end
-
   preUpdate(): GameScreen | undefined {
-    // TODO: TMP
-    if (b.wasJustPressed("x") || b.wasJustPressed("o")) {
-      b.restart();
+    if (this._fadeOut.hasFinished) {
+      if (!this._isWin && this._retry) {
+        // TODO: instead of default values, use here values from the start of a last mission.
+        //       This doesn't matter right now, but will start once we finish mission 2
+        //       and add progression from mission 1 to 2.
+        return new ScreenMissionMain({
+          mission: CurrentMission.current,
+          health: g.healthDefault,
+          shockwaveCharges: g.shockwaveChargesDefault,
+          fastMovement: false,
+          fastShoot: false,
+          tripleShoot: false,
+          score: 0,
+        });
+      } else {
+        // TODO: params: CurrentMission.current, true, false, false
+        return new ScreenTitle();
+      }
     }
-
-    // TODO
-    //         if fade_out.has_finished() then
-    //             if not is_win and retry then
-    //                 extcmd("reset")
-    //             else
-    //                 _load_main_cart(_m_mission_number)
-    //             end
-    //         end
 
     return;
   }
 
   update(): void {
-    // TODO
-    //         if not is_win then
-    //             if btnp(_button_up) or btnp(_button_down) then
-    //                 _sfx_play(_sfx_options_change)
-    //                 retry = not retry
-    //             end
-    //         end
-    //
-    // TODO
-    //         if btnp(_button_x) then
-    //             _music_fade_out()
-    //             _sfx_play(_sfx_options_confirm)
-    //             proceed = true
-    //         end
-    //
-    // TODO
-    //         if proceed then
-    //             fade_out._update()
-    //         else
-    this._fadeIn.update();
-    // TODO
-    //         end
+    if (!this._isWin) {
+      if (b.wasJustPressed("up") || b.wasJustPressed("down")) {
+        b.playSoundOnce(g.assets.sfxOptionsChange);
+        this._retry = !this._retry;
+      }
+    }
+
+    if (b.wasJustPressed("x")) {
+      // TODO: replace this with a fade out of a music only over 500 ms
+      b.stopAllSounds();
+      this._proceed = true;
+    }
+
+    if (this._proceed) {
+      this._fadeOut.update();
+    } else {
+      this._fadeIn.update();
+    }
+  }
+
+  private _drawButton(text: string, y: number, selected: boolean): void {
+    const w = 80;
+    const x = 24;
+
+    // button shape
+    b.sprite(
+      spr_(g.assets.mainSpritesheetUrl)(
+        selected ? (this._isWin ? 37 : 35) : 36,
+        12,
+        1,
+        12
+      ),
+      // TODO: stretch to `w`
+      v_(x, y)
+    );
+
+    // button text
+    b.print(
+      text,
+      v_(x + 4, y + 3),
+      this._isWin ? c._5_blue_green : c._14_mauve
+    );
+
+    // "x" press incentive
+    if (selected) {
+      const xSprite = this._isWin ? this._xSpriteWin : this._xSprite;
+      const xSpritePressed = this._isWin
+        ? this._xSpritePressedWin
+        : this._xSpritePressed;
+      const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+        ? xSprite
+        : xSpritePressed;
+      sprite.draw(v_(x + w - 16, y + 13).sub(g.gameAreaOffset));
+    }
   }
 
   draw(): void {
@@ -113,9 +166,7 @@ export class ScreenOver implements GameScreen {
     );
 
     // score
-    // TODO
-    //         local score_base_y = got_high_score and 42 or 47
-    const scoreBaseY = 47;
+    const scoreBaseY = this._gotHighScore ? 42 : 47;
     h.printCentered("your score", g.gameAreaSize.x / 2, scoreBaseY, c._7_white);
     this._game.score.draw(
       v_(52, scoreBaseY + 10),
@@ -123,20 +174,30 @@ export class ScreenOver implements GameScreen {
       this._isWin ? c._5_blue_green : c._14_mauve,
       false
     );
-    // TODO
-    //         if got_high_score then
-    //             _centered_print("new \-fhigh \-fscore!", score_base_y + 20, is_win and _color_15_peach or _color_9_dark_orange)
-    //         end
-    //
-    // TODO
-    //         -- buttons
-    //         if not is_win then
-    //             draw_button("try \-fmission \-f" .. _m_mission_number .. " \-fagain", 81, retry)
-    //         end
-    //         draw_button("go \-fto \-ftitle \-fscreen", is_win and 85 or 103, not retry or is_win)
+    if (this._gotHighScore) {
+      h.printCentered(
+        "new high score!",
+        g.gameAreaSize.x / 2,
+        scoreBaseY + 20,
+        this._isWin ? c._15_peach : c._9_dark_orange
+      );
+    }
+
+    // buttons
+    if (!this._isWin) {
+      this._drawButton(
+        `try mission ${CurrentMission.current} again`,
+        81,
+        this._retry
+      );
+    }
+    this._drawButton(
+      "go to title screen",
+      this._isWin ? 85 : 103,
+      !this._retry || this._isWin
+    );
 
     this._fadeIn.draw();
-    // TODO
-    //         fade_out._draw()
+    this._fadeOut.draw();
   }
 }

@@ -4,17 +4,33 @@ import { TimerInfinite } from "./MovementFixed";
 
 export class MovementLine implements Movement {
   static of =
-    (params: {
-      baseSpeedXy?: Vector2d;
-      // angle: 0 = right, .25 = down, .5 = left, .75 = up
-      angle: number;
-      angledSpeed: number;
-      frames?: number;
-    }): MovementFactory =>
+    (
+      params:
+        | {
+            baseSpeedXy?: Vector2d;
+            // angle: 0 = right, .25 = down, .5 = left, .75 = up
+            angle: number;
+            angledSpeed: number;
+            frames?: number;
+          }
+        | {
+            baseSpeedXy?: Vector2d;
+            targetXy: Vector2d;
+            angledSpeed: number;
+            frames?: number;
+          }
+    ): MovementFactory =>
     (startXy) =>
       new MovementLine(
         startXy,
-        params.angle,
+        "angle" in params
+          ? params.angle
+          : Math.atan2(
+              params.targetXy.sub(startXy).y,
+              params.targetXy.sub(startXy).x
+            ) /
+            Math.PI /
+            2,
         params.angledSpeed,
         params.baseSpeedXy,
         params.frames
@@ -38,9 +54,6 @@ export class MovementLine implements Movement {
       angledSpeed * Math.sin(angle * Math.PI * 2)
     );
 
-    // TODO
-    // local angle = params.target_xy and _angle_between(start_xy, params.target_xy) or params.angle
-    // local angled_speed = params.angled_speed or 1
     this._timer = frames ? new Timer({ frames }) : new TimerInfinite();
   }
 

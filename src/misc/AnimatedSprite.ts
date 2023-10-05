@@ -3,6 +3,8 @@ import { b, g } from "../globals";
 
 // TODO: consider renaming BeetPx's Sprite to SpriteData in order to allow totally different Sprite implementation in games
 
+// TODO: introduce StaticSprite
+
 export class AnimatedSprite {
   static for(
     spritesheetUrl: ImageUrl

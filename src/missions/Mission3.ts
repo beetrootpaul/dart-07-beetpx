@@ -1,8 +1,8 @@
-import { SolidColor, Timer, v_ } from "@beetpx/beetpx";
+import { SolidColor, Timer, v_, Vector2d } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
-import { c, g, u } from "../globals";
+import { b, c, g, u } from "../globals";
 import { AnimatedSprite } from "../misc/AnimatedSprite";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
@@ -35,98 +35,92 @@ export class Mission3 implements Mission {
     progressionMarkersLayer: "progression_markers",
   };
 
-  // TODO
-  // local tube_tiles = split "71,72,87,88,118,118,118,118,103,104,119,120"
-  // local tube_tiles_offset_y
-  // local particles
-  // local particle_step_counter
+  private readonly _tubeTiles: AnimatedSprite[] = [
+    aspr_(8, 8, [56], 32, true),
+    aspr_(8, 8, [64], 32, true),
+    aspr_(8, 8, [56], 40, true),
+    aspr_(8, 8, [64], 40, true),
+    aspr_(8, 8, [48], 56, true),
+    aspr_(8, 8, [48], 56, true),
+    aspr_(8, 8, [48], 56, true),
+    aspr_(8, 8, [48], 56, true),
+    aspr_(8, 8, [56], 48, true),
+    aspr_(8, 8, [64], 48, true),
+    aspr_(8, 8, [56], 56, true),
+    aspr_(8, 8, [64], 56, true),
+  ];
+  private _tubeTilesOffsetY: number = 0;
+
+  private _particles: Array<{
+    xy: Vector2d;
+    sprite: AnimatedSprite;
+  }> = [];
+  private _particleStepCounter: number = 0;
 
   constructor() {
-    // TODO
-    // tube_tiles_offset_y = 0
-    // particles = {}
-    // particle_step_counter = 0
-    //
-    // TODO
-    // for y = 0, _gah - 1, _ts do
-    //     maybe_add_particle(y)
-    // end
+    for (let y = 0; y < g.gameAreaSize.y; y += g.tileSize.y) {
+      this._maybeAddParticle(y);
+    }
   }
 
-  // TODO
-  // local function maybe_add_particle(y)
-  //     if rnd() < .4 then
-  //         local props_whxy = rnd {
-  //             -- particle 1
-  //             "3,4,24,56",
-  //             "3,4,24,56",
-  //             -- particle 2
-  //             "4,3,28,56",
-  //             "4,3,28,56",
-  //             -- particle 3
-  //             "3,3,33,56",
-  //             "3,3,33,56",
-  //             -- particle 4
-  //             "3,3,24,61",
-  //             "3,3,24,61",
-  //             -- particle 5
-  //             "5,4,28,60",
-  //             -- particle 6
-  //             "4,4,34,60",
-  //         }
-  //         add(particles, {
-  //             xy = _xy(
-  //                 flr(4 + rnd(_gaw - 2 * 4)),
-  //                 y
-  //             ),
-  //             sprite = new_static_sprite(props_whxy)
-  //         })
-  //     end
-  // end
+  private _maybeAddParticle(y: number): void {
+    if (Math.random() < 0.4) {
+      // TODO: introduce a BeetPx util to pick a random array element
+      const whxy = [
+        // particle 1
+        [3, 4, 24, 56],
+        [3, 4, 24, 56],
+        // particle 2
+        [4, 3, 28, 56],
+        [4, 3, 28, 56],
+        // particle 3
+        [3, 3, 33, 56],
+        [3, 3, 33, 56],
+        // particle 4
+        [3, 3, 24, 61],
+        [3, 3, 24, 61],
+        // particle 5
+        [5, 4, 28, 60],
+        // particle 6
+        [4, 4, 34, 60],
+      ][Math.floor(Math.random() * 10)]!;
+      const particle = {
+        xy: v_(Math.floor(4 + Math.random() * g.gameAreaSize.x - 2 * 4), y),
+        sprite: aspr_(whxy[0]!, whxy[1]!, [whxy[2]!], whxy[3]!),
+      };
+      this._particles.push(particle);
+    }
+  }
 
   levelBgUpdate(): void {
-    // TODO
-    // for particle in all(particles) do
-    //     if particle.xy.y >= _gah + _ts then
-    //         del(particles, particle)
-    //     end
-    // end
-    //
-    // TODO
-    // tube_tiles_offset_y = (tube_tiles_offset_y + .5) % _ts
-    //
-    // TODO
-    // for particle in all(particles) do
-    //     particle.xy = particle.xy.plus(0, 1.5)
-    // end
-    //
-    // TODO
-    // particle_step_counter = (particle_step_counter + 1) % 8
-    // if particle_step_counter == 0 then
-    //     maybe_add_particle(-_ts)
-    // end
+    this._particles = this._particles.filter(
+      (p) => p.xy.y <= g.gameAreaSize.y + g.tileSize.y
+    );
+
+    for (const particle of this._particles) {
+      particle.xy = particle.xy.add(0, 1.5);
+    }
+
+    this._particleStepCounter = (this._particleStepCounter + 1) % 8;
+    if (this._particleStepCounter === 0) {
+      this._maybeAddParticle(-g.tileSize.y);
+    }
+
+    this._tubeTilesOffsetY = (this._tubeTilesOffsetY + 0.5) % g.tileSize.y;
   }
 
   levelBgDraw(): void {
-    // TODO
-    // palt(_color_0_black, false)
-    // palt(_color_11_transparent, true)
-    // for lane = 1, 12 do
-    //     local tube_tile = tube_tiles[lane]
-    //     for distance = 0, 16 do
-    //         spr(
-    //             tube_tile,
-    //             _gaox + (lane - 1) * _ts,
-    //             ceil((distance - 1) * _ts + tube_tiles_offset_y)
-    //         )
-    //     end
-    // end
-    // palt()
-    //
-    // TODO
-    // for particle in all(particles) do
-    //     particle.sprite._draw(particle.xy)
-    // end
+    for (let lane = 1; lane <= 12; lane++) {
+      for (let distance = 0; distance <= 16; distance++) {
+        this._tubeTiles[lane - 1]?.draw(
+          g.tileSize.mul(lane - 1, distance - 1).add(0, this._tubeTilesOffsetY)
+        );
+      }
+    }
+
+    for (const particle of this._particles) {
+      particle.sprite.draw(particle.xy);
+    }
   }
 
   enemyPropertiesFor(enemyId: string): EnemyProperties {
@@ -143,22 +137,23 @@ export class Mission3 implements Mission {
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          // TODO
-          //             bullet_fire_timer = new_timer "40",
-          //             spawn_bullets = function(enemy_movement, player_collision_circle)
-          //                 _sfx_play(_sfx_enemy_multi_shoot)
-          //                 local bullets = {}
-          //                 for i = 1, 8 do
-          //                     add(bullets, enemy_bullet_factory(
-          //                         new_movement_line_factory {
-          //                             base_speed_y = enemy_movement.speed_xy.y,
-          //                             angle = .0625 + i / 8,
-          //                         }(enemy_movement.xy)
-          //                     ))
-          //                 end
-          //                 return bullets
-          //             end,
-          //         },
+          bulletFireTimer: new Timer({ frames: 40 }),
+          spawnBullets: (enemyMovement, playerCollisionCircle) => {
+            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            const bullets: EnemyBullet[] = [];
+            for (let i = 1; i <= 8; i++) {
+              bullets.push(
+                eb_(
+                  MovementLine.of({
+                    baseSpeedXy: enemyMovement.speed,
+                    angle: 1 / 16 + i / 8,
+                    angledSpeed: 1,
+                  })(enemyMovement.xy)
+                )
+              );
+            }
+            return bullets;
+          },
         };
       default:
         return u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
@@ -166,7 +161,15 @@ export class Mission3 implements Mission {
   }
 
   // TODO
-  // _m_mission_main_music, _m_mission_boss_music = 0, 1
+  // _m_mission_main_music = 0
+  // SEQ:
+  // loop:
+  //   32
+  //
+  // _m_mission_boss_music = 1
+  // SEQ:
+  // loop:
+  //   33
 
   bossProperties(): BossProperties {
     return {
@@ -181,8 +184,7 @@ export class Mission3 implements Mission {
           score: 1,
           bulletFireTimer: new Timer({ frames: 80 }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            // TODO
-            // _sfx_play(_sfx_enemy_multi_shoot)
+            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             return [
               eb_(
                 MovementLine.of({

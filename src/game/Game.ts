@@ -86,22 +86,22 @@ export class Game {
     this._player = new Player({
       onBulletsSpawned: (bullets) => {
         // TODO: consider not playing a bullet sound at all
-        // TODO
-        //   _sfx_play(game.triple_shoot and _sfx_player_triple_shoot or _sfx_player_shoot, 3)
+        b.playSoundOnce(
+          this._tripleShoot
+            ? g.assets.sfxPlayerTripleShoot
+            : g.assets.sfxPlayerShoot
+        );
         this._playerBullets.push(...bullets);
       },
       onShockwaveTriggered: (shockwave) => {
-        // TODO
-        //     _sfx_play(_sfx_player_shockwave, 2)
+        b.playSoundOnce(g.assets.sfxPlayerShockwave);
         this._shockwaves.push(shockwave);
       },
       onDamaged: () => {
-        // TODO
-        //    _sfx_play(_sfx_damage_player, 2)
+        b.playSoundOnce(g.assets.sfxDamagePlayer);
       },
       onDestroyed: (playerCc) => {
-        // TODO
-        //    _sfx_play(_sfx_destroy_player, 3)
+        b.playSoundOnce(g.assets.sfxDestroyPlayer);
         this._explosions.push(
           new Explosion({ startXy: playerCc.center, magnitude: playerCc.r }),
           new Explosion({
@@ -162,11 +162,9 @@ export class Game {
       this.score.add(10);
       this._floats.push(new Float({ startXy: xy, score: 10 }));
     }
-    // TODO
-    // _sfx_play(
-    //     has_effect and _sfx_powerup_picked or _sfx_powerup_no_effect,
-    //     has_effect and 2 or nil
-    // )
+    b.playSoundOnce(
+      hasEffect ? g.assets.sfxPowerupPicked : g.assets.sfxPowerupNoEffect
+    );
   }
 
   private _handleCollisions(): void {
@@ -315,12 +313,10 @@ export class Game {
         }
       },
       onDamaged: () => {
-        // TODO
-        //   _sfx_play(_sfx_damage_enemy, 3)
+        b.playSoundOnce(g.assets.sfxDamageEnemy);
       },
       onEnteredNextPhase: (collisionCircles, scoreToAdd) => {
-        // TODO
-        //             _sfx_play(_sfx_destroy_boss_phase)
+        b.playSoundOnce(g.assets.sfxDestroyBossPhase);
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -334,8 +330,7 @@ export class Game {
         }
       },
       onDestroyed: (collisionCircles, scoreToAdd) => {
-        // TODO
-        //             _sfx_play(_sfx_destroy_boss_final_1)
+        b.playSoundOnce(g.assets.sfxDestroyBossFinal1);
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -350,8 +345,7 @@ export class Game {
               magnitude: 1.4 * cc.r,
               waitFrames: 4 + Math.random() * 44,
               onStarted: () => {
-                // TODO:
-                //   _sfx_play(_sfx_destroy_boss_final_2)
+                b.playSoundOnce(g.assets.sfxDestroyBossFinal2);
               },
             }),
             new Explosion({
@@ -359,8 +353,7 @@ export class Game {
               magnitude: 1.8 * cc.r,
               waitFrames: 12 + Math.random() * 36,
               onStarted: () => {
-                // TODO:
-                //   _sfx_play(_sfx_destroy_boss_final_3)
+                b.playSoundOnce(g.assets.sfxDestroyBossFinal3);
               },
             }),
             new Explosion({
@@ -465,8 +458,7 @@ export class Game {
             }
           },
           onDamaged: (mainCollisionCircle) => {
-            // TODO
-            //     _sfx_play(_sfx_damage_enemy)
+            b.playSoundOnce(g.assets.sfxDamagePlayer);
             this._explosions.push(
               new Explosion({
                 startXy: mainCollisionCircle.center,
@@ -475,8 +467,7 @@ export class Game {
             );
           },
           onDestroyed: (mainCollisionCircle, scoreToAdd, powerupType) => {
-            // TODO
-            //     _sfx_play(_sfx_destroy_enemy)
+            b.playSoundOnce(g.assets.sfxDestroyEnemy);
             this.score.add(scoreToAdd);
             this._floats.push(
               new Float({

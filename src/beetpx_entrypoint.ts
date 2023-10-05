@@ -36,7 +36,26 @@ b.init(
         imageBgColor: c._0_black,
       },
     ],
-    sounds: [],
+    sounds: [
+      { url: g.assets.sfxOptionsChange },
+      { url: g.assets.sfxOptionsConfirm },
+      { url: g.assets.sfxPowerupNoEffect },
+      { url: g.assets.sfxPowerupPicked },
+      { url: g.assets.sfxPlayerShoot },
+      { url: g.assets.sfxPlayerTripleShoot },
+      { url: g.assets.sfxPlayerShockwave },
+      { url: g.assets.sfxEnemyShoot },
+      { url: g.assets.sfxEnemyMultiShoot },
+      { url: g.assets.sfxDamagePlayer },
+      { url: g.assets.sfxDamageEnemy },
+      { url: g.assets.sfxDestroyPlayer },
+      { url: g.assets.sfxDestroyEnemy },
+      { url: g.assets.sfxDestroyBossPhase },
+      { url: g.assets.sfxDestroyBossFinal1 },
+      { url: g.assets.sfxDestroyBossFinal2 },
+      { url: g.assets.sfxDestroyBossFinal3 },
+      { url: g.assets.sfxGameWin },
+    ],
   }
 )
   // TODO: rework, move JSON fetch to BeetPx
@@ -88,33 +107,7 @@ b.init(
         { from: Pico8Colors._15_lightPeach, to: c._15_peach },
       ]);
 
-      // TODO: REVERT
       currentScreen = new ScreenBrp();
-      // currentScreen = new ScreenOver({
-      //   game: new Game({
-      //     tripleShoot: true,
-      //     fastMovement: true,
-      //     score: 123,
-      //     shockwaveCharges: 3,
-      //     health: 4,
-      //     fastShoot: true,
-      //   }),
-      //   isWin: true,
-      // });
-      // currentScreen = new ScreenMissionEnd({
-      //   game: new Game({
-      //     tripleShoot: true,
-      //     fastMovement: true,
-      //     score: 123,
-      //     shockwaveCharges: 3,
-      //     health: 4,
-      //     fastShoot: true,
-      //   }),
-      //   hud: new Hud({
-      //     waitFrames: 1,
-      //     slideInFrames: 1,
-      //   }),
-      // });
     });
 
     b.setOnUpdate(() => {
