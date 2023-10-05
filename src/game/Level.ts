@@ -1,7 +1,15 @@
 // To avoid thinking in x and y we talk here about:
 //   - distance = how many tiles we have scrolled forward (can be fraction)
 //   - lane     = which row of tiles are we talking about, perpendicular to distance
-import { b_, BpxVector2d, spr_, transparent_, u_, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxSprite,
+  BpxVector2d,
+  spr_,
+  transparent_,
+  u_,
+  v_,
+} from "@beetpx/beetpx";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Pico8Colors } from "../pico8/Pico8Color";
@@ -21,8 +29,28 @@ export class Level {
     this._maxVisibleDistance + this._spawnDistanceOffset;
   private _distanceNextSpawn: number = this._maxVisibleDistance;
 
+  private _sprites: Map<number, BpxSprite> = new Map<number, BpxSprite>();
+
   constructor(levelDescriptor: LevelDescriptor) {
     this._levelDescriptor = levelDescriptor;
+
+    this._levelDescriptor.structures.forEach((structuresAtDistances) => {
+      structuresAtDistances.forEach((tileId) => {
+        if (tileId) {
+          if (!this._sprites.has(tileId)) {
+            this._sprites.set(
+              tileId,
+              spr_(CurrentMission.m.ldtk.tilesetPng)(
+                (tileId % 16) * g.tileSize.x,
+                Math.floor(tileId / 16) * g.tileSize.y,
+                g.tileSize.x,
+                g.tileSize.y
+              )
+            );
+          }
+        }
+      });
+    });
   }
 
   syncWithLevelScrollFractionalPart(v: BpxVector2d): BpxVector2d {
@@ -145,15 +173,8 @@ export class Level {
   }
 
   private _drawTile(tileId: number, distance: number, lane: number): void {
-    // TODO: rework: cache sprites. Use some cache exported from BeetPx for that?
-    // TODO: rework: decouple sheet width and height?
     b_.sprite(
-      spr_(CurrentMission.m.ldtk.tilesetPng)(
-        (tileId % 16) * g.tileSize.x,
-        Math.floor(tileId / 16) * g.tileSize.y,
-        g.tileSize.x,
-        g.tileSize.y
-      ),
+      this._sprites.get(tileId)!,
       g.gameAreaOffset
         .add(v_(0, g.gameAreaSize.y))
         .add(g.tileSize.mul(v_(lane - 1, this._minVisibleDistance - distance)))

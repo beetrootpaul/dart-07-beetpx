@@ -67,7 +67,6 @@ export class ScreenOver implements GameScreen {
     const currentScore = this._game.score.rawValue;
     const highScoreSoFar = b_.load<{ highScore: number }>()?.highScore ?? 0;
     this._gotHighScore = currentScore > highScoreSoFar;
-    // TODO: fix BeetPx to NOT store at the same time to `game_stored_state` and `game_stored_state2`
     b_.store<{ highScore: number }>({
       highScore: Math.max(highScoreSoFar, currentScore),
     });
