@@ -8,7 +8,7 @@ import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
 import { Mission } from "./Mission";
 
-const sspr_ = Sprite.for(g.assets.mission2SpritesheetUrl).static;
+const sspr_ = Sprite.for(g.assets.mission3SpritesheetUrl).static;
 
 const eb_ = EnemyBullet.factory(sspr_(4, 4, 124, 64), 2);
 
