@@ -36,7 +36,6 @@ export class Powerup {
   readonly type: PowerupType;
 
   private readonly _movement: Movement;
-  // TODO: introduce StaticSprite
   private readonly _sprite: Sprite;
 
   private _isPicked: boolean = false;

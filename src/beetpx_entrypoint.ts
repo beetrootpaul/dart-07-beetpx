@@ -123,10 +123,6 @@ b_.init(
   });
 
   b_.setOnDraw(() => {
-    // TODO: clear canvas
-    // TODO: map colors
-    // TODO: print audiocontext state and FPS
-
     currentScreen?.draw();
 
     // TODO: rework pause menu

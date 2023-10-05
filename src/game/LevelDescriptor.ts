@@ -19,6 +19,23 @@ export class LevelDescriptor {
     // because enemies occupy 2 tiles in Y and their are placed on the further one, but we want to detect them on the closer one
     const enemyOffsetY = 1;
 
+    const expectedVersion = "1.4.0";
+    if (LevelDescriptor.tmpJson.jsonVersion !== expectedVersion) {
+      throw Error(
+        `Levels JSON generated from unexpected Ldtk version: "${LevelDescriptor.tmpJson.jsonVersion}" (expected: "${expectedVersion}").`
+      );
+    }
+    if (LevelDescriptor.tmpJson.externalLevels !== false) {
+      throw Error(
+        `Levels JSON has "externalLevels" set to "true", which is unsupported in this game`
+      );
+    }
+    if (LevelDescriptor.tmpJson.simplifiedExport !== false) {
+      throw Error(
+        `Levels JSON has "simplifiedExport" set to "true", which is unsupported in this game`
+      );
+    }
+
     this.maxDefinedDistance =
       LevelDescriptor.tmpJson.levels.find(
         (l: any) => l.identifier === CurrentMission.m.ldtk.level

@@ -171,7 +171,6 @@ export class Player {
     }
   }
 
-  // TODO: consider game objects with draw and update and hasFinished, managed by BeetPx
   update(): void {
     if (this._invincibleAfterDamageTimer?.hasFinished) {
       this._invincibleAfterDamageTimer = null;

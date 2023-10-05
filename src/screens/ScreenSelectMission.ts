@@ -95,13 +95,11 @@ export class ScreenSelectMission implements GameScreen {
   update(): void {
     // TODO: pressing "x" to select mission makes the first bullet shot. Fix it!
 
-    // TODO: something doesn't work here
     if (b_.wasJustPressed("up")) {
       b_.playSoundOnce(g.assets.sfxOptionsChange);
       this._selectedMission = (this._selectedMission + 4 - 1) % 4;
       this._initShipMovement();
     }
-    // TODO: something doesn't work here
     if (b_.wasJustPressed("down")) {
       b_.playSoundOnce(g.assets.sfxOptionsChange);
       this._selectedMission = (this._selectedMission + 1) % 4;

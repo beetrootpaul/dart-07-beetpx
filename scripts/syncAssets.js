@@ -85,28 +85,22 @@ function simplifyLdtkJson(missionsLdtkPath, simplifiedMissionJsonPath) {
   const fullJsonRaw = fs.readFileSync(shortMissionsLdtkPath, "utf-8");
   const fullJson = JSON.parse(fullJsonRaw);
 
-  // TODO: check if everything listed here is really needed
   const simplifiedJson = {
-    jsonVersion: fullJson.jsonVersion, // TODO: string, validate it's `1.3.4`
-    externalLevels: fullJson.externalLevels, // TODO: boolean, validate it's `false
-    simplifiedExport: fullJson.simplifiedExport, // TODO: boolean, validate it's `false
+    jsonVersion: fullJson.jsonVersion,
+    externalLevels: fullJson.externalLevels,
+    simplifiedExport: fullJson.simplifiedExport,
     levels: fullJson.levels.map((l) => ({
-      identifier: l.identifier, // TODO: string
-      pxWid: l.pxWid, // TODO: number, validate it's `128`
-      pxHei: l.pxHei, // TODO: number
+      identifier: l.identifier,
+      pxHei: l.pxHei,
       layerInstances: l.layerInstances.map((li) => ({
-        __identifier: li.__identifier, // TODO: string
-        __type: li.__type, // TODO: string, validate it's `Entities` | `IntGrid`
-        __cWid: li.__cWid, // TODO: number, validate it's `l.pxWid / 8`
-        __cHei: li.__cHei, // TODO: number, validate it's `l.pxHei / 8`
-        __tilesetRelPath: li.__tilesetRelPath, // TODO: string | null, validate it is one of expected PNGs, but first transform from `../public/spritesheet_mission_1.png` to `spritesheet_mission_1.png`
+        __identifier: li.__identifier,
         autoLayerTiles: li.autoLayerTiles.map((alt) => ({
-          px: alt.px, // TODO: [number, number], validate it's within real level bounds
-          t: alt.t, // TODO: number, validate it's within tileset bounds
+          px: [alt.px[0], alt.px[1]],
+          t: alt.t,
         })),
         entityInstances: li.entityInstances.map((ei) => ({
-          __identifier: ei.__identifier, // TODO: string
-          __grid: ei.__grid, // TODO: [number, number], validate it's within real level bounds
+          __identifier: ei.__identifier,
+          __grid: [ei.__grid[0], ei.__grid[1]],
         })),
       })),
     })),

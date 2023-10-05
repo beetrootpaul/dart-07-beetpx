@@ -5,7 +5,6 @@ export class Score {
   private static _multiplier: number = 10;
 
   private _value: number;
-  // TODO: maybe introduce some memoization instead of a need to manually make sure we do not recreate same text on every frame
   private _text: string;
 
   constructor(initialScore: number) {

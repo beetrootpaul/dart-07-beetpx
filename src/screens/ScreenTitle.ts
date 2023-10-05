@@ -85,7 +85,6 @@ export class ScreenTitle implements GameScreen {
 
   private _maybeAddStar(y: number): void {
     if (Math.random() < 0.1) {
-      // TODO: introduce a BeetPx util to pick a random array element
       const speed = u_.randomElementOf([0.25, 0.5, 0.75])!;
       const star = {
         xy: v_(Math.ceil(1 + Math.random() * g.viewportSize.x - 3), y),

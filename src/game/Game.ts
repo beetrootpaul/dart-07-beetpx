@@ -44,24 +44,19 @@ export class Game {
   private readonly _level: Level = new Level(new LevelDescriptor());
 
   private _player: Player | null;
-  // TODO: consider poll of enemies for memory reusage. Maybe create a poll in BeetPx?
   private _enemies: Enemy[] = [];
   private _boss: Boss | null = null;
 
-  // TODO: consider poll of bullets for memory reusage
   private _playerBullets: PlayerBullet[] = [];
   private _enemyBullets: EnemyBullet[] = [];
   private _shockwaves: Shockwave[] = [];
 
   private readonly _shockwaveEnemyHits: { [combinedId: string]: number } = {};
 
-  // TODO: consider poll of floats for memory reusage
   private _explosions: Explosion[] = [];
 
-  // TODO: consider poll of floats for memory reusage
   private _floats: Float[] = [];
 
-  // TODO: consider poll of floats for memory reusage
   private _powerups: Powerup[] = [];
 
   readonly score: Score;
