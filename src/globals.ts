@@ -109,4 +109,31 @@ export const g = {
         return canvasColor;
     }
   },
+
+  darkerColorMapping: (
+    canvasColor: BpxSolidColor | BpxTransparentColor
+  ): BpxSolidColor | BpxTransparentColor => {
+    switch (canvasColor.id) {
+      case c.black.id:
+      case c.darkerBlue.id:
+      case c.darkerPurple.id:
+        return c.black;
+      case c.trueBlue.id:
+      case c.blueGreen.id:
+      case c.mauve.id:
+        return c.darkerPurple;
+      case c.darkGreen.id:
+      case c.red.id:
+      case c.darkOrange.id:
+      case c.lavender.id:
+        return c.mauve;
+      case c.lightGrey.id:
+      case c.white.id:
+      case c.blue.id:
+      case c.peach.id:
+        return c.lavender;
+      default:
+        return canvasColor;
+    }
+  },
 };

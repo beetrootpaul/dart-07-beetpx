@@ -121,7 +121,6 @@ b_.init(
   b_.setOnDraw(() => {
     currentScreen?.draw();
 
-    // TODO: rework pause menu
     if (PauseMenu.isGamePaused) {
       pauseMenu?.draw();
     }

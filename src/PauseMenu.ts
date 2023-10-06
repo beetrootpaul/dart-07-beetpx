@@ -1,9 +1,15 @@
-import { b_, BpxMappingColor, BpxSolidColor, u_, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxMappingColor,
+  BpxSolidColor,
+  BpxVector2d,
+  u_,
+  v_,
+} from "@beetpx/beetpx";
 import { c, g } from "./globals";
 
 // TODO: add an ability to restart the current mission
 
-// TODO: rework? It's just a copy paste from my another game
 export class PauseMenu {
   static isGamePaused: boolean = false;
 
@@ -53,6 +59,12 @@ export class PauseMenu {
     const padding = 6;
     const gapBetweenLines = 4;
 
+    b_.rectFilled(
+      BpxVector2d.zero,
+      g.viewportSize,
+      new BpxMappingColor(b_.takeCanvasSnapshot(), g.darkerColorMapping)
+    );
+
     const wh = v_(
       Math.max(textContinueWh.x, textRestartWh.x) + 2 * padding,
       textContinueWh.y + textRestartWh.y + 2 * padding + gapBetweenLines
@@ -80,6 +92,7 @@ export class PauseMenu {
       this._pressedIndex === 0 ? c.peach : c.white
     );
     b_.print(
+      // TODO: make it clear it will restart the whole game / go to the main title
       "restart",
       xy.add(
         padding + (this._selected === 1 ? 1 : 0),
