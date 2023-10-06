@@ -22,3 +22,10 @@ npm run syncAssets:watch
 ```shell
 npm start
 ```
+
+## Game cover
+
+To create a game cover:
+- go to `ScreenTitle`
+- change `_gameCoverMode` to `true`
+- run the game

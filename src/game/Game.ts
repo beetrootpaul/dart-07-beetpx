@@ -511,10 +511,8 @@ export class Game {
   }
 
   draw(): void {
-    // TODO
-    // clip(_gaox, 0, _gaw, _gah)
+    b_.setClippingRegion(g.gameAreaOffset, g.gameAreaSize);
 
-    // TODO: consider introduction of GameObject with update and draw managed by BeetPx. Moreover, it might need a tree structure to call screen object's update before all game objects inside it and after things like collisions and input handling
     this._level.draw();
     this._boss?.draw();
     // Some enemies are placed on a ground and have collision circle smaller than a sprite,
@@ -530,8 +528,7 @@ export class Game {
     // But keep GUI elements (floats) on top of shockwaves.
     this._floats.forEach((f) => f.draw());
 
-    // TODO
-    //   clip()
+    b_.removeClippingRegion();
 
     if (b_.debug) {
       this._enemies.forEach((e) => {

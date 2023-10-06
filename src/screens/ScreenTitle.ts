@@ -19,8 +19,7 @@ import { ScreenControls } from "./ScreenControls";
 import { ScreenSelectMission } from "./ScreenSelectMission";
 
 export class ScreenTitle implements GameScreen {
-  // TODO: still needed?
-  private static readonly _cartLabelMode: boolean = false;
+  private static readonly _gameCoverMode: boolean = false;
 
   private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(
     99,
@@ -200,7 +199,7 @@ export class ScreenTitle implements GameScreen {
     // TODO
     //         map(cart_label_mode and 16 or 0, 0, 0, 0, 16, 16)
 
-    if (ScreenTitle._cartLabelMode) {
+    if (ScreenTitle._gameCoverMode) {
       // TODO
       //             map(16, 0, 0, 0, 16, 16)
 
@@ -233,7 +232,7 @@ export class ScreenTitle implements GameScreen {
     }
 
     // TODO: `&& start_fade_in` inside `if`
-    if (!ScreenTitle._cartLabelMode) {
+    if (!ScreenTitle._gameCoverMode) {
       this._fadeIn.draw();
     }
   }
