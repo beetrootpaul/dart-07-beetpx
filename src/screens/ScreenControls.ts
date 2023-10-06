@@ -1,4 +1,5 @@
 import { b_, spr_, u_, v_ } from "@beetpx/beetpx";
+import { PauseMenu } from "../PauseMenu";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
 import { GameScreen } from "./GameScreen";
@@ -64,7 +65,12 @@ export class ScreenControls implements GameScreen {
 
     // button shape
     b_.sprite(
-      spr_(g.assets.mainSpritesheetUrl)(35, 12, 1, 12),
+      spr_(g.assets.mainSpritesheetUrl)(
+        !PauseMenu.isGamePaused ? 35 : 36,
+        12,
+        1,
+        12
+      ),
       v_(baseX, baseY),
       v_(w, 1)
     );
@@ -72,11 +78,13 @@ export class ScreenControls implements GameScreen {
     // button text
     b_.print("back", v_(baseX + 4, baseY + 3), c.mauve);
 
-    // "x" press incentive
-    const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
-      ? this._xSprite
-      : this._xSpritePressed;
-    sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
+    if (!PauseMenu.isGamePaused) {
+      // "x" press incentive
+      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
+        ? this._xSprite
+        : this._xSpritePressed;
+      sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
+    }
   }
 
   private _drawControls(baseX: number, baseY: number): void {

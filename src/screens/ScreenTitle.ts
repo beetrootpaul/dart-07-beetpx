@@ -12,6 +12,7 @@ import { Fade } from "../Fade";
 import { Score } from "../game/Score";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
+import { PauseMenu } from "../PauseMenu";
 import { PersistedState } from "../PersistedState";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
@@ -227,8 +228,20 @@ export class ScreenTitle implements GameScreen {
       this._drawVersion(1);
       this._drawTitle(15);
       this._drawHighScore(57);
-      this._drawButton("play", 98, 15, 82, this._play);
-      this._drawButton("controls", 98, 15, 104, !this._play);
+      this._drawButton(
+        "play",
+        98,
+        15,
+        82,
+        this._play && !PauseMenu.isGamePaused
+      );
+      this._drawButton(
+        "controls",
+        98,
+        15,
+        104,
+        !this._play && !PauseMenu.isGamePaused
+      );
     }
 
     // TODO: `&& start_fade_in` inside `if`

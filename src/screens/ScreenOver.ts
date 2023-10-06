@@ -1,5 +1,6 @@
 import { b_, spr_, u_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
+import { PauseMenu } from "../PauseMenu";
 import { PersistedState } from "../PersistedState";
 import { Game } from "../game/Game";
 import { c, g } from "../globals";
@@ -189,13 +190,13 @@ export class ScreenOver implements GameScreen {
       this._drawButton(
         `try mission ${CurrentMission.current} again`,
         81,
-        this._retry
+        this._retry && !PauseMenu.isGamePaused
       );
     }
     this._drawButton(
       "go to title screen",
       this._isWin ? 85 : 103,
-      !this._retry || this._isWin
+      (!this._retry || this._isWin) && !PauseMenu.isGamePaused
     );
 
     this._fadeIn.draw();

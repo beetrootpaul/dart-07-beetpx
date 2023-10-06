@@ -4,6 +4,7 @@ import { c, g } from "../globals";
 import { AnimatedSprite, Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementToTarget } from "../movement/MovementToTarget";
+import { PauseMenu } from "../PauseMenu";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 import { ScreenTitle } from "./ScreenTitle";
@@ -128,7 +129,8 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   private _drawMissionButton(mission: number): void {
-    const selected = mission === this._selectedMission;
+    const selected =
+      mission === this._selectedMission && !PauseMenu.isGamePaused;
 
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(mission);
 
@@ -180,7 +182,7 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   private _drawBackButton(): void {
-    const selected = 0 === this._selectedMission;
+    const selected = 0 === this._selectedMission && !PauseMenu.isGamePaused;
 
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(0);
 
