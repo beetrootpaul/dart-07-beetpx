@@ -13,16 +13,8 @@ import { c, g } from "./globals";
 export class PauseMenu {
   static isGamePaused: boolean = false;
 
-  // TODO: introduce BeetPx util for drawing a glyph based on array of pixels
   // TODO: better arrows? There are some glyphs ready on the font's image
-  static #arrowPixelsOffsets = [
-    v_(0, 0),
-    v_(0, 1),
-    v_(0, 2),
-    v_(0, 3),
-    v_(1, 1),
-    v_(1, 2),
-  ];
+  private static _arrowPixels = ["#_", "##", "##", "#_"];
 
   private _selected = 0;
   private _pressedIndex = -1;
@@ -103,19 +95,17 @@ export class PauseMenu {
       ),
       this._pressedIndex === 1 ? c.peach : c.white
     );
-    for (const offset of PauseMenu.#arrowPixelsOffsets) {
-      b_.pixel(
-        xy
-          .add(
-            padding,
-            padding +
-              (this._selected === 1 ? textContinueWh.y + gapBetweenLines : 0)
-          )
-          .sub(4, 0)
-          .add(offset),
-        c.white
-      );
-    }
+    b_.pixels(
+      xy
+        .add(
+          padding,
+          padding +
+            (this._selected === 1 ? textContinueWh.y + gapBetweenLines : 0)
+        )
+        .sub(4, 0),
+      c.white,
+      PauseMenu._arrowPixels
+    );
   }
 }
 
