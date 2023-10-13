@@ -215,7 +215,7 @@ export class Mission1 implements Mission {
               easingFn: BpxEasing.inQuadratic,
             }),
           ]),
-          bulletFireTimer: timer_(60),
+          bulletFireTimer: timer_(6),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
             b_.playSoundOnce(g.assets.sfxEnemyShoot);
             const enemyXy = enemyMovement.xy;

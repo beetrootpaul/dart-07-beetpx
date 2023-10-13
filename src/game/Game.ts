@@ -121,7 +121,7 @@ export class Game {
   private _handlePlayerDamage(): void {
     this._cameraShakeTimer = timer_(12);
 
-    this._health -= 1;
+    // this._health -= 1;
     this._fastMovement = false;
     this._fastShoot = false;
     this._tripleShoot = false;
