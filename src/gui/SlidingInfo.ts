@@ -1,4 +1,12 @@
-import { b_, BpxEasing, BpxSolidColor, u_, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxEasing,
+  BpxSolidColor,
+  BpxVector2d,
+  u_,
+  v2d_,
+  v_,
+} from "@beetpx/beetpx";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Movement } from "../movement/Movement";
@@ -35,7 +43,7 @@ export class SlidingInfo {
           ]
         : []),
       MovementToTarget.of({
-        targetY: g.gameAreaSize.y / 2,
+        targetY: g.gameAreaSize[1] / 2,
         frames: params.slideInFrames,
         easingFn: BpxEasing.outQuartic,
         onFinished: () => {
@@ -46,11 +54,11 @@ export class SlidingInfo {
         frames: params.presentFrames,
       }),
       MovementToTarget.of({
-        targetY: g.gameAreaSize.y + 18,
+        targetY: g.gameAreaSize[1] + 18,
         frames: params.slideOutFrames,
         easingFn: BpxEasing.inQuartic,
       }),
-    ])(g.gameAreaOffset.sub(0, 18));
+    ])(v_.sub(g.gameAreaOffset, v2d_(0, 18)));
   }
 
   get hasFinished(): boolean {
@@ -62,12 +70,16 @@ export class SlidingInfo {
   }
 
   draw(): void {
-    const xy = this._movement.xy[this._roundingFn]();
+    // TODO: implement v_.ceil(…) and go back to `v_[this._roundingFn](…)`
+    const xy: BpxVector2d =
+      this._roundingFn === "ceil"
+        ? [Math.ceil(this._movement.xy[0]), Math.ceil(this._movement.xy[1])]
+        : v_.floor(this._movement.xy);
 
     if (this._text1) {
       u_.printWithOutline(
         this._text1,
-        g.gameAreaOffset.add(g.gameAreaSize.x / 2, xy.y - 17),
+        v_.add(g.gameAreaOffset, v2d_(g.gameAreaSize[0] / 2, xy[1] - 17)),
         CurrentMission.m.bgColor,
         this._mainColor,
         [true, false]
@@ -76,12 +88,12 @@ export class SlidingInfo {
 
     u_.printWithOutline(
       this._text2,
-      g.gameAreaOffset.add(g.gameAreaSize.x / 2, xy.y - 8),
+      v_.add(g.gameAreaOffset, v2d_(g.gameAreaSize[0] / 2, xy[1] - 8)),
       CurrentMission.m.bgColor,
       this._mainColor,
       [true, false]
     );
 
-    b_.line(xy, v_(g.gameAreaSize.x, 1), this._mainColor);
+    b_.line(xy, v2d_(g.gameAreaSize[0], 1), this._mainColor);
   }
 }

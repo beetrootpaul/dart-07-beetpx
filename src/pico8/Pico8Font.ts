@@ -5,6 +5,8 @@ import {
   BpxSprite,
   BpxVector2d,
   spr_,
+  v2d_,
+  v_,
   type BpxFont,
 } from "@beetpx/beetpx";
 import { g } from "../globals";
@@ -80,7 +82,7 @@ export class Pico8Font implements BpxFont {
 
   spritesFor(text: string): BpxCharSprite[] {
     const charSprites: BpxCharSprite[] = [];
-    let positionInText: BpxVector2d = BpxVector2d.zero;
+    let positionInText: BpxVector2d = [0, 0];
 
     for (let i = 0; i < text.length; i += 1) {
       let char = text[i]!.toLowerCase();
@@ -96,8 +98,8 @@ export class Pico8Font implements BpxFont {
       if (sprite) {
         charSprites.push({ positionInText, sprite, char });
       }
-      const jumpX = (sprite?.size().x ?? Pico8Font.#spaceW) + 1;
-      positionInText = positionInText.add(jumpX, 0);
+      const jumpX = (sprite?.size()[0] ?? Pico8Font.#spaceW) + 1;
+      positionInText = v_.add(positionInText, v2d_(jumpX, 0));
     }
 
     return charSprites;

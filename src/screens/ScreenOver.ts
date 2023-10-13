@@ -1,4 +1,4 @@
-import { b_, spr_, u_, v_ } from "@beetpx/beetpx";
+import { b_, spr_, u_, v2d_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { PauseMenu } from "../PauseMenu";
 import { PersistedState } from "../PersistedState";
@@ -131,12 +131,12 @@ export class ScreenOver implements GameScreen {
         1,
         12
       ),
-      v_(x, y),
-      v_(w, 1)
+      v2d_(x, y),
+      v2d_(w, 1)
     );
 
     // button text
-    b_.print(text, v_(x + 4, y + 3), this._isWin ? c.blueGreen : c.mauve);
+    b_.print(text, v2d_(x + 4, y + 3), this._isWin ? c.blueGreen : c.mauve);
 
     // "x" press incentive
     if (selected) {
@@ -147,7 +147,7 @@ export class ScreenOver implements GameScreen {
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? xSprite
         : xSpritePressed;
-      sprite.draw(v_(x + w - 16, y + 13).sub(g.gameAreaOffset));
+      sprite.draw(v_.sub(v2d_(x + w - 16, y + 13), g.gameAreaOffset));
     }
   }
 
@@ -157,7 +157,7 @@ export class ScreenOver implements GameScreen {
     // heading
     b_.print(
       this._isWin ? "you made it!" : "game over",
-      g.gameAreaOffset.add(g.gameAreaSize.x / 2, 22),
+      v_.add(g.gameAreaOffset, v2d_(g.gameAreaSize[0] / 2, 22)),
       this._isWin ? c.blueGreen : c.red,
       [true, false]
     );
@@ -166,12 +166,12 @@ export class ScreenOver implements GameScreen {
     const scoreBaseY = this._gotHighScore ? 42 : 47;
     b_.print(
       "your score",
-      g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY),
+      v_.add(g.gameAreaOffset, v2d_(g.gameAreaSize[0] / 2, scoreBaseY)),
       c.white,
       [true, false]
     );
     this._game.score.draw(
-      v_(52, scoreBaseY + 10),
+      v2d_(52, scoreBaseY + 10),
       c.white,
       this._isWin ? c.blueGreen : c.mauve,
       false
@@ -179,7 +179,7 @@ export class ScreenOver implements GameScreen {
     if (this._gotHighScore) {
       b_.print(
         "new high score!",
-        g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY + 20),
+        v_.add(g.gameAreaOffset, v2d_(g.gameAreaSize[0] / 2, scoreBaseY + 20)),
         this._isWin ? c.peach : c.darkOrange,
         [true, false]
       );

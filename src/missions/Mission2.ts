@@ -1,4 +1,12 @@
-import { b_, BpxSolidColor, BpxVector2d, timer_, u_, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxSolidColor,
+  BpxVector2d,
+  timer_,
+  u_,
+  v2d_,
+  v_,
+} from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
@@ -42,7 +50,7 @@ export class Mission2 implements Mission {
   }> = [];
 
   constructor() {
-    for (let y = 0; y < g.gameAreaSize.y; y++) {
+    for (let y = 0; y < g.gameAreaSize[1]; y++) {
       this._maybeAddStar(y);
     }
   }
@@ -51,7 +59,7 @@ export class Mission2 implements Mission {
     if (Math.random() < 0.1) {
       const speed = u_.randomElementOf([0.25, 0.5, 0.75])!;
       const star = {
-        xy: v_(Math.ceil(1 + Math.random() * g.gameAreaSize.x - 3), y),
+        xy: v2d_(Math.ceil(1 + Math.random() * g.gameAreaSize[0] - 3), y),
         speed: speed,
         color:
           speed >= 0.75 ? c.lightGrey : speed >= 0.5 ? c.lavender : c.mauve,
@@ -62,17 +70,17 @@ export class Mission2 implements Mission {
 
   levelBgUpdate(): void {
     for (const star of this._stars) {
-      star.xy = star.xy.add(0, star.speed);
+      star.xy = v_.add(star.xy, v2d_(0, star.speed));
     }
 
-    this._stars = this._stars.filter((s) => s.xy.y <= g.gameAreaSize.y);
+    this._stars = this._stars.filter((s) => s.xy[1] <= g.gameAreaSize[1]);
 
     this._maybeAddStar(0);
   }
 
   levelBgDraw(): void {
     for (const star of this._stars) {
-      b_.pixel(g.gameAreaOffset.add(star.xy), star.color);
+      b_.pixel(v_.add(g.gameAreaOffset, star.xy), star.color);
     }
   }
 
@@ -147,7 +155,7 @@ export class Mission2 implements Mission {
       health: 25,
       spriteMain: sspr_(56, 26, 4, 98),
       spriteFlash: sspr_(56, 26, 4, 98),
-      collisionCirclesProps: [{ r: 15, offset: v_(0, -3) }],
+      collisionCirclesProps: [{ r: 15, offset: v2d_(0, -3) }],
       phases: [
         // phase 1
         {
@@ -159,10 +167,10 @@ export class Mission2 implements Mission {
             return [
               eb_(
                 MovementLine.of({
-                  baseSpeedXy: v_(0, bossMovement.speed.y),
+                  baseSpeedXy: v2d_(0, bossMovement.speed[1]),
                   angle: 0.25,
                   angledSpeed: 0.5,
-                })(bossMovement.xy.add(0, 3))
+                })(v_.add(bossMovement.xy, v2d_(0, 3)))
               ),
             ];
           },

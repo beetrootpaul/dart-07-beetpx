@@ -8,6 +8,7 @@ import {
   spr_,
   transparent_,
   u_,
+  v2d_,
   v_,
 } from "@beetpx/beetpx";
 import { g } from "../globals";
@@ -22,7 +23,7 @@ export class Level {
 
   private _maxVisibleDistance: number = 0;
   private _minVisibleDistance: number =
-    this._maxVisibleDistance - g.gameAreaTiles.y - 1;
+    this._maxVisibleDistance - g.gameAreaTiles[1] - 1;
 
   private readonly _spawnDistanceOffset: number = 2;
   private _distanceNoSpawn: number =
@@ -41,10 +42,10 @@ export class Level {
             this._sprites.set(
               tileId,
               spr_(CurrentMission.m.ldtk.tilesetPng)(
-                (tileId % 16) * g.tileSize.x,
-                Math.floor(tileId / 16) * g.tileSize.y,
-                g.tileSize.x,
-                g.tileSize.y
+                (tileId % 16) * g.tileSize[0],
+                Math.floor(tileId / 16) * g.tileSize[1],
+                g.tileSize[0],
+                g.tileSize[1]
               )
             );
           }
@@ -54,9 +55,9 @@ export class Level {
   }
 
   syncWithLevelScrollFractionalPart(v: BpxVector2d): BpxVector2d {
-    return v_(
-      v.x,
-      Math.floor(v.y) + ((this._maxVisibleDistance * g.tileSize.y) % 1)
+    return v2d_(
+      v[0],
+      Math.floor(v[1]) + ((this._maxVisibleDistance * g.tileSize[1]) % 1)
     );
   }
 
@@ -68,8 +69,8 @@ export class Level {
   get progressFraction(): number {
     return u_.clamp(
       0,
-      (this._minVisibleDistance + g.gameAreaTiles.y) /
-        (this._levelDescriptor.maxDefinedDistance + g.gameAreaTiles.y),
+      (this._minVisibleDistance + g.gameAreaTiles[1]) /
+        (this._levelDescriptor.maxDefinedDistance + g.gameAreaTiles[1]),
       1
     );
   }
@@ -92,9 +93,11 @@ export class Level {
           if (enemyId) {
             result.push({
               id: enemyId,
-              xy: v_(0, g.gameAreaSize.y).add(
-                g.tileSize.mul(
-                  v_(lane, this._minVisibleDistance - this._distanceNextSpawn)
+              xy: v_.add(
+                v2d_(0, g.gameAreaSize[1]),
+                v_.mul(
+                  g.tileSize,
+                  v2d_(lane, this._minVisibleDistance - this._distanceNextSpawn)
                 )
               ),
             });
@@ -119,7 +122,8 @@ export class Level {
     }
 
     this._maxVisibleDistance =
-      this._maxVisibleDistance + CurrentMission.m.scrollPerFrame / g.tileSize.y;
+      this._maxVisibleDistance +
+      CurrentMission.m.scrollPerFrame / g.tileSize[1];
 
     if (this._phase === "intro") {
       this._maxVisibleDistance = this._maxVisibleDistance % 1;
@@ -130,11 +134,12 @@ export class Level {
       this._maxVisibleDistance =
         this._levelDescriptor.maxDefinedDistance +
         1 +
-        g.gameAreaTiles.y +
+        g.gameAreaTiles[1] +
         (this._maxVisibleDistance % 1);
     }
 
-    this._minVisibleDistance = this._maxVisibleDistance - g.gameAreaTiles.y - 1;
+    this._minVisibleDistance =
+      this._maxVisibleDistance - g.gameAreaTiles[1] - 1;
 
     b_.logDebug(
       "visible distance: " +
@@ -175,9 +180,10 @@ export class Level {
   private _drawTile(tileId: number, distance: number, lane: number): void {
     b_.sprite(
       this._sprites.get(tileId)!,
-      g.gameAreaOffset
-        .add(v_(0, g.gameAreaSize.y))
-        .add(g.tileSize.mul(v_(lane - 1, this._minVisibleDistance - distance)))
+      v_.add(
+        v_.add(g.gameAreaOffset, v2d_(0, g.gameAreaSize[1])),
+        v_.mul(g.tileSize, v2d_(lane - 1, this._minVisibleDistance - distance))
+      )
     );
   }
 }

@@ -3,7 +3,7 @@ import {
   BpxCompositeColor,
   BpxFillPattern,
   transparent_,
-  v_,
+  v2d_,
 } from "@beetpx/beetpx";
 import { c, g } from "./globals";
 import { Movement } from "./movement/Movement";
@@ -33,9 +33,9 @@ export class Fade {
     BpxFillPattern.of(0x0000),
   ];
   private readonly _stripHs: number[] = [
-    g.viewportSize.y,
+    g.viewportSize[1],
     ...Array.from({ length: 9 }, () => 4),
-    g.viewportSize.y,
+    g.viewportSize[1],
   ];
 
   constructor(
@@ -61,7 +61,7 @@ export class Fade {
         frames: params.fadeFrames,
         targetY: 0,
       }),
-    ])(v_(0, yMin));
+    ])(v2d_(0, yMin));
   }
 
   get hasFinished(): boolean {
@@ -73,7 +73,7 @@ export class Fade {
   }
 
   draw(): void {
-    let y = this._movement.xy.y;
+    let y = this._movement.xy[1];
     let stripH = 0;
     for (let i = 0; i < this._stripHs.length; i++) {
       y += stripH;
@@ -86,8 +86,8 @@ export class Fade {
 
       b_.setFillPattern(pattern);
       b_.rectFilled(
-        v_(0, y),
-        v_(g.viewportSize.x, stripH),
+        v2d_(0, y),
+        v2d_(g.viewportSize[0], stripH),
         new BpxCompositeColor(c.black, transparent_)
       );
       b_.setFillPattern(BpxFillPattern.primaryOnly);

@@ -1,4 +1,4 @@
-import { b_, BpxEasing, v_ } from "@beetpx/beetpx";
+import { b_, BpxEasing, v2d_, v_ } from "@beetpx/beetpx";
 import { Game } from "../game/Game";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
@@ -27,7 +27,7 @@ export class Hud {
   // we draw HUD area 20 px bigger on the outside in order to compensate for a player damage camera shake
   private static readonly _safetyBorder = 20;
 
-  private static readonly _barSize = v_(16, g.viewportSize.y);
+  private static readonly _barSize = v2d_(16, g.viewportSize[1]);
 
   private readonly _heart = hudSprite(6, 5, 40, 24);
   private readonly _healthBarStart = hudSprite(8, 5, 40, 19);
@@ -63,7 +63,7 @@ export class Hud {
         frames: params.slideInFrames,
         easingFn: BpxEasing.outQuartic,
       }),
-    ])(v_(-20, 0));
+    ])(v2d_(-20, 0));
   }
 
   update(): void {
@@ -72,19 +72,19 @@ export class Hud {
 
   draw(game: Game): void {
     b_.rectFilled(
-      v_(0, 0).sub(Hud._safetyBorder),
-      Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
+      v_.sub(v2d_(0, 0), Hud._safetyBorder),
+      v_.add(Hud._barSize, v2d_(Hud._safetyBorder, 2 * Hud._safetyBorder)),
       c.black
     );
     b_.rectFilled(
-      g.viewportSize.sub(Hud._barSize).sub(0, Hud._safetyBorder),
-      Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
+      v_.sub(v_.sub(g.viewportSize, Hud._barSize), v2d_(0, Hud._safetyBorder)),
+      v_.add(Hud._barSize, v2d_(Hud._safetyBorder, 2 * Hud._safetyBorder)),
       c.black
     );
     if (b_.debug) {
-      b_.rectFilled(v_(0, 0), Hud._barSize, c.blueGreen);
+      b_.rectFilled(v2d_(0, 0), Hud._barSize, c.blueGreen);
       b_.rectFilled(
-        g.viewportSize.sub(Hud._barSize),
+        v_.sub(g.viewportSize, Hud._barSize),
         Hud._barSize,
         c.blueGreen
       );
@@ -93,49 +93,62 @@ export class Hud {
     //
     // health bar
     //
-    let xy = this._slideInOffset.xy
-      .add(-g.gameAreaOffset.x + 3, g.viewportSize.y - 16)
-      .ceil();
-    this._heart.draw(xy.add(1, 6));
+    let xy = v_.add(
+      this._slideInOffset.xy,
+      v2d_(-g.gameAreaOffset[0] + 3, g.viewportSize[1] - 16)
+    );
+    // TODO: use `v_.ceil(…)`
+    xy = [Math.ceil(xy[0]), Math.ceil(xy[1])];
+    this._heart.draw(v_.add(xy, v2d_(1, 6)));
     for (let segment = 0; segment < g.healthMax; segment++) {
       (game.health > segment
         ? this._healthBarSegmentFull
         : this._healthBarSegmentEmpty
-      ).draw(xy.sub(0, 10 + segment * 6));
+      ).draw(v_.sub(xy, v2d_(0, 10 + segment * 6)));
     }
     // we have to draw health_bar_start after health_bar_segment_full in order to cover 1st segment's joint with black pixels
-    this._healthBarStart.draw(xy.sub(0, 4));
+    this._healthBarStart.draw(v_.sub(xy, [0, 4]));
 
     //
     // mission progress
     //
     const missionProgressH = 35;
-    const missionProgressX = g.gameAreaOffset.x + xy.x + 5;
-    b_.line(v_(missionProgressX, 4), v_(1, missionProgressH), c.lavender);
+    const missionProgressX = g.gameAreaOffset[0] + xy[0] + 5;
+    b_.line(v2d_(missionProgressX, 4), v2d_(1, missionProgressH), c.lavender);
     this._shipIndicator.draw(
-      xy.sub(-4, 77 + game.missionProgressFraction * (missionProgressH - 3))
+      v_.sub(
+        xy,
+        v2d_(-4, 77 + game.missionProgressFraction * (missionProgressH - 3))
+      )
     );
 
     //
     // shockwave charges
     //
-    xy = v_(g.gameAreaSize.x + 5, g.viewportSize.y - 16)
-      .sub(this._slideInOffset.xy)
-      .floor();
-    this._shockwave.draw(xy.add(0, 6));
+    xy = v_.floor(
+      v_.sub(
+        v2d_(g.gameAreaSize[0] + 5, g.viewportSize[1] - 16),
+        this._slideInOffset.xy
+      )
+    );
+    this._shockwave.draw(v_.add(xy, [0, 6]));
     this._shockwaveBarStart.draw(xy);
     for (let segment = 0; segment < g.shockwaveChargesMax; segment++) {
       if (game.shockwaveCharges > segment) {
-        this._shockwaveBarSegmentFull.draw(xy.sub(0, 11 + segment * 11));
+        this._shockwaveBarSegmentFull.draw(
+          v_.sub(xy, v2d_(0, 11 + segment * 11))
+        );
       } else {
-        this._shockwaveBarSegmentEmpty.draw(xy.sub(-6, 11 + segment * 11));
+        this._shockwaveBarSegmentEmpty.draw(
+          v_.sub(xy, v2d_(-6, 11 + segment * 11))
+        );
       }
     }
 
     //
     // score
     //
-    game.score.draw(v_(xy.x + 17, 4), c.lightGrey, c.darkerPurple, true);
+    game.score.draw(v2d_(xy[0] + 17, 4), c.lightGrey, c.darkerPurple, true);
 
     //
     // powerups
@@ -143,7 +156,7 @@ export class Hud {
     (["fastMovement", "fastShoot", "tripleShoot"] as const).forEach(
       (prop, i) => {
         this._powerups[prop][game[prop] ? "on" : "off"].draw(
-          v_(xy.x - 1, 46 + 6 * i)
+          v2d_(xy[0] - 1, 46 + 6 * i)
         );
       }
     );
@@ -154,22 +167,22 @@ export class Hud {
     const bossHealthFraction = game.bossHealthFraction;
     if (bossHealthFraction != null) {
       const bossHealthBarMargin = 2;
-      const bossHealthW = g.gameAreaSize.x - 2 * bossHealthBarMargin - 4;
+      const bossHealthW = g.gameAreaSize[0] - 2 * bossHealthBarMargin - 4;
       this._bossHealthBarStart.draw(
-        v_(bossHealthBarMargin, bossHealthBarMargin)
+        v2d_(bossHealthBarMargin, bossHealthBarMargin)
       );
       this._bossHealthBarEnd.draw(
-        v_(g.gameAreaSize.x - bossHealthBarMargin - 4, bossHealthBarMargin)
+        v2d_(g.gameAreaSize[0] - bossHealthBarMargin - 4, bossHealthBarMargin)
       );
       b_.line(
-        g.gameAreaOffset.add(bossHealthBarMargin).add(2, 2),
-        v_(bossHealthW, 1),
+        v_.add(v_.add(g.gameAreaOffset, bossHealthBarMargin), v2d_(2, 2)),
+        v2d_(bossHealthW, 1),
         c.mauve
       );
       if (bossHealthFraction > 0) {
         b_.line(
-          g.gameAreaOffset.add(bossHealthBarMargin).add(2, 1),
-          v_(bossHealthFraction * bossHealthW, 1),
+          v_.add(v_.add(g.gameAreaOffset, bossHealthBarMargin), v2d_(2, 1)),
+          v2d_(bossHealthFraction * bossHealthW, 1),
           c.red
         );
       }

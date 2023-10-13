@@ -2,8 +2,8 @@ import {
   b_,
   BpxMappingColor,
   BpxSolidColor,
-  BpxVector2d,
   u_,
+  v2d_,
   v_,
 } from "@beetpx/beetpx";
 import { c, g } from "./globals";
@@ -52,20 +52,20 @@ export class PauseMenu {
     const gapBetweenLines = 4;
 
     b_.rectFilled(
-      BpxVector2d.zero,
+      [0, 0],
       g.viewportSize,
       new BpxMappingColor(b_.takeCanvasSnapshot(), g.darkerColorMapping)
     );
 
-    const wh = v_(
-      Math.max(textContinueWh.x, textRestartWh.x) + 2 * padding,
-      textContinueWh.y + textRestartWh.y + 2 * padding + gapBetweenLines
+    const wh = v2d_(
+      Math.max(textContinueWh[0], textRestartWh[0]) + 2 * padding,
+      textContinueWh[1] + textRestartWh[1] + 2 * padding + gapBetweenLines
     );
-    const xy = g.viewportSize.sub(wh).div(2);
+    const xy = v_.div(v_.sub(g.viewportSize, wh), 2);
 
     b_.rectFilled(
-      xy.sub(2),
-      wh.add(4),
+      v_.sub(xy, 2),
+      v_.add(wh, 4),
       new BpxMappingColor(b_.takeCanvasSnapshot(), (canvasColor) =>
         canvasColor instanceof BpxSolidColor
           ? canvasColor.r + canvasColor.g + canvasColor.b >= (0xff * 3) / 2
@@ -74,35 +74,45 @@ export class PauseMenu {
           : canvasColor
       )
     );
-    b_.rect(xy.sub(1), wh.add(2), c.white);
+    b_.rect(v_.sub(xy, 1), v_.add(wh, 2), c.white);
     b_.print(
       "continue",
-      xy.add(
-        padding + (this._selected === 0 ? 1 : 0),
-        padding + (this._pressedIndex === 0 ? 1 : 0)
+      v_.add(
+        xy,
+        v2d_(
+          padding + (this._selected === 0 ? 1 : 0),
+          padding + (this._pressedIndex === 0 ? 1 : 0)
+        )
       ),
       this._pressedIndex === 0 ? c.peach : c.white
     );
     b_.print(
       // TODO: make it clear it will restart the whole game / go to the main title
       "restart",
-      xy.add(
-        padding + (this._selected === 1 ? 1 : 0),
-        padding +
-          textContinueWh.y +
-          gapBetweenLines +
-          (this._pressedIndex === 1 ? 1 : 0)
+      v_.add(
+        xy,
+        v2d_(
+          padding + (this._selected === 1 ? 1 : 0),
+          padding +
+            textContinueWh[1] +
+            gapBetweenLines +
+            (this._pressedIndex === 1 ? 1 : 0)
+        )
       ),
       this._pressedIndex === 1 ? c.peach : c.white
     );
     b_.pixels(
-      xy
-        .add(
-          padding,
-          padding +
-            (this._selected === 1 ? textContinueWh.y + gapBetweenLines : 0)
-        )
-        .sub(4, 0),
+      v_.sub(
+        v_.add(
+          xy,
+          v2d_(
+            padding,
+            padding +
+              (this._selected === 1 ? textContinueWh[1] + gapBetweenLines : 0)
+          )
+        ),
+        v2d_(4, 0)
+      ),
       c.white,
       PauseMenu._arrowPixels
     );

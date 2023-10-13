@@ -57,7 +57,7 @@ export class LevelDescriptor {
       levelsJson.levels.find(
         (l: any) => l.identifier === CurrentMission.m.ldtk.level
       )!.pxHei /
-        g.tileSize.y -
+        g.tileSize[1] -
       2 * tileMarginY;
 
     const tiles: Array<{ tileY: number; tileX: number; id: number }> =

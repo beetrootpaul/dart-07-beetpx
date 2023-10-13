@@ -1,4 +1,12 @@
-import { b_, BpxSolidColor, BpxVector2d, timer_, u_, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxSolidColor,
+  BpxVector2d,
+  timer_,
+  u_,
+  v2d_,
+  v_,
+} from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
@@ -58,7 +66,7 @@ export class Mission3 implements Mission {
   private _particleStepCounter: number = 0;
 
   constructor() {
-    for (let y = 0; y < g.gameAreaSize.y; y += g.tileSize.y) {
+    for (let y = 0; y < g.gameAreaSize[1]; y += g.tileSize[1]) {
       this._maybeAddParticle(y);
     }
   }
@@ -84,7 +92,7 @@ export class Mission3 implements Mission {
         [4, 4, 34, 60],
       ])!;
       const particle = {
-        xy: v_(Math.floor(4 + Math.random() * g.gameAreaSize.x - 2 * 4), y),
+        xy: v2d_(Math.floor(4 + Math.random() * g.gameAreaSize[0] - 2 * 4), y),
         sprite: sspr_(whxy[0]!, whxy[1]!, whxy[2]!, whxy[3]!),
       };
       this._particles.push(particle);
@@ -93,26 +101,29 @@ export class Mission3 implements Mission {
 
   levelBgUpdate(): void {
     this._particles = this._particles.filter(
-      (p) => p.xy.y <= g.gameAreaSize.y + g.tileSize.y
+      (p) => p.xy[1] <= g.gameAreaSize[1] + g.tileSize[1]
     );
 
     for (const particle of this._particles) {
-      particle.xy = particle.xy.add(0, 1.5);
+      particle.xy = v_.add(particle.xy, v2d_(0, 1.5));
     }
 
     this._particleStepCounter = (this._particleStepCounter + 1) % 8;
     if (this._particleStepCounter === 0) {
-      this._maybeAddParticle(-g.tileSize.y);
+      this._maybeAddParticle(-g.tileSize[1]);
     }
 
-    this._tubeTilesOffsetY = (this._tubeTilesOffsetY + 0.5) % g.tileSize.y;
+    this._tubeTilesOffsetY = (this._tubeTilesOffsetY + 0.5) % g.tileSize[1];
   }
 
   levelBgDraw(): void {
     for (let lane = 1; lane <= 12; lane++) {
       for (let distance = 0; distance <= 16; distance++) {
         this._tubeTiles[lane - 1]?.draw(
-          g.tileSize.mul(lane - 1, distance - 1).add(0, this._tubeTilesOffsetY)
+          v_.add(v_.mul(g.tileSize, [lane - 1, distance - 1]), [
+            0,
+            this._tubeTilesOffsetY,
+          ])
         );
       }
     }
@@ -175,7 +186,7 @@ export class Mission3 implements Mission {
       health: 25,
       spriteMain: sspr_(56, 26, 4, 98),
       spriteFlash: sspr_(56, 26, 4, 98),
-      collisionCirclesProps: [{ r: 15, offset: v_(0, -3) }],
+      collisionCirclesProps: [{ r: 15, offset: v2d_(0, -3) }],
       phases: [
         // phase 1
         {
@@ -187,10 +198,10 @@ export class Mission3 implements Mission {
             return [
               eb_(
                 MovementLine.of({
-                  baseSpeedXy: v_(0, bossMovement.speed.y),
+                  baseSpeedXy: v2d_(0, bossMovement.speed[1]),
                   angle: 0.25,
                   angledSpeed: 0.5,
-                })(bossMovement.xy.add(0, 3))
+                })(v_.add(bossMovement.xy, [0, 3]))
               ),
             ];
           },

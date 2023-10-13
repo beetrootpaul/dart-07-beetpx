@@ -1,4 +1,4 @@
-import { BpxTimer, BpxVector2d, timer_ } from "@beetpx/beetpx";
+import { BpxTimer, BpxVector2d, timer_, v_ } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 
 export class MovementLine implements Movement {
@@ -24,7 +24,7 @@ export class MovementLine implements Movement {
         startXy,
         "angle" in params
           ? params.angle
-          : params.targetXy.sub(startXy).toAngle(),
+          : v_.angleOf(v_.sub(params.targetXy, startXy)),
         params.angledSpeed,
         params.baseSpeedXy,
         params.frames
@@ -38,13 +38,14 @@ export class MovementLine implements Movement {
     startXy: BpxVector2d,
     angle: number,
     angledSpeed: number,
-    baseSpeedXy: BpxVector2d = BpxVector2d.zero,
+    baseSpeedXy: BpxVector2d = [0, 0],
     frames: number | undefined
   ) {
     this._xy = startXy;
 
-    this._speed = baseSpeedXy.add(
-      BpxVector2d.unitFromAngle(angle).mul(angledSpeed)
+    this._speed = v_.add(
+      baseSpeedXy,
+      v_.mul(v_.unitFromAngle(angle), angledSpeed)
     );
 
     this._timer = frames ? timer_(frames) : null;
@@ -65,7 +66,7 @@ export class MovementLine implements Movement {
   update(): void {
     this._timer?.update();
     if (!this._timer || !this._timer.hasFinished) {
-      this._xy = this._xy.add(this._speed);
+      this._xy = v_.add(this._xy, this._speed);
     }
   }
 }

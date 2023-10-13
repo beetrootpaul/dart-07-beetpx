@@ -1,4 +1,4 @@
-import { b_, BpxTimer, BpxVector2d, timer_, v_ } from "@beetpx/beetpx";
+import { b_, BpxTimer, BpxVector2d, timer_, v2d_ } from "@beetpx/beetpx";
 import { Collisions } from "../collisions/Collisions";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
@@ -548,7 +548,7 @@ export class Game {
       // subtracting 1 here makes the last factor always equal to 0, which makes camera reset to its neutral position
       const factor = this._cameraShakeTimer.framesLeft - 1;
       b_.setCameraOffset(
-        v_((Math.random() - 0.5) * factor, (Math.random() - 0.5) * factor)
+        v2d_((Math.random() - 0.5) * factor, (Math.random() - 0.5) * factor)
       );
     }
   }

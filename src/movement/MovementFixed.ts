@@ -20,7 +20,7 @@ export class MovementFixed implements Movement {
   }
 
   get speed(): BpxVector2d {
-    return BpxVector2d.zero;
+    return [0, 0];
   }
 
   get hasFinished(): boolean {

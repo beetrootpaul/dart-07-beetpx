@@ -1,4 +1,4 @@
-import { b_, BpxMappingColor, BpxVector2d, u_, v_ } from "@beetpx/beetpx";
+import { b_, BpxMappingColor, BpxVector2d, u_, v2d_, v_ } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { c, g } from "../globals";
 import { Movement } from "../movement/Movement";
@@ -27,13 +27,13 @@ export class Shockwave {
       ),
       angle: 0,
       angledSpeed: Shockwave._rSpeed,
-    })(BpxVector2d.zero);
+    })([0, 0]);
   }
 
   get collisionCircle(): CollisionCircle {
     return {
       center: this._center,
-      r: Math.min(this._rProgress.xy.x, Shockwave._rMax),
+      r: Math.min(this._rProgress.xy[0], Shockwave._rMax),
     };
   }
 
@@ -53,7 +53,7 @@ export class Shockwave {
     const canvasSnapshot = b_.takeCanvasSnapshot();
 
     for (let dy = -rOuter; dy <= rOuter; dy++) {
-      const sy = this._center.y + dy;
+      const sy = this._center[1] + dy;
       const dxOuter = Math.ceil(
         Math.sqrt(Math.max(0, rOuter * rOuter - dy * dy))
       );
@@ -61,13 +61,13 @@ export class Shockwave {
         Math.sqrt(Math.max(0, rInner * rInner - dy * dy))
       );
       b_.line(
-        g.gameAreaOffset.add(v_(this._center.x - dxOuter + 1, sy)),
-        v_(dxOuter - dxInner, 1),
+        v_.add(g.gameAreaOffset, v2d_(this._center[0] - dxOuter + 1, sy)),
+        v2d_(dxOuter - dxInner, 1),
         new BpxMappingColor(canvasSnapshot, g.negativeColorMapping)
       );
       b_.line(
-        g.gameAreaOffset.add(v_(this._center.x + dxOuter - 1, sy)),
-        v_(dxInner - dxOuter, 1),
+        v_.add(g.gameAreaOffset, v2d_(this._center[0] + dxOuter - 1, sy)),
+        v2d_(dxInner - dxOuter, 1),
         new BpxMappingColor(canvasSnapshot, g.negativeColorMapping)
       );
     }
@@ -76,15 +76,15 @@ export class Shockwave {
   private _drawCircle(r: number): void {
     if (r === u_.clamp(Shockwave._rMin, r, Shockwave._rMax)) {
       b_.ellipse(
-        g.gameAreaOffset.add(this._center).sub(r),
-        v_(r, r).mul(2),
+        v_.mul(v_.add(g.gameAreaOffset, this._center), r),
+        v_.mul(v2d_(r, r), 2),
         c.lightGrey
       );
     }
   }
 
   draw(): void {
-    const r = Math.ceil(this._rProgress.xy.x);
+    const r = Math.ceil(this._rProgress.xy[0]);
 
     this._drawNegativeRing(r, r - 13);
 

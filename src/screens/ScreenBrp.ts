@@ -1,4 +1,12 @@
-import { b_, BpxSprite, BpxTimer, spr_, timer_, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxSprite,
+  BpxTimer,
+  spr_,
+  timer_,
+  v2d_,
+  v_,
+} from "@beetpx/beetpx";
 import { c, g } from "../globals";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
@@ -88,8 +96,8 @@ export class ScreenBrp implements GameScreen {
       ]);
       b_.sprite(
         this._brpLogo,
-        g.viewportSize.sub(this._brpLogo.size().mul(2)).div(2),
-        v_(2, 2)
+        v_.div(v_.sub(g.viewportSize, v_.mul(this._brpLogo.size(), 2)), 2),
+        v2d_(2, 2)
       );
       b_.mapSpriteColors(prevMapping);
     }

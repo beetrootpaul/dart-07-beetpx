@@ -1,4 +1,4 @@
-import { b_, BpxVector2d, spr_, u_, v_ } from "@beetpx/beetpx";
+import { b_, BpxVector2d, spr_, u_, v2d_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { c, g } from "../globals";
 import { AnimatedSprite, Sprite, StaticSprite } from "../misc/Sprite";
@@ -79,17 +79,22 @@ export class ScreenSelectMission implements GameScreen {
   private _initShipMovement(): void {
     const [buttonXy, buttonWh] = this._missionButtonXyWh(this._selectedMission);
     this._shipMovement = MovementToTarget.of({
-      targetY: buttonXy.sub(0, 10).y,
+      targetY: v_.sub(buttonXy, v2d_(0, 10))[1],
       frames: 20,
-    })(buttonXy.sub(g.gameAreaOffset).add(buttonWh.x / 2, buttonWh.y - 6));
+    })(
+      v_.add(
+        v_.sub(buttonXy, g.gameAreaOffset),
+        v2d_(buttonWh[0] / 2, buttonWh[1] - 6)
+      )
+    );
   }
 
   private _missionButtonXyWh(mission: number): [BpxVector2d, BpxVector2d] {
     // place missions 1..N at positions 0..N-1, then place the back button (identified as mission 0) at position N
     const position = (mission + 4 - 1) % 4;
     return [
-      g.gameAreaOffset.add(0, 12 + position * 31),
-      v_(g.gameAreaSize.x, 16),
+      v_.add(g.gameAreaOffset, v2d_(0, 12 + position * 31)),
+      v2d_(g.gameAreaSize[0], 16),
     ];
   }
 
@@ -137,8 +142,8 @@ export class ScreenSelectMission implements GameScreen {
     // draw button shape
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 38 : 39, 12, 1, 19),
-      buttonXy1.sub(1),
-      v_(buttonWh.x + 2, 1)
+      v_.sub(buttonXy1, 1),
+      v2d_(buttonWh[0] + 2, 1)
     );
 
     // draw level sample
@@ -147,8 +152,8 @@ export class ScreenSelectMission implements GameScreen {
       spr_(g.assets.mainSpritesheetUrl)(
         0,
         selected ? sy : sy - 48,
-        buttonWh.x,
-        buttonWh.y
+        buttonWh[0],
+        buttonWh[1]
       ),
       buttonXy1
     );
@@ -157,7 +162,7 @@ export class ScreenSelectMission implements GameScreen {
       // draw WIP info
       u_.printWithOutline(
         "under development",
-        g.gameAreaOffset.add(g.gameAreaSize.x / 2, buttonXy1.y + 2),
+        v_.add(g.gameAreaOffset, v2d_(g.gameAreaSize[0] / 2, buttonXy1[1] + 2)),
         selected ? c.white : c.lightGrey,
         selected ? c.darkOrange : c.lavender,
         [true, false]
@@ -167,17 +172,26 @@ export class ScreenSelectMission implements GameScreen {
     // draw label
     b_.print(
       `mission ${mission}`,
-      buttonXy1.add(0, buttonWh.y + 4),
+      v_.add(buttonXy1, v2d_(0, buttonWh[1] + 4)),
       selected ? c.white : c.lavender
     );
 
     if (selected) {
       // draw "x" button press incentive and its label
-      b_.print("start", buttonXy1.add(buttonWh).add(-37, 4), c.white);
+      b_.print(
+        "start",
+        v_.add(v_.add(buttonXy1, buttonWh), v2d_(-37, 4)),
+        c.white
+      );
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? this._xSprite
         : this._xSpritePressed;
-      sprite.draw(buttonXy1.add(buttonWh.add(-15, 3)).sub(g.gameAreaOffset));
+      sprite.draw(
+        v_.sub(
+          v_.add(v_.add(buttonXy1, buttonWh), v2d_(-15, 3)),
+          g.gameAreaOffset
+        )
+      );
     }
   }
 
@@ -189,12 +203,12 @@ export class ScreenSelectMission implements GameScreen {
     // button shape
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
-      buttonXy1.sub(1),
-      v_(buttonWh.x + 2, 1)
+      v_.sub(buttonXy1, 1),
+      v2d_(buttonWh[0] + 2, 1)
     );
 
     // button text
-    b_.print("back", buttonXy1.add(3, 2), c.mauve);
+    b_.print("back", v_.add(buttonXy1, v2d_(3, 2)), c.mauve);
 
     if (selected) {
       // draw "x" button press incentive
@@ -202,7 +216,10 @@ export class ScreenSelectMission implements GameScreen {
         ? this._xSprite
         : this._xSpritePressed;
       sprite.draw(
-        buttonXy1.add(buttonWh.x, 0).add(-16, 13).sub(g.gameAreaOffset)
+        v_.sub(
+          v_.add(v_.add(buttonXy1, v2d_(buttonWh[0], 0)), v2d_(-16, 13)),
+          g.gameAreaOffset
+        )
       );
     }
   }

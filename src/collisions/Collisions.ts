@@ -1,4 +1,4 @@
-import { b_, v_ } from "@beetpx/beetpx";
+import { b_, v2d_, v_ } from "@beetpx/beetpx";
 import { c, g } from "../globals";
 import { CollisionCircle } from "./CollisionCircle";
 
@@ -25,15 +25,15 @@ export class Collisions {
     }
 
     // actual collision check
-    const distance = cc2.center.sub(cc1.center);
+    const distance = v_.sub(cc2.center, cc1.center);
     const r1r2 = cc1.r + cc2.r;
-    return distance.x * distance.x + distance.y * distance.y <= r1r2 * r1r2;
+    return distance[0] * distance[0] + distance[1] * distance[1] <= r1r2 * r1r2;
   }
 
   static isCollisionCircleNearlyOutsideTopEdgeOfGameplayArea(
     collisionCircle: CollisionCircle
   ): boolean {
-    return collisionCircle.center.y + collisionCircle.r < 3;
+    return collisionCircle.center[1] + collisionCircle.r < 3;
   }
 
   static debugDrawCollisionCircle(
@@ -41,8 +41,8 @@ export class Collisions {
   ): void {
     cc = "collisionCircle" in cc ? cc.collisionCircle : cc;
     b_.ellipse(
-      g.gameAreaOffset.add(cc.center).sub(cc.r),
-      v_(2, 2).mul(cc.r),
+      v_.sub(v_.add(g.gameAreaOffset, cc.center), cc.r),
+      v_.mul(v2d_(2, 2), cc.r),
       c.darkGreen
     );
   }

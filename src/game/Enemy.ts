@@ -1,4 +1,4 @@
-import { BpxTimer, BpxVector2d, timer_, u_ } from "@beetpx/beetpx";
+import { BpxTimer, BpxVector2d, timer_, u_, v_ } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { Collisions } from "../collisions/Collisions";
 import { g } from "../globals";
@@ -63,7 +63,7 @@ export class Enemy {
 
   get collisionCircles(): CollisionCircle[] {
     return this._properties.collisionCirclesProps.map(({ r, offset }) => ({
-      center: this._movement.xy.add(offset ?? BpxVector2d.zero),
+      center: v_.add(this._movement.xy, offset ?? [0, 0]),
       r,
     }));
   }
@@ -92,7 +92,8 @@ export class Enemy {
 
   get hasFinished(): boolean {
     return (
-      this._isDestroyed || this._movement.xy.y > g.gameAreaSize.y + g.tileSize.y
+      this._isDestroyed ||
+      this._movement.xy[1] > g.gameAreaSize[1] + g.tileSize[1]
     );
   }
 

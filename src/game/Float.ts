@@ -1,4 +1,4 @@
-import { b_, BpxVector2d } from "@beetpx/beetpx";
+import { b_, BpxVector2d, v_ } from "@beetpx/beetpx";
 import { c, g } from "../globals";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
@@ -28,7 +28,7 @@ export class Float {
   draw(): void {
     b_.print(
       this._scoreText,
-      g.gameAreaOffset.add(this._movement.xy),
+      v_.add(g.gameAreaOffset, this._movement.xy),
       c.white,
       [true, false]
     );

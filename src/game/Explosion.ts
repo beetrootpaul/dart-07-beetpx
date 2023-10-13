@@ -6,6 +6,7 @@ import {
   BpxVector2d,
   timer_,
   u_,
+  v2d_,
   v_,
 } from "@beetpx/beetpx";
 import { c, g } from "../globals";
@@ -43,8 +44,9 @@ export class Explosion {
     u_.repeatN(9, () => {
       this._particles.push({
         angle: 0.75 + 0.5 * randNegPos05(),
-        xy: params.startXy.add(
-          v_(randNegPos05(), randNegPos05()).mul(params.magnitude)
+        xy: v_.add(
+          params.startXy,
+          v_.mul(v2d_(randNegPos05(), randNegPos05()), params.magnitude)
         ),
         r: params.magnitude / 2 + Math.random() * (params.magnitude / 2),
       });
@@ -66,7 +68,7 @@ export class Explosion {
         if (p.r > 0) {
           p.angle = p.angle + 0.1 * randNegPos05();
           const speed = Math.random();
-          p.xy = p.xy.add(BpxVector2d.unitFromAngle(p.angle).mul(speed));
+          p.xy = v_.add(p.xy, v_.mul(v_.unitFromAngle(p.angle), speed));
           p.r = Math.max(0, p.r - (this._magnitude * Math.random()) / 20);
         }
       }
@@ -89,8 +91,8 @@ export class Explosion {
             color = new BpxCompositeColor(c.peach, c.darkOrange);
           }
           b_.ellipseFilled(
-            g.gameAreaOffset.add(p.xy).sub(p.r),
-            v_(2, 2).mul(p.r),
+            v_.sub(v_.add(g.gameAreaOffset, p.xy), p.r),
+            v_.mul(v2d_(2, 2), p.r),
             color
           );
         }

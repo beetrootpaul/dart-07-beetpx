@@ -1,4 +1,4 @@
-import { BpxVector2d } from "@beetpx/beetpx";
+import { BpxVector2d, v2d_, v_ } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g, h } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
@@ -33,7 +33,7 @@ export class PlayerBullet {
 
   get collisionCircle(): CollisionCircle {
     return {
-      center: this._movement.xy.sub(0, 0.5),
+      center: v_.sub(this._movement.xy, v2d_(0, 0.5)),
       r: 2,
     };
   }

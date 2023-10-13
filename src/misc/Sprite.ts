@@ -5,6 +5,7 @@ import {
   BpxVector2d,
   spr_,
   u_,
+  v2d_,
   v_,
 } from "@beetpx/beetpx";
 import { g } from "../globals";
@@ -68,14 +69,17 @@ export class StaticSprite implements Sprite {
     this._sprite = spr_(spritesheetUrl)(spriteX, spriteY, spriteW, spriteH);
 
     this._drawOffset = fromLeftTopCorner
-      ? BpxVector2d.zero
-      : v_(-spriteW / 2, -spriteH / 2);
+      ? [0, 0]
+      : v2d_(-spriteW / 2, -spriteH / 2);
   }
 
   update(): void {}
 
   draw(xy: BpxVector2d): void {
-    b_.sprite(this._sprite, xy.add(g.gameAreaOffset).add(this._drawOffset));
+    b_.sprite(
+      this._sprite,
+      v_.add(v_.add(xy, g.gameAreaOffset), this._drawOffset)
+    );
   }
 }
 
@@ -104,8 +108,8 @@ export class AnimatedSprite implements Sprite {
     });
 
     this._drawOffset = fromLeftTopCorner
-      ? BpxVector2d.zero
-      : v_(-spriteW / 2, -spriteH / 2);
+      ? [0, 0]
+      : v2d_(-spriteW / 2, -spriteH / 2);
   }
 
   update(): void {
@@ -115,7 +119,7 @@ export class AnimatedSprite implements Sprite {
   draw(xy: BpxVector2d): void {
     b_.sprite(
       this._sprites[this._frame]!,
-      xy.add(g.gameAreaOffset).add(this._drawOffset)
+      v_.add(v_.add(xy, g.gameAreaOffset), this._drawOffset)
     );
   }
 }

@@ -1,11 +1,4 @@
-import {
-  BpxEasing,
-  BpxTimer,
-  BpxVector2d,
-  timer_,
-  u_,
-  v_,
-} from "@beetpx/beetpx";
+import { BpxEasing, BpxTimer, timer_, u_, v2d_, v_ } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
@@ -67,11 +60,11 @@ export class Boss {
     ) => void;
   }) {
     this._movement = MovementToTarget.of({
-      targetX: g.gameAreaSize.x / 2,
+      targetX: g.gameAreaSize[0] / 2,
       targetY: 20,
       frames: 180,
       easingFn: BpxEasing.outQuartic,
-    })(v_(g.gameAreaSize.x / 2, -120));
+    })(v2d_(g.gameAreaSize[0] / 2, -120));
 
     this._onBulletsSpawned = params.onBulletsSpawned;
     this._onDamaged = params.onDamaged;
@@ -119,7 +112,7 @@ export class Boss {
 
   get collisionCircles(): CollisionCircle[] {
     return this._properties.collisionCirclesProps.map(({ r, offset }) => ({
-      center: this._movement.xy.add(offset ?? BpxVector2d.zero),
+      center: v_.add(this._movement.xy, offset ?? [0, 0]),
       r,
     }));
   }

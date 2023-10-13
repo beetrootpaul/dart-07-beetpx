@@ -1,4 +1,12 @@
-import { b_, BpxEasing, BpxSolidColor, timer_, u_, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxEasing,
+  BpxSolidColor,
+  timer_,
+  u_,
+  v2d_,
+  v_,
+} from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
@@ -60,7 +68,7 @@ export class Mission1 implements Mission {
 
   levelBgUpdate(): void {
     this._waveTileOffsetY =
-      (this._waveTileOffsetY + this.scrollPerFrame) % g.tileSize.y;
+      (this._waveTileOffsetY + this.scrollPerFrame) % g.tileSize[1];
     this._waveTile.update();
   }
 
@@ -68,9 +76,9 @@ export class Mission1 implements Mission {
     for (let distance = 0; distance <= 16; distance++) {
       for (let lane = 1; lane <= 12; lane++) {
         this._waveTile.draw(
-          v_(
-            (lane - 1) * g.tileSize.x,
-            Math.ceil((distance - 1) * g.tileSize.y + this._waveTileOffsetY)
+          v2d_(
+            (lane - 1) * g.tileSize[0],
+            Math.ceil((distance - 1) * g.tileSize[1] + this._waveTileOffsetY)
           )
         );
       }
@@ -87,7 +95,7 @@ export class Mission1 implements Mission {
             "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
           spriteMain: sspr_(8, 8, 0, 88),
           spriteFlash: sspr_(6, 6, 22, 79),
-          collisionCirclesProps: [{ r: 3, offset: v_(0, 1) }],
+          collisionCirclesProps: [{ r: 3, offset: v2d_(0, 1) }],
           movementFactory: MovementLine.of({
             angle: 0.25,
             angledSpeed: 1.5,
@@ -113,7 +121,7 @@ export class Mission1 implements Mission {
             return [
               eb_(
                 MovementLine.of({
-                  baseSpeedXy: v_(0, enemyMovement.speed.y),
+                  baseSpeedXy: v2d_(0, enemyMovement.speed[1]),
                   angle: 0.25,
                   angledSpeed: 1,
                 })(enemyMovement.xy)
@@ -149,10 +157,10 @@ export class Mission1 implements Mission {
           spriteMain: sspr_(24, 20, 64, 64),
           spriteFlash: sspr_(22, 18, 88, 65),
           collisionCirclesProps: [
-            { r: 10, offset: v_(0, 1) },
-            { r: 5, offset: v_(-7, 0) },
-            { r: 5, offset: v_(7, 0) },
-            { r: 5, offset: v_(0, -4) },
+            { r: 10, offset: v2d_(0, 1) },
+            { r: 5, offset: v2d_(-7, 0) },
+            { r: 5, offset: v2d_(7, 0) },
+            { r: 5, offset: v2d_(0, -4) },
           ],
           movementFactory: MovementSequence.of([
             MovementToTarget.of({
@@ -196,8 +204,8 @@ export class Mission1 implements Mission {
           spriteFlash: sspr_(6, 20, 58, 65),
           collisionCirclesProps: [
             { r: 4 },
-            { r: 4, offset: v_(0, 7) },
-            { r: 4, offset: v_(0, -7) },
+            { r: 4, offset: v2d_(0, 7) },
+            { r: 4, offset: v2d_(0, -7) },
           ],
           movementFactory: MovementSequence.of([
             MovementToTarget.of({
@@ -225,19 +233,19 @@ export class Mission1 implements Mission {
                 MovementLine.of({
                   targetXy: playerXy,
                   angledSpeed: 1,
-                })(enemyXy.sub(0, 7))
+                })(v_.sub(enemyXy, v2d_(0, 7)))
               ),
               eb_(
                 MovementLine.of({
                   targetXy: playerXy,
                   angledSpeed: 1,
-                })(enemyXy.sub(0, 1))
+                })(v_.sub(enemyXy, v2d_(0, 1)))
               ),
               eb_(
                 MovementLine.of({
                   targetXy: playerXy,
                   angledSpeed: 1,
-                })(enemyXy.add(0, 5))
+                })(v_.add(enemyXy, v2d_(0, 5)))
               ),
             ];
           },
@@ -312,8 +320,8 @@ export class Mission1 implements Mission {
       spriteFlash: sspr_(52, 18, 54, 97),
       collisionCirclesProps: [
         { r: 11 },
-        { r: 6, offset: v_(20, -3) },
-        { r: 6, offset: v_(-20, -3) },
+        { r: 6, offset: v2d_(20, -3) },
+        { r: 6, offset: v2d_(-20, -3) },
       ],
       phases: [
         // phase 1
@@ -331,7 +339,7 @@ export class Mission1 implements Mission {
                 MovementLine.of({
                   angle: 0.25,
                   angledSpeed: 1.5,
-                })(bossMovement.xy.add(0, 3))
+                })(v_.add(bossMovement.xy, v2d_(0, 3)))
               ),
             ];
           },
@@ -350,7 +358,7 @@ export class Mission1 implements Mission {
                 bullets.push(
                   eb_(
                     MovementLine.of({
-                      baseSpeedXy: v_(0, bossMovement.speed.y),
+                      baseSpeedXy: v2d_(0, bossMovement.speed[1]),
                       angle: (t() % 1) + i / 8,
                       angledSpeed: 1,
                     })(bossMovement.xy)
@@ -368,7 +376,7 @@ export class Mission1 implements Mission {
             }),
             MovementSequence.loopedOf([
               MovementToTarget.of({
-                targetX: g.gameAreaSize.x - 30,
+                targetX: g.gameAreaSize[0] - 30,
                 frames: 80,
                 easingFn: BpxEasing.outQuadratic,
               }),
@@ -394,13 +402,13 @@ export class Mission1 implements Mission {
                   MovementLine.of({
                     angle: 0.25,
                     angledSpeed: 1.5,
-                  })(bossMovement.xy.add(-20, -3))
+                  })(v_.add(bossMovement.xy, v2d_(-20, -3)))
                 ),
                 eb_(
                   MovementLine.of({
                     angle: 0.25,
                     angledSpeed: 1.5,
-                  })(bossMovement.xy.add(20, -3))
+                  })(v_.add(bossMovement.xy, v2d_(20, -3)))
                 ),
               ];
             }
@@ -413,7 +421,7 @@ export class Mission1 implements Mission {
                     speedY: 1.5,
                     ageDivisor: 60,
                     magnitude: 9,
-                  })(bossMovement.xy.add(0, 3))
+                  })(v_.add(bossMovement.xy, v2d_(0, 3)))
                 ),
               ];
             }
@@ -423,7 +431,7 @@ export class Mission1 implements Mission {
           movementFactory: MovementSequence.loopedOf([
             // center it
             MovementToTarget.of({
-              targetX: g.gameAreaSize.x / 2,
+              targetX: g.gameAreaSize[0] / 2,
               targetY: 20,
               frames: 60,
               easingFn: BpxEasing.outQuadratic,
@@ -434,7 +442,7 @@ export class Mission1 implements Mission {
             }),
             // … and charge!
             MovementToTarget.of({
-              targetY: g.gameAreaSize.y - 20,
+              targetY: g.gameAreaSize[1] - 20,
               frames: 40,
               easingFn: BpxEasing.inQuadratic,
             }),
@@ -446,7 +454,7 @@ export class Mission1 implements Mission {
             }),
             // go left and right
             MovementToTarget.of({
-              targetX: g.gameAreaSize.x - 30,
+              targetX: g.gameAreaSize[0] - 30,
               frames: 80,
               easingFn: BpxEasing.outQuadratic,
             }),

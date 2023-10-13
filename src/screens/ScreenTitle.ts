@@ -6,6 +6,7 @@ import {
   spr_,
   transparent_,
   u_,
+  v2d_,
   v_,
 } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
@@ -76,7 +77,7 @@ export class ScreenTitle implements GameScreen {
     // TODO: use better names for storage API. `load` is very unclear in context of `BeetPx`
     this._highScore = new Score(b_.load<PersistedState>()?.highScore ?? 0);
 
-    for (let y = 0; y < g.viewportSize.y; y++) {
+    for (let y = 0; y < g.viewportSize[1]; y++) {
       this._maybeAddStar(y);
     }
   }
@@ -85,7 +86,7 @@ export class ScreenTitle implements GameScreen {
     if (Math.random() < 0.1) {
       const speed = u_.randomElementOf([0.25, 0.5, 0.75])!;
       const star = {
-        xy: v_(Math.ceil(1 + Math.random() * g.viewportSize.x - 3), y),
+        xy: v2d_(Math.ceil(1 + Math.random() * g.viewportSize[0] - 3), y),
         speed: speed,
         color:
           speed >= 0.75 ? c.lightGrey : speed >= 0.5 ? c.lavender : c.mauve,
@@ -116,10 +117,10 @@ export class ScreenTitle implements GameScreen {
     }
 
     for (const star of this._stars) {
-      star.xy = star.xy.add(0, star.speed);
+      star.xy = v_.add(star.xy, v2d_(0, star.speed));
     }
 
-    this._stars = this._stars.filter((s) => s.xy.y <= g.gameAreaSize.y);
+    this._stars = this._stars.filter((s) => s.xy[1] <= g.gameAreaSize[1]);
 
     this._maybeAddStar(0);
 
@@ -129,7 +130,7 @@ export class ScreenTitle implements GameScreen {
   private _drawVersion(baseY: number): void {
     b_.print(
       g.gameVersion,
-      g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
+      v_.add(g.gameAreaOffset, v2d_(g.gameAreaSize[0] / 2, baseY)),
       c.mauve,
       [true, false]
     );
@@ -141,15 +142,15 @@ export class ScreenTitle implements GameScreen {
     ]);
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(96, 32, 32, 26),
-      v_((g.viewportSize.x - 96) / 2, baseY)
+      v2d_((g.viewportSize[0] - 96) / 2, baseY)
     );
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(96, 58, 32, 26),
-      v_((g.viewportSize.x - 96) / 2 + 32, baseY)
+      v2d_((g.viewportSize[0] - 96) / 2 + 32, baseY)
     );
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(96, 84, 32, 26),
-      v_((g.viewportSize.x - 96) / 2 + 64, baseY)
+      v2d_((g.viewportSize[0] - 96) / 2 + 64, baseY)
     );
     b_.mapSpriteColors(prevMapping);
   }
@@ -157,11 +158,11 @@ export class ScreenTitle implements GameScreen {
   private _drawHighScore(baseY: number): void {
     b_.print(
       "high score",
-      g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
+      v_.add(g.gameAreaOffset, v2d_(g.gameAreaSize[0] / 2, baseY)),
       c.lightGrey,
       [true, false]
     );
-    this._highScore.draw(v_(52, baseY + 10), c.white, c.mauve, false);
+    this._highScore.draw(v2d_(52, baseY + 10), c.white, c.mauve, false);
   }
 
   private _drawButton(
@@ -174,19 +175,19 @@ export class ScreenTitle implements GameScreen {
     // button shape
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
-      v_(baseX, baseY),
-      v_(w, 1)
+      v2d_(baseX, baseY),
+      v2d_(w, 1)
     );
 
     // button text
-    b_.print(text, v_(baseX + 4, baseY + 3), c.mauve);
+    b_.print(text, v2d_(baseX + 4, baseY + 3), c.mauve);
 
     // "x" press incentive
     if (selected) {
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? this._xSprite
         : this._xSpritePressed;
-      sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
+      sprite.draw(v_.sub(v2d_(baseX + w - 16, baseY + 13), g.gameAreaOffset));
     }
   }
 
@@ -211,8 +212,8 @@ export class ScreenTitle implements GameScreen {
       ]);
       b_.sprite(
         this._brpLogo,
-        v_((g.viewportSize.x - this._brpLogo.size().x * 2) / 2, 6),
-        v_(2, 2)
+        v2d_((g.viewportSize[0] - this._brpLogo.size()[0] * 2) / 2, 6),
+        v2d_(2, 2)
       );
       b_.mapSpriteColors(prevMapping);
 
@@ -220,7 +221,7 @@ export class ScreenTitle implements GameScreen {
 
       // ship
       new StaticSprite(g.assets.mainSpritesheetUrl, 10, 10, 18, 0).draw(
-        v_(g.gameAreaSize.x / 2, 110)
+        v2d_(g.gameAreaSize[0] / 2, 110)
       );
     } else {
       // TODO

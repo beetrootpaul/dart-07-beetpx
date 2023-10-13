@@ -5,6 +5,8 @@ import {
   BpxVector2d,
   timer_,
   transparent_,
+  u_,
+  v2d_,
   v_,
 } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
@@ -17,7 +19,7 @@ import { Shockwave } from "./Shockwave";
 
 export class Player {
   private static readonly _invincibilityFlashFrames: number = 5;
-  private static readonly _size: BpxVector2d = v_(10, 12);
+  private static readonly _size: BpxVector2d = v2d_(10, 12);
 
   private readonly _onBulletsSpawned: Throttle<
     (bullets: PlayerBullet[]) => void
@@ -77,25 +79,25 @@ export class Player {
     this._onDamaged = params.onDamaged;
     this._onDestroyed = params.onDestroyed;
 
-    this._xy = v_(g.gameAreaSize.x / 2, g.gameAreaSize.y - 28);
+    this._xy = v2d_(g.gameAreaSize[0] / 2, g.gameAreaSize[1] - 28);
   }
 
   get collisionCircle(): CollisionCircle {
     return {
-      center: this._xy.add(0, 1),
+      center: v_.add(this._xy, [0, 1]),
       r: 3,
     };
   }
 
   private _createSingleBullet(): PlayerBullet[] {
-    return [new PlayerBullet(this._xy.add(0, -4))];
+    return [new PlayerBullet(v_.add(this._xy, [0, -4]))];
   }
 
   private _createTripleBullet(): PlayerBullet[] {
     return [
-      new PlayerBullet(this._xy.add(0, -4)),
-      new PlayerBullet(this._xy.add(-5, -2)),
-      new PlayerBullet(this._xy.add(5, -2)),
+      new PlayerBullet(v_.add(this._xy, [0, -4])),
+      new PlayerBullet(v_.add(this._xy, [-5, -2])),
+      new PlayerBullet(v_.add(this._xy, [5, -2])),
     ];
   }
 
@@ -123,20 +125,28 @@ export class Player {
     this._jetSprite = down ? null : this._jetSpriteVisible;
 
     const speed = fastMovement ? 1.5 : 1;
-    let diff = v_(
+    let diff = v2d_(
       right ? speed : left ? -speed : 0,
       down ? speed : up ? -speed : 0
     );
-    if (diff.x !== 0 && diff.y !== 0) {
+    if (diff[0] !== 0 && diff[1] !== 0) {
       // normalization of diagonal speed
-      diff = diff.div(1.44);
+      diff = v_.div(diff, 1.44);
     }
-    this._xy = this._xy
-      .add(diff)
-      .clamp(
-        Player._size.div(2).add(1),
-        g.gameAreaSize.sub(Player._size.div(2)).sub(1)
-      );
+    // TODO: use `v_.clamp(…)`
+    this._xy = v_.add(this._xy, diff);
+    this._xy = [
+      u_.clamp(
+        Player._size[0] / 2 + 1,
+        this._xy[0],
+        g.gameAreaSize[0] - (Player._size[0] / 2 + 1)
+      ),
+      u_.clamp(
+        Player._size[1] / 2 + 1,
+        this._xy[1],
+        g.gameAreaSize[1] - (Player._size[1] / 2 + 1)
+      ),
+    ];
   }
 
   fire(fastShoot: boolean, tripleShoot: boolean): void {

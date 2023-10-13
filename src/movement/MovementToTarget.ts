@@ -4,6 +4,8 @@ import {
   BpxTimer,
   BpxVector2d,
   timer_,
+  u_,
+  v2d_,
   v_,
 } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
@@ -20,7 +22,7 @@ export class MovementToTarget implements Movement {
     (startXy) =>
       new MovementToTarget(
         startXy,
-        v_(params.targetX ?? startXy.x, params.targetY ?? startXy.y),
+        v2d_(params.targetX ?? startXy[0], params.targetY ?? startXy[1]),
         params.frames,
         params.easingFn ?? BpxEasing.linear,
         params.onFinished
@@ -48,15 +50,23 @@ export class MovementToTarget implements Movement {
     this._onFinished = onFinished;
 
     this._xy = startXy;
-    this._speed = this._nextXy().sub(startXy);
+    this._speed = v_.sub(this._nextXy(), startXy);
   }
 
   private _nextXy(): BpxVector2d {
-    return BpxVector2d.lerp(
-      this._startXy,
-      this._targetXy,
-      this._easingFn(this._timer.progress)
-    );
+    // TODO: use v_.lerp(…)
+    return [
+      u_.lerp(
+        this._startXy[0],
+        this._targetXy[0],
+        this._easingFn(this._timer.progress)
+      ),
+      u_.lerp(
+        this._startXy[1],
+        this._targetXy[1],
+        this._easingFn(this._timer.progress)
+      ),
+    ];
   }
 
   get xy(): BpxVector2d {
@@ -73,8 +83,8 @@ export class MovementToTarget implements Movement {
 
   update(): void {
     this._timer.update();
-    this._speed = this._nextXy().sub(this._xy);
-    this._xy = this._xy.add(this._speed);
+    this._speed = v_.sub(this._nextXy(), this._xy);
+    this._xy = v_.add(this._xy, this._speed);
     if (this._onFinished && this._timer.hasFinished) {
       this._onFinished();
       this._onFinished = undefined;

@@ -1,10 +1,10 @@
-import { b_, u_, v_ } from "@beetpx/beetpx";
+import { b_, u_, v2d_ } from "@beetpx/beetpx";
 import { c, g } from "../globals";
 
 export class DebugGameInfo {
   private readonly _updateCallsData = {
     history: Array.from(
-      { length: Math.floor((g.viewportSize.x - 1) / 2) },
+      { length: Math.floor((g.viewportSize[0] - 1) / 2) },
       () => 0
     ),
     index: 0,
@@ -12,7 +12,7 @@ export class DebugGameInfo {
 
   private readonly _fpsData = {
     history: Array.from(
-      { length: Math.floor((g.viewportSize.x - 1) / 2) },
+      { length: Math.floor((g.viewportSize[0] - 1) / 2) },
       () => 0
     ),
     index: 0,
@@ -50,7 +50,7 @@ export class DebugGameInfo {
       const calls = this._updateCallsData.history[column]!;
       for (let dot = 0; dot < calls; dot++) {
         b_.pixel(
-          v_(1 + column * 2, 1 + dot * 2),
+          v2d_(1 + column * 2, 1 + dot * 2),
           column === this._updateCallsData.index ? c.white : c.lavender
         );
       }
@@ -64,7 +64,7 @@ export class DebugGameInfo {
       const tensOfFps = Math.round(this._fpsData.history[column]! / 10);
       for (let dot = 0; dot < tensOfFps; dot++) {
         b_.pixel(
-          v_(1 + column * 2, g.viewportSize.y - 2 - dot * 2),
+          v2d_(1 + column * 2, g.viewportSize[1] - 2 - dot * 2),
           column === this._fpsData.index
             ? c.white
             : (dot + 1) % 3 === 0
@@ -90,7 +90,7 @@ export class DebugGameInfo {
         : "@";
     b_.print(
       audioStateText,
-      v_(g.viewportSize.x - u_.measureText(audioStateText).x, 0),
+      v2d_(g.viewportSize[0] - u_.measureText(audioStateText)[0], 0),
       c.white
     );
   }
