@@ -55,8 +55,8 @@ export class ScreenSelectMission implements GameScreen {
 
   preUpdate(): GameScreen | undefined {
     if (this._proceed && this._selectedMission === 0) {
-      // TODO: params: 1, false, false, false
-      return new ScreenTitle();
+      // TODO: params: 1, false, false
+      return new ScreenTitle({ startMusic: false });
     }
 
     if (

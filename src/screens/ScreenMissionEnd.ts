@@ -21,8 +21,8 @@ export class ScreenMissionEnd implements GameScreen {
     this._fadeOut = new Fade("out", { waitFrames: 90, fadeFrames: 30 });
     this._screenTimer = timer_(120);
 
-    // TODO
-    //         _music_fade_out()
+    // TODO: replace this with a fade out of a music only over 500 ms
+    b_.stopAllSounds();
   }
 
   preUpdate(): GameScreen | undefined {

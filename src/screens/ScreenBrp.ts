@@ -28,59 +28,26 @@ export class ScreenBrp implements GameScreen {
     this._presentTimer = timer_(screenFrames - 2 * fadeFrames - 20);
     this._fadeOutTimer = timer_(fadeFrames);
 
-    // TODO: extract music definition somewhere else?
-    // TODO: what about inexact timing? Rework the audio engine?
+    // TODO: There are gaps between sequence entries. Would need to rework an entire
+    //       audio sequence playback and make it synced with audioContext time :-(
+    const halfDuration = (fullSoundDurationMs: number) =>
+      (fullSoundDurationMs * 16) / 32;
     b_.playSoundSequence({
       sequence: [
-        [
-          {
-            url: g.assets.music32,
-            durationMs: (fullSoundDurationMs) =>
-              (fullSoundDurationMs * 15.9) / 32,
-          },
-        ],
-        [
-          {
-            url: g.assets.music33,
-            durationMs: (fullSoundDurationMs) =>
-              (fullSoundDurationMs * 15.9) / 32,
-          },
-        ],
+        [{ url: g.assets.music32, durationMs: halfDuration }],
+        [{ url: g.assets.music33, durationMs: halfDuration }],
       ],
       sequenceLooped: [
-        [
-          {
-            url: g.assets.music34,
-            durationMs: (fullSoundDurationMs) =>
-              (fullSoundDurationMs * 31.9) / 32,
-          },
-          { url: g.assets.music36 },
-        ],
-        [
-          {
-            url: g.assets.music35,
-            durationMs: (fullSoundDurationMs) =>
-              (fullSoundDurationMs * 31.9) / 32,
-          },
-          { url: g.assets.music37 },
-        ],
+        [{ url: g.assets.music34 }, { url: g.assets.music36 }],
+        [{ url: g.assets.music35 }, { url: g.assets.music37 }],
       ],
     });
-    // TODO:
-    //         music(0)
-    // SEQ:
-    // intro:
-    //   32
-    //   33
-    // loop:
-    //   34 36
-    //   35 37
   }
 
   preUpdate(): GameScreen | undefined {
     if (this._skip || this._screenTimer.hasFinished) {
-      // TODO: params: 1, false, true, false
-      return new ScreenTitle();
+      // TODO: params: 1, true, false
+      return new ScreenTitle({ startMusic: false });
     }
   }
 

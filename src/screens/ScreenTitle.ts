@@ -58,20 +58,19 @@ export class ScreenTitle implements GameScreen {
   private _proceed: boolean = false;
   private _play: boolean = true;
 
-  // TODO: params: preselected_mission, start_music, start_fade_in, select_controls
-  constructor() {
+  // TODO: params: preselected_mission, start_fade_in, select_controls
+  constructor(params: { startMusic: boolean }) {
     // TODO
     //     local play = not select_controls
-    //
-    // TODO
-    //         if start_music then
-    // TODO:
-    //         music(2)
-    // SEQ:
-    // loop:
-    //   34 36
-    //   35 37
-    //         end
+
+    if (params.startMusic) {
+      b_.playSoundSequence({
+        sequenceLooped: [
+          [{ url: g.assets.music34 }, { url: g.assets.music36 }],
+          [{ url: g.assets.music35 }, { url: g.assets.music37 }],
+        ],
+      });
+    }
 
     // TODO: use better names for storage API. `load` is very unclear in context of `BeetPx`
     this._highScore = new Score(b_.load<PersistedState>()?.highScore ?? 0);

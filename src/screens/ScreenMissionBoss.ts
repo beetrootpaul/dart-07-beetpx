@@ -20,9 +20,6 @@ export class ScreenMissionBoss implements GameScreen {
     this._game = params.game;
     this._hud = params.hud;
 
-    // TODO
-    //     local music_start_timer =  _noop_game_object
-
     const bossInfoFrames = 180;
     const bossInfoSlideFrames = 50;
 
@@ -34,6 +31,8 @@ export class ScreenMissionBoss implements GameScreen {
       slideOutFrames: bossInfoSlideFrames,
     });
 
+    // TODO: replace this with a fade out of a music only over 500 ms
+    b_.stopAllSounds();
     this._musicStartTimer = timer_(60);
 
     this._game.enterBossPhase();
@@ -59,8 +58,7 @@ export class ScreenMissionBoss implements GameScreen {
   update(): void {
     if (this._musicStartTimer?.hasFinished) {
       this._musicStartTimer = null;
-      // TODO
-      // music(_m_mission_boss_music)
+      b_.playSoundSequence(CurrentMission.m.audioSequenceBoss);
     }
 
     this._game.update();

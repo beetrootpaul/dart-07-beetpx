@@ -55,8 +55,9 @@ export class ScreenMissionMain implements GameScreen {
 
     this._fadeIn = new Fade("in", { fadeFrames: fadeInFrames });
 
-    // TODO
-    //     music(_m_mission_main_music)
+    CurrentMission.mainMusicPlaybackId = b_.playSoundSequence(
+      CurrentMission.m.audioSequenceMain
+    );
   }
 
   preUpdate(): GameScreen | undefined {

@@ -1,4 +1,12 @@
-import { b_, BpxEasing, BpxSolidColor, timer_, u_, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxEasing,
+  BpxSolidColor,
+  BpxSoundSequence,
+  timer_,
+  u_,
+  v_,
+} from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
@@ -75,6 +83,74 @@ export class Mission1 implements Mission {
         );
       }
     }
+  }
+
+  get audioSequenceMain(): BpxSoundSequence {
+    return {
+      sequence: [
+        [{ url: g.assets.mission1Music43 }, { url: g.assets.mission1Music48 }],
+        [{ url: g.assets.mission1Music40 }, { url: g.assets.mission1Music49 }],
+        [{ url: g.assets.mission1Music40 }, { url: g.assets.mission1Music49 }],
+        [{ url: g.assets.mission1Music40 }, { url: g.assets.mission1Music50 }],
+      ],
+      sequenceLooped: [
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music41 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music41 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music50 },
+          { url: g.assets.mission1Music42 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music41 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music41 },
+          { url: g.assets.mission1Music51 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music41 },
+          { url: g.assets.mission1Music51 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music50 },
+          { url: g.assets.mission1Music42 },
+          { url: g.assets.mission1Music52 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music51 },
+        ],
+      ],
+    };
+  }
+
+  get audioSequenceBoss(): BpxSoundSequence {
+    return {
+      sequence: [[{ url: g.assets.mission1Music44 }]],
+      sequenceLooped: [
+        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music53 }],
+        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music54 }],
+        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music55 }],
+        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music56 }],
+      ],
+    };
   }
 
   enemyPropertiesFor(enemyId: string): EnemyProperties {
@@ -276,34 +352,6 @@ export class Mission1 implements Mission {
         return u_.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
     }
   }
-
-  // TODO
-  // _m_mission_main_music = 0
-  // SEQ:
-  // intro:
-  //   43 48
-  //   40 49
-  //   40 49
-  //   40 50
-  // loop:
-  //   40 49 41
-  //   40 49 41
-  //   40 50 42
-  //   40 49 41
-  //   40 49 41 51
-  //   40 49 41 51
-  //   40 50 42 52
-  //   40 49    51
-  //
-  // _m_mission_boss_music = 13
-  // SEQ:
-  // intro:
-  //   44
-  // loop:
-  //   45 53
-  //   45 54
-  //   45 55
-  //   45 56
 
   bossProperties(): BossProperties {
     return {

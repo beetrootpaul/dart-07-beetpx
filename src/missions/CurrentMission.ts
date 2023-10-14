@@ -1,4 +1,4 @@
-import { u_ } from "@beetpx/beetpx";
+import { BpxAudioPlaybackId, u_ } from "@beetpx/beetpx";
 import { Mission } from "./Mission";
 import { Mission1 } from "./Mission1";
 import { Mission2 } from "./Mission2";
@@ -9,6 +9,8 @@ export class CurrentMission {
 
   private static _current: number = CurrentMission.first;
   private static _m: Mission = new Mission1();
+
+  static mainMusicPlaybackId: BpxAudioPlaybackId | undefined = undefined;
 
   static get current(): number {
     return this._current;

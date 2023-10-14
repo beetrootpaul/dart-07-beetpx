@@ -1,4 +1,4 @@
-import { BpxSolidColor } from "@beetpx/beetpx";
+import { BpxSolidColor, BpxSoundSequence } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyProperties } from "../game/EnemyProperties";
 
@@ -21,6 +21,9 @@ export interface Mission {
 
   levelBgUpdate(): void;
   levelBgDraw(): void;
+
+  get audioSequenceMain(): BpxSoundSequence;
+  get audioSequenceBoss(): BpxSoundSequence;
 
   enemyPropertiesFor(enemyId: string): EnemyProperties;
   bossProperties(): BossProperties;

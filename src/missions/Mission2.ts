@@ -1,4 +1,12 @@
-import { b_, BpxSolidColor, BpxVector2d, timer_, u_, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxSolidColor,
+  BpxSoundSequence,
+  BpxVector2d,
+  timer_,
+  u_,
+  v_,
+} from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
@@ -76,6 +84,18 @@ export class Mission2 implements Mission {
     }
   }
 
+  get audioSequenceMain(): BpxSoundSequence {
+    return {
+      sequenceLooped: [[{ url: g.assets.mission2Music32 }]],
+    };
+  }
+
+  get audioSequenceBoss(): BpxSoundSequence {
+    return {
+      sequenceLooped: [[{ url: g.assets.mission2Music33 }]],
+    };
+  }
+
   enemyPropertiesFor(enemyId: string): EnemyProperties {
     switch (enemyId) {
       case "m2e_stationary":
@@ -130,17 +150,6 @@ export class Mission2 implements Mission {
         return u_.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
     }
   }
-
-  // TODO
-  // _m_mission_main_music = 0
-  // SEQ:
-  // loop:
-  //   32
-  //
-  // _m_mission_boss_music = 1
-  // SEQ:
-  // loop:
-  //   33
 
   bossProperties(): BossProperties {
     return {
