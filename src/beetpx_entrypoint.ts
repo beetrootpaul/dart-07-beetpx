@@ -54,6 +54,12 @@ b_.init(
       { url: g.assets.sfxDestroyBossFinal2 },
       { url: g.assets.sfxDestroyBossFinal3 },
       { url: g.assets.sfxGameWin },
+      { url: g.assets.music32 },
+      { url: g.assets.music33 },
+      { url: g.assets.music34 },
+      { url: g.assets.music35 },
+      { url: g.assets.music36 },
+      { url: g.assets.music37 },
     ],
     jsons: [{ url: g.assets.levelsJson }],
   }

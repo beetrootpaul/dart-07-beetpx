@@ -28,6 +28,44 @@ export class ScreenBrp implements GameScreen {
     this._presentTimer = timer_(screenFrames - 2 * fadeFrames - 20);
     this._fadeOutTimer = timer_(fadeFrames);
 
+    // TODO: extract music definition somewhere else?
+    // TODO: what about inexact timing? Rework the audio engine?
+    b_.playSoundSequence({
+      sequence: [
+        [
+          {
+            url: g.assets.music32,
+            durationMs: (fullSoundDurationMs) =>
+              (fullSoundDurationMs * 15.9) / 32,
+          },
+        ],
+        [
+          {
+            url: g.assets.music33,
+            durationMs: (fullSoundDurationMs) =>
+              (fullSoundDurationMs * 15.9) / 32,
+          },
+        ],
+      ],
+      sequenceLooped: [
+        [
+          {
+            url: g.assets.music34,
+            durationMs: (fullSoundDurationMs) =>
+              (fullSoundDurationMs * 31.9) / 32,
+          },
+          { url: g.assets.music36 },
+        ],
+        [
+          {
+            url: g.assets.music35,
+            durationMs: (fullSoundDurationMs) =>
+              (fullSoundDurationMs * 31.9) / 32,
+          },
+          { url: g.assets.music37 },
+        ],
+      ],
+    });
     // TODO:
     //         music(0)
     // SEQ:

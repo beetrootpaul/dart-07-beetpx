@@ -66,6 +66,12 @@ export const g = {
     sfxDestroyBossFinal2: "sfx_main_23.wav",
     sfxDestroyBossFinal3: "sfx_main_24.wav",
     sfxGameWin: "sfx_main_25.wav",
+    music32: "sfx_main_32.wav",
+    music33: "sfx_main_33.wav",
+    music34: "sfx_main_34.wav",
+    music35: "sfx_main_35.wav",
+    music36: "sfx_main_36.wav",
+    music37: "sfx_main_37.wav",
   },
 
   healthDefault: 3,
