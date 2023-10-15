@@ -58,7 +58,7 @@ export class ScreenTitle implements GameScreen {
   private _proceed: boolean = false;
   private _play: boolean = true;
 
-  // TODO: params: preselected_mission, start_fade_in, select_controls
+  // TODO: params: start_fade_in, select_controls
   constructor(params: { startMusic: boolean }) {
     // TODO
     //     local play = not select_controls
@@ -95,11 +95,7 @@ export class ScreenTitle implements GameScreen {
 
   preUpdate(): GameScreen | undefined {
     if (this._proceed) {
-      return this._play
-        ? // TODO: param: preselected_mission
-          new ScreenSelectMission()
-        : // TODO: param: preselected_mission
-          new ScreenControls();
+      return this._play ? new ScreenSelectMission() : new ScreenControls();
     }
   }
 

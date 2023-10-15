@@ -90,7 +90,7 @@ export class ScreenOver implements GameScreen {
           score: 0,
         });
       } else {
-        // TODO: params: CurrentMission.current, false, false
+        // TODO: params: false, false
         return new ScreenTitle({ startMusic: true });
       }
     }

@@ -43,12 +43,9 @@ export class ScreenControls implements GameScreen {
 
   private _proceed: boolean = false;
 
-  // TODO: params: preselected_mission
-  constructor() {}
-
   preUpdate(): GameScreen | undefined {
     if (this._proceed) {
-      // TODO: params: preselected_mission, false, true
+      // TODO: params: false, true
       return new ScreenTitle({ startMusic: false });
     }
   }

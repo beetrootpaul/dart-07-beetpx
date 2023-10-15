@@ -96,8 +96,8 @@ b_.init(
     b_.setRepeating("o", false);
     b_.setRepeating("menu", false);
 
-    // TODO: pause menu
-    // TODO: stopAllSounds
+    // TODO: unify naming: sounds vs audio
+    b_.stopAllSounds();
 
     b_.setFont(g.assets.pico8FontId);
 

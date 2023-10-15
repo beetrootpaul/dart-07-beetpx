@@ -10,6 +10,9 @@ import { ScreenMissionMain } from "./ScreenMissionMain";
 import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenSelectMission implements GameScreen {
+  // 0 = back button, 1-3 = missions from 1 to 3
+  private static _selectedMission: number = 1;
+
   private readonly _fadeOut: Fade = new Fade("out", { fadeFrames: 30 });
   private readonly _shipSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -42,30 +45,27 @@ export class ScreenSelectMission implements GameScreen {
     true
   );
 
-  // 0 = back button, 1-3 = missions from 1 to 3
-  private _selectedMission: number = 1;
-
   private _shipMovement: Movement | null = null;
   private _proceed: boolean = false;
 
-  // TODO: param: selected_mission
   constructor() {
     this._initShipMovement();
   }
 
   preUpdate(): GameScreen | undefined {
-    if (this._proceed && this._selectedMission === 0) {
-      // TODO: params: 1, false, false
+    if (this._proceed && ScreenSelectMission._selectedMission === 0) {
+      ScreenSelectMission._selectedMission = 1;
+      // TODO: params: false, false
       return new ScreenTitle({ startMusic: false });
     }
 
     if (
       this._proceed &&
-      this._selectedMission > 0 &&
+      ScreenSelectMission._selectedMission > 0 &&
       this._fadeOut.hasFinished
     ) {
       return new ScreenMissionMain({
-        mission: this._selectedMission,
+        mission: ScreenSelectMission._selectedMission,
         health: g.healthDefault,
         shockwaveCharges: g.shockwaveChargesDefault,
         fastMovement: false,
@@ -77,7 +77,9 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   private _initShipMovement(): void {
-    const [buttonXy, buttonWh] = this._missionButtonXyWh(this._selectedMission);
+    const [buttonXy, buttonWh] = this._missionButtonXyWh(
+      ScreenSelectMission._selectedMission
+    );
     this._shipMovement = MovementToTarget.of({
       targetY: buttonXy.sub(0, 10).y,
       frames: 20,
@@ -98,18 +100,20 @@ export class ScreenSelectMission implements GameScreen {
 
     if (b_.wasJustPressed("up")) {
       b_.playSoundOnce(g.assets.sfxOptionsChange);
-      this._selectedMission = (this._selectedMission + 4 - 1) % 4;
+      ScreenSelectMission._selectedMission =
+        (ScreenSelectMission._selectedMission + 4 - 1) % 4;
       this._initShipMovement();
     }
     if (b_.wasJustPressed("down")) {
       b_.playSoundOnce(g.assets.sfxOptionsChange);
-      this._selectedMission = (this._selectedMission + 1) % 4;
+      ScreenSelectMission._selectedMission =
+        (ScreenSelectMission._selectedMission + 1) % 4;
       this._initShipMovement();
     }
 
     if (b_.wasJustPressed("x")) {
       b_.playSoundOnce(g.assets.sfxOptionsConfirm);
-      if (this._selectedMission > 0) {
+      if (ScreenSelectMission._selectedMission > 0) {
         // TODO: replace this with a fade out of a music only over 500 ms
         b_.stopAllSounds();
       }
@@ -130,7 +134,8 @@ export class ScreenSelectMission implements GameScreen {
 
   private _drawMissionButton(mission: number): void {
     const selected =
-      mission === this._selectedMission && !PauseMenu.isGamePaused;
+      mission === ScreenSelectMission._selectedMission &&
+      !PauseMenu.isGamePaused;
 
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(mission);
 
@@ -182,7 +187,8 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   private _drawBackButton(): void {
-    const selected = 0 === this._selectedMission && !PauseMenu.isGamePaused;
+    const selected =
+      0 === ScreenSelectMission._selectedMission && !PauseMenu.isGamePaused;
 
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(0);
 
@@ -208,7 +214,9 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   private _drawShip(): void {
-    const [buttonXy, buttonWh] = this._missionButtonXyWh(this._selectedMission);
+    const [buttonXy, buttonWh] = this._missionButtonXyWh(
+      ScreenSelectMission._selectedMission
+    );
     b_.setClippingRegion(buttonXy, buttonWh);
 
     if (this._shipMovement) {
@@ -228,7 +236,7 @@ export class ScreenSelectMission implements GameScreen {
 
     this._drawBackButton();
 
-    if (this._selectedMission > 0) {
+    if (ScreenSelectMission._selectedMission > 0) {
       this._drawShip();
     }
 
