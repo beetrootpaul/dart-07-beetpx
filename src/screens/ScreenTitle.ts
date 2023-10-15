@@ -22,6 +22,8 @@ import { ScreenSelectMission } from "./ScreenSelectMission";
 export class ScreenTitle implements GameScreen {
   private static readonly _gameCoverMode: boolean = false;
 
+  private static _playSelected: boolean = true;
+
   private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(
     99,
     114,
@@ -56,13 +58,9 @@ export class ScreenTitle implements GameScreen {
   }> = [];
 
   private _proceed: boolean = false;
-  private _play: boolean = true;
 
-  // TODO: params: start_fade_in, select_controls
+  // TODO: params: start_fade_in
   constructor(params: { startMusic: boolean }) {
-    // TODO
-    //     local play = not select_controls
-
     if (params.startMusic) {
       b_.playSoundSequence({
         sequenceLooped: [
@@ -95,14 +93,16 @@ export class ScreenTitle implements GameScreen {
 
   preUpdate(): GameScreen | undefined {
     if (this._proceed) {
-      return this._play ? new ScreenSelectMission() : new ScreenControls();
+      return ScreenTitle._playSelected
+        ? new ScreenSelectMission()
+        : new ScreenControls();
     }
   }
 
   update(): void {
     if (b_.wasJustPressed("up") || b_.wasJustPressed("down")) {
       b_.playSoundOnce(g.assets.sfxOptionsChange);
-      this._play = !this._play;
+      ScreenTitle._playSelected = !ScreenTitle._playSelected;
     }
 
     if (b_.wasJustPressed("x")) {
@@ -228,14 +228,14 @@ export class ScreenTitle implements GameScreen {
         98,
         15,
         82,
-        this._play && !PauseMenu.isGamePaused
+        ScreenTitle._playSelected && !PauseMenu.isGamePaused
       );
       this._drawButton(
         "controls",
         98,
         15,
         104,
-        !this._play && !PauseMenu.isGamePaused
+        !ScreenTitle._playSelected && !PauseMenu.isGamePaused
       );
     }
 
