@@ -3,6 +3,7 @@ import { Fade } from "../Fade";
 import { Game } from "../game/Game";
 import { Hud } from "../gui/Hud";
 import { SlidingInfo } from "../gui/SlidingInfo";
+import { Music } from "../misc/Music";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionBoss } from "./ScreenMissionBoss";
@@ -55,9 +56,7 @@ export class ScreenMissionMain implements GameScreen {
 
     this._fadeIn = new Fade("in", { fadeFrames: fadeInFrames });
 
-    CurrentMission.mainMusicPlaybackId = b_.playSoundSequence(
-      CurrentMission.m.audioSequenceMain
-    );
+    Music.playLevelMusicMain();
   }
 
   preUpdate(): GameScreen | undefined {

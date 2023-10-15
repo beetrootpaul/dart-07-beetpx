@@ -3,6 +3,7 @@ import { Fade } from "../Fade";
 import { PersistedState } from "../PersistedState";
 import { Game } from "../game/Game";
 import { c, g } from "../globals";
+import { Music } from "../misc/Music";
 import { Sprite, StaticSprite } from "../misc/Sprite";
 import { CurrentMission } from "../missions/CurrentMission";
 import { PauseMenu } from "../pause/PauseMenu";
@@ -109,8 +110,8 @@ export class ScreenOver implements GameScreen {
     }
 
     if (b_.wasJustPressed("x")) {
-      // TODO: replace this with a fade out of a music only over 500 ms
-      b_.stopAllSounds();
+      b_.playSoundOnce(g.assets.sfxOptionsConfirm);
+      Music.fadeOutCurrentMusic();
       this._proceed = true;
     }
 

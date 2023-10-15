@@ -11,6 +11,7 @@ import {
 import { Fade } from "../Fade";
 import { Score } from "../game/Score";
 import { c, g } from "../globals";
+import { Music } from "../misc/Music";
 import { Sprite, StaticSprite } from "../misc/Sprite";
 import { PauseMenu } from "../pause/PauseMenu";
 import { PersistedState } from "../PersistedState";
@@ -123,12 +124,7 @@ export class ScreenTitle implements GameScreen {
 
   constructor(params: { startMusic: boolean; startFadeIn: boolean }) {
     if (params.startMusic) {
-      b_.playSoundSequence({
-        sequenceLooped: [
-          [{ url: g.assets.music34 }, { url: g.assets.music36 }],
-          [{ url: g.assets.music35 }, { url: g.assets.music37 }],
-        ],
-      });
+      Music.playTitleMusic({ withIntro: false });
     }
 
     this._fadeIn = params.startFadeIn

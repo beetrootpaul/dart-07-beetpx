@@ -3,6 +3,7 @@ import { Game } from "../game/Game";
 import { c } from "../globals";
 import { Hud } from "../gui/Hud";
 import { SlidingInfo } from "../gui/SlidingInfo";
+import { Music } from "../misc/Music";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionDefeat } from "./ScreenMissionDefeat";
@@ -31,8 +32,7 @@ export class ScreenMissionBoss implements GameScreen {
       slideOutFrames: bossInfoSlideFrames,
     });
 
-    // TODO: replace this with a fade out of a music only over 500 ms
-    b_.stopAllSounds();
+    Music.fadeOutCurrentMusic();
     this._musicStartTimer = timer_(60);
 
     this._game.enterBossPhase();
@@ -58,7 +58,7 @@ export class ScreenMissionBoss implements GameScreen {
   update(): void {
     if (this._musicStartTimer?.hasFinished) {
       this._musicStartTimer = null;
-      b_.playSoundSequence(CurrentMission.m.audioSequenceBoss);
+      Music.playLevelMusicBoss();
     }
 
     this._game.update();

@@ -1,6 +1,7 @@
 import { b_, BpxVector2d, spr_, u_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { c, g } from "../globals";
+import { Music } from "../misc/Music";
 import { AnimatedSprite, Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementToTarget } from "../movement/MovementToTarget";
@@ -111,8 +112,7 @@ export class ScreenSelectMission implements GameScreen {
     if (b_.wasJustPressed("x")) {
       b_.playSoundOnce(g.assets.sfxOptionsConfirm);
       if (ScreenSelectMission._selectedMission > 0) {
-        // TODO: replace this with a fade out of a music only over 500 ms
-        b_.stopAllSounds();
+        Music.fadeOutCurrentMusic();
       }
       this._proceed = true;
     }

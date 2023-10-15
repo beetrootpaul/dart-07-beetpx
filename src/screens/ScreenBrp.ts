@@ -1,5 +1,6 @@
 import { b_, BpxSprite, BpxTimer, spr_, timer_, v_ } from "@beetpx/beetpx";
 import { c, g } from "../globals";
+import { Music } from "../misc/Music";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
@@ -28,20 +29,7 @@ export class ScreenBrp implements GameScreen {
     this._presentTimer = timer_(screenFrames - 2 * fadeFrames - 20);
     this._fadeOutTimer = timer_(fadeFrames);
 
-    // TODO: There are gaps between sequence entries. Would need to rework an entire
-    //       audio sequence playback and make it synced with audioContext time :-(
-    const halfDuration = (fullSoundDurationMs: number) =>
-      (fullSoundDurationMs * 16) / 32;
-    b_.playSoundSequence({
-      sequence: [
-        [{ url: g.assets.music32, durationMs: halfDuration }],
-        [{ url: g.assets.music33, durationMs: halfDuration }],
-      ],
-      sequenceLooped: [
-        [{ url: g.assets.music34 }, { url: g.assets.music36 }],
-        [{ url: g.assets.music35 }, { url: g.assets.music37 }],
-      ],
-    });
+    Music.playTitleMusic({ withIntro: true });
   }
 
   preUpdate(): GameScreen | undefined {

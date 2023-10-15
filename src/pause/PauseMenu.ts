@@ -14,14 +14,11 @@ import { PauseMenuEntrySimple } from "./PauseMenuEntrySimple";
 import { PauseMenuEntryToggle } from "./PauseMenuEntryToggle";
 
 // TODO: camera shake does not stop during pause menu AND affects pause menu. Both should NOT happen.
-// TODO: mute sounds fade out happens after turning off the music in pause menu and resuming. Just for a bit, but still. Make mute immediate if from pause menu.
 
 // TODO: add an ability to restart the current mission
 // TODO: sounds of navigating through pause menu
 
 // TODO: asymmetrical width
-
-// TODO: fix global mute button
 
 export class PauseMenu {
   static isGamePaused: boolean = false;
