@@ -6,6 +6,8 @@ export class PauseMenuEntrySimple implements PauseMenuEntry {
   private readonly _text: string;
   private readonly _onExecute: () => void;
 
+  private _isFocused: boolean = false;
+
   readonly size: BpxVector2d;
 
   constructor(text: string, onExecute: () => void) {
@@ -19,7 +21,11 @@ export class PauseMenuEntrySimple implements PauseMenuEntry {
     this._onExecute();
   }
 
+  update(isFocused: boolean): void {
+    this._isFocused = isFocused;
+  }
+
   draw(xy: BpxVector2d): void {
-    b_.print(this._text, xy, c.white);
+    b_.print(this._text, xy, this._isFocused ? c.white : c.lavender);
   }
 }

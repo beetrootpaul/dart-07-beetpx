@@ -1,7 +1,6 @@
 import {
   b_,
   BpxMappingColor,
-  BpxSolidColor,
   BpxVector2d,
   u_,
   v_,
@@ -12,14 +11,19 @@ import { Sprite, StaticSprite } from "../misc/Sprite";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { PauseMenuEntry } from "./PauseMenuEntry";
 import { PauseMenuEntrySimple } from "./PauseMenuEntrySimple";
+import { PauseMenuEntryToggle } from "./PauseMenuEntryToggle";
 
 // TODO: add an ability to restart the current mission
 // TODO: sounds of navigating through pause menu
 
+// TODO: asymmetrical width
+
+// TODO: fix global mute button
+
 export class PauseMenu {
   static isGamePaused: boolean = false;
 
-  private static _padding = v_(19, 12);
+  private static _padding = v_(21, 12);
   private static _gapBetweenEntries = 6;
 
   private static _arrowPixels = ["#__", "##_", "###", "##_", "#__"];
@@ -49,6 +53,17 @@ export class PauseMenu {
       new PauseMenuEntrySimple("continue", () => {
         PauseMenu.isGamePaused = false;
       }),
+      new PauseMenuEntryToggle(
+        "sounds:",
+        () => !b_.areAllSoundsMuted(),
+        (newValue) => {
+          if (newValue) {
+            b_.unmuteAllSounds();
+          } else {
+            b_.muteAllSounds();
+          }
+        }
+      ),
       // TODO: add an ability to restart current mission (available only if during a mission)
       new PauseMenuEntrySimple("exit to title", () => {
         b_.restart();
@@ -68,6 +83,10 @@ export class PauseMenu {
     if (b_.wasJustPressed("down")) {
       this._focusedEntry = (this._focusedEntry + 1) % this._entries.length;
     }
+
+    this._entries.forEach((entry, index) => {
+      entry.update(this._focusedEntry === index);
+    });
   }
 
   draw(): void {
@@ -104,19 +123,9 @@ export class PauseMenu {
   }
 
   private _drawMenuBox(xy: BpxVector2d, wh: BpxVector2d): void {
-    b_.rectFilled(
-      xy.sub(2),
-      wh.add(4),
-      new BpxMappingColor(b_.takeCanvasSnapshot(), (canvasColor) =>
-        canvasColor instanceof BpxSolidColor
-          ? canvasColor.r + canvasColor.g + canvasColor.b >= (0xff * 3) / 2
-            ? c.darkerBlue
-            : c.black
-          : canvasColor
-      )
-    );
+    b_.rectFilled(xy.sub(2), wh.add(4), c.black);
 
-    b_.rect(xy.sub(1), wh.add(2), c.white);
+    b_.rect(xy.sub(1), wh.add(2), c.lightGrey);
   }
 
   private _drawEntry(
@@ -138,7 +147,7 @@ export class PauseMenu {
         { from: Pico8Colors.pink, to: c.darkerPurple },
       ]);
       sprite.draw(
-        xy.add(wh.x - 2 * PauseMenu._padding.x + 2, -1).sub(g.gameAreaOffset)
+        xy.add(wh.x - 2 * PauseMenu._padding.x + 4, -1).sub(g.gameAreaOffset)
       );
       b_.mapSpriteColors(prevMapping);
     }

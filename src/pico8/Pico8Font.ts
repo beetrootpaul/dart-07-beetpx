@@ -44,7 +44,9 @@ export class Pico8Font implements BpxFont {
     ["@"]: glyph(0, 4),
     ["?"]: glyph(15, 3),
     ["&"]: glyph(6, 2),
+    ["/"]: glyph(15, 2),
     ["."]: glyph(14, 2),
+    [":"]: glyph(10, 3),
     //
     ["a"]: glyph(1, 6),
     ["b"]: glyph(2, 6),
