@@ -91,9 +91,11 @@ export class LevelDescriptor {
           (ei: any) => ei.tileY >= 0 && ei.tileY < this.maxDefinedDistance
         );
 
+    // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
     this.structures = Array.from({ length: this.maxDefinedDistance + 1 }, () =>
       Array.from({ length: lanes + 1 }, () => null)
     );
+    // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
     this.enemies = Array.from({ length: this.maxDefinedDistance + 1 }, () =>
       Array.from({ length: lanes + 1 }, () => null)
     );

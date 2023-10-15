@@ -24,6 +24,192 @@ export class ScreenTitle implements GameScreen {
 
   private static _playSelected: boolean = true;
 
+  private readonly _bgCoverTiles: (BpxVector2d | null)[][] = [
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(0, 6),
+      v_(1, 6),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 12 }, () => null),
+      v_(2, 6),
+      v_(3, 6),
+    ],
+    [
+      v_(5, 5),
+      v_(1, 7),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 12 }, () => v_(5, 4)),
+      v_(2, 7),
+      v_(5, 5),
+    ],
+    // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+    Array.from({ length: 16 }, () => v_(5, 5)),
+    Array.from({ length: 16 }, () => v_(5, 5)),
+    Array.from({ length: 16 }, () => v_(5, 5)),
+    [
+      v_(5, 5),
+      v_(1, 4),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 12 }, () => v_(5, 6)),
+      v_(2, 4),
+      v_(5, 5),
+    ],
+    [
+      v_(0, 5),
+      v_(1, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 12 }, () => null),
+      v_(2, 5),
+      v_(3, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+  ];
+
+  private readonly _bgTiles: (BpxVector2d | null)[][] = [
+    [
+      v_(0, 6),
+      v_(1, 6),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 12 }, () => null),
+      v_(2, 6),
+      v_(3, 6),
+    ],
+    [
+      v_(5, 5),
+      v_(1, 7),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 12 }, () => v_(5, 4)),
+      v_(2, 7),
+      v_(5, 5),
+    ],
+    // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+    Array.from({ length: 16 }, () => v_(5, 5)),
+    Array.from({ length: 16 }, () => v_(5, 5)),
+    Array.from({ length: 16 }, () => v_(5, 5)),
+    [
+      v_(5, 5),
+      v_(1, 4),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 12 }, () => v_(5, 6)),
+      v_(2, 4),
+      v_(5, 5),
+    ],
+    [
+      v_(0, 5),
+      v_(1, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 12 }, () => null),
+      v_(2, 5),
+      v_(3, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+    [
+      v_(6, 5),
+      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
+      ...Array.from({ length: 14 }, () => null),
+      v_(4, 5),
+    ],
+  ];
+
   private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(
     99,
     114,
@@ -124,6 +310,34 @@ export class ScreenTitle implements GameScreen {
     this._fadeIn?.update();
   }
 
+  private _drawBackground(): void {
+    const tiles = ScreenTitle._gameCoverMode
+      ? this._bgCoverTiles
+      : this._bgTiles;
+
+    const prevMapping = b_.mapSpriteColors([
+      { from: Pico8Colors.black, to: transparent_ },
+    ]);
+
+    tiles.forEach((tilesRow, rowIndex) => {
+      tilesRow.forEach((tile, colIndex) => {
+        if (tile) {
+          b_.sprite(
+            spr_(g.assets.mission2SpritesheetUrl)(
+              tile.x * g.tileSize.x,
+              tile.y * g.tileSize.y,
+              g.tileSize.x,
+              g.tileSize.y
+            ),
+            g.tileSize.mul(colIndex, rowIndex)
+          );
+        }
+      });
+    });
+
+    b_.mapSpriteColors(prevMapping);
+  }
+
   private _drawVersion(baseY: number): void {
     b_.print(
       g.gameVersion,
@@ -195,13 +409,9 @@ export class ScreenTitle implements GameScreen {
       b_.pixel(star.xy, star.color);
     }
 
-    // TODO
-    //         map(cart_label_mode and 16 or 0, 0, 0, 0, 16, 16)
+    this._drawBackground();
 
     if (ScreenTitle._gameCoverMode) {
-      // TODO
-      //             map(16, 0, 0, 0, 16, 16)
-
       // BRP
       const prevMapping = b_.mapSpriteColors([
         { from: Pico8Colors.black, to: transparent_ },
@@ -221,8 +431,6 @@ export class ScreenTitle implements GameScreen {
         v_(g.gameAreaSize.x / 2, 110)
       );
     } else {
-      // TODO
-      //             map(0, 0, 0, 0, 16, 16)
       this._drawVersion(1);
       this._drawTitle(15);
       this._drawHighScore(57);

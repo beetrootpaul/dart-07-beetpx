@@ -77,9 +77,11 @@ export class ScreenOver implements GameScreen {
   preUpdate(): GameScreen | undefined {
     if (this._fadeOut.hasFinished) {
       if (!this._isWin && this._retry) {
-        // TODO: instead of default values, use here values from the start of a last mission.
-        //       This doesn't matter right now, but will start once we finish mission 2
-        //       and add progression from mission 1 to 2.
+        // TODO: Once missions progression is done (after missions 2 and 3 are implemented),
+        //       pass here values from the last mission (health, powerups, etc.) instead
+        //       of defaults. So when the player retry mission 3, they start with what they
+        //       had at that mission's beginning, let it be full health for example – in such
+        //       case changing to defaults would be like a punishment :-(
         return new ScreenMissionMain({
           mission: CurrentMission.current,
           health: g.healthDefault,

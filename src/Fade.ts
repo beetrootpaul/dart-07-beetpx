@@ -34,6 +34,7 @@ export class Fade {
   ];
   private readonly _stripHs: number[] = [
     g.viewportSize.y,
+    // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
     ...Array.from({ length: 9 }, () => 4),
     g.viewportSize.y,
   ];

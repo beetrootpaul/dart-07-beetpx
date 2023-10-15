@@ -9,7 +9,6 @@ import { ScreenBrp } from "./screens/ScreenBrp";
 
 let nextScreen: GameScreen | undefined;
 let currentScreen: GameScreen | undefined;
-// TODO: rework pause menu
 let pauseMenu: PauseMenu | undefined;
 
 const debugGameInfo: DebugGameInfo = new DebugGameInfo();
@@ -84,7 +83,6 @@ b_.init(
   }
 ).then(({ startGame }) => {
   b_.setOnStarted(() => {
-    // TODO: rework pause menu
     PauseMenu.isGamePaused = false;
     pauseMenu = new PauseMenu();
 
@@ -126,12 +124,10 @@ b_.init(
   b_.setOnUpdate(() => {
     debugGameInfo.update();
 
-    // TODO: rework pause menu
     if (b_.wasJustPressed("menu")) {
       PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
     }
 
-    // TODO: rework pause menu
     if (PauseMenu.isGamePaused) {
       pauseMenu?.update();
     } else {

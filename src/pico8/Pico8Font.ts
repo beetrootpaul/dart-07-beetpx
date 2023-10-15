@@ -27,11 +27,6 @@ export class Pico8Font implements BpxFont {
   static #spaceW = 2;
 
   static #sprites: Record<string, BpxSprite> = {
-    // TODO: uncomment or delete
-    // ["⬅️"]: glyph(11, 8, 7),
-    // ["⬆️"]: glyph(4, 9, 7),
-    // ["➡️"]: glyph(1, 9, 7),
-    // ["⬇️"]: glyph(3, 8, 7),
     ["♪"]: glyph(13, 8, 7),
     //
     ["0"]: glyph(0, 3),
@@ -86,8 +81,6 @@ export class Pico8Font implements BpxFont {
       let char = text[i]!.toLowerCase();
       let sprite = Pico8Font.#sprites[char] ?? null;
 
-      // TODO: rework?
-      // Maybe it's a 2-chars long emoji?
       if (!sprite && i + 1 < text.length) {
         char += text[i + 1];
         sprite = Pico8Font.#sprites[char] ?? null;
