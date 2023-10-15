@@ -25,189 +25,65 @@ export class ScreenTitle implements GameScreen {
   private static _playSelected: boolean = true;
 
   private readonly _bgCoverTiles: (BpxVector2d | null)[][] = [
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(0, 6),
-      v_(1, 6),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 12 }, () => null),
-      v_(2, 6),
-      v_(3, 6),
-    ],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(0, 6), v_(1, 6), ...u_.range(12).map(() => null), v_(2, 6), v_(3, 6)],
     [
       v_(5, 5),
       v_(1, 7),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 12 }, () => v_(5, 4)),
+      ...u_.range(12).map(() => v_(5, 4)),
       v_(2, 7),
       v_(5, 5),
     ],
-    // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-    Array.from({ length: 16 }, () => v_(5, 5)),
-    Array.from({ length: 16 }, () => v_(5, 5)),
-    Array.from({ length: 16 }, () => v_(5, 5)),
+    u_.range(16).map(() => v_(5, 5)),
+    u_.range(16).map(() => v_(5, 5)),
+    u_.range(16).map(() => v_(5, 5)),
     [
       v_(5, 5),
       v_(1, 4),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 12 }, () => v_(5, 6)),
+      ...u_.range(12).map(() => v_(5, 6)),
       v_(2, 4),
       v_(5, 5),
     ],
-    [
-      v_(0, 5),
-      v_(1, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 12 }, () => null),
-      v_(2, 5),
-      v_(3, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
+    [v_(0, 5), v_(1, 5), ...u_.range(12).map(() => null), v_(2, 5), v_(3, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
   ];
 
   private readonly _bgTiles: (BpxVector2d | null)[][] = [
-    [
-      v_(0, 6),
-      v_(1, 6),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 12 }, () => null),
-      v_(2, 6),
-      v_(3, 6),
-    ],
+    [v_(0, 6), v_(1, 6), ...u_.range(12).map(() => null), v_(2, 6), v_(3, 6)],
     [
       v_(5, 5),
       v_(1, 7),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 12 }, () => v_(5, 4)),
+      ...u_.range(12).map(() => v_(5, 4)),
       v_(2, 7),
       v_(5, 5),
     ],
-    // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-    Array.from({ length: 16 }, () => v_(5, 5)),
-    Array.from({ length: 16 }, () => v_(5, 5)),
-    Array.from({ length: 16 }, () => v_(5, 5)),
+    u_.range(16).map(() => v_(5, 5)),
+    u_.range(16).map(() => v_(5, 5)),
+    u_.range(16).map(() => v_(5, 5)),
     [
       v_(5, 5),
       v_(1, 4),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 12 }, () => v_(5, 6)),
+      ...u_.range(12).map(() => v_(5, 6)),
       v_(2, 4),
       v_(5, 5),
     ],
-    [
-      v_(0, 5),
-      v_(1, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 12 }, () => null),
-      v_(2, 5),
-      v_(3, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
-    [
-      v_(6, 5),
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 14 }, () => null),
-      v_(4, 5),
-    ],
+    [v_(0, 5), v_(1, 5), ...u_.range(12).map(() => null), v_(2, 5), v_(3, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
   ];
 
   private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(

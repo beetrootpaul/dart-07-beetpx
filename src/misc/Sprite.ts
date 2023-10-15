@@ -80,7 +80,7 @@ export class StaticSprite implements Sprite {
 }
 
 export class AnimatedSprite implements Sprite {
-  private readonly _sprites: BpxSprite[] = [];
+  private readonly _sprites: BpxSprite[];
 
   private readonly _drawOffset: BpxVector2d;
 
@@ -97,11 +97,11 @@ export class AnimatedSprite implements Sprite {
   ) {
     this._maxFrame = spriteXs.length;
 
-    u_.repeatN(this._maxFrame, (frame) => {
-      this._sprites.push(
+    this._sprites = u_
+      .range(this._maxFrame)
+      .map((frame) =>
         spr_(spritesheetUrl)(spriteXs[frame]!, spriteY, spriteW, spriteH)
       );
-    });
 
     this._drawOffset = fromLeftTopCorner
       ? BpxVector2d.zero

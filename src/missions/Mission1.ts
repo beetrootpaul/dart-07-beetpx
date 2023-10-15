@@ -429,6 +429,7 @@ export class Mission1 implements Mission {
             ]),
           ]),
         },
+        // TODO: rework this, since it's quite impossible to get no damage here
         // phase 3
         {
           triggeringHealthFraction: 0.4,
