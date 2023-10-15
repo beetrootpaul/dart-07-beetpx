@@ -136,7 +136,7 @@ export class ScreenTitle implements GameScreen {
 
   private _drawTitle(baseY: number): void {
     const prevMapping = b_.mapSpriteColors([
-      { from: Pico8Colors._0_black, to: transparent_ },
+      { from: Pico8Colors.black, to: transparent_ },
     ]);
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(96, 32, 32, 26),
@@ -205,8 +205,8 @@ export class ScreenTitle implements GameScreen {
 
       // BRP
       const prevMapping = b_.mapSpriteColors([
-        { from: Pico8Colors._0_black, to: transparent_ },
-        { from: Pico8Colors._10_yellow, to: c.mauve },
+        { from: Pico8Colors.black, to: transparent_ },
+        { from: Pico8Colors.lemon, to: c.mauve },
       ]);
       b_.sprite(
         this._brpLogo,

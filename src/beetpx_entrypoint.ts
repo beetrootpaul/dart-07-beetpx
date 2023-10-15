@@ -102,22 +102,22 @@ b_.init(
     b_.setFont(g.assets.pico8FontId);
 
     b_.mapSpriteColors([
-      { from: Pico8Colors._0_black, to: c.black },
-      { from: Pico8Colors._1_darkBlue, to: c.darkerBlue },
-      { from: Pico8Colors._2_darkPurple, to: c.darkerPurple },
-      { from: Pico8Colors._3_darkGreen, to: c.darkGreen },
-      { from: Pico8Colors._4_brown, to: c.trueBlue },
-      { from: Pico8Colors._5_darkGrey, to: c.blueGreen },
-      { from: Pico8Colors._6_lightGrey, to: c.lightGrey },
-      { from: Pico8Colors._7_white, to: c.white },
-      { from: Pico8Colors._8_red, to: c.red },
-      { from: Pico8Colors._9_orange, to: c.darkOrange },
-      { from: Pico8Colors._10_yellow, to: transparent_ },
-      { from: Pico8Colors._11_green, to: transparent_ },
-      { from: Pico8Colors._12_blue, to: c.blue },
-      { from: Pico8Colors._13_lavender, to: c.lavender },
-      { from: Pico8Colors._14_pink, to: c.mauve },
-      { from: Pico8Colors._15_lightPeach, to: c.peach },
+      { from: Pico8Colors.black, to: c.black },
+      { from: Pico8Colors.storm, to: c.darkerBlue },
+      { from: Pico8Colors.wine, to: c.darkerPurple },
+      { from: Pico8Colors.moss, to: c.darkGreen },
+      { from: Pico8Colors.tan, to: c.trueBlue },
+      { from: Pico8Colors.slate, to: c.blueGreen },
+      { from: Pico8Colors.silver, to: c.lightGrey },
+      { from: Pico8Colors.white, to: c.white },
+      { from: Pico8Colors.ember, to: c.red },
+      { from: Pico8Colors.orange, to: c.darkOrange },
+      { from: Pico8Colors.lemon, to: transparent_ },
+      { from: Pico8Colors.lime, to: transparent_ },
+      { from: Pico8Colors.sky, to: c.blue },
+      { from: Pico8Colors.dusk, to: c.lavender },
+      { from: Pico8Colors.pink, to: c.mauve },
+      { from: Pico8Colors.peach, to: c.peach },
     ]);
 
     currentScreen = new ScreenBrp();

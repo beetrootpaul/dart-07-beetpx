@@ -13,6 +13,7 @@ export enum PowerupType {
   ShockwaveCharge,
 }
 
+// TODO: consider making powerups more rare and not lost on damage… or re-appearing before the player after damage
 export class Powerup {
   static for(type: string, startXy: BpxVector2d): Powerup | null {
     switch (type) {

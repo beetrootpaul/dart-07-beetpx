@@ -3,20 +3,20 @@ import { Helpers } from "./misc/Helpers";
 import { Pico8Colors } from "./pico8/Pico8Color";
 
 export const c = {
-  black: Pico8Colors._0_black,
-  darkerBlue: Pico8Colors._129_darkerBlue,
-  darkerPurple: Pico8Colors._130_darkerPurple,
-  darkGreen: Pico8Colors._3_darkGreen,
-  trueBlue: Pico8Colors._140_trueBlue,
-  blueGreen: Pico8Colors._131_blueGreen,
-  lightGrey: Pico8Colors._6_lightGrey,
-  white: Pico8Colors._7_white,
-  red: Pico8Colors._8_red,
-  darkOrange: Pico8Colors._137_darkOrange,
-  blue: Pico8Colors._12_blue,
-  lavender: Pico8Colors._13_lavender,
-  mauve: Pico8Colors._141_mauve,
-  peach: Pico8Colors._143_peach,
+  black: Pico8Colors.black,
+  darkerBlue: Pico8Colors.midnight,
+  darkerPurple: Pico8Colors.port,
+  darkGreen: Pico8Colors.moss,
+  trueBlue: Pico8Colors.denim,
+  blueGreen: Pico8Colors.sea,
+  lightGrey: Pico8Colors.silver,
+  white: Pico8Colors.white,
+  red: Pico8Colors.ember,
+  darkOrange: Pico8Colors.amber,
+  blue: Pico8Colors.sky,
+  lavender: Pico8Colors.dusk,
+  mauve: Pico8Colors.aubergine,
+  peach: Pico8Colors.coral,
 };
 
 export const h = Helpers;

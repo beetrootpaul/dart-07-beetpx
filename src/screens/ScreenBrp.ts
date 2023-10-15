@@ -89,7 +89,7 @@ export class ScreenBrp implements GameScreen {
 
     if (!this._fadeOutTimer.hasFinished) {
       const prevMapping = b_.mapSpriteColors([
-        { from: Pico8Colors._10_yellow, to: logoColor },
+        { from: Pico8Colors.lemon, to: logoColor },
       ]);
       b_.sprite(
         this._brpLogo,

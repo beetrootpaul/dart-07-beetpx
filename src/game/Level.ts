@@ -149,7 +149,7 @@ export class Level {
 
     if (this._phase === "main") {
       const prevMapping = b_.mapSpriteColors([
-        { from: Pico8Colors._0_black, to: transparent_ },
+        { from: Pico8Colors.black, to: transparent_ },
       ]);
 
       for (
