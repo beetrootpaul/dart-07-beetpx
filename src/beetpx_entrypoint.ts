@@ -1,7 +1,7 @@
 import { b_, transparent_ } from "@beetpx/beetpx";
-import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { c, g } from "./globals";
+import { PauseMenu } from "./pause/PauseMenu";
 import { Pico8Colors } from "./pico8/Pico8Color";
 import { Pico8Font } from "./pico8/Pico8Font";
 import { GameScreen } from "./screens/GameScreen";
@@ -83,6 +83,10 @@ b_.init(
   }
 ).then(({ startGame }) => {
   b_.setOnStarted(() => {
+    // Better set font first, because other constructors might rely
+    //   on it when calculating text size.
+    b_.setFont(g.assets.pico8FontId);
+
     PauseMenu.isGamePaused = false;
     pauseMenu = new PauseMenu();
 
@@ -95,8 +99,6 @@ b_.init(
     b_.setRepeating("menu", false);
 
     b_.stopAllSounds();
-
-    b_.setFont(g.assets.pico8FontId);
 
     b_.mapSpriteColors([
       { from: Pico8Colors.black, to: c.black },

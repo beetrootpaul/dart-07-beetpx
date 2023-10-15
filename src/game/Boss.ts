@@ -1,11 +1,4 @@
-import {
-  BpxEasing,
-  BpxTimer,
-  BpxVector2d,
-  timer_,
-  u_,
-  v_,
-} from "@beetpx/beetpx";
+import { BpxEasing, BpxTimer, timer_, u_, v_, v_0_0_ } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
@@ -119,7 +112,7 @@ export class Boss {
 
   get collisionCircles(): CollisionCircle[] {
     return this._properties.collisionCirclesProps.map(({ r, offset }) => ({
-      center: this._movement.xy.add(offset ?? BpxVector2d.zero),
+      center: this._movement.xy.add(offset ?? v_0_0_),
       r,
     }));
   }

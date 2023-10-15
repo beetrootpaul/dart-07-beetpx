@@ -4,7 +4,7 @@ import { c, g } from "../globals";
 import { AnimatedSprite, Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementToTarget } from "../movement/MovementToTarget";
-import { PauseMenu } from "../PauseMenu";
+import { PauseMenu } from "../pause/PauseMenu";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 import { ScreenTitle } from "./ScreenTitle";

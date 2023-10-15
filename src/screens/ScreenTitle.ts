@@ -12,7 +12,7 @@ import { Fade } from "../Fade";
 import { Score } from "../game/Score";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
-import { PauseMenu } from "../PauseMenu";
+import { PauseMenu } from "../pause/PauseMenu";
 import { PersistedState } from "../PersistedState";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";

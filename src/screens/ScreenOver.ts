@@ -1,11 +1,11 @@
 import { b_, spr_, u_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
-import { PauseMenu } from "../PauseMenu";
 import { PersistedState } from "../PersistedState";
 import { Game } from "../game/Game";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
 import { CurrentMission } from "../missions/CurrentMission";
+import { PauseMenu } from "../pause/PauseMenu";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 import { ScreenTitle } from "./ScreenTitle";
