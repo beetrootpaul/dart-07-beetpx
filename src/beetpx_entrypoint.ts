@@ -87,8 +87,9 @@ b_.init(
     //   on it when calculating text size.
     b_.setFont(g.assets.pico8FontId);
 
-    PauseMenu.isGamePaused = false;
     pauseMenu = new PauseMenu();
+    PauseMenu.isGamePaused = false;
+    b_.resumeAllSounds();
 
     b_.setRepeating("left", false);
     b_.setRepeating("right", false);
@@ -127,7 +128,11 @@ b_.init(
 
     if (b_.wasJustPressed("menu")) {
       PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
-      // TODO: pause/unpause sounds
+      if (PauseMenu.isGamePaused) {
+        b_.pauseAllSounds();
+      } else {
+        b_.resumeAllSounds();
+      }
     }
 
     if (PauseMenu.isGamePaused) {
