@@ -1,6 +1,6 @@
-import { v_, Vector2d } from "@beetpx/beetpx";
+import { b_, BpxMappingColor, BpxVector2d, u_, v_ } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { b, c, g, u } from "../globals";
+import { c, g } from "../globals";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
 
@@ -14,10 +14,10 @@ export class Shockwave {
 
   readonly id: number = Shockwave._nextId++;
 
-  private readonly _center: Vector2d;
+  private readonly _center: BpxVector2d;
   private _rProgress: Movement;
 
-  constructor(center: Vector2d) {
+  constructor(center: BpxVector2d) {
     this._center = center;
 
     this._rProgress = MovementLine.of({
@@ -27,7 +27,7 @@ export class Shockwave {
       ),
       angle: 0,
       angledSpeed: Shockwave._rSpeed,
-    })(Vector2d.zero);
+    })(BpxVector2d.zero);
   }
 
   get collisionCircle(): CollisionCircle {
@@ -46,9 +46,11 @@ export class Shockwave {
   }
 
   private _drawNegativeRing(rOuter: number, rInner: number): void {
-    rOuter = u.clamp(rInner, rOuter, Shockwave._rMax);
-    rInner = u.clamp(Shockwave._rMin, rInner, rOuter);
+    rOuter = u_.clamp(rInner, rOuter, Shockwave._rMax);
+    rInner = u_.clamp(Shockwave._rMin, rInner, rOuter);
     if (rInner === rOuter) return;
+
+    const canvasSnapshot = b_.takeCanvasSnapshot();
 
     for (let dy = -rOuter; dy <= rOuter; dy++) {
       const sy = this._center.y + dy;
@@ -58,31 +60,25 @@ export class Shockwave {
       const dxInner = Math.ceil(
         Math.sqrt(Math.max(0, rInner * rInner - dy * dy))
       );
-      // TODO: due to the way we do color mapping, overlapping pixels are negating themselves back.
-      //       Do something about that overlap (vertical middle line)?
-      //       BTW it might be problematic in a future. It would be better to do a mapping
-      //       of a one frame buffer to another. Imagine multiple enemies in a game
-      //       having a negative color aura around them. We would had no easy option to
-      //       prevent them from overlapping.
-      b.line(
+      b_.line(
         g.gameAreaOffset.add(v_(this._center.x - dxOuter + 1, sy)),
         v_(dxOuter - dxInner, 1),
-        g.negativeColor
+        new BpxMappingColor(canvasSnapshot, g.negativeColorMapping)
       );
-      b.line(
+      b_.line(
         g.gameAreaOffset.add(v_(this._center.x + dxOuter - 1, sy)),
         v_(dxInner - dxOuter, 1),
-        g.negativeColor
+        new BpxMappingColor(canvasSnapshot, g.negativeColorMapping)
       );
     }
   }
 
   private _drawCircle(r: number): void {
-    if (r === u.clamp(Shockwave._rMin, r, Shockwave._rMax)) {
-      b.ellipse(
+    if (r === u_.clamp(Shockwave._rMin, r, Shockwave._rMax)) {
+      b_.ellipse(
         g.gameAreaOffset.add(this._center).sub(r),
         v_(r, r).mul(2),
-        c._6_light_grey
+        c.lightGrey
       );
     }
   }

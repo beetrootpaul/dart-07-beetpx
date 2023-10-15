@@ -1,13 +1,15 @@
 import {
-  ColorMapping,
-  Timer,
+  b_,
+  BpxColorMapping,
+  BpxTimer,
+  BpxVector2d,
+  timer_,
   transparent_,
   v_,
-  Vector2d,
 } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { b, c, g } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { c, g } from "../globals";
+import { AnimatedSprite, Sprite, StaticSprite } from "../misc/Sprite";
 import { Throttle } from "../misc/Throttle";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { PlayerBullet } from "./PlayerBullet";
@@ -15,7 +17,7 @@ import { Shockwave } from "./Shockwave";
 
 export class Player {
   private static readonly _invincibilityFlashFrames: number = 5;
-  private static readonly _size: Vector2d = v_(10, 12);
+  private static readonly _size: BpxVector2d = v_(10, 12);
 
   private readonly _onBulletsSpawned: Throttle<
     (bullets: PlayerBullet[]) => void
@@ -26,41 +28,41 @@ export class Player {
   private readonly _onDamaged: () => void;
   private readonly _onDestroyed: (playerCc: CollisionCircle) => void;
 
-  private readonly _shipSpriteNeutral: AnimatedSprite = new AnimatedSprite(
+  private readonly _shipSpriteNeutral: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
-    [19],
+    19,
     0
   );
-  private readonly _shipSpriteFlyingLeft: AnimatedSprite = new AnimatedSprite(
+  private readonly _shipSpriteFlyingLeft: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
-    [9],
+    9,
     0
   );
-  private readonly _shipSpriteFlyingRight: AnimatedSprite = new AnimatedSprite(
+  private readonly _shipSpriteFlyingRight: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
-    [29],
+    29,
     0
   );
-  private _shipSpriteCurrent: AnimatedSprite = this._shipSpriteNeutral;
+  private _shipSpriteCurrent: Sprite = this._shipSpriteNeutral;
 
-  private readonly _jetSpriteVisible: AnimatedSprite = new AnimatedSprite(
+  private readonly _jetSpriteVisible: Sprite = new AnimatedSprite(
     g.assets.mainSpritesheetUrl,
     4,
     20,
     [0, 0, 0, 0, 4, 4, 4, 4],
     9
   );
-  private _jetSprite: AnimatedSprite | null = null;
+  private _jetSprite: Sprite | null = null;
 
-  private _xy: Vector2d;
+  private _xy: BpxVector2d;
 
-  private _invincibleAfterDamageTimer: Timer | null = null;
+  private _invincibleAfterDamageTimer: BpxTimer | null = null;
 
   private _isDestroyed: boolean = false;
 
@@ -159,9 +161,9 @@ export class Player {
 
   takeDamage(updatedHealth: number): void {
     if (updatedHealth > 0) {
-      this._invincibleAfterDamageTimer = new Timer({
-        frames: 5 * Player._invincibilityFlashFrames,
-      });
+      this._invincibleAfterDamageTimer = timer_(
+        5 * Player._invincibilityFlashFrames
+      );
       this._onDamaged();
     } else {
       this._isDestroyed = true;
@@ -169,7 +171,6 @@ export class Player {
     }
   }
 
-  // TODO: consider game objects with draw and update and hasFinished, managed by BeetPx
   update(): void {
     if (this._invincibleAfterDamageTimer?.hasFinished) {
       this._invincibleAfterDamageTimer = null;
@@ -183,30 +184,30 @@ export class Player {
   }
 
   draw(): void {
-    let prevMapping: ColorMapping | undefined;
+    let prevMapping: BpxColorMapping | undefined;
     if (
       this._invincibleAfterDamageTimer &&
       this._invincibleAfterDamageTimer.framesLeft %
         (2 * Player._invincibilityFlashFrames) <
         Player._invincibilityFlashFrames
     ) {
-      prevMapping = b.mapSpriteColors([
-        { from: Pico8Colors._0_black, to: c._7_white },
-        { from: Pico8Colors._1_darkBlue, to: c._1_darker_blue },
-        { from: Pico8Colors._2_darkPurple, to: c._7_white },
-        { from: Pico8Colors._3_darkGreen, to: c._7_white },
-        { from: Pico8Colors._4_brown, to: c._7_white },
-        { from: Pico8Colors._5_darkGrey, to: c._7_white },
-        { from: Pico8Colors._6_lightGrey, to: c._7_white },
-        { from: Pico8Colors._7_white, to: c._7_white },
-        { from: Pico8Colors._8_red, to: c._7_white },
-        { from: Pico8Colors._9_orange, to: c._7_white },
-        { from: Pico8Colors._10_yellow, to: transparent_ },
-        { from: Pico8Colors._11_green, to: transparent_ },
-        { from: Pico8Colors._12_blue, to: c._7_white },
-        { from: Pico8Colors._13_lavender, to: c._7_white },
-        { from: Pico8Colors._14_pink, to: c._7_white },
-        { from: Pico8Colors._15_lightPeach, to: c._7_white },
+      prevMapping = b_.mapSpriteColors([
+        { from: Pico8Colors.black, to: c.white },
+        { from: Pico8Colors.storm, to: c.darkerBlue },
+        { from: Pico8Colors.wine, to: c.white },
+        { from: Pico8Colors.moss, to: c.white },
+        { from: Pico8Colors.tan, to: c.white },
+        { from: Pico8Colors.slate, to: c.white },
+        { from: Pico8Colors.silver, to: c.white },
+        { from: Pico8Colors.white, to: c.white },
+        { from: Pico8Colors.ember, to: c.white },
+        { from: Pico8Colors.orange, to: c.white },
+        { from: Pico8Colors.lemon, to: transparent_ },
+        { from: Pico8Colors.lime, to: transparent_ },
+        { from: Pico8Colors.sky, to: c.white },
+        { from: Pico8Colors.dusk, to: c.white },
+        { from: Pico8Colors.pink, to: c.white },
+        { from: Pico8Colors.peach, to: c.white },
       ]);
     }
 
@@ -215,7 +216,7 @@ export class Player {
     this._jetSprite?.draw(this._xy);
 
     if (prevMapping) {
-      b.mapSpriteColors(prevMapping);
+      b_.mapSpriteColors(prevMapping);
     }
   }
 }

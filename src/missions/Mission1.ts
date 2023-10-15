@@ -1,10 +1,17 @@
-import { SolidColor, Timer, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxEasing,
+  BpxSolidColor,
+  BpxSoundSequence,
+  timer_,
+  u_,
+  v_,
+} from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
-import { b, c, g, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
-import { Easing } from "../misc/Easing";
+import { c, g } from "../globals";
+import { Sprite } from "../misc/Sprite";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
 import { MovementSequence } from "../movement/MovementSequence";
@@ -12,20 +19,21 @@ import { MovementSinusoidal } from "../movement/MovementSinusoidal";
 import { MovementToTarget } from "../movement/MovementToTarget";
 import { Mission } from "./Mission";
 
-const aspr_ = AnimatedSprite.for(g.assets.mission1SpritesheetUrl);
+const aspr_ = Sprite.for(g.assets.mission1SpritesheetUrl).animated;
+const sspr_ = Sprite.for(g.assets.mission1SpritesheetUrl).static;
 
-const eb_ = EnemyBullet.factory(aspr_(4, 4, [124], 64), 2);
+const eb_ = EnemyBullet.factory(sspr_(4, 4, 124, 64), 2);
 
 function t(): number {
-  return b.frameNumber / g.fps;
+  return b_.frameNumber / g.fps;
 }
 
 export class Mission1 implements Mission {
   readonly missionName: string = "emerald islands";
   readonly bossName: string = "sentinel zx300";
 
-  readonly bgColor: SolidColor = c._4_true_blue;
-  readonly missionInfoColor: SolidColor = c._9_dark_orange;
+  readonly bgColor: BpxSolidColor = c.trueBlue;
+  readonly missionInfoColor: BpxSolidColor = c.darkOrange;
 
   readonly scrollPerFrame: number = 0.5;
 
@@ -43,7 +51,7 @@ export class Mission1 implements Mission {
     progressionMarkersLayer: "progression_markers",
   };
 
-  private readonly _waveTile: AnimatedSprite = aspr_(
+  private readonly _waveTile: Sprite = aspr_(
     8,
     8,
     [
@@ -77,6 +85,74 @@ export class Mission1 implements Mission {
     }
   }
 
+  get audioSequenceMain(): BpxSoundSequence {
+    return {
+      sequence: [
+        [{ url: g.assets.mission1Music43 }, { url: g.assets.mission1Music48 }],
+        [{ url: g.assets.mission1Music40 }, { url: g.assets.mission1Music49 }],
+        [{ url: g.assets.mission1Music40 }, { url: g.assets.mission1Music49 }],
+        [{ url: g.assets.mission1Music40 }, { url: g.assets.mission1Music50 }],
+      ],
+      sequenceLooped: [
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music41 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music41 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music50 },
+          { url: g.assets.mission1Music42 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music41 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music41 },
+          { url: g.assets.mission1Music51 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music41 },
+          { url: g.assets.mission1Music51 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music50 },
+          { url: g.assets.mission1Music42 },
+          { url: g.assets.mission1Music52 },
+        ],
+        [
+          { url: g.assets.mission1Music40 },
+          { url: g.assets.mission1Music49 },
+          { url: g.assets.mission1Music51 },
+        ],
+      ],
+    };
+  }
+
+  get audioSequenceBoss(): BpxSoundSequence {
+    return {
+      sequence: [[{ url: g.assets.mission1Music44 }]],
+      sequenceLooped: [
+        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music53 }],
+        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music54 }],
+        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music55 }],
+        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music56 }],
+      ],
+    };
+  }
+
   enemyPropertiesFor(enemyId: string): EnemyProperties {
     switch (enemyId) {
       case "m1e_fast_and_small":
@@ -85,8 +161,8 @@ export class Mission1 implements Mission {
           score: 2,
           powerupsDistribution:
             "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
-          spriteMain: aspr_(8, 8, [0], 88),
-          spriteFlash: aspr_(6, 6, [22], 79),
+          spriteMain: sspr_(8, 8, 0, 88),
+          spriteFlash: sspr_(6, 6, 22, 79),
           collisionCirclesProps: [{ r: 3, offset: v_(0, 1) }],
           movementFactory: MovementLine.of({
             angle: 0.25,
@@ -99,17 +175,17 @@ export class Mission1 implements Mission {
           score: 5,
           powerupsDistribution:
             "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
-          spriteMain: aspr_(10, 10, [22], 86),
-          spriteFlash: aspr_(8, 8, [13], 88),
+          spriteMain: sspr_(10, 10, 22, 86),
+          spriteFlash: sspr_(8, 8, 13, 88),
           collisionCirclesProps: [{ r: 4 }],
           movementFactory: MovementSinusoidal.of({
             speedY: 0.75,
             ageDivisor: 120,
             magnitude: 14,
           }),
-          bulletFireTimer: new Timer({ frames: 40 }),
+          bulletFireTimer: timer_(40),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyShoot);
             return [
               eb_(
                 MovementLine.of({
@@ -126,8 +202,8 @@ export class Mission1 implements Mission {
           health: 7,
           score: 20,
           powerupsDistribution: "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
-          spriteMain: aspr_(16, 14, [22], 64),
-          spriteFlash: aspr_(14, 12, [32], 84),
+          spriteMain: sspr_(16, 14, 22, 64),
+          spriteFlash: sspr_(14, 12, 32, 84),
           collisionCirclesProps: [{ r: 7 }],
           movementFactory: MovementSequence.of([
             MovementLine.of({
@@ -146,8 +222,8 @@ export class Mission1 implements Mission {
           health: 40,
           score: 100,
           powerupsDistribution: "h,s",
-          spriteMain: aspr_(24, 20, [64], 64),
-          spriteFlash: aspr_(22, 18, [88], 65),
+          spriteMain: sspr_(24, 20, 64, 64),
+          spriteFlash: sspr_(22, 18, 88, 65),
           collisionCirclesProps: [
             { r: 10, offset: v_(0, 1) },
             { r: 5, offset: v_(-7, 0) },
@@ -158,7 +234,7 @@ export class Mission1 implements Mission {
             MovementToTarget.of({
               targetY: 32,
               frames: 120,
-              easingFn: Easing.outQuartic,
+              easingFn: BpxEasing.outQuartic,
             }),
             MovementFixed.of({
               frames: 480,
@@ -166,13 +242,12 @@ export class Mission1 implements Mission {
             MovementToTarget.of({
               targetY: 140,
               frames: 120,
-              easingFn: Easing.inQuartic,
+              easingFn: BpxEasing.inQuartic,
             }),
           ]),
-          // TODO: it would be nice to have some Timer creation helper, a short one, like `timer_(33)`
-          bulletFireTimer: new Timer({ frames: 33 }),
+          bulletFireTimer: timer_(33),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -193,8 +268,8 @@ export class Mission1 implements Mission {
           health: 4,
           score: 40,
           powerupsDistribution: "-,-,-,-,-,-,h,m,m,f,f,f,t,t,s",
-          spriteMain: aspr_(8, 22, [50], 64),
-          spriteFlash: aspr_(6, 20, [58], 65),
+          spriteMain: sspr_(8, 22, 50, 64),
+          spriteFlash: sspr_(6, 20, 58, 65),
           collisionCirclesProps: [
             { r: 4 },
             { r: 4, offset: v_(0, 7) },
@@ -204,7 +279,7 @@ export class Mission1 implements Mission {
             MovementToTarget.of({
               targetY: 80,
               frames: 150,
-              easingFn: Easing.outQuadratic,
+              easingFn: BpxEasing.outQuadratic,
             }),
             MovementToTarget.of({
               targetY: 30,
@@ -213,12 +288,12 @@ export class Mission1 implements Mission {
             MovementToTarget.of({
               targetY: 180,
               frames: 150,
-              easingFn: Easing.inQuadratic,
+              easingFn: BpxEasing.inQuadratic,
             }),
           ]),
-          bulletFireTimer: new Timer({ frames: 60 }),
+          bulletFireTimer: timer_(60),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyShoot);
             const enemyXy = enemyMovement.xy;
             const playerXy = playerCollisionCircle.center;
             return [
@@ -248,16 +323,16 @@ export class Mission1 implements Mission {
           health: 10,
           score: 50,
           powerupsDistribution: "-,-,-,h,h,m,f,t,t,s,s,s",
-          spriteMain: aspr_(22, 24, [0], 64),
-          spriteFlash: aspr_(12, 12, [38], 64),
+          spriteMain: sspr_(22, 24, 0, 64),
+          spriteFlash: sspr_(12, 12, 38, 64),
           collisionCirclesProps: [{ r: 6 }],
           movementFactory: MovementLine.of({
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          bulletFireTimer: new Timer({ frames: 60 }),
+          bulletFireTimer: timer_(60),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -274,43 +349,15 @@ export class Mission1 implements Mission {
           },
         };
       default:
-        return u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
+        return u_.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
     }
   }
-
-  // TODO
-  // _m_mission_main_music = 0
-  // SEQ:
-  // intro:
-  //   43 48
-  //   40 49
-  //   40 49
-  //   40 50
-  // loop:
-  //   40 49 41
-  //   40 49 41
-  //   40 50 42
-  //   40 49 41
-  //   40 49 41 51
-  //   40 49 41 51
-  //   40 50 42 52
-  //   40 49    51
-  //
-  // _m_mission_boss_music = 13
-  // SEQ:
-  // intro:
-  //   44
-  // loop:
-  //   45 53
-  //   45 54
-  //   45 55
-  //   45 56
 
   bossProperties(): BossProperties {
     return {
       health: 130,
-      spriteMain: aspr_(54, 20, [0], 96),
-      spriteFlash: aspr_(52, 18, [54], 97),
+      spriteMain: sspr_(54, 20, 0, 96),
+      spriteFlash: sspr_(52, 18, 54, 97),
       collisionCirclesProps: [
         { r: 11 },
         { r: 6, offset: v_(20, -3) },
@@ -321,11 +368,11 @@ export class Mission1 implements Mission {
         {
           triggeringHealthFraction: 1,
           score: 50,
-          bulletFireTimer: new Timer({ frames: 8 }),
+          bulletFireTimer: timer_(8),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             if (t() % 2 < 1) return [];
 
-            b.playSoundOnce(g.assets.sfxEnemyShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyShoot);
 
             return [
               eb_(
@@ -342,11 +389,11 @@ export class Mission1 implements Mission {
         {
           triggeringHealthFraction: 0.8,
           score: 300,
-          bulletFireTimer: new Timer({ frames: 28 }),
+          bulletFireTimer: timer_(28),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             const bullets: EnemyBullet[] = [];
             if (t() > 0.6) {
-              b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+              b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
               for (let i = 1; i <= 8; i++) {
                 bullets.push(
                   eb_(
@@ -365,18 +412,18 @@ export class Mission1 implements Mission {
             MovementToTarget.of({
               targetX: 30,
               frames: 40,
-              easingFn: Easing.outQuadratic,
+              easingFn: BpxEasing.outQuadratic,
             }),
             MovementSequence.loopedOf([
               MovementToTarget.of({
                 targetX: g.gameAreaSize.x - 30,
                 frames: 80,
-                easingFn: Easing.outQuadratic,
+                easingFn: BpxEasing.outQuadratic,
               }),
               MovementToTarget.of({
                 targetX: 30,
                 frames: 80,
-                easingFn: Easing.outQuadratic,
+                easingFn: BpxEasing.outQuadratic,
               }),
             ]),
           ]),
@@ -385,9 +432,9 @@ export class Mission1 implements Mission {
         {
           triggeringHealthFraction: 0.4,
           score: 650,
-          bulletFireTimer: new Timer({ frames: 8 }),
+          bulletFireTimer: timer_(8),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyShoot);
             if (t() % 2 > 1.5) {
               // side bullets
               return [
@@ -427,7 +474,7 @@ export class Mission1 implements Mission {
               targetX: g.gameAreaSize.x / 2,
               targetY: 20,
               frames: 60,
-              easingFn: Easing.outQuadratic,
+              easingFn: BpxEasing.outQuadratic,
             }),
             // wait …
             MovementFixed.of({
@@ -437,24 +484,24 @@ export class Mission1 implements Mission {
             MovementToTarget.of({
               targetY: g.gameAreaSize.y - 20,
               frames: 40,
-              easingFn: Easing.inQuadratic,
+              easingFn: BpxEasing.inQuadratic,
             }),
             // then revert
             MovementToTarget.of({
               targetY: 20,
               frames: 120,
-              easingFn: Easing.linear,
+              easingFn: BpxEasing.linear,
             }),
             // go left and right
             MovementToTarget.of({
               targetX: g.gameAreaSize.x - 30,
               frames: 80,
-              easingFn: Easing.outQuadratic,
+              easingFn: BpxEasing.outQuadratic,
             }),
             MovementToTarget.of({
               targetX: 30,
               frames: 80,
-              easingFn: Easing.outQuadratic,
+              easingFn: BpxEasing.outQuadratic,
             }),
           ]),
         },

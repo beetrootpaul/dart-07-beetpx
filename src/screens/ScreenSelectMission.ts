@@ -1,70 +1,71 @@
-import { Vector2d, spr_, v_ } from "@beetpx/beetpx";
+import { b_, BpxVector2d, spr_, u_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
-import { b, c, g, h, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { c, g } from "../globals";
+import { AnimatedSprite, Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementToTarget } from "../movement/MovementToTarget";
+import { PauseMenu } from "../PauseMenu";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenSelectMission implements GameScreen {
+  // 0 = back button, 1-3 = missions from 1 to 3
+  private static _selectedMission: number = 1;
+
   private readonly _fadeOut: Fade = new Fade("out", { fadeFrames: 30 });
-  private readonly _shipSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _shipSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
-    [19],
+    19,
     0
   );
-  private readonly _jetSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _jetSprite: Sprite = new AnimatedSprite(
     g.assets.mainSpritesheetUrl,
     4,
     20,
     [0, 0, 0, 0, 4, 4, 4, 4],
     9
   );
-  private readonly _xSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     0,
     true
   );
-  private readonly _xSpritePressed: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     6,
     true
   );
-
-  // 0 = back button, 1-3 = missions from 1 to 3
-  private _selectedMission: number = 1;
 
   private _shipMovement: Movement | null = null;
   private _proceed: boolean = false;
 
-  // TODO: param: selected_mission
   constructor() {
     this._initShipMovement();
   }
 
   preUpdate(): GameScreen | undefined {
-    if (this._proceed && this._selectedMission === 0) {
-      // TODO: params: 1, false, false, false
-      return new ScreenTitle();
+    if (this._proceed && ScreenSelectMission._selectedMission === 0) {
+      ScreenSelectMission._selectedMission = 1;
+      // TODO: params: false, false
+      return new ScreenTitle({ startMusic: false });
     }
 
     if (
       this._proceed &&
-      this._selectedMission > 0 &&
+      ScreenSelectMission._selectedMission > 0 &&
       this._fadeOut.hasFinished
     ) {
       return new ScreenMissionMain({
-        mission: this._selectedMission,
+        mission: ScreenSelectMission._selectedMission,
         health: g.healthDefault,
         shockwaveCharges: g.shockwaveChargesDefault,
         fastMovement: false,
@@ -76,14 +77,16 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   private _initShipMovement(): void {
-    const [buttonXy, buttonWh] = this._missionButtonXyWh(this._selectedMission);
+    const [buttonXy, buttonWh] = this._missionButtonXyWh(
+      ScreenSelectMission._selectedMission
+    );
     this._shipMovement = MovementToTarget.of({
       targetY: buttonXy.sub(0, 10).y,
       frames: 20,
     })(buttonXy.sub(g.gameAreaOffset).add(buttonWh.x / 2, buttonWh.y - 6));
   }
 
-  private _missionButtonXyWh(mission: number): [Vector2d, Vector2d] {
+  private _missionButtonXyWh(mission: number): [BpxVector2d, BpxVector2d] {
     // place missions 1..N at positions 0..N-1, then place the back button (identified as mission 0) at position N
     const position = (mission + 4 - 1) % 4;
     return [
@@ -95,24 +98,24 @@ export class ScreenSelectMission implements GameScreen {
   update(): void {
     // TODO: pressing "x" to select mission makes the first bullet shot. Fix it!
 
-    // TODO: something doesn't work here
-    if (b.wasJustPressed("up")) {
-      b.playSoundOnce(g.assets.sfxOptionsChange);
-      this._selectedMission = (this._selectedMission + 4 - 1) % 4;
+    if (b_.wasJustPressed("up")) {
+      b_.playSoundOnce(g.assets.sfxOptionsChange);
+      ScreenSelectMission._selectedMission =
+        (ScreenSelectMission._selectedMission + 4 - 1) % 4;
       this._initShipMovement();
     }
-    // TODO: something doesn't work here
-    if (b.wasJustPressed("down")) {
-      b.playSoundOnce(g.assets.sfxOptionsChange);
-      this._selectedMission = (this._selectedMission + 1) % 4;
+    if (b_.wasJustPressed("down")) {
+      b_.playSoundOnce(g.assets.sfxOptionsChange);
+      ScreenSelectMission._selectedMission =
+        (ScreenSelectMission._selectedMission + 1) % 4;
       this._initShipMovement();
     }
 
-    if (b.wasJustPressed("x")) {
-      b.playSoundOnce(g.assets.sfxOptionsConfirm);
-      if (this._selectedMission > 0) {
+    if (b_.wasJustPressed("x")) {
+      b_.playSoundOnce(g.assets.sfxOptionsConfirm);
+      if (ScreenSelectMission._selectedMission > 0) {
         // TODO: replace this with a fade out of a music only over 500 ms
-        b.stopAllSounds();
+        b_.stopAllSounds();
       }
       this._proceed = true;
     }
@@ -130,20 +133,22 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   private _drawMissionButton(mission: number): void {
-    const selected = mission === this._selectedMission;
+    const selected =
+      mission === ScreenSelectMission._selectedMission &&
+      !PauseMenu.isGamePaused;
 
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(mission);
 
     // draw button shape
-    b.sprite(
+    b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 38 : 39, 12, 1, 19),
-      buttonXy1.sub(1)
-      // TODO: stretch the sprite to the width of `buttonWh.x + 2`
+      buttonXy1.sub(1),
+      v_(buttonWh.x + 2, 1)
     );
 
     // draw level sample
     const sy = 80 + (mission - 1) * 16;
-    b.sprite(
+    b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(
         0,
         selected ? sy : sy - 48,
@@ -155,26 +160,26 @@ export class ScreenSelectMission implements GameScreen {
 
     if (mission > 1) {
       // draw WIP info
-      h.printCentered(
+      u_.printWithOutline(
         "under development",
-        g.gameAreaSize.x / 2,
-        buttonXy1.y + 2,
-        selected ? c._7_white : c._6_light_grey,
-        selected ? c._9_dark_orange : c._13_lavender
+        g.gameAreaOffset.add(g.gameAreaSize.x / 2, buttonXy1.y + 2),
+        selected ? c.white : c.lightGrey,
+        selected ? c.darkOrange : c.lavender,
+        [true, false]
       );
     }
 
     // draw label
-    b.print(
+    b_.print(
       `mission ${mission}`,
       buttonXy1.add(0, buttonWh.y + 4),
-      selected ? c._7_white : c._13_lavender
+      selected ? c.white : c.lavender
     );
 
     if (selected) {
       // draw "x" button press incentive and its label
-      b.print("start", buttonXy1.add(buttonWh).add(-37, 4), c._7_white);
-      const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+      b_.print("start", buttonXy1.add(buttonWh).add(-37, 4), c.white);
+      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? this._xSprite
         : this._xSpritePressed;
       sprite.draw(buttonXy1.add(buttonWh.add(-15, 3)).sub(g.gameAreaOffset));
@@ -182,23 +187,24 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   private _drawBackButton(): void {
-    const selected = 0 === this._selectedMission;
+    const selected =
+      0 === ScreenSelectMission._selectedMission && !PauseMenu.isGamePaused;
 
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(0);
 
     // button shape
-    b.sprite(
+    b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
-      buttonXy1.sub(1)
-      // TODO: stretch it to `button_wh.x + 2
+      buttonXy1.sub(1),
+      v_(buttonWh.x + 2, 1)
     );
 
     // button text
-    b.print("back", buttonXy1.add(3, 2), c._14_mauve);
+    b_.print("back", buttonXy1.add(3, 2), c.mauve);
 
     if (selected) {
       // draw "x" button press incentive
-      const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? this._xSprite
         : this._xSpritePressed;
       sprite.draw(
@@ -208,19 +214,21 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   private _drawShip(): void {
-    const [buttonXy, buttonWh] = this._missionButtonXyWh(this._selectedMission);
-    b.setClippingRegion(buttonXy, buttonWh);
+    const [buttonXy, buttonWh] = this._missionButtonXyWh(
+      ScreenSelectMission._selectedMission
+    );
+    b_.setClippingRegion(buttonXy, buttonWh);
 
     if (this._shipMovement) {
       this._shipSprite.draw(this._shipMovement.xy);
       this._jetSprite.draw(this._shipMovement.xy);
     }
 
-    b.removeClippingRegion();
+    b_.removeClippingRegion();
   }
 
   draw(): void {
-    b.clearCanvas(c._1_darker_blue);
+    b_.clearCanvas(c.darkerBlue);
 
     this._drawMissionButton(1);
     this._drawMissionButton(2);
@@ -228,7 +236,7 @@ export class ScreenSelectMission implements GameScreen {
 
     this._drawBackButton();
 
-    if (this._selectedMission > 0) {
+    if (ScreenSelectMission._selectedMission > 0) {
       this._drawShip();
     }
 

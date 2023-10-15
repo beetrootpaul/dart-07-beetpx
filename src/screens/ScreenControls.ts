@@ -1,60 +1,58 @@
-import { spr_, v_ } from "@beetpx/beetpx";
-import { b, c, g, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { b_, spr_, u_, v_ } from "@beetpx/beetpx";
+import { PauseMenu } from "../PauseMenu";
+import { c, g } from "../globals";
+import { Sprite, StaticSprite } from "../misc/Sprite";
 import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
 
 // TODO: rework controls? Rework them in general in BeetPx?
 
 export class ScreenControls implements GameScreen {
-  private readonly _xSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     0,
     true
   );
-  private readonly _xSpritePressed: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     6,
     true
   );
-  private readonly _coSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _coSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     24,
     true
   );
-  private readonly _pauseSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _pauseSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [41],
+    41,
     0,
     true
   );
 
   private _proceed: boolean = false;
 
-  // TODO: params: preselected_mission
-  constructor() {}
-
   preUpdate(): GameScreen | undefined {
     if (this._proceed) {
-      // TODO: params: preselected_mission, false, false, true
-      return new ScreenTitle();
+      // TODO: params: false, true
+      return new ScreenTitle({ startMusic: false });
     }
   }
 
   update(): void {
-    if (b.wasJustPressed("x")) {
-      b.playSoundOnce(g.assets.sfxOptionsConfirm);
+    if (b_.wasJustPressed("x")) {
+      b_.playSoundOnce(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }
   }
@@ -63,58 +61,65 @@ export class ScreenControls implements GameScreen {
     const w = g.viewportSize.x - 2 * baseX;
 
     // button shape
-    b.sprite(
-      spr_(g.assets.mainSpritesheetUrl)(35, 12, 1, 12),
-      // TODO: stretch to `w`
-      v_(baseX, baseY)
+    b_.sprite(
+      spr_(g.assets.mainSpritesheetUrl)(
+        !PauseMenu.isGamePaused ? 35 : 36,
+        12,
+        1,
+        12
+      ),
+      v_(baseX, baseY),
+      v_(w, 1)
     );
 
     // button text
-    b.print("back", v_(baseX + 4, baseY + 3), c._14_mauve);
+    b_.print("back", v_(baseX + 4, baseY + 3), c.mauve);
 
-    // "x" press incentive
-    const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
-      ? this._xSprite
-      : this._xSpritePressed;
-    sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
+    if (!PauseMenu.isGamePaused) {
+      // "x" press incentive
+      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
+        ? this._xSprite
+        : this._xSpritePressed;
+      sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
+    }
   }
 
   private _drawControls(baseX: number, baseY: number): void {
     let y = baseY;
 
-    b.print("in game:", v_(baseX, y), c._15_peach);
+    b_.print("in game:", v_(baseX, y), c.peach);
     y += 10;
 
-    b.print("use arrows to move", v_(baseX, y), c._6_light_grey);
+    b_.print("use arrows to move", v_(baseX, y), c.lightGrey);
     y += 10;
 
-    b.print("press & hold", v_(baseX, y), c._6_light_grey);
+    b_.print("press & hold", v_(baseX, y), c.lightGrey);
     this._xSprite.draw(v_(baseX + 49, y - 1).sub(g.gameAreaOffset));
-    b.print("to fire", v_(baseX + 67, y), c._6_light_grey);
+    b_.print("to fire", v_(baseX + 67, y), c.lightGrey);
     y += 10;
 
-    b.print("press", v_(baseX, y), c._6_light_grey);
+    b_.print("press", v_(baseX, y), c.lightGrey);
     this._coSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
-    b.print("to trigger", v_(baseX + 41, y), c._6_light_grey);
-    b.print("a schockwave", v_(baseX, y + 7), c._6_light_grey);
+    b_.print("to trigger", v_(baseX + 41, y), c.lightGrey);
+    b_.print("a schockwave", v_(baseX, y + 7), c.lightGrey);
     y += 20;
 
-    b.print("other:", v_(baseX, y), c._15_peach);
+    b_.print("other:", v_(baseX, y), c.peach);
     y += 10;
 
-    b.print("press", v_(baseX, y), c._6_light_grey);
+    b_.print("press", v_(baseX, y), c.lightGrey);
     this._pauseSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
-    b.print("to open", v_(baseX + 41, y), c._6_light_grey);
-    b.print("the pause menu", v_(baseX, y + 7), c._6_light_grey);
+    b_.print("to open", v_(baseX + 41, y), c.lightGrey);
+    b_.print("the pause menu", v_(baseX, y + 7), c.lightGrey);
     y += 17;
 
-    b.print("press", v_(baseX, y), c._6_light_grey);
+    b_.print("press", v_(baseX, y), c.lightGrey);
     this._xSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
-    b.print("to confirm", v_(baseX + 41, y), c._6_light_grey);
+    b_.print("to confirm", v_(baseX + 41, y), c.lightGrey);
   }
 
   draw(): void {
-    b.clearCanvas(c._1_darker_blue);
+    b_.clearCanvas(c.darkerBlue);
 
     this._drawControls(15, 15);
     this._drawBackButton(15, 104);

@@ -1,7 +1,13 @@
-import { Timer, v_, Vector2d } from "@beetpx/beetpx";
+import {
+  BpxEasing,
+  BpxTimer,
+  BpxVector2d,
+  timer_,
+  u_,
+  v_,
+} from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { g, u } from "../globals";
-import { Easing } from "../misc/Easing";
+import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Movement } from "../movement/Movement";
 import { MovementToTarget } from "../movement/MovementToTarget";
@@ -38,7 +44,7 @@ export class Boss {
 
   private _health: number;
   private _isDestroyed: boolean = false;
-  private _flashingAfterDamageTimer: Timer | null = null;
+  private _flashingAfterDamageTimer: BpxTimer | null = null;
 
   private _currentPhaseNumber: number = -1;
 
@@ -64,7 +70,7 @@ export class Boss {
       targetX: g.gameAreaSize.x / 2,
       targetY: 20,
       frames: 180,
-      easingFn: Easing.outQuartic,
+      easingFn: BpxEasing.outQuartic,
     })(v_(g.gameAreaSize.x / 2, -120));
 
     this._onBulletsSpawned = params.onBulletsSpawned;
@@ -88,7 +94,7 @@ export class Boss {
   private get _currentPhase(): BossProperties["phases"][0] {
     return (
       this._properties.phases[this._currentPhaseNumber] ??
-      u.throwError(
+      u_.throwError(
         `Tried to access non-existent boss phase at index ${this._currentPhaseNumber}`
       )
     );
@@ -97,7 +103,7 @@ export class Boss {
   private get _nextPhase(): BossProperties["phases"][0] {
     return (
       this._properties.phases[this._currentPhaseNumber + 1] ??
-      u.throwError(
+      u_.throwError(
         `Tried to access non-existent boss phase at index ${
           this._currentPhaseNumber + 1
         }`
@@ -113,7 +119,7 @@ export class Boss {
 
   get collisionCircles(): CollisionCircle[] {
     return this._properties.collisionCirclesProps.map(({ r, offset }) => ({
-      center: this._movement.xy.add(offset ?? Vector2d.zero),
+      center: this._movement.xy.add(offset ?? BpxVector2d.zero),
       r,
     }));
   }
@@ -121,7 +127,7 @@ export class Boss {
   takeDamage(damage: number): void {
     this._health = Math.max(0, this._health - damage);
     if (this._health > 0) {
-      this._flashingAfterDamageTimer = new Timer({ frames: 4 });
+      this._flashingAfterDamageTimer = timer_(4);
       this._onDamaged();
     } else {
       this._isDestroyed = true;

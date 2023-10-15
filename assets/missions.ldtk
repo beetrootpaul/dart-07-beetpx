@@ -3294,7 +3294,24 @@
 					"seed": 4760673,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "level_end",
+							"__grid": [0,8],
+							"__pivot": [0,0],
+							"__tags": ["marker"],
+							"__tile": { "tilesetUid": 2, "x": 0, "y": 32, "w": 8, "h": 8 },
+							"__smartColor": "#BE4A2F",
+							"__worldX": 96,
+							"__worldY": -144,
+							"iid": "eae62370-6280-11ee-af39-dff9889ca790",
+							"width": 96,
+							"height": 16,
+							"defUid": 138,
+							"px": [0,64],
+							"fieldInstances": []
+						}
+					]
 				},
 				{
 					"__identifier": "m1_enemies",
@@ -3347,18 +3364,18 @@
 					"entityInstances": [
 						{
 							"__identifier": "m2e_stationary",
-							"__grid": [4,18],
+							"__grid": [0,10],
 							"__pivot": [0,0],
 							"__tags": ["m2"],
 							"__tile": { "tilesetUid": 4, "x": 120, "y": 32, "w": 8, "h": 8 },
 							"__smartColor": "#8B9BB4",
-							"__worldX": 128,
-							"__worldY": -64,
-							"iid": "6ce01460-3b70-11ee-bd8b-796cf70399e8",
+							"__worldX": 96,
+							"__worldY": -128,
+							"iid": "ffcdda80-6280-11ee-af39-413ec6cb091c",
 							"width": 16,
 							"height": 16,
 							"defUid": 19,
-							"px": [32,144],
+							"px": [0,80],
 							"fieldInstances": []
 						}
 					]
@@ -3729,18 +3746,18 @@
 					"entityInstances": [
 						{
 							"__identifier": "m3e_stationary",
-							"__grid": [8,16],
+							"__grid": [10,16],
 							"__pivot": [0,0],
 							"__tags": ["m3"],
 							"__tile": { "tilesetUid": 5, "x": 120, "y": 32, "w": 8, "h": 8 },
 							"__smartColor": "#5A6988",
-							"__worldX": 256,
+							"__worldX": 272,
 							"__worldY": -80,
-							"iid": "facd32d0-3b70-11ee-9d1b-03d71dcf60cb",
+							"iid": "87caeef0-6280-11ee-af39-1ff28c33a792",
 							"width": 16,
 							"height": 16,
 							"defUid": 20,
-							"px": [64,128],
+							"px": [80,128],
 							"fieldInstances": []
 						}
 					]

@@ -1,23 +1,31 @@
-import { SolidColor, Timer, v_, Vector2d } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxSolidColor,
+  BpxSoundSequence,
+  BpxVector2d,
+  timer_,
+  u_,
+  v_,
+} from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
 import { EnemyProperties } from "../game/EnemyProperties";
-import { b, c, g, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { c, g } from "../globals";
+import { Sprite } from "../misc/Sprite";
 import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
 import { Mission } from "./Mission";
 
-const aspr_ = AnimatedSprite.for(g.assets.mission2SpritesheetUrl);
+const sspr_ = Sprite.for(g.assets.mission2SpritesheetUrl).static;
 
-const eb_ = EnemyBullet.factory(aspr_(4, 4, [124], 64), 2);
+const eb_ = EnemyBullet.factory(sspr_(4, 4, 124, 64), 2);
 
 export class Mission2 implements Mission {
   readonly missionName: string = "(wip) outpost in space";
   readonly bossName: string = "cargo guardian";
 
-  readonly bgColor: SolidColor = c._1_darker_blue;
-  readonly missionInfoColor: SolidColor = c._6_light_grey;
+  readonly bgColor: BpxSolidColor = c.darkerBlue;
+  readonly missionInfoColor: BpxSolidColor = c.lightGrey;
 
   readonly scrollPerFrame: number = 1;
 
@@ -36,8 +44,8 @@ export class Mission2 implements Mission {
   };
 
   private _stars: Array<{
-    xy: Vector2d;
-    color: SolidColor;
+    xy: BpxVector2d;
+    color: BpxSolidColor;
     speed: number;
   }> = [];
 
@@ -49,17 +57,12 @@ export class Mission2 implements Mission {
 
   private _maybeAddStar(y: number): void {
     if (Math.random() < 0.1) {
-      // TODO: introduce a BeetPx util to pick a random array element
-      const speed = [0.25, 0.5, 0.75][Math.floor(Math.random() * 3)]!;
+      const speed = u_.randomElementOf([0.25, 0.5, 0.75])!;
       const star = {
         xy: v_(Math.ceil(1 + Math.random() * g.gameAreaSize.x - 3), y),
         speed: speed,
         color:
-          speed >= 0.75
-            ? c._6_light_grey
-            : speed >= 0.5
-            ? c._13_lavender
-            : c._14_mauve,
+          speed >= 0.75 ? c.lightGrey : speed >= 0.5 ? c.lavender : c.mauve,
       };
       this._stars.push(star);
     }
@@ -77,8 +80,20 @@ export class Mission2 implements Mission {
 
   levelBgDraw(): void {
     for (const star of this._stars) {
-      b.pixel(g.gameAreaOffset.add(star.xy), star.color);
+      b_.pixel(g.gameAreaOffset.add(star.xy), star.color);
     }
+  }
+
+  get audioSequenceMain(): BpxSoundSequence {
+    return {
+      sequenceLooped: [[{ url: g.assets.mission2Music32 }]],
+    };
+  }
+
+  get audioSequenceBoss(): BpxSoundSequence {
+    return {
+      sequenceLooped: [[{ url: g.assets.mission2Music33 }]],
+    };
   }
 
   enemyPropertiesFor(enemyId: string): EnemyProperties {
@@ -87,17 +102,17 @@ export class Mission2 implements Mission {
         return {
           health: 5,
           score: 1,
-          spriteMain: aspr_(28, 28, [0], 64),
-          spriteFlash: aspr_(28, 28, [28], 64),
+          spriteMain: sspr_(28, 28, 0, 64),
+          spriteFlash: sspr_(28, 28, 28, 64),
           collisionCirclesProps: [{ r: 5 }],
           powerupsDistribution: "h,m,f,t,s",
           movementFactory: MovementLine.of({
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          bulletFireTimer: new Timer({ frames: 40 }),
+          bulletFireTimer: timer_(40),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -132,35 +147,24 @@ export class Mission2 implements Mission {
       // --    }),
       // --},
       default:
-        return u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
+        return u_.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
     }
   }
-
-  // TODO
-  // _m_mission_main_music = 0
-  // SEQ:
-  // loop:
-  //   32
-  //
-  // _m_mission_boss_music = 1
-  // SEQ:
-  // loop:
-  //   33
 
   bossProperties(): BossProperties {
     return {
       health: 25,
-      spriteMain: aspr_(56, 26, [4], 98),
-      spriteFlash: aspr_(56, 26, [4], 98),
+      spriteMain: sspr_(56, 26, 4, 98),
+      spriteFlash: sspr_(56, 26, 4, 98),
       collisionCirclesProps: [{ r: 15, offset: v_(0, -3) }],
       phases: [
         // phase 1
         {
           triggeringHealthFraction: 1,
           score: 1,
-          bulletFireTimer: new Timer({ frames: 80 }),
+          bulletFireTimer: timer_(80),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            b.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
             return [
               eb_(
                 MovementLine.of({

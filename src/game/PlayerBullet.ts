@@ -1,16 +1,16 @@
-import { Vector2d } from "@beetpx/beetpx";
+import { BpxVector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g, h } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
 
 export class PlayerBullet {
-  private readonly _sprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _sprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     4,
     5,
-    [9],
+    9,
     11
   );
 
@@ -18,7 +18,7 @@ export class PlayerBullet {
 
   private _isDestroyed: boolean = false;
 
-  constructor(startXy: Vector2d) {
+  constructor(startXy: BpxVector2d) {
     this._movement = MovementLine.of({
       angle: 0.75,
       angledSpeed: 2.5,

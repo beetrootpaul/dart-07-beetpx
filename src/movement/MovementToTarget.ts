@@ -1,5 +1,11 @@
-import { Timer, v_, Vector2d } from "@beetpx/beetpx";
-import { Easing, EasingFn } from "../misc/Easing";
+import {
+  BpxEasing,
+  BpxEasingFn,
+  BpxTimer,
+  BpxVector2d,
+  timer_,
+  v_,
+} from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 
 export class MovementToTarget implements Movement {
@@ -8,7 +14,7 @@ export class MovementToTarget implements Movement {
       targetX?: number;
       targetY?: number;
       frames: number;
-      easingFn?: EasingFn;
+      easingFn?: BpxEasingFn;
       onFinished?: () => void;
     }): MovementFactory =>
     (startXy) =>
@@ -16,28 +22,28 @@ export class MovementToTarget implements Movement {
         startXy,
         v_(params.targetX ?? startXy.x, params.targetY ?? startXy.y),
         params.frames,
-        params.easingFn ?? Easing.linear,
+        params.easingFn ?? BpxEasing.linear,
         params.onFinished
       );
 
-  private readonly _startXy: Vector2d;
-  private readonly _targetXy: Vector2d;
-  private readonly _timer: Timer;
-  private readonly _easingFn: EasingFn;
+  private readonly _startXy: BpxVector2d;
+  private readonly _targetXy: BpxVector2d;
+  private readonly _timer: BpxTimer;
+  private readonly _easingFn: BpxEasingFn;
   private _onFinished: (() => void) | undefined;
-  private _xy: Vector2d;
-  private _speed: Vector2d;
+  private _xy: BpxVector2d;
+  private _speed: BpxVector2d;
 
   private constructor(
-    startXy: Vector2d,
-    targetXy: Vector2d,
+    startXy: BpxVector2d,
+    targetXy: BpxVector2d,
     frames: number,
-    easingFn: EasingFn,
+    easingFn: BpxEasingFn,
     onFinished?: () => void
   ) {
     this._startXy = startXy;
     this._targetXy = targetXy;
-    this._timer = new Timer({ frames });
+    this._timer = timer_(frames);
     this._easingFn = easingFn;
     this._onFinished = onFinished;
 
@@ -45,26 +51,19 @@ export class MovementToTarget implements Movement {
     this._speed = this._nextXy().sub(startXy);
   }
 
-  private _nextXy(): Vector2d {
-    return v_(
-      Easing.lerp(
-        this._startXy.x,
-        this._targetXy.x,
-        this._easingFn(this._timer.progress)
-      ),
-      Easing.lerp(
-        this._startXy.y,
-        this._targetXy.y,
-        this._easingFn(this._timer.progress)
-      )
+  private _nextXy(): BpxVector2d {
+    return BpxVector2d.lerp(
+      this._startXy,
+      this._targetXy,
+      this._easingFn(this._timer.progress)
     );
   }
 
-  get xy(): Vector2d {
+  get xy(): BpxVector2d {
     return this._xy;
   }
 
-  get speed(): Vector2d {
+  get speed(): BpxVector2d {
     return this._speed;
   }
 

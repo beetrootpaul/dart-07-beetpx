@@ -1,43 +1,45 @@
-import { spr_, v_ } from "@beetpx/beetpx";
+import { b_, spr_, u_, v_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
+import { PauseMenu } from "../PauseMenu";
+import { PersistedState } from "../PersistedState";
 import { Game } from "../game/Game";
-import { b, c, g, h, u } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { c, g } from "../globals";
+import { Sprite, StaticSprite } from "../misc/Sprite";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenOver implements GameScreen {
-  private readonly _xSprite: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     0,
     true
   );
-  private readonly _xSpritePressed: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     6,
     true
   );
-  private readonly _xSpriteWin: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSpriteWin: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     12,
     true
   );
-  private readonly _xSpritePressedWin: AnimatedSprite = new AnimatedSprite(
+  private readonly _xSpritePressedWin: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
-    [56],
+    56,
     18,
     true
   );
@@ -61,14 +63,13 @@ export class ScreenOver implements GameScreen {
     this._fadeOut = new Fade("out", { fadeFrames: 30 });
 
     if (params.isWin) {
-      b.playSoundOnce(g.assets.sfxGameWin);
+      b_.playSoundOnce(g.assets.sfxGameWin);
     }
 
     const currentScore = this._game.score.rawValue;
-    const highScoreSoFar = b.load<{ highScore: number }>()?.highScore ?? 0;
+    const highScoreSoFar = b_.load<PersistedState>()?.highScore ?? 0;
     this._gotHighScore = currentScore > highScoreSoFar;
-    // TODO: fix BeetPx to NOT store at the same time to `game_stored_state` and `game_stored_state2`
-    b.store<{ highScore: number }>({
+    b_.store<PersistedState>({
       highScore: Math.max(highScoreSoFar, currentScore),
     });
   }
@@ -89,8 +90,8 @@ export class ScreenOver implements GameScreen {
           score: 0,
         });
       } else {
-        // TODO: params: CurrentMission.current, true, false, false
-        return new ScreenTitle();
+        // TODO: params: false, false
+        return new ScreenTitle({ startMusic: true });
       }
     }
 
@@ -99,15 +100,15 @@ export class ScreenOver implements GameScreen {
 
   update(): void {
     if (!this._isWin) {
-      if (b.wasJustPressed("up") || b.wasJustPressed("down")) {
-        b.playSoundOnce(g.assets.sfxOptionsChange);
+      if (b_.wasJustPressed("up") || b_.wasJustPressed("down")) {
+        b_.playSoundOnce(g.assets.sfxOptionsChange);
         this._retry = !this._retry;
       }
     }
 
-    if (b.wasJustPressed("x")) {
+    if (b_.wasJustPressed("x")) {
       // TODO: replace this with a fade out of a music only over 500 ms
-      b.stopAllSounds();
+      b_.stopAllSounds();
       this._proceed = true;
     }
 
@@ -123,23 +124,19 @@ export class ScreenOver implements GameScreen {
     const x = 24;
 
     // button shape
-    b.sprite(
+    b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(
         selected ? (this._isWin ? 37 : 35) : 36,
         12,
         1,
         12
       ),
-      // TODO: stretch to `w`
-      v_(x, y)
+      v_(x, y),
+      v_(w, 1)
     );
 
     // button text
-    b.print(
-      text,
-      v_(x + 4, y + 3),
-      this._isWin ? c._5_blue_green : c._14_mauve
-    );
+    b_.print(text, v_(x + 4, y + 3), this._isWin ? c.blueGreen : c.mauve);
 
     // "x" press incentive
     if (selected) {
@@ -147,7 +144,7 @@ export class ScreenOver implements GameScreen {
       const xSpritePressed = this._isWin
         ? this._xSpritePressedWin
         : this._xSpritePressed;
-      const sprite = u.booleanChangingEveryNthFrame(g.fps / 3)
+      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? xSprite
         : xSpritePressed;
       sprite.draw(v_(x + w - 16, y + 13).sub(g.gameAreaOffset));
@@ -155,31 +152,36 @@ export class ScreenOver implements GameScreen {
   }
 
   draw(): void {
-    b.clearCanvas(this._isWin ? c._3_dark_green : c._2_darker_purple);
+    b_.clearCanvas(this._isWin ? c.darkGreen : c.darkerPurple);
 
     // heading
-    h.printCentered(
+    b_.print(
       this._isWin ? "you made it!" : "game over",
-      g.gameAreaSize.x / 2,
-      22,
-      this._isWin ? c._5_blue_green : c._8_red
+      g.gameAreaOffset.add(g.gameAreaSize.x / 2, 22),
+      this._isWin ? c.blueGreen : c.red,
+      [true, false]
     );
 
     // score
     const scoreBaseY = this._gotHighScore ? 42 : 47;
-    h.printCentered("your score", g.gameAreaSize.x / 2, scoreBaseY, c._7_white);
+    b_.print(
+      "your score",
+      g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY),
+      c.white,
+      [true, false]
+    );
     this._game.score.draw(
       v_(52, scoreBaseY + 10),
-      c._7_white,
-      this._isWin ? c._5_blue_green : c._14_mauve,
+      c.white,
+      this._isWin ? c.blueGreen : c.mauve,
       false
     );
     if (this._gotHighScore) {
-      h.printCentered(
+      b_.print(
         "new high score!",
-        g.gameAreaSize.x / 2,
-        scoreBaseY + 20,
-        this._isWin ? c._15_peach : c._9_dark_orange
+        g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY + 20),
+        this._isWin ? c.peach : c.darkOrange,
+        [true, false]
       );
     }
 
@@ -188,13 +190,13 @@ export class ScreenOver implements GameScreen {
       this._drawButton(
         `try mission ${CurrentMission.current} again`,
         81,
-        this._retry
+        this._retry && !PauseMenu.isGamePaused
       );
     }
     this._drawButton(
       "go to title screen",
       this._isWin ? 85 : 103,
-      !this._retry || this._isWin
+      (!this._retry || this._isWin) && !PauseMenu.isGamePaused
     );
 
     this._fadeIn.draw();

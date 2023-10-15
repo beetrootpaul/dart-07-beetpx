@@ -1,5 +1,5 @@
-import { Vector2d } from "@beetpx/beetpx";
-import { c, h } from "../globals";
+import { b_, BpxVector2d } from "@beetpx/beetpx";
+import { c, g } from "../globals";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
 
@@ -7,7 +7,7 @@ export class Float {
   private readonly _movement: Movement;
   private readonly _scoreText: string;
 
-  constructor(params: { startXy: Vector2d; score: number }) {
+  constructor(params: { startXy: BpxVector2d; score: number }) {
     this._movement = MovementLine.of({
       angle: 0.75,
       angledSpeed: 0.5,
@@ -26,11 +26,11 @@ export class Float {
   }
 
   draw(): void {
-    h.printCentered(
+    b_.print(
       this._scoreText,
-      this._movement.xy.x,
-      this._movement.xy.y,
-      c._7_white
+      g.gameAreaOffset.add(this._movement.xy),
+      c.white,
+      [true, false]
     );
   }
 }

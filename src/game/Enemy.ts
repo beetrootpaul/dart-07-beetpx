@@ -1,7 +1,7 @@
-import { Timer, Vector2d } from "@beetpx/beetpx";
+import { BpxTimer, BpxVector2d, timer_, u_ } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { Collisions } from "../collisions/Collisions";
-import { g, u } from "../globals";
+import { g } from "../globals";
 import { Movement } from "../movement/Movement";
 import { EnemyBullet } from "./EnemyBullet";
 import { EnemyProperties } from "./EnemyProperties";
@@ -31,11 +31,11 @@ export class Enemy {
 
   private _health: number;
   private _isDestroyed: boolean = false;
-  private _flashingAfterDamageTimer: Timer | null = null;
+  private _flashingAfterDamageTimer: BpxTimer | null = null;
 
   constructor(params: {
     properties: EnemyProperties;
-    startXy: Vector2d;
+    startXy: BpxVector2d;
     onBulletsSpawned: (
       spawnBulletsFn: (
         enemyMovement: Movement,
@@ -63,7 +63,7 @@ export class Enemy {
 
   get collisionCircles(): CollisionCircle[] {
     return this._properties.collisionCirclesProps.map(({ r, offset }) => ({
-      center: this._movement.xy.add(offset ?? Vector2d.zero),
+      center: this._movement.xy.add(offset ?? BpxVector2d.zero),
       r,
     }));
   }
@@ -71,21 +71,17 @@ export class Enemy {
   takeDamage(damage: number): void {
     const mainCollisionCircle =
       this.collisionCircles[0] ??
-      u.throwError(`Enemy has no main collision circle`);
+      u_.throwError(`Enemy has no main collision circle`);
 
     this._health = Math.max(0, this._health - damage);
     if (this._health > 0) {
-      this._flashingAfterDamageTimer = new Timer({ frames: 4 });
+      this._flashingAfterDamageTimer = timer_(4);
       this._onDamaged(mainCollisionCircle);
     } else {
       this._isDestroyed = true;
       const powerupTypesToPickFrom =
         this._properties.powerupsDistribution.split(",");
-      const powerupType =
-        powerupTypesToPickFrom[
-          // TODO: introduce a BeetPx util to pick a random array element
-          Math.floor(Math.random() * powerupTypesToPickFrom.length)
-        ]!;
+      const powerupType = u_.randomElementOf(powerupTypesToPickFrom)!;
       this._onDestroyed(
         mainCollisionCircle,
         this._properties.score,

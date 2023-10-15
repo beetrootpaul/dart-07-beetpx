@@ -1,11 +1,14 @@
 import {
-  CompositeColor,
-  FillPattern,
-  Timer,
+  b_,
+  BpxCompositeColor,
+  BpxFillPattern,
+  BpxTimer,
+  BpxVector2d,
+  timer_,
+  u_,
   v_,
-  Vector2d,
 } from "@beetpx/beetpx";
-import { b, c, g, u } from "../globals";
+import { c, g } from "../globals";
 
 function randNegPos05(): number {
   return Math.random() - 0.5;
@@ -14,30 +17,30 @@ function randNegPos05(): number {
 type Particle = {
   // angle: 0 = right, .25 = down, .5 = left, .75 = up
   angle: number;
-  xy: Vector2d;
+  xy: BpxVector2d;
   r: number;
 };
 
 export class Explosion {
-  private readonly _waitTimer: Timer;
+  private readonly _waitTimer: BpxTimer;
   private readonly _magnitude: number;
   private _onStarted: (() => void) | null;
 
   private readonly _particles: Particle[] = [];
 
   constructor(params: {
-    startXy: Vector2d;
+    startXy: BpxVector2d;
     magnitude: number;
     waitFrames?: number;
     onStarted?: () => void;
   }) {
-    this._waitTimer = new Timer({ frames: params.waitFrames ?? 0 });
+    this._waitTimer = timer_(params.waitFrames ?? 0);
 
     this._magnitude = params.magnitude;
 
     this._onStarted = params.onStarted ?? null;
 
-    u.repeatN(9, () => {
+    u_.repeatN(9, () => {
       this._particles.push({
         angle: 0.75 + 0.5 * randNegPos05(),
         xy: params.startXy.add(
@@ -63,11 +66,7 @@ export class Explosion {
         if (p.r > 0) {
           p.angle = p.angle + 0.1 * randNegPos05();
           const speed = Math.random();
-          p.xy = p.xy.add(
-            // TODO: consider extracting a helper (here or in BeetPx) which does PI*2 by default. Remember that `+ Math.PI` might be needed as well
-            speed * Math.cos(p.angle * Math.PI * 2),
-            speed * Math.sin(p.angle * Math.PI * 2)
-          );
+          p.xy = p.xy.add(BpxVector2d.unitFromAngle(p.angle).mul(speed));
           p.r = Math.max(0, p.r - (this._magnitude * Math.random()) / 20);
         }
       }
@@ -76,27 +75,27 @@ export class Explosion {
 
   draw(): void {
     if (this._waitTimer.hasFinished) {
-      b.setFillPattern(FillPattern.of(0xa5a5));
+      b_.setFillPattern(BpxFillPattern.of(0xa5a5));
       for (const p of this._particles) {
         if (p.r > 0) {
-          let color = new CompositeColor(c._9_dark_orange, c._8_red);
+          let color = new BpxCompositeColor(c.darkOrange, c.red);
           if (p.r < this._magnitude * 0.2) {
-            color = new CompositeColor(c._13_lavender, c._14_mauve);
+            color = new BpxCompositeColor(c.lavender, c.mauve);
           } else if (p.r < this._magnitude * 0.4) {
-            color = new CompositeColor(c._6_light_grey, c._13_lavender);
+            color = new BpxCompositeColor(c.lightGrey, c.lavender);
           } else if (p.r < this._magnitude * 0.6) {
-            color = new CompositeColor(c._6_light_grey, c._15_peach);
+            color = new BpxCompositeColor(c.lightGrey, c.peach);
           } else if (p.r < this._magnitude * 0.8) {
-            color = new CompositeColor(c._15_peach, c._9_dark_orange);
+            color = new BpxCompositeColor(c.peach, c.darkOrange);
           }
-          b.ellipseFilled(
+          b_.ellipseFilled(
             g.gameAreaOffset.add(p.xy).sub(p.r),
             v_(2, 2).mul(p.r),
             color
           );
         }
       }
-      b.setFillPattern(FillPattern.primaryOnly);
+      b_.setFillPattern(BpxFillPattern.primaryOnly);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Vector2d } from "@beetpx/beetpx";
+import { BpxVector2d } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 import { MovementFixed } from "./MovementFixed";
 
@@ -19,7 +19,7 @@ export class MovementSequence implements Movement {
   private _currentSubMovement: Movement;
 
   private constructor(
-    startXy: Vector2d,
+    startXy: BpxVector2d,
     looped: boolean,
     sequence: MovementFactory[]
   ) {
@@ -29,11 +29,11 @@ export class MovementSequence implements Movement {
     this._currentSubMovement = this._sequence[this._sequenceIndex]!(startXy);
   }
 
-  get xy(): Vector2d {
+  get xy(): BpxVector2d {
     return this._currentSubMovement.xy;
   }
 
-  get speed(): Vector2d {
+  get speed(): BpxVector2d {
     return this._currentSubMovement.speed;
   }
 

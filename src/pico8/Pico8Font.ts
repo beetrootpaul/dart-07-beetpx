@@ -1,11 +1,11 @@
 import {
-  CharSprite,
-  FontId,
-  ImageUrl,
-  Sprite,
-  Vector2d,
+  BpxCharSprite,
+  BpxFontId,
+  BpxImageUrl,
+  BpxSprite,
+  BpxVector2d,
   spr_,
-  type Font,
+  type BpxFont,
 } from "@beetpx/beetpx";
 import { g } from "../globals";
 
@@ -14,19 +14,19 @@ function glyph(
   tileY1: number,
   pxW: number = 3,
   pxH: number = 5
-): Sprite {
+): BpxSprite {
   return spr_(g.assets.pico8FontImage)(tileX1 * 8, tileY1 * 8, pxW, pxH);
 }
 
-export class Pico8Font implements Font {
-  readonly id: FontId = g.assets.pico8FontId;
+export class Pico8Font implements BpxFont {
+  readonly id: BpxFontId = g.assets.pico8FontId;
 
-  readonly imageUrl: ImageUrl = g.assets.pico8FontImage;
+  readonly imageUrl: BpxImageUrl = g.assets.pico8FontImage;
 
   // in PICO-8 the space takes 3 px wide, but in this game we want it to be a 1 px shorter
   static #spaceW = 2;
 
-  static #sprites: Record<string, Sprite> = {
+  static #sprites: Record<string, BpxSprite> = {
     // TODO: uncomment or delete
     // ["⬅️"]: glyph(11, 8, 7),
     // ["⬆️"]: glyph(4, 9, 7),
@@ -78,9 +78,9 @@ export class Pico8Font implements Font {
     ["z"]: glyph(10, 7),
   };
 
-  spritesFor(text: string): CharSprite[] {
-    const charSprites: CharSprite[] = [];
-    let positionInText: Vector2d = Vector2d.zero;
+  spritesFor(text: string): BpxCharSprite[] {
+    const charSprites: BpxCharSprite[] = [];
+    let positionInText: BpxVector2d = BpxVector2d.zero;
 
     for (let i = 0; i < text.length; i += 1) {
       let char = text[i]!.toLowerCase();

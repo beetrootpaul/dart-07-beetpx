@@ -1,21 +1,21 @@
-import { spr_, Sprite, Timer } from "@beetpx/beetpx";
-import { b, c, g } from "../globals";
+import { b_, BpxSprite, BpxTimer, spr_, timer_, v_ } from "@beetpx/beetpx";
+import { c, g } from "../globals";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenBrp implements GameScreen {
-  private readonly _brpLogo: Sprite = spr_(g.assets.mainSpritesheetUrl)(
+  private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(
     99,
     114,
     29,
     14
   );
 
-  private readonly _screenTimer: Timer;
-  private readonly _fadeInTimer: Timer;
-  private readonly _presentTimer: Timer;
-  private readonly _fadeOutTimer: Timer;
+  private readonly _screenTimer: BpxTimer;
+  private readonly _fadeInTimer: BpxTimer;
+  private readonly _presentTimer: BpxTimer;
+  private readonly _fadeOutTimer: BpxTimer;
 
   private _skip: boolean = false;
 
@@ -23,34 +23,36 @@ export class ScreenBrp implements GameScreen {
     const screenFrames = 150;
     const fadeFrames = 24;
 
-    // TODO: make it `new Timer(framesValue)`
-    this._screenTimer = new Timer({ frames: screenFrames });
-    this._fadeInTimer = new Timer({ frames: fadeFrames });
-    this._presentTimer = new Timer({
-      frames: screenFrames - 2 * fadeFrames - 20,
-    });
-    this._fadeOutTimer = new Timer({ frames: fadeFrames });
+    this._screenTimer = timer_(screenFrames);
+    this._fadeInTimer = timer_(fadeFrames);
+    this._presentTimer = timer_(screenFrames - 2 * fadeFrames - 20);
+    this._fadeOutTimer = timer_(fadeFrames);
 
-    // TODO:
-    //         music(0)
-    // SEQ:
-    // intro:
-    //   32
-    //   33
-    // loop:
-    //   34 36
-    //   35 37
+    // TODO: There are gaps between sequence entries. Would need to rework an entire
+    //       audio sequence playback and make it synced with audioContext time :-(
+    const halfDuration = (fullSoundDurationMs: number) =>
+      (fullSoundDurationMs * 16) / 32;
+    b_.playSoundSequence({
+      sequence: [
+        [{ url: g.assets.music32, durationMs: halfDuration }],
+        [{ url: g.assets.music33, durationMs: halfDuration }],
+      ],
+      sequenceLooped: [
+        [{ url: g.assets.music34 }, { url: g.assets.music36 }],
+        [{ url: g.assets.music35 }, { url: g.assets.music37 }],
+      ],
+    });
   }
 
   preUpdate(): GameScreen | undefined {
     if (this._skip || this._screenTimer.hasFinished) {
-      // TODO: params: 1, false, true, false
-      return new ScreenTitle();
+      // TODO: params: 1, true, false
+      return new ScreenTitle({ startMusic: false });
     }
   }
 
   update(): void {
-    if (b.wasJustPressed("x") || b.wasJustPressed("o")) {
+    if (b_.wasJustPressed("x") || b_.wasJustPressed("o")) {
       this._skip = true;
     }
 
@@ -66,35 +68,35 @@ export class ScreenBrp implements GameScreen {
   }
 
   draw(): void {
-    b.clearCanvas(c._0_black);
+    b_.clearCanvas(c.black);
 
-    let logoColor = c._15_peach;
+    let logoColor = c.peach;
     if (this._fadeInTimer.progress < 0.33) {
-      logoColor = c._2_darker_purple;
+      logoColor = c.darkerPurple;
     } else if (this._fadeInTimer.progress < 0.66) {
-      logoColor = c._14_mauve;
+      logoColor = c.mauve;
     } else if (this._fadeInTimer.progress < 1) {
-      logoColor = c._13_lavender;
+      logoColor = c.lavender;
     } else if (this._presentTimer.progress < 1) {
       // do nothing
     } else if (this._fadeOutTimer.progress < 0.33) {
-      logoColor = c._13_lavender;
+      logoColor = c.lavender;
     } else if (this._fadeOutTimer.progress < 0.66) {
-      logoColor = c._14_mauve;
+      logoColor = c.mauve;
     } else {
-      logoColor = c._2_darker_purple;
+      logoColor = c.darkerPurple;
     }
 
     if (!this._fadeOutTimer.hasFinished) {
-      const prevMapping = b.mapSpriteColors([
-        { from: Pico8Colors._10_yellow, to: logoColor },
+      const prevMapping = b_.mapSpriteColors([
+        { from: Pico8Colors.lemon, to: logoColor },
       ]);
-      b.sprite(
+      b_.sprite(
         this._brpLogo,
-        g.viewportSize.sub(this._brpLogo.size().mul(2)).div(2)
-        // TODO: scale x2
+        g.viewportSize.sub(this._brpLogo.size().mul(2)).div(2),
+        v_(2, 2)
       );
-      b.mapSpriteColors(prevMapping);
+      b_.mapSpriteColors(prevMapping);
     }
   }
 }

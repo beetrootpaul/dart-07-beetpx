@@ -1,7 +1,7 @@
-import { Vector2d } from "@beetpx/beetpx";
+import { BpxVector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g, h } from "../globals";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementLine } from "../movement/MovementLine";
 
@@ -13,8 +13,9 @@ export enum PowerupType {
   ShockwaveCharge,
 }
 
+// TODO: consider making powerups more rare and not lost on damage… or re-appearing before the player after damage
 export class Powerup {
-  static for(type: string, startXy: Vector2d): Powerup | null {
+  static for(type: string, startXy: BpxVector2d): Powerup | null {
     switch (type) {
       case "-":
         return null;
@@ -36,12 +37,11 @@ export class Powerup {
   readonly type: PowerupType;
 
   private readonly _movement: Movement;
-  // TODO: introduce StaticSprite
-  private readonly _sprite: AnimatedSprite;
+  private readonly _sprite: Sprite;
 
   private _isPicked: boolean = false;
 
-  constructor(type: PowerupType, startXy: Vector2d) {
+  constructor(type: PowerupType, startXy: BpxVector2d) {
     this.type = type;
 
     this._movement = MovementLine.of({
@@ -51,51 +51,51 @@ export class Powerup {
 
     switch (type) {
       case PowerupType.Health: {
-        this._sprite = new AnimatedSprite(
+        this._sprite = new StaticSprite(
           g.assets.mainSpritesheetUrl,
           9,
           8,
-          [18],
+          18,
           16
         );
         break;
       }
       case PowerupType.FastMovement: {
-        this._sprite = new AnimatedSprite(
+        this._sprite = new StaticSprite(
           g.assets.mainSpritesheetUrl,
           9,
           8,
-          [9],
+          9,
           16
         );
         break;
       }
       case PowerupType.TripleShoot: {
-        this._sprite = new AnimatedSprite(
+        this._sprite = new StaticSprite(
           g.assets.mainSpritesheetUrl,
           9,
           8,
-          [18],
+          18,
           24
         );
         break;
       }
       case PowerupType.FastShoot: {
-        this._sprite = new AnimatedSprite(
+        this._sprite = new StaticSprite(
           g.assets.mainSpritesheetUrl,
           9,
           8,
-          [9],
+          9,
           24
         );
         break;
       }
       case PowerupType.ShockwaveCharge: {
-        this._sprite = new AnimatedSprite(
+        this._sprite = new StaticSprite(
           g.assets.mainSpritesheetUrl,
           9,
           8,
-          [27],
+          27,
           24
         );
         break;
@@ -123,7 +123,6 @@ export class Powerup {
   }
 
   draw(): void {
-    // TODO: cobblestone'ing happens for some powreups… :-(
     this._sprite.draw(this._movement.xy);
   }
 }

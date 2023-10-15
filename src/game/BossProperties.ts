@@ -1,19 +1,19 @@
-import { Timer, Vector2d } from "@beetpx/beetpx";
+import { BpxTimer, BpxVector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
-import { AnimatedSprite } from "../misc/AnimatedSprite";
+import { Sprite } from "../misc/Sprite";
 import { Movement, MovementFactory } from "../movement/Movement";
 import { EnemyBullet } from "./EnemyBullet";
 
 export type BossProperties = {
   health: number;
 
-  spriteMain: AnimatedSprite;
-  spriteFlash: AnimatedSprite;
+  spriteMain: Sprite;
+  spriteFlash: Sprite;
 
   // put main/center circle first, since it will be source for explosions etc.
   collisionCirclesProps: Array<{
     r: number;
-    offset?: Vector2d;
+    offset?: BpxVector2d;
   }>;
 
   phases: Array<{
@@ -21,7 +21,7 @@ export type BossProperties = {
 
     score: number;
 
-    bulletFireTimer: Timer;
+    bulletFireTimer: BpxTimer;
     spawnBullets: (
       bossMovement: Movement,
       playerCollisionCircle: CollisionCircle

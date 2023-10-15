@@ -1,12 +1,12 @@
+import { b_ } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
-import { b } from "../globals";
 import { Hud } from "../gui/Hud";
 import { SlidingInfo } from "../gui/SlidingInfo";
 import { CurrentMission } from "../missions/CurrentMission";
 import { GameScreen } from "./GameScreen";
-import { ScreenDefeat } from "./ScreenDefeat";
 import { ScreenMissionBoss } from "./ScreenMissionBoss";
+import { ScreenMissionDefeat } from "./ScreenMissionDefeat";
 
 export class ScreenMissionMain implements GameScreen {
   private readonly _game: Game;
@@ -55,8 +55,9 @@ export class ScreenMissionMain implements GameScreen {
 
     this._fadeIn = new Fade("in", { fadeFrames: fadeInFrames });
 
-    // TODO
-    //     music(_m_mission_main_music)
+    CurrentMission.mainMusicPlaybackId = b_.playSoundSequence(
+      CurrentMission.m.audioSequenceMain
+    );
   }
 
   preUpdate(): GameScreen | undefined {
@@ -76,7 +77,7 @@ export class ScreenMissionMain implements GameScreen {
     }
 
     if (this._game.health <= 0) {
-      return new ScreenDefeat({ game: this._game, hud: this._hud });
+      return new ScreenMissionDefeat({ game: this._game, hud: this._hud });
     }
   }
 
@@ -89,7 +90,7 @@ export class ScreenMissionMain implements GameScreen {
   }
 
   draw(): void {
-    b.clearCanvas(CurrentMission.m.bgColor);
+    b_.clearCanvas(CurrentMission.m.bgColor);
 
     this._game.draw();
     this._hud.draw(this._game);

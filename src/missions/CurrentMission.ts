@@ -1,4 +1,4 @@
-import { u } from "../globals";
+import { BpxAudioPlaybackId, u_ } from "@beetpx/beetpx";
 import { Mission } from "./Mission";
 import { Mission1 } from "./Mission1";
 import { Mission2 } from "./Mission2";
@@ -10,14 +10,13 @@ export class CurrentMission {
   private static _current: number = CurrentMission.first;
   private static _m: Mission = new Mission1();
 
-  // TODO: where used?
+  static mainMusicPlaybackId: BpxAudioPlaybackId | undefined = undefined;
+
   static get current(): number {
     return this._current;
   }
 
-  // TODO: where used?
   static get next(): number {
-    // TODO: how to handle the mission after the last one?
     return (this.current % 3) + 1;
   }
 
@@ -34,6 +33,6 @@ export class CurrentMission {
         ? new Mission2()
         : mission === 3
         ? new Mission3()
-        : u.throwError(`Unexpected mission number: ${mission}`);
+        : u_.throwError(`Unexpected mission number: ${mission}`);
   }
 }

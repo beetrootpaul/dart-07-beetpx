@@ -1,5 +1,11 @@
-import { CompositeColor, FillPattern, transparent_, v_ } from "@beetpx/beetpx";
-import { b, c, g } from "./globals";
+import {
+  b_,
+  BpxCompositeColor,
+  BpxFillPattern,
+  transparent_,
+  v_,
+} from "@beetpx/beetpx";
+import { c, g } from "./globals";
 import { Movement } from "./movement/Movement";
 import { MovementFixed } from "./movement/MovementFixed";
 import { MovementSequence } from "./movement/MovementSequence";
@@ -13,18 +19,18 @@ export class Fade {
   private readonly _movement: Movement;
 
   // from fully transparent to fully black
-  private readonly patterns: FillPattern[] = [
-    FillPattern.of(0xffff),
-    FillPattern.of(0xffdf),
-    FillPattern.of(0x7fdf),
-    FillPattern.of(0x5f5f),
-    FillPattern.of(0x5b5e),
-    FillPattern.of(0x5a5a),
-    FillPattern.of(0x5852),
-    FillPattern.of(0x5050),
-    FillPattern.of(0x1040),
-    FillPattern.of(0x0040),
-    FillPattern.of(0x0000),
+  private readonly patterns: BpxFillPattern[] = [
+    BpxFillPattern.of(0xffff),
+    BpxFillPattern.of(0xffdf),
+    BpxFillPattern.of(0x7fdf),
+    BpxFillPattern.of(0x5f5f),
+    BpxFillPattern.of(0x5b5e),
+    BpxFillPattern.of(0x5a5a),
+    BpxFillPattern.of(0x5852),
+    BpxFillPattern.of(0x5050),
+    BpxFillPattern.of(0x1040),
+    BpxFillPattern.of(0x0040),
+    BpxFillPattern.of(0x0000),
   ];
   private readonly _stripHs: number[] = [
     g.viewportSize.y,
@@ -78,13 +84,13 @@ export class Fade {
           this._direction === "in" ? i : this.patterns.length - i - 1
         ]!;
 
-      b.setFillPattern(pattern);
-      b.rectFilled(
+      b_.setFillPattern(pattern);
+      b_.rectFilled(
         v_(0, y),
         v_(g.viewportSize.x, stripH),
-        new CompositeColor(c._0_black, transparent_)
+        new BpxCompositeColor(c.black, transparent_)
       );
-      b.setFillPattern(FillPattern.primaryOnly);
+      b_.setFillPattern(BpxFillPattern.primaryOnly);
     }
   }
 }

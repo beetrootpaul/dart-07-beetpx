@@ -1,13 +1,13 @@
-import { Vector2d } from "@beetpx/beetpx";
+import { BpxVector2d } from "@beetpx/beetpx";
 
 export interface MovementFactory {
-  (startXy: Vector2d): Movement;
+  (startXy: BpxVector2d): Movement;
 }
 
 export interface Movement {
-  get xy(): Vector2d;
+  get xy(): BpxVector2d;
 
-  get speed(): Vector2d;
+  get speed(): BpxVector2d;
 
   get hasFinished(): boolean;
 
