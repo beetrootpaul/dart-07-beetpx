@@ -90,8 +90,7 @@ export class ScreenOver implements GameScreen {
           score: 0,
         });
       } else {
-        // TODO: params: false
-        return new ScreenTitle({ startMusic: true });
+        return new ScreenTitle({ startMusic: true, startFadeIn: true });
       }
     }
 

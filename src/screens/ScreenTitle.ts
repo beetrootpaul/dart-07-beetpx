@@ -47,7 +47,7 @@ export class ScreenTitle implements GameScreen {
     true
   );
 
-  private readonly _fadeIn: Fade = new Fade("in", { fadeFrames: 30 });
+  private readonly _fadeIn: Fade | null;
 
   private readonly _highScore: Score;
 
@@ -59,8 +59,7 @@ export class ScreenTitle implements GameScreen {
 
   private _proceed: boolean = false;
 
-  // TODO: params: start_fade_in
-  constructor(params: { startMusic: boolean }) {
+  constructor(params: { startMusic: boolean; startFadeIn: boolean }) {
     if (params.startMusic) {
       b_.playSoundSequence({
         sequenceLooped: [
@@ -69,6 +68,10 @@ export class ScreenTitle implements GameScreen {
         ],
       });
     }
+
+    this._fadeIn = params.startFadeIn
+      ? new Fade("in", { fadeFrames: 30 })
+      : null;
 
     // TODO: use better names for storage API. `load` is very unclear in context of `BeetPx`
     this._highScore = new Score(b_.load<PersistedState>()?.highScore ?? 0);
@@ -118,7 +121,7 @@ export class ScreenTitle implements GameScreen {
 
     this._maybeAddStar(0);
 
-    this._fadeIn.update();
+    this._fadeIn?.update();
   }
 
   private _drawVersion(baseY: number): void {
@@ -239,9 +242,8 @@ export class ScreenTitle implements GameScreen {
       );
     }
 
-    // TODO: `&& start_fade_in` inside `if`
     if (!ScreenTitle._gameCoverMode) {
-      this._fadeIn.draw();
+      this._fadeIn?.draw();
     }
   }
 }

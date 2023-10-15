@@ -46,8 +46,7 @@ export class ScreenBrp implements GameScreen {
 
   preUpdate(): GameScreen | undefined {
     if (this._skip || this._screenTimer.hasFinished) {
-      // TODO: params: 1, true
-      return new ScreenTitle({ startMusic: false });
+      return new ScreenTitle({ startMusic: false, startFadeIn: true });
     }
   }
 

@@ -45,8 +45,7 @@ export class ScreenControls implements GameScreen {
 
   preUpdate(): GameScreen | undefined {
     if (this._proceed) {
-      // TODO: params: false
-      return new ScreenTitle({ startMusic: false });
+      return new ScreenTitle({ startMusic: false, startFadeIn: false });
     }
   }
 
