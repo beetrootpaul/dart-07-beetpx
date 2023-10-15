@@ -9,6 +9,7 @@ import {
 import { c, g } from "./globals";
 
 // TODO: add an ability to restart the current mission
+// TODO: sounds of navigating through pause menu
 
 export class PauseMenu {
   static isGamePaused: boolean = false;

@@ -55,11 +55,10 @@ export class Mission1 implements Mission {
     8,
     8,
     [
-      // TODO: replace with u_.repeatN which returns an array instead of consuming a callback
-      ...Array.from({ length: 24 }, () => 24),
-      ...Array.from({ length: 24 }, () => 32),
-      ...Array.from({ length: 24 }, () => 40),
-      ...Array.from({ length: 24 }, () => 48),
+      ...u_.range(24).map(() => 24),
+      ...u_.range(24).map(() => 32),
+      ...u_.range(24).map(() => 40),
+      ...u_.range(24).map(() => 48),
     ],
     56,
     true

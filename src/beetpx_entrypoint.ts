@@ -94,7 +94,6 @@ b_.init(
     b_.setRepeating("o", false);
     b_.setRepeating("menu", false);
 
-    // TODO: unify naming: sounds vs audio
     b_.stopAllSounds();
 
     b_.setFont(g.assets.pico8FontId);
@@ -126,6 +125,7 @@ b_.init(
 
     if (b_.wasJustPressed("menu")) {
       PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
+      // TODO: pause/unpause sounds
     }
 
     if (PauseMenu.isGamePaused) {

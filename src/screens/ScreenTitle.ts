@@ -135,8 +135,9 @@ export class ScreenTitle implements GameScreen {
       ? new Fade("in", { fadeFrames: 30 })
       : null;
 
-    // TODO: use better names for storage API. `load` is very unclear in context of `BeetPx`
-    this._highScore = new Score(b_.load<PersistedState>()?.highScore ?? 0);
+    this._highScore = new Score(
+      b_.loadPersistedState<PersistedState>()?.highScore ?? 0
+    );
 
     for (let y = 0; y < g.viewportSize.y; y++) {
       this._maybeAddStar(y);

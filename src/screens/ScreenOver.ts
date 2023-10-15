@@ -67,9 +67,10 @@ export class ScreenOver implements GameScreen {
     }
 
     const currentScore = this._game.score.rawValue;
-    const highScoreSoFar = b_.load<PersistedState>()?.highScore ?? 0;
+    const highScoreSoFar =
+      b_.loadPersistedState<PersistedState>()?.highScore ?? 0;
     this._gotHighScore = currentScore > highScoreSoFar;
-    b_.store<PersistedState>({
+    b_.savePersistedState<PersistedState>({
       highScore: Math.max(highScoreSoFar, currentScore),
     });
   }
