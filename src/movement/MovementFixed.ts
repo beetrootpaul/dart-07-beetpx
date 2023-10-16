@@ -1,4 +1,4 @@
-import { BpxTimer, BpxVector2d, timer_ } from "@beetpx/beetpx";
+import { BpxTimer, BpxVector2d, timer_, v_0_0_ } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 
 export class MovementFixed implements Movement {
@@ -20,7 +20,7 @@ export class MovementFixed implements Movement {
   }
 
   get speed(): BpxVector2d {
-    return BpxVector2d.zero;
+    return v_0_0_;
   }
 
   get hasFinished(): boolean {

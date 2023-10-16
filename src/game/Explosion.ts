@@ -26,7 +26,7 @@ export class Explosion {
   private readonly _magnitude: number;
   private _onStarted: (() => void) | null;
 
-  private readonly _particles: Particle[] = [];
+  private readonly _particles: Particle[];
 
   constructor(params: {
     startXy: BpxVector2d;
@@ -40,15 +40,13 @@ export class Explosion {
 
     this._onStarted = params.onStarted ?? null;
 
-    u_.repeatN(9, () => {
-      this._particles.push({
-        angle: 0.75 + 0.5 * randNegPos05(),
-        xy: params.startXy.add(
-          v_(randNegPos05(), randNegPos05()).mul(params.magnitude)
-        ),
-        r: params.magnitude / 2 + Math.random() * (params.magnitude / 2),
-      });
-    });
+    this._particles = u_.range(9).map(() => ({
+      angle: 0.75 + 0.5 * randNegPos05(),
+      xy: params.startXy.add(
+        v_(randNegPos05(), randNegPos05()).mul(params.magnitude)
+      ),
+      r: params.magnitude / 2 + Math.random() * (params.magnitude / 2),
+    }));
   }
 
   get hasFinished(): boolean {

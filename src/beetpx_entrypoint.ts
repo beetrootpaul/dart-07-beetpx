@@ -1,7 +1,7 @@
 import { b_, transparent_ } from "@beetpx/beetpx";
-import { PauseMenu } from "./PauseMenu";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { c, g } from "./globals";
+import { PauseMenu } from "./pause/PauseMenu";
 import { Pico8Colors } from "./pico8/Pico8Color";
 import { Pico8Font } from "./pico8/Pico8Font";
 import { GameScreen } from "./screens/GameScreen";
@@ -9,7 +9,6 @@ import { ScreenBrp } from "./screens/ScreenBrp";
 
 let nextScreen: GameScreen | undefined;
 let currentScreen: GameScreen | undefined;
-// TODO: rework pause menu
 let pauseMenu: PauseMenu | undefined;
 
 const debugGameInfo: DebugGameInfo = new DebugGameInfo();
@@ -84,9 +83,13 @@ b_.init(
   }
 ).then(({ startGame }) => {
   b_.setOnStarted(() => {
-    // TODO: rework pause menu
-    PauseMenu.isGamePaused = false;
+    // Better set font first, because other constructors might rely
+    //   on it when calculating text size.
+    b_.setFont(g.assets.pico8FontId);
+
     pauseMenu = new PauseMenu();
+    PauseMenu.isGamePaused = false;
+    b_.resumeAllSounds();
 
     b_.setRepeating("left", false);
     b_.setRepeating("right", false);
@@ -96,10 +99,7 @@ b_.init(
     b_.setRepeating("o", false);
     b_.setRepeating("menu", false);
 
-    // TODO: unify naming: sounds vs audio
     b_.stopAllSounds();
-
-    b_.setFont(g.assets.pico8FontId);
 
     b_.mapSpriteColors([
       { from: Pico8Colors.black, to: c.black },
@@ -126,12 +126,15 @@ b_.init(
   b_.setOnUpdate(() => {
     debugGameInfo.update();
 
-    // TODO: rework pause menu
     if (b_.wasJustPressed("menu")) {
       PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
+      if (PauseMenu.isGamePaused) {
+        b_.pauseAllSounds();
+      } else {
+        b_.resumeAllSounds();
+      }
     }
 
-    // TODO: rework pause menu
     if (PauseMenu.isGamePaused) {
       pauseMenu?.update();
     } else {

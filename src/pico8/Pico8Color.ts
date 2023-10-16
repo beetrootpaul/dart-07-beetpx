@@ -1,7 +1,5 @@
 import { BpxSolidColor } from "@beetpx/beetpx";
 
-// TODO: rename colors in a way which allows to easily access them through code completion
-
 // noinspection JSUnusedGlobalSymbols
 export class Pico8Colors {
   // hex values taken from https://pico-8.fandom.com/wiki/Palette#The_system_palette

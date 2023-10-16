@@ -55,10 +55,10 @@ export class Mission1 implements Mission {
     8,
     8,
     [
-      ...Array.from({ length: 24 }, () => 24),
-      ...Array.from({ length: 24 }, () => 32),
-      ...Array.from({ length: 24 }, () => 40),
-      ...Array.from({ length: 24 }, () => 48),
+      ...u_.range(24).map(() => 24),
+      ...u_.range(24).map(() => 32),
+      ...u_.range(24).map(() => 40),
+      ...u_.range(24).map(() => 48),
     ],
     56,
     true
@@ -428,6 +428,7 @@ export class Mission1 implements Mission {
             ]),
           ]),
         },
+        // TODO: rework this, since it's quite impossible to get no damage here
         // phase 3
         {
           triggeringHealthFraction: 0.4,

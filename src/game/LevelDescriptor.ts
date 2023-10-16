@@ -1,3 +1,4 @@
+import { u_ } from "@beetpx/beetpx";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 
@@ -91,12 +92,12 @@ export class LevelDescriptor {
           (ei: any) => ei.tileY >= 0 && ei.tileY < this.maxDefinedDistance
         );
 
-    this.structures = Array.from({ length: this.maxDefinedDistance + 1 }, () =>
-      Array.from({ length: lanes + 1 }, () => null)
-    );
-    this.enemies = Array.from({ length: this.maxDefinedDistance + 1 }, () =>
-      Array.from({ length: lanes + 1 }, () => null)
-    );
+    this.structures = u_
+      .range(this.maxDefinedDistance + 1)
+      .map(() => u_.range(lanes + 1).map(() => null));
+    this.enemies = u_
+      .range(this.maxDefinedDistance + 1)
+      .map(() => u_.range(lanes + 1).map(() => null));
     tiles.forEach(({ tileX, tileY, id }) => {
       const distance = this.maxDefinedDistance - tileY;
       const lane = tileX + 1;

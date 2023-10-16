@@ -1,4 +1,4 @@
-import { BpxAudioPlaybackId, u_ } from "@beetpx/beetpx";
+import { u_ } from "@beetpx/beetpx";
 import { Mission } from "./Mission";
 import { Mission1 } from "./Mission1";
 import { Mission2 } from "./Mission2";
@@ -10,14 +10,17 @@ export class CurrentMission {
   private static _current: number = CurrentMission.first;
   private static _m: Mission = new Mission1();
 
-  static mainMusicPlaybackId: BpxAudioPlaybackId | undefined = undefined;
-
   static get current(): number {
     return this._current;
   }
 
+  static get max(): number {
+    // TODO: change 1 to 2 once mission 2 is ready and 2 to 3 when mission 3 is ready as well
+    return 1;
+  }
+
   static get next(): number {
-    return (this.current % 3) + 1;
+    return (this.current % this.max) + 1;
   }
 
   static get m(): Mission {

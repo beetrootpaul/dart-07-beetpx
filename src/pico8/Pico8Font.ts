@@ -5,6 +5,7 @@ import {
   BpxSprite,
   BpxVector2d,
   spr_,
+  v_0_0_,
   type BpxFont,
 } from "@beetpx/beetpx";
 import { g } from "../globals";
@@ -27,11 +28,6 @@ export class Pico8Font implements BpxFont {
   static #spaceW = 2;
 
   static #sprites: Record<string, BpxSprite> = {
-    // TODO: uncomment or delete
-    // ["⬅️"]: glyph(11, 8, 7),
-    // ["⬆️"]: glyph(4, 9, 7),
-    // ["➡️"]: glyph(1, 9, 7),
-    // ["⬇️"]: glyph(3, 8, 7),
     ["♪"]: glyph(13, 8, 7),
     //
     ["0"]: glyph(0, 3),
@@ -48,7 +44,9 @@ export class Pico8Font implements BpxFont {
     ["@"]: glyph(0, 4),
     ["?"]: glyph(15, 3),
     ["&"]: glyph(6, 2),
+    ["/"]: glyph(15, 2),
     ["."]: glyph(14, 2),
+    [":"]: glyph(10, 3),
     //
     ["a"]: glyph(1, 6),
     ["b"]: glyph(2, 6),
@@ -80,14 +78,12 @@ export class Pico8Font implements BpxFont {
 
   spritesFor(text: string): BpxCharSprite[] {
     const charSprites: BpxCharSprite[] = [];
-    let positionInText: BpxVector2d = BpxVector2d.zero;
+    let positionInText: BpxVector2d = v_0_0_;
 
     for (let i = 0; i < text.length; i += 1) {
       let char = text[i]!.toLowerCase();
       let sprite = Pico8Font.#sprites[char] ?? null;
 
-      // TODO: rework?
-      // Maybe it's a 2-chars long emoji?
       if (!sprite && i + 1 < text.length) {
         char += text[i + 1];
         sprite = Pico8Font.#sprites[char] ?? null;

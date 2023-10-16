@@ -1,11 +1,11 @@
 import { b_, spr_, u_, v_ } from "@beetpx/beetpx";
-import { PauseMenu } from "../PauseMenu";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
+import { PauseMenu } from "../pause/PauseMenu";
 import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
 
-// TODO: rework controls? Rework them in general in BeetPx?
+// TODO: rework controls? Rework them in general in BeetPx? Also no longer show both keyboard and gamepad
 
 export class ScreenControls implements GameScreen {
   private readonly _xSprite: Sprite = new StaticSprite(
@@ -45,8 +45,7 @@ export class ScreenControls implements GameScreen {
 
   preUpdate(): GameScreen | undefined {
     if (this._proceed) {
-      // TODO: params: false, true
-      return new ScreenTitle({ startMusic: false });
+      return new ScreenTitle({ startMusic: false, startFadeIn: false });
     }
   }
 

@@ -11,8 +11,9 @@ import {
 import { Fade } from "../Fade";
 import { Score } from "../game/Score";
 import { c, g } from "../globals";
+import { Music } from "../misc/Music";
 import { Sprite, StaticSprite } from "../misc/Sprite";
-import { PauseMenu } from "../PauseMenu";
+import { PauseMenu } from "../pause/PauseMenu";
 import { PersistedState } from "../PersistedState";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
@@ -21,6 +22,70 @@ import { ScreenSelectMission } from "./ScreenSelectMission";
 
 export class ScreenTitle implements GameScreen {
   private static readonly _gameCoverMode: boolean = false;
+
+  private static _playSelected: boolean = true;
+
+  private readonly _bgCoverTiles: (BpxVector2d | null)[][] = [
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(0, 6), v_(1, 6), ...u_.range(12).map(() => null), v_(2, 6), v_(3, 6)],
+    [
+      v_(5, 5),
+      v_(1, 7),
+      ...u_.range(12).map(() => v_(5, 4)),
+      v_(2, 7),
+      v_(5, 5),
+    ],
+    u_.range(16).map(() => v_(5, 5)),
+    u_.range(16).map(() => v_(5, 5)),
+    u_.range(16).map(() => v_(5, 5)),
+    [
+      v_(5, 5),
+      v_(1, 4),
+      ...u_.range(12).map(() => v_(5, 6)),
+      v_(2, 4),
+      v_(5, 5),
+    ],
+    [v_(0, 5), v_(1, 5), ...u_.range(12).map(() => null), v_(2, 5), v_(3, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+  ];
+
+  private readonly _bgTiles: (BpxVector2d | null)[][] = [
+    [v_(0, 6), v_(1, 6), ...u_.range(12).map(() => null), v_(2, 6), v_(3, 6)],
+    [
+      v_(5, 5),
+      v_(1, 7),
+      ...u_.range(12).map(() => v_(5, 4)),
+      v_(2, 7),
+      v_(5, 5),
+    ],
+    u_.range(16).map(() => v_(5, 5)),
+    u_.range(16).map(() => v_(5, 5)),
+    u_.range(16).map(() => v_(5, 5)),
+    [
+      v_(5, 5),
+      v_(1, 4),
+      ...u_.range(12).map(() => v_(5, 6)),
+      v_(2, 4),
+      v_(5, 5),
+    ],
+    [v_(0, 5), v_(1, 5), ...u_.range(12).map(() => null), v_(2, 5), v_(3, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+  ];
 
   private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(
     99,
@@ -45,7 +110,7 @@ export class ScreenTitle implements GameScreen {
     true
   );
 
-  private readonly _fadeIn: Fade = new Fade("in", { fadeFrames: 30 });
+  private readonly _fadeIn: Fade | null;
 
   private readonly _highScore: Score;
 
@@ -56,24 +121,19 @@ export class ScreenTitle implements GameScreen {
   }> = [];
 
   private _proceed: boolean = false;
-  private _play: boolean = true;
 
-  // TODO: params: start_fade_in, select_controls
-  constructor(params: { startMusic: boolean }) {
-    // TODO
-    //     local play = not select_controls
-
+  constructor(params: { startMusic: boolean; startFadeIn: boolean }) {
     if (params.startMusic) {
-      b_.playSoundSequence({
-        sequenceLooped: [
-          [{ url: g.assets.music34 }, { url: g.assets.music36 }],
-          [{ url: g.assets.music35 }, { url: g.assets.music37 }],
-        ],
-      });
+      Music.playTitleMusic({ withIntro: false });
     }
 
-    // TODO: use better names for storage API. `load` is very unclear in context of `BeetPx`
-    this._highScore = new Score(b_.load<PersistedState>()?.highScore ?? 0);
+    this._fadeIn = params.startFadeIn
+      ? new Fade("in", { fadeFrames: 30 })
+      : null;
+
+    this._highScore = new Score(
+      b_.loadPersistedState<PersistedState>()?.highScore ?? 0
+    );
 
     for (let y = 0; y < g.viewportSize.y; y++) {
       this._maybeAddStar(y);
@@ -95,14 +155,16 @@ export class ScreenTitle implements GameScreen {
 
   preUpdate(): GameScreen | undefined {
     if (this._proceed) {
-      return this._play ? new ScreenSelectMission() : new ScreenControls();
+      return ScreenTitle._playSelected
+        ? new ScreenSelectMission()
+        : new ScreenControls();
     }
   }
 
   update(): void {
     if (b_.wasJustPressed("up") || b_.wasJustPressed("down")) {
       b_.playSoundOnce(g.assets.sfxOptionsChange);
-      this._play = !this._play;
+      ScreenTitle._playSelected = !ScreenTitle._playSelected;
     }
 
     if (b_.wasJustPressed("x")) {
@@ -118,7 +180,35 @@ export class ScreenTitle implements GameScreen {
 
     this._maybeAddStar(0);
 
-    this._fadeIn.update();
+    this._fadeIn?.update();
+  }
+
+  private _drawBackground(): void {
+    const tiles = ScreenTitle._gameCoverMode
+      ? this._bgCoverTiles
+      : this._bgTiles;
+
+    const prevMapping = b_.mapSpriteColors([
+      { from: Pico8Colors.black, to: transparent_ },
+    ]);
+
+    tiles.forEach((tilesRow, rowIndex) => {
+      tilesRow.forEach((tile, colIndex) => {
+        if (tile) {
+          b_.sprite(
+            spr_(g.assets.mission2SpritesheetUrl)(
+              tile.x * g.tileSize.x,
+              tile.y * g.tileSize.y,
+              g.tileSize.x,
+              g.tileSize.y
+            ),
+            g.tileSize.mul(colIndex, rowIndex)
+          );
+        }
+      });
+    });
+
+    b_.mapSpriteColors(prevMapping);
   }
 
   private _drawVersion(baseY: number): void {
@@ -192,13 +282,9 @@ export class ScreenTitle implements GameScreen {
       b_.pixel(star.xy, star.color);
     }
 
-    // TODO
-    //         map(cart_label_mode and 16 or 0, 0, 0, 0, 16, 16)
+    this._drawBackground();
 
     if (ScreenTitle._gameCoverMode) {
-      // TODO
-      //             map(16, 0, 0, 0, 16, 16)
-
       // BRP
       const prevMapping = b_.mapSpriteColors([
         { from: Pico8Colors.black, to: transparent_ },
@@ -218,8 +304,6 @@ export class ScreenTitle implements GameScreen {
         v_(g.gameAreaSize.x / 2, 110)
       );
     } else {
-      // TODO
-      //             map(0, 0, 0, 0, 16, 16)
       this._drawVersion(1);
       this._drawTitle(15);
       this._drawHighScore(57);
@@ -228,20 +312,19 @@ export class ScreenTitle implements GameScreen {
         98,
         15,
         82,
-        this._play && !PauseMenu.isGamePaused
+        ScreenTitle._playSelected && !PauseMenu.isGamePaused
       );
       this._drawButton(
         "controls",
         98,
         15,
         104,
-        !this._play && !PauseMenu.isGamePaused
+        !ScreenTitle._playSelected && !PauseMenu.isGamePaused
       );
     }
 
-    // TODO: `&& start_fade_in` inside `if`
     if (!ScreenTitle._gameCoverMode) {
-      this._fadeIn.draw();
+      this._fadeIn?.draw();
     }
   }
 }
