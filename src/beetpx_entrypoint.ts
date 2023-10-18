@@ -1,4 +1,4 @@
-import { b_, transparent_ } from "@beetpx/beetpx";
+import { b_, transparent_, v_0_0_ } from "@beetpx/beetpx";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { c, g } from "./globals";
 import { PauseMenu } from "./pause/PauseMenu";
@@ -131,6 +131,8 @@ b_.init(
         b_.resumeAudio();
       }
     }
+
+    b_.setCameraOffset(v_0_0_);
 
     if (PauseMenu.isGamePaused) {
       pauseMenu?.update();

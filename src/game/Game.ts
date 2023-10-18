@@ -492,6 +492,15 @@ export class Game {
       );
     }
 
+    if (this._cameraShakeTimer.framesLeft > 0) {
+      // subtracting 1 here makes the last factor always equal to 0, which makes camera reset to its neutral position
+      // const factor = this._cameraShakeTimer.framesLeft - 1;
+      const factor = this._cameraShakeTimer.framesLeft - 1;
+      b_.setCameraOffset(
+        v_((Math.random() - 0.5) * factor, (Math.random() - 0.5) * factor)
+      );
+    }
+
     b_.logDebug(
       "e:",
       this._enemies.length,
@@ -542,14 +551,6 @@ export class Game {
       }
       this._powerups.forEach(Collisions.debugDrawCollisionCircle);
       this._shockwaves.forEach(Collisions.debugDrawCollisionCircle);
-    }
-
-    if (this._cameraShakeTimer.framesLeft > 0) {
-      // subtracting 1 here makes the last factor always equal to 0, which makes camera reset to its neutral position
-      const factor = this._cameraShakeTimer.framesLeft - 1;
-      b_.setCameraOffset(
-        v_((Math.random() - 0.5) * factor, (Math.random() - 0.5) * factor)
-      );
     }
   }
 }
