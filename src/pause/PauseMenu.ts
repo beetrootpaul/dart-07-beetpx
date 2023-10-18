@@ -6,6 +6,7 @@ import {
   v_,
   v_0_0_,
 } from "@beetpx/beetpx";
+import { Fade } from "../Fade";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
 import { Pico8Colors } from "../pico8/Pico8Color";
@@ -48,6 +49,8 @@ export class PauseMenu {
   private readonly _entries: PauseMenuEntry[];
   private _focusedEntry: number = 0;
 
+  private _restartFadeOut: Fade | null = null;
+
   constructor() {
     this._entries = [
       new PauseMenuEntrySimple("continue", () => {
@@ -67,7 +70,7 @@ export class PauseMenu {
       ),
       // TODO: add an ability to restart current mission (available only if during a mission)
       new PauseMenuEntrySimple("exit to title", () => {
-        b_.restart();
+        this._restartFadeOut = new Fade("out", { fadeFrames: 30 });
       }),
     ];
   }
@@ -88,6 +91,12 @@ export class PauseMenu {
     this._entries.forEach((entry, index) => {
       entry.update(this._focusedEntry === index);
     });
+
+    this._restartFadeOut?.update();
+    if (this._restartFadeOut?.hasFinished) {
+      this._restartFadeOut = null;
+      b_.restart();
+    }
   }
 
   draw(): void {
@@ -113,6 +122,8 @@ export class PauseMenu {
       this._drawEntry(entry, index, xy, wh);
       xy = xy.add(0, entry.size.y + PauseMenu._gapBetweenEntries);
     });
+
+    this._restartFadeOut?.draw();
   }
 
   private _dimContentBehind(): void {
@@ -154,21 +165,3 @@ export class PauseMenu {
     }
   }
 }
-
-// TODO
-// function _init()
-//     menuitem(1, "exit to title", function()
-//         fade_out = new_fade("out", 30)
-//     end)
-// end
-
-// TODO
-// function _update60()
-//     if fade_out.has_finished() then
-//         _load_main_cart(_m_mission_number)
-//     end
-//
-//     ...
-//
-//     fade_out._update()
-// end
