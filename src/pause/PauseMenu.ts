@@ -19,12 +19,15 @@ import { PauseMenuEntryToggle } from "./PauseMenuEntryToggle";
 // TODO: add an ability to restart the current mission
 // TODO: sounds of navigating through pause menu
 
-// TODO: asymmetrical width
-
 export class PauseMenu {
   static isGamePaused: boolean = false;
 
-  private static _padding = v_(21, 12);
+  private static _padding = {
+    left: 12,
+    right: 22,
+    top: 12,
+    bottom: 12,
+  };
   private static _gapBetweenEntries = 6;
 
   private static _arrowPixels = ["#__", "##_", "###", "##_", "#__"];
@@ -68,7 +71,6 @@ export class PauseMenu {
           }
         }
       ),
-      // TODO: add an ability to restart current mission (available only if during a mission)
       new PauseMenuEntrySimple("exit to title", () => {
         this._restartFadeOut = new Fade("out", { fadeFrames: 30 });
       }),
@@ -102,18 +104,26 @@ export class PauseMenu {
   draw(): void {
     this._dimContentBehind();
 
-    const wh = this._entries.reduce(
+    let wh = this._entries.reduce(
       (whTotal, entry, index) =>
         v_(
-          Math.max(whTotal.x, entry.size.x + 2 * PauseMenu._padding.x),
+          Math.max(
+            whTotal.x,
+            PauseMenu._padding.left + entry.size.x + PauseMenu._padding.right
+          ),
           whTotal.y +
             entry.size.y +
             (index < this._entries.length - 1
               ? PauseMenu._gapBetweenEntries
               : 0)
         ),
-      PauseMenu._padding.mul(2)
+      v_(
+        PauseMenu._padding.left + PauseMenu._padding.right,
+        PauseMenu._padding.top + PauseMenu._padding.bottom
+      )
     );
+    // make sure the width is even, therefore the pause menu will be placed horizontally in the center
+    wh = v_(wh.x % 2 ? wh.x + 1 : wh.x, wh.y);
     let xy = g.viewportSize.sub(wh).div(2);
 
     this._drawMenuBox(xy, wh);
@@ -146,7 +156,7 @@ export class PauseMenu {
     xy: BpxVector2d,
     wh: BpxVector2d
   ): void {
-    xy = xy.add(PauseMenu._padding);
+    xy = xy.add(PauseMenu._padding.left);
 
     entry.draw(xy);
 
@@ -159,7 +169,12 @@ export class PauseMenu {
         { from: Pico8Colors.pink, to: c.darkerPurple },
       ]);
       sprite.draw(
-        xy.add(wh.x - 2 * PauseMenu._padding.x + 4, -1).sub(g.gameAreaOffset)
+        xy
+          .add(
+            wh.x - PauseMenu._padding.left - PauseMenu._padding.right + 4,
+            -1
+          )
+          .sub(g.gameAreaOffset)
       );
       b_.mapSpriteColors(prevMapping);
     }
