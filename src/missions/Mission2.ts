@@ -86,13 +86,13 @@ export class Mission2 implements Mission {
 
   get audioSequenceMain(): BpxSoundSequence {
     return {
-      sequenceLooped: [[{ url: g.assets.mission2Music32 }]],
+      loop: [[g.assets.mission2Music32]],
     };
   }
 
   get audioSequenceBoss(): BpxSoundSequence {
     return {
-      sequenceLooped: [[{ url: g.assets.mission2Music33 }]],
+      loop: [[g.assets.mission2Music33]],
     };
   }
 

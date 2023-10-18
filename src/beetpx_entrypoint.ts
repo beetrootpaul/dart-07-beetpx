@@ -89,7 +89,6 @@ b_.init(
 
     pauseMenu = new PauseMenu();
     PauseMenu.isGamePaused = false;
-    b_.resumeAllSounds();
 
     b_.setRepeating("left", false);
     b_.setRepeating("right", false);
@@ -98,8 +97,6 @@ b_.init(
     b_.setRepeating("x", false);
     b_.setRepeating("o", false);
     b_.setRepeating("menu", false);
-
-    b_.stopAllSounds();
 
     b_.mapSpriteColors([
       { from: Pico8Colors.black, to: c.black },
@@ -129,9 +126,9 @@ b_.init(
     if (b_.wasJustPressed("menu")) {
       PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
       if (PauseMenu.isGamePaused) {
-        b_.pauseAllSounds();
+        b_.pauseAudio();
       } else {
-        b_.resumeAllSounds();
+        b_.resumeAudio();
       }
     }
 

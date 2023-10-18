@@ -87,55 +87,55 @@ export class Mission1 implements Mission {
 
   get audioSequenceMain(): BpxSoundSequence {
     return {
-      sequence: [
-        [{ url: g.assets.mission1Music43 }, { url: g.assets.mission1Music48 }],
-        [{ url: g.assets.mission1Music40 }, { url: g.assets.mission1Music49 }],
-        [{ url: g.assets.mission1Music40 }, { url: g.assets.mission1Music49 }],
-        [{ url: g.assets.mission1Music40 }, { url: g.assets.mission1Music50 }],
+      intro: [
+        [g.assets.mission1Music43, g.assets.mission1Music48],
+        [g.assets.mission1Music40, g.assets.mission1Music49],
+        [g.assets.mission1Music40, g.assets.mission1Music49],
+        [g.assets.mission1Music40, g.assets.mission1Music50],
       ],
-      sequenceLooped: [
+      loop: [
         [
-          { url: g.assets.mission1Music40 },
-          { url: g.assets.mission1Music49 },
-          { url: g.assets.mission1Music41 },
+          g.assets.mission1Music40,
+          g.assets.mission1Music49,
+          g.assets.mission1Music41,
         ],
         [
-          { url: g.assets.mission1Music40 },
-          { url: g.assets.mission1Music49 },
-          { url: g.assets.mission1Music41 },
+          g.assets.mission1Music40,
+          g.assets.mission1Music49,
+          g.assets.mission1Music41,
         ],
         [
-          { url: g.assets.mission1Music40 },
-          { url: g.assets.mission1Music50 },
-          { url: g.assets.mission1Music42 },
+          g.assets.mission1Music40,
+          g.assets.mission1Music50,
+          g.assets.mission1Music42,
         ],
         [
-          { url: g.assets.mission1Music40 },
-          { url: g.assets.mission1Music49 },
-          { url: g.assets.mission1Music41 },
+          g.assets.mission1Music40,
+          g.assets.mission1Music49,
+          g.assets.mission1Music41,
         ],
         [
-          { url: g.assets.mission1Music40 },
-          { url: g.assets.mission1Music49 },
-          { url: g.assets.mission1Music41 },
-          { url: g.assets.mission1Music51 },
+          g.assets.mission1Music40,
+          g.assets.mission1Music49,
+          g.assets.mission1Music41,
+          g.assets.mission1Music51,
         ],
         [
-          { url: g.assets.mission1Music40 },
-          { url: g.assets.mission1Music49 },
-          { url: g.assets.mission1Music41 },
-          { url: g.assets.mission1Music51 },
+          g.assets.mission1Music40,
+          g.assets.mission1Music49,
+          g.assets.mission1Music41,
+          g.assets.mission1Music51,
         ],
         [
-          { url: g.assets.mission1Music40 },
-          { url: g.assets.mission1Music50 },
-          { url: g.assets.mission1Music42 },
-          { url: g.assets.mission1Music52 },
+          g.assets.mission1Music40,
+          g.assets.mission1Music50,
+          g.assets.mission1Music42,
+          g.assets.mission1Music52,
         ],
         [
-          { url: g.assets.mission1Music40 },
-          { url: g.assets.mission1Music49 },
-          { url: g.assets.mission1Music51 },
+          g.assets.mission1Music40,
+          g.assets.mission1Music49,
+          g.assets.mission1Music51,
         ],
       ],
     };
@@ -143,12 +143,12 @@ export class Mission1 implements Mission {
 
   get audioSequenceBoss(): BpxSoundSequence {
     return {
-      sequence: [[{ url: g.assets.mission1Music44 }]],
-      sequenceLooped: [
-        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music53 }],
-        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music54 }],
-        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music55 }],
-        [{ url: g.assets.mission1Music45 }, { url: g.assets.mission1Music56 }],
+      intro: [[g.assets.mission1Music44]],
+      loop: [
+        [g.assets.mission1Music45, g.assets.mission1Music53],
+        [g.assets.mission1Music45, g.assets.mission1Music54],
+        [g.assets.mission1Music45, g.assets.mission1Music55],
+        [g.assets.mission1Music45, g.assets.mission1Music56],
       ],
     };
   }

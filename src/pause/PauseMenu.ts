@@ -52,16 +52,16 @@ export class PauseMenu {
     this._entries = [
       new PauseMenuEntrySimple("continue", () => {
         PauseMenu.isGamePaused = false;
-        b_.resumeAllSounds();
+        b_.resumeAudio();
       }),
       new PauseMenuEntryToggle(
         "sounds:",
-        () => !b_.areAllSoundsMuted(),
+        () => !b_.isAudioMuted(),
         (newValue) => {
           if (newValue) {
-            b_.unmuteAllSounds();
+            b_.unmuteAudio();
           } else {
-            b_.muteAllSounds();
+            b_.muteAudio();
           }
         }
       ),

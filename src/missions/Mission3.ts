@@ -132,13 +132,13 @@ export class Mission3 implements Mission {
 
   get audioSequenceMain(): BpxSoundSequence {
     return {
-      sequenceLooped: [[{ url: g.assets.mission3Music32 }]],
+      loop: [[g.assets.mission3Music32]],
     };
   }
 
   get audioSequenceBoss(): BpxSoundSequence {
     return {
-      sequenceLooped: [[{ url: g.assets.mission3Music33 }]],
+      loop: [[g.assets.mission3Music33]],
     };
   }
 
