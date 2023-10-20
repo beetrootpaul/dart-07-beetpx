@@ -1,4 +1,4 @@
-import { b_, transparent_ } from "@beetpx/beetpx";
+import { b_, transparent_, v_0_0_ } from "@beetpx/beetpx";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { c, g } from "./globals";
 import { PauseMenu } from "./pause/PauseMenu";
@@ -89,7 +89,6 @@ b_.init(
 
     pauseMenu = new PauseMenu();
     PauseMenu.isGamePaused = false;
-    b_.resumeAllSounds();
 
     b_.setRepeating("left", false);
     b_.setRepeating("right", false);
@@ -98,8 +97,6 @@ b_.init(
     b_.setRepeating("x", false);
     b_.setRepeating("o", false);
     b_.setRepeating("menu", false);
-
-    b_.stopAllSounds();
 
     b_.mapSpriteColors([
       { from: Pico8Colors.black, to: c.black },
@@ -129,11 +126,13 @@ b_.init(
     if (b_.wasJustPressed("menu")) {
       PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
       if (PauseMenu.isGamePaused) {
-        b_.pauseAllSounds();
+        b_.pauseAudio();
       } else {
-        b_.resumeAllSounds();
+        b_.resumeAudio();
       }
     }
+
+    b_.setCameraOffset(v_0_0_);
 
     if (PauseMenu.isGamePaused) {
       pauseMenu?.update();
@@ -177,6 +176,3 @@ b_.init(
 // TODO: balancing: powerup distributions: mission 3
 // TODO: balancing: mission 2: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 // TODO: balancing: mission 3: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
-
-// TODO: pause menu: input tester
-// TODO: pause menu: music on/off/volume

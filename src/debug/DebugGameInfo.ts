@@ -79,7 +79,7 @@ export class DebugGameInfo {
   }
 
   private _drawAudioState(): void {
-    const audioState = b_.audioContext.state;
+    const audioState = b_.__internal__audioContext().state;
     const audioStateText =
       audioState === "suspended"
         ? "s"
