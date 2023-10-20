@@ -14,10 +14,7 @@ import { PauseMenuEntry } from "./PauseMenuEntry";
 import { PauseMenuEntrySimple } from "./PauseMenuEntrySimple";
 import { PauseMenuEntryToggle } from "./PauseMenuEntryToggle";
 
-// TODO: camera shake does not stop during pause menu AND affects pause menu. Both should NOT happen.
-
-// TODO: add an ability to restart the current mission
-// TODO: sounds of navigating through pause menu
+// TODO: pause menu: input tester
 
 export class PauseMenu {
   static isGamePaused: boolean = false;
