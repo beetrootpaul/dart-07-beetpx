@@ -17,7 +17,7 @@ b_.init(
   {
     gameCanvasSize: "128x128",
     desiredUpdateFps: g.fps,
-    visibleTouchButtons: ["left", "right", "up", "down", "o", "x", "menu"],
+    visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
     debugFeatures: !__BEETPX_IS_PROD__,
   },
   {
@@ -94,8 +94,8 @@ b_.init(
     b_.setRepeating("right", false);
     b_.setRepeating("up", false);
     b_.setRepeating("down", false);
-    b_.setRepeating("x", false);
-    b_.setRepeating("o", false);
+    b_.setRepeating("a", false);
+    b_.setRepeating("b", false);
     b_.setRepeating("menu", false);
 
     b_.mapSpriteColors([

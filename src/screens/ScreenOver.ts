@@ -109,7 +109,7 @@ export class ScreenOver implements GameScreen {
       }
     }
 
-    if (b_.wasJustPressed("x")) {
+    if (b_.wasJustPressed("a")) {
       b_.playSoundOnce(g.assets.sfxOptionsConfirm);
       Music.fadeOutCurrentMusic();
       this._proceed = true;

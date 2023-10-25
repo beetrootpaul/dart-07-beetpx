@@ -39,7 +39,7 @@ export class ScreenBrp implements GameScreen {
   }
 
   update(): void {
-    if (b_.wasJustPressed("x") || b_.wasJustPressed("o")) {
+    if (b_.wasJustPressed("a") || b_.wasJustPressed("b")) {
       this._skip = true;
     }
 
