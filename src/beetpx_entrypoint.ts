@@ -176,3 +176,6 @@ b_.init(
 // TODO: balancing: powerup distributions: mission 3
 // TODO: balancing: mission 2: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 // TODO: balancing: mission 3: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
+
+// TODO: loading screen when assets are fetched
+// TODO: error screen when failed to load some assets

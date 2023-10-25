@@ -9,9 +9,15 @@ const watchForChanges = process.argv[2] === "watch";
 // this path is specific to the project's author machine
 const asperiteCli = "/Applications/Aseprite.app/Contents/MacOS/aseprite";
 
+const ffmpegExecutable = "ffmpeg";
+
 const rootDir = path.resolve(__dirname, "..");
 const assetsDir = path.resolve(rootDir, "assets");
 const publicDir = path.resolve(rootDir, "public");
+
+//
+// Aseprite --> PNG
+//
 
 const spriteSheets = [
   {
@@ -44,6 +50,24 @@ spriteSheets.forEach(({ asepriteInput, pngOutput }) => {
   }
 });
 
+//
+// WAV --> FLAC
+//
+
+const wavInputDir = path.resolve(assetsDir, "wav");
+const flacOutputDir = path.resolve(publicDir);
+
+convertWavToFlac(wavInputDir, flacOutputDir);
+if (watchForChanges) {
+  fs.watchFile(wavInputDir, { interval: 1000 }, () => {
+    convertWavToFlac(wavInputDir, flacOutputDir);
+  });
+}
+
+//
+// LDtk --> simplified JSON
+//
+
 const missionsLdtkPath = path.resolve(assetsDir, "missions.ldtk");
 const simplifiedMissionJsonPath = path.resolve(publicDir, "missions.json");
 
@@ -65,6 +89,27 @@ function exportAsepriteToPng(asepriteInputPath, pngOutputPath) {
     `${asperiteCli} ${asepriteInputPath} --sheet ${pngOutputPath} --batch`,
     { stdio: "inherit" }
   );
+}
+
+function convertWavToFlac(wavInputDir, flacOutputDir) {
+  console.log(wavInputDir, "-->", flacOutputDir);
+  fs.readdirSync(wavInputDir)
+    .filter((filename) => filename.toLowerCase().endsWith(".wav"))
+    .forEach((filename) => {
+      const inputPath = path.resolve(wavInputDir, filename);
+      const outputPath = path.resolve(
+        flacOutputDir,
+        filename.toLowerCase().replace(".wav", ".flac")
+      );
+      const shortInputPath = path.relative(rootDir, inputPath);
+      const shortOutputPath = path.relative(rootDir, outputPath);
+      console.log(`[syncAssets] ${shortInputPath} -> ${shortOutputPath} ...`);
+
+      childProcess.execSync(
+        `${ffmpegExecutable} -y -i ${shortInputPath} ${shortOutputPath}`,
+        { stdio: "inherit" }
+      );
+    });
 }
 
 function simplifyLdtkJson(missionsLdtkPath, simplifiedMissionJsonPath) {
