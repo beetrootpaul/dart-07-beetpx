@@ -57,7 +57,7 @@ export class Shockwave {
     rInner = u_.clamp(Shockwave._rMin, rInner, rOuter);
     if (rInner === rOuter) return;
 
-    const canvasSnapshot = b_.takeCanvasSnapshot();
+    const canvasSnapshotId = b_.takeCanvasSnapshot();
 
     for (let dy = -rOuter; dy <= rOuter; dy++) {
       const sy = this._center.y + dy;
@@ -70,12 +70,12 @@ export class Shockwave {
       b_.line(
         g.gameAreaOffset.add(v_(this._center.x - dxOuter + 1, sy)),
         v_(dxOuter - dxInner, 1),
-        new BpxMappingColor(canvasSnapshot, g.negativeColorMapping)
+        new BpxMappingColor(canvasSnapshotId, g.negativeColorMapping)
       );
       b_.line(
         g.gameAreaOffset.add(v_(this._center.x + dxOuter - 1, sy)),
         v_(dxInner - dxOuter, 1),
-        new BpxMappingColor(canvasSnapshot, g.negativeColorMapping)
+        new BpxMappingColor(canvasSnapshotId, g.negativeColorMapping)
       );
     }
   }

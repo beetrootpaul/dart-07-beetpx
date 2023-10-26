@@ -153,7 +153,9 @@ b_.init(
     }
 
     debugGameInfo.preDraw();
-    if (b_.debug) debugGameInfo.draw();
+    // TODO: REVERT
+    // if (b_.debug) debugGameInfo.draw();
+    debugGameInfo.draw();
     debugGameInfo.postDraw();
   });
 
