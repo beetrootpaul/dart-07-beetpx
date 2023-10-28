@@ -75,7 +75,7 @@ export class PauseMenu {
   }
 
   update(): void {
-    if (b_.wasJustPressed("x")) {
+    if (b_.wasJustPressed("a")) {
       this._entries[this._focusedEntry]!.execute();
     }
 

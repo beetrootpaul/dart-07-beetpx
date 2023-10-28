@@ -32,9 +32,10 @@ There are two directories for assets:
 Because of that, there are two scripts: `npm run syncAssets` and `npm run syncAssets:watch` (the latter runs continuously, performing the sync on every change to asset files from `assets/` observed by `scripts/syncAssets.js`).
 
 Only **some asset types** are synced the script right now:
-- `.aseprite` files listed inside [scripts/syncAssets.js](scripts/syncAssets.js) are exported to PNG in `public/` with use of a hardcoded path to Aseprite executable
-- `.ldtk` file listed inside [scripts/syncAssets.js](scripts/syncAssets.js) is copied and trimmed down to JSON in `public/`
-- `.aseprite` files are NOT exported to WAV, since of the PICO-8 error in headless export in form of `/Applications/PICO-8.app/Contents/MacOS/pico8 assets/sounds_main.p8 -root_path public`. Moreover, that command makes the custom PICO-8 ROOT dir location reset to its defaults (which is an issue, if you use custom location for your regular PICO-8 work).
+- `assets/*.aseprite` files listed inside [scripts/syncAssets.js](scripts/syncAssets.js) are exported to PNG in `public/` with use of a hardcoded path to Aseprite executable
+- `assets/wav/*.wav` are converted to FLAC in `public/` with use of a `ffmpeg` executable
+- `assets/*.ldtk` file listed inside [scripts/syncAssets.js](scripts/syncAssets.js) is copied and trimmed down to JSON in `public/`
+- `assets/*.aseprite` files are NOT exported to WAV, since of the PICO-8 error in headless export in form of `/Applications/PICO-8.app/Contents/MacOS/pico8 assets/sounds_main.p8 -root_path public`. Moreover, that command makes the custom PICO-8 ROOT dir location reset to its defaults (which is an issue, if you use custom location for your regular PICO-8 work).
 
 ### Run game
 

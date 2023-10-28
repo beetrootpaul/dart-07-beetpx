@@ -17,7 +17,7 @@ b_.init(
   {
     gameCanvasSize: "128x128",
     desiredUpdateFps: g.fps,
-    visibleTouchButtons: ["left", "right", "up", "down", "o", "x", "menu"],
+    visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
     debugFeatures: !__BEETPX_IS_PROD__,
   },
   {
@@ -94,8 +94,8 @@ b_.init(
     b_.setRepeating("right", false);
     b_.setRepeating("up", false);
     b_.setRepeating("down", false);
-    b_.setRepeating("x", false);
-    b_.setRepeating("o", false);
+    b_.setRepeating("a", false);
+    b_.setRepeating("b", false);
     b_.setRepeating("menu", false);
 
     b_.mapSpriteColors([
@@ -153,7 +153,9 @@ b_.init(
     }
 
     debugGameInfo.preDraw();
-    if (b_.debug) debugGameInfo.draw();
+    // TODO: REVERT
+    // if (b_.debug) debugGameInfo.draw();
+    debugGameInfo.draw();
     debugGameInfo.postDraw();
   });
 
@@ -176,3 +178,6 @@ b_.init(
 // TODO: balancing: powerup distributions: mission 3
 // TODO: balancing: mission 2: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 // TODO: balancing: mission 3: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
+
+// TODO: loading screen when assets are fetched
+// TODO: error screen when failed to load some assets
