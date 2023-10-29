@@ -152,11 +152,12 @@ b_.init(
       pauseMenu?.draw();
     }
 
-    debugGameInfo.preDraw();
     // TODO: REVERT
-    // if (b_.debug) debugGameInfo.draw();
+    // if (b_.debug) {
+    debugGameInfo.preDraw();
     debugGameInfo.draw();
     debugGameInfo.postDraw();
+    // }
   });
 
   startGame();
