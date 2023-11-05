@@ -17,8 +17,7 @@ b_.init(
   {
     gameCanvasSize: "128x128",
     desiredUpdateFps: g.fps,
-    visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
-    debugFeatures: !__BEETPX_IS_PROD__,
+    debugFeatures: !BEETPX__IS_PROD,
   },
   {
     images: [
@@ -153,11 +152,11 @@ b_.init(
     }
 
     // TODO: REVERT
-    // if (b_.debug) {
-    debugGameInfo.preDraw();
-    debugGameInfo.draw();
-    debugGameInfo.postDraw();
-    // }
+    if (b_.debug) {
+      debugGameInfo.preDraw();
+      debugGameInfo.draw();
+      debugGameInfo.postDraw();
+    }
   });
 
   startGame();
