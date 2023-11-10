@@ -140,7 +140,7 @@ export class ScreenSelectMission implements GameScreen {
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 38 : 39, 12, 1, 19),
       buttonXy1.sub(1),
-      v_(buttonWh.x + 2, 1)
+      { scaleXy: v_(buttonWh.x + 2, 1) }
     );
 
     // draw level sample
@@ -162,7 +162,7 @@ export class ScreenSelectMission implements GameScreen {
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, buttonXy1.y + 2),
         selected ? c.white : c.lightGrey,
         selected ? c.darkOrange : c.lavender,
-        [true, false]
+        { centerXy: [true, false] }
       );
     }
 
@@ -193,7 +193,7 @@ export class ScreenSelectMission implements GameScreen {
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
       buttonXy1.sub(1),
-      v_(buttonWh.x + 2, 1)
+      { scaleXy: v_(buttonWh.x + 2, 1) }
     );
 
     // button text

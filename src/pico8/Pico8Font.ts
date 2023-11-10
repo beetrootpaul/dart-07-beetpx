@@ -2,9 +2,8 @@ import {
   BpxCharSprite,
   BpxFontId,
   BpxImageUrl,
-  BpxSprite,
   BpxVector2d,
-  spr_,
+  v_,
   v_0_0_,
   type BpxFont,
 } from "@beetpx/beetpx";
@@ -15,8 +14,8 @@ function glyph(
   tileY1: number,
   pxW: number = 3,
   pxH: number = 5
-): BpxSprite {
-  return spr_(g.assets.pico8FontImage)(tileX1 * 8, tileY1 * 8, pxW, pxH);
+): [BpxVector2d, BpxVector2d] {
+  return [v_(tileX1 * 8, tileY1 * 8), v_(pxW, pxH)];
 }
 
 export class Pico8Font implements BpxFont {
@@ -27,7 +26,7 @@ export class Pico8Font implements BpxFont {
   // in PICO-8 the space takes 3 px wide, but in this game we want it to be a 1 px shorter
   static #spaceW = 2;
 
-  static #sprites: Record<string, BpxSprite> = {
+  static #sprites: Record<string, [BpxVector2d, BpxVector2d]> = {
     ["♪"]: glyph(13, 8, 7),
     //
     ["0"]: glyph(0, 3),
@@ -90,9 +89,14 @@ export class Pico8Font implements BpxFont {
       }
 
       if (sprite) {
-        charSprites.push({ positionInText, sprite, char });
+        charSprites.push({
+          char,
+          positionInText,
+          type: "image",
+          spriteXyWh: sprite,
+        });
       }
-      const jumpX = (sprite?.size().x ?? Pico8Font.#spaceW) + 1;
+      const jumpX = (sprite?.[1].x ?? Pico8Font.#spaceW) + 1;
       positionInText = positionInText.add(jumpX, 0);
     }
 

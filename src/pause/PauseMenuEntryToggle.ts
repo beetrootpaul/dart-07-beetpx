@@ -34,10 +34,10 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
 
     this._value = this._getValue();
 
-    this._labelSize = u_.measureText(this._label);
-    this._yesW = u_.measureText(this._yes).x;
-    this._orW = u_.measureText(this._or).x;
-    this._noW = u_.measureText(this._no).x;
+    this._labelSize = u_.measureText(this._label)[1];
+    this._yesW = u_.measureText(this._yes)[1].x;
+    this._orW = u_.measureText(this._or)[1].x;
+    this._noW = u_.measureText(this._no)[1].x;
     this.size = this._labelSize.add(
       this._gapLabelYes +
         this._yesW +

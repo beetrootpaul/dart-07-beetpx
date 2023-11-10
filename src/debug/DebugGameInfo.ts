@@ -90,7 +90,7 @@ export class DebugGameInfo {
         : "@";
     b_.print(
       audioStateText,
-      v_(g.viewportSize.x - u_.measureText(audioStateText).x, 0),
+      v_(g.viewportSize.x - u_.measureText(audioStateText)[1].x, 0),
       c.white
     );
   }

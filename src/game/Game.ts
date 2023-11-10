@@ -410,6 +410,7 @@ export class Game {
   }
 
   update(): void {
+    // TODO: __NEW_BEETPX__ use new API which returns a vector: areDirectionsPressedAsVector
     this._player?.setMovement(
       b_.isPressed("left"),
       b_.isPressed("right"),
@@ -496,7 +497,7 @@ export class Game {
       // subtracting 1 here makes the last factor always equal to 0, which makes camera reset to its neutral position
       // const factor = this._cameraShakeTimer.framesLeft - 1;
       const factor = this._cameraShakeTimer.framesLeft - 1;
-      b_.setCameraOffset(
+      b_.setCameraXy(
         v_((Math.random() - 0.5) * factor, (Math.random() - 0.5) * factor)
       );
     }

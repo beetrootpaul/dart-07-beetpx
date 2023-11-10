@@ -1,8 +1,7 @@
-import { b_, transparent_, v_0_0_ } from "@beetpx/beetpx";
+import { b_, v_0_0_ } from "@beetpx/beetpx";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { c, g } from "./globals";
 import { PauseMenu } from "./pause/PauseMenu";
-import { Pico8Colors } from "./pico8/Pico8Color";
 import { Pico8Font } from "./pico8/Pico8Font";
 import { GameScreen } from "./screens/GameScreen";
 import { ScreenBrp } from "./screens/ScreenBrp";
@@ -29,8 +28,7 @@ b_.init(
     fonts: [
       {
         font: new Pico8Font(),
-        imageTextColor: c.white,
-        imageBgColor: c.black,
+        spriteTextColor: c.white,
       },
     ],
     sounds: [
@@ -97,24 +95,7 @@ b_.init(
     b_.setRepeating("b", false);
     b_.setRepeating("menu", false);
 
-    b_.mapSpriteColors([
-      { from: Pico8Colors.black, to: c.black },
-      { from: Pico8Colors.storm, to: c.darkerBlue },
-      { from: Pico8Colors.wine, to: c.darkerPurple },
-      { from: Pico8Colors.moss, to: c.darkGreen },
-      { from: Pico8Colors.tan, to: c.trueBlue },
-      { from: Pico8Colors.slate, to: c.blueGreen },
-      { from: Pico8Colors.silver, to: c.lightGrey },
-      { from: Pico8Colors.white, to: c.white },
-      { from: Pico8Colors.ember, to: c.red },
-      { from: Pico8Colors.orange, to: c.darkOrange },
-      { from: Pico8Colors.lemon, to: transparent_ },
-      { from: Pico8Colors.lime, to: transparent_ },
-      { from: Pico8Colors.sky, to: c.blue },
-      { from: Pico8Colors.dusk, to: c.lavender },
-      { from: Pico8Colors.pink, to: c.mauve },
-      { from: Pico8Colors.peach, to: c.peach },
-    ]);
+    b_.setSpriteColorMapping(g.baseSpriteMapping);
 
     currentScreen = new ScreenBrp();
   });
@@ -131,7 +112,7 @@ b_.init(
       }
     }
 
-    b_.setCameraOffset(v_0_0_);
+    b_.setCameraXy(v_0_0_);
 
     if (PauseMenu.isGamePaused) {
       pauseMenu?.update();
@@ -151,7 +132,6 @@ b_.init(
       pauseMenu?.draw();
     }
 
-    // TODO: REVERT
     if (b_.debug) {
       debugGameInfo.preDraw();
       debugGameInfo.draw();
@@ -159,10 +139,14 @@ b_.init(
     }
   });
 
-  startGame();
+  startGame()
+    .then(() => {
+      console.log("Game started");
+    })
+    .catch((err) => {
+      console.error("Encountered an error when called startGame():", err);
+    });
 });
-
-// TODO: performance improvements to reach ~55 FPS?
 
 // TODO: use versioned BeetPx from npm
 
@@ -179,5 +163,10 @@ b_.init(
 // TODO: balancing: mission 2: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 // TODO: balancing: mission 3: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 
-// TODO: loading screen when assets are fetched
-// TODO: error screen when failed to load some assets
+// TODO: __NEW_BEETPX__ provide npm scripts with --htmlTitle
+
+// TODO: __NEW_BEETPX__ adapt button images to whatever input method was used last
+
+// TODO: __NEW_BEETPX__ input tester on first start, then from the menu
+
+// TODO: __NEW_BEETPX__ provide HTML with a custom icon

@@ -7,6 +7,8 @@ import { ScreenTitle } from "./ScreenTitle";
 
 // TODO: rework controls? Rework them in general in BeetPx? Also no longer show both keyboard and gamepad
 
+// TODO: update controls sprites to match new BeetPx setup
+
 export class ScreenControls implements GameScreen {
   private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -68,7 +70,7 @@ export class ScreenControls implements GameScreen {
         12
       ),
       v_(baseX, baseY),
-      v_(w, 1)
+      { scaleXy: v_(w, 1) }
     );
 
     // button text

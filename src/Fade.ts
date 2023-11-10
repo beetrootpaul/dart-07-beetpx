@@ -1,11 +1,4 @@
-import {
-  b_,
-  BpxCompositeColor,
-  BpxFillPattern,
-  transparent_,
-  u_,
-  v_,
-} from "@beetpx/beetpx";
+import { b_, BpxPattern, BpxPatternColors, u_, v_ } from "@beetpx/beetpx";
 import { c, g } from "./globals";
 import { Movement } from "./movement/Movement";
 import { MovementFixed } from "./movement/MovementFixed";
@@ -20,18 +13,73 @@ export class Fade {
   private readonly _movement: Movement;
 
   // from fully transparent to fully black
-  private readonly patterns: BpxFillPattern[] = [
-    BpxFillPattern.of(0xffff),
-    BpxFillPattern.of(0xffdf),
-    BpxFillPattern.of(0x7fdf),
-    BpxFillPattern.of(0x5f5f),
-    BpxFillPattern.of(0x5b5e),
-    BpxFillPattern.of(0x5a5a),
-    BpxFillPattern.of(0x5852),
-    BpxFillPattern.of(0x5050),
-    BpxFillPattern.of(0x1040),
-    BpxFillPattern.of(0x0040),
-    BpxFillPattern.of(0x0000),
+  private readonly patterns: BpxPattern[] = [
+    BpxPattern.from(`
+      ----
+      ----
+      ----
+      ----
+    `),
+    BpxPattern.from(`
+      ----
+      ----
+      --#-
+      ----
+    `),
+    BpxPattern.from(`
+      #---
+      ----
+      --#-
+      ----
+    `),
+    BpxPattern.from(`
+      #-#-
+      ----
+      #-#-
+      ----
+    `),
+    BpxPattern.from(`
+      #-#-
+      -#--
+      #-#-
+      ---#
+    `),
+    BpxPattern.from(`
+      #-#-
+      -#-#
+      #-#-
+      -#-#
+    `),
+    BpxPattern.from(`
+      #-#-
+      -###
+      #-#-
+      ##-#
+    `),
+    BpxPattern.from(`
+      #-#-
+      ####
+      #-#-
+      ####
+    `),
+    BpxPattern.from(`
+      ###-
+      ####
+      #-##
+      ####
+    `),
+    BpxPattern.from(`
+      ####
+      ####
+      #-##
+      ####
+    `),
+    BpxPattern.from(`
+      ####
+      ####
+      ####
+      ####
+    `),
   ];
   private readonly _stripHs: number[] = [
     g.viewportSize.y,
@@ -85,13 +133,13 @@ export class Fade {
           this._direction === "in" ? i : this.patterns.length - i - 1
         ]!;
 
-      b_.setFillPattern(pattern);
+      b_.setPattern(pattern);
       b_.rectFilled(
         v_(0, y),
         v_(g.viewportSize.x, stripH),
-        new BpxCompositeColor(c.black, transparent_)
+        BpxPatternColors.of(c.black, null)
       );
-      b_.setFillPattern(BpxFillPattern.primaryOnly);
     }
+    b_.setPattern(BpxPattern.primaryOnly);
   }
 }

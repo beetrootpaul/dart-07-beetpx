@@ -1,4 +1,9 @@
-import { BpxSolidColor, BpxTransparentColor, v_ } from "@beetpx/beetpx";
+import {
+  BpxCanvasSnapshotColorMapping,
+  BpxRgbColor,
+  BpxSpriteColorMapping,
+  v_,
+} from "@beetpx/beetpx";
 import { Helpers } from "./misc/Helpers";
 import { Pico8Colors } from "./pico8/Pico8Color";
 
@@ -98,67 +103,86 @@ export const g = {
   shockwaveChargesDefault: 2,
   shockwaveChargesMax: 4,
 
-  negativeColorMapping: (
-    canvasColor: BpxSolidColor | BpxTransparentColor
-  ): BpxSolidColor | BpxTransparentColor => {
-    switch (canvasColor.id) {
-      case c.black.id:
-        return c.white;
-      case c.darkerBlue.id:
-        return c.lightGrey;
-      case c.darkerPurple.id:
-        return c.lavender;
-      case c.darkGreen.id:
-        return c.mauve;
-      case c.trueBlue.id:
-        return c.darkOrange;
-      case c.blueGreen.id:
-        return c.peach;
-      case c.lightGrey.id:
-        return c.darkerBlue;
-      case c.white.id:
-        return c.black;
-      case c.red.id:
-        return c.blue;
-      case c.darkOrange.id:
-        return c.trueBlue;
-      case c.blue.id:
-        return c.red;
-      case c.lavender.id:
-        return c.darkerPurple;
-      case c.mauve.id:
-        return c.darkGreen;
-      case c.peach.id:
-        return c.blueGreen;
-      default:
-        return canvasColor;
-    }
-  },
+  baseSpriteMapping: BpxSpriteColorMapping.from([
+    [Pico8Colors.black, c.black],
+    [Pico8Colors.storm, c.darkerBlue],
+    [Pico8Colors.wine, c.darkerPurple],
+    [Pico8Colors.moss, c.darkGreen],
+    [Pico8Colors.tan, c.trueBlue],
+    [Pico8Colors.slate, c.blueGreen],
+    [Pico8Colors.silver, c.lightGrey],
+    [Pico8Colors.white, c.white],
+    [Pico8Colors.ember, c.red],
+    [Pico8Colors.orange, c.darkOrange],
+    [Pico8Colors.lemon, null],
+    [Pico8Colors.lime, null],
+    [Pico8Colors.sky, c.blue],
+    [Pico8Colors.dusk, c.lavender],
+    [Pico8Colors.pink, c.mauve],
+    [Pico8Colors.peach, c.peach],
+  ]),
 
-  darkerColorMapping: (
-    canvasColor: BpxSolidColor | BpxTransparentColor
-  ): BpxSolidColor | BpxTransparentColor => {
-    switch (canvasColor.id) {
-      case c.black.id:
-      case c.darkerBlue.id:
-      case c.darkerPurple.id:
-        return c.black;
-      case c.trueBlue.id:
-      case c.blueGreen.id:
-      case c.mauve.id:
-        return c.darkerPurple;
-      case c.darkGreen.id:
-      case c.red.id:
-      case c.darkOrange.id:
-      case c.lavender.id:
-        return c.mauve;
-      case c.lightGrey.id:
-      case c.white.id:
-      case c.blue.id:
-      case c.peach.id:
-        return c.lavender;
-      default:
-        return canvasColor;
+  snapshotNegative: BpxCanvasSnapshotColorMapping.of(
+    (canvasColor: BpxRgbColor | null): BpxRgbColor | null => {
+      switch (canvasColor?.cssHex) {
+        case c.black.cssHex:
+          return c.white;
+        case c.darkerBlue.cssHex:
+          return c.lightGrey;
+        case c.darkerPurple.cssHex:
+          return c.lavender;
+        case c.darkGreen.cssHex:
+          return c.mauve;
+        case c.trueBlue.cssHex:
+          return c.darkOrange;
+        case c.blueGreen.cssHex:
+          return c.peach;
+        case c.lightGrey.cssHex:
+          return c.darkerBlue;
+        case c.white.cssHex:
+          return c.black;
+        case c.red.cssHex:
+          return c.blue;
+        case c.darkOrange.cssHex:
+          return c.trueBlue;
+        case c.blue.cssHex:
+          return c.red;
+        case c.lavender.cssHex:
+          return c.darkerPurple;
+        case c.mauve.cssHex:
+          return c.darkGreen;
+        case c.peach.cssHex:
+          return c.blueGreen;
+        default:
+          return canvasColor;
+      }
     }
-  },
+  ),
+
+  snapshotDarker: BpxCanvasSnapshotColorMapping.of(
+    (canvasColor: BpxRgbColor | null): BpxRgbColor | null => {
+      switch (canvasColor?.cssHex) {
+        case c.black.cssHex:
+        case c.darkerBlue.cssHex:
+        case c.darkerPurple.cssHex:
+          return c.black;
+        case c.trueBlue.cssHex:
+        case c.blueGreen.cssHex:
+        case c.mauve.cssHex:
+          return c.darkerPurple;
+        case c.darkGreen.cssHex:
+        case c.red.cssHex:
+        case c.darkOrange.cssHex:
+        case c.lavender.cssHex:
+          return c.mauve;
+        case c.lightGrey.cssHex:
+        case c.white.cssHex:
+        case c.blue.cssHex:
+        case c.peach.cssHex:
+          return c.lavender;
+        default:
+          return canvasColor;
+      }
+    }
+  ),
 };

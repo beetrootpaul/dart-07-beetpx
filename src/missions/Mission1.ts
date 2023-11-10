@@ -1,7 +1,7 @@
 import {
   b_,
   BpxEasing,
-  BpxSolidColor,
+  BpxRgbColor,
   BpxSoundSequence,
   timer_,
   u_,
@@ -32,8 +32,8 @@ export class Mission1 implements Mission {
   readonly missionName: string = "emerald islands";
   readonly bossName: string = "sentinel zx300";
 
-  readonly bgColor: BpxSolidColor = c.trueBlue;
-  readonly missionInfoColor: BpxSolidColor = c.darkOrange;
+  readonly bgColor: BpxRgbColor = c.trueBlue;
+  readonly missionInfoColor: BpxRgbColor = c.darkOrange;
 
   readonly scrollPerFrame: number = 0.5;
 

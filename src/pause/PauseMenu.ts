@@ -1,6 +1,7 @@
 import {
   b_,
-  BpxMappingColor,
+  BpxPixels,
+  BpxSpriteColorMapping,
   BpxVector2d,
   u_,
   v_,
@@ -14,7 +15,11 @@ import { PauseMenuEntry } from "./PauseMenuEntry";
 import { PauseMenuEntrySimple } from "./PauseMenuEntrySimple";
 import { PauseMenuEntryToggle } from "./PauseMenuEntryToggle";
 
-// TODO: pause menu: input tester
+// TODO: __NEW_BEETPX__ pause menu: input tester
+
+// TODO: __NEW_BEETPX__ pause menu: add full screen enter/exit if full screen supported
+
+// TODO: __NEW_BEETPX__ make it possible to open pause menu with an Esc or Enter alone, then choose options with up/down and pause menu button again
 
 export class PauseMenu {
   static isGamePaused: boolean = false;
@@ -27,7 +32,13 @@ export class PauseMenu {
   };
   private static _gapBetweenEntries = 6;
 
-  private static _arrowPixels = ["#__", "##_", "###", "##_", "#__"];
+  private static _arrowPixels = BpxPixels.from(`
+    #--
+    ##-
+    ###
+    ##-
+    #--
+  `);
 
   private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -134,11 +145,8 @@ export class PauseMenu {
   }
 
   private _dimContentBehind(): void {
-    b_.rectFilled(
-      v_0_0_,
-      g.viewportSize,
-      new BpxMappingColor(b_.takeCanvasSnapshot(), g.darkerColorMapping)
-    );
+    b_.takeCanvasSnapshot();
+    b_.rectFilled(v_0_0_, g.viewportSize, g.snapshotDarker);
   }
 
   private _drawMenuBox(xy: BpxVector2d, wh: BpxVector2d): void {
@@ -158,13 +166,17 @@ export class PauseMenu {
     entry.draw(xy);
 
     if (this._focusedEntry === entryIndex) {
-      b_.pixels(xy.sub(7, 0), c.white, PauseMenu._arrowPixels);
+      b_.pixels(PauseMenu._arrowPixels, xy.sub(7, 0), c.white);
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? this._xSprite
         : this._xSpritePressed;
-      const prevMapping = b_.mapSpriteColors([
-        { from: Pico8Colors.pink, to: c.darkerPurple },
-      ]);
+      const prevMapping = b_.setSpriteColorMapping(
+        BpxSpriteColorMapping.of((color) =>
+          color?.cssHex === Pico8Colors.pink.cssHex
+            ? c.darkerPurple
+            : g.baseSpriteMapping.getMappedColor(color)
+        )
+      );
       sprite.draw(
         xy
           .add(
@@ -173,7 +185,11 @@ export class PauseMenu {
           )
           .sub(g.gameAreaOffset)
       );
-      b_.mapSpriteColors(prevMapping);
+      b_.setSpriteColorMapping(prevMapping);
     }
   }
 }
+
+// TODO: confirm with menu button as well
+
+// TODO: rename back to title to restart game if outside mission?

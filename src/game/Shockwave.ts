@@ -1,11 +1,4 @@
-import {
-  b_,
-  BpxMappingColor,
-  BpxVector2d,
-  u_,
-  v_,
-  v_0_0_,
-} from "@beetpx/beetpx";
+import { b_, BpxVector2d, u_, v_, v_0_0_ } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { c, g } from "../globals";
 import { Movement } from "../movement/Movement";
@@ -57,7 +50,7 @@ export class Shockwave {
     rInner = u_.clamp(Shockwave._rMin, rInner, rOuter);
     if (rInner === rOuter) return;
 
-    const canvasSnapshotId = b_.takeCanvasSnapshot();
+    b_.takeCanvasSnapshot();
 
     for (let dy = -rOuter; dy <= rOuter; dy++) {
       const sy = this._center.y + dy;
@@ -70,12 +63,12 @@ export class Shockwave {
       b_.line(
         g.gameAreaOffset.add(v_(this._center.x - dxOuter + 1, sy)),
         v_(dxOuter - dxInner, 1),
-        new BpxMappingColor(canvasSnapshotId, g.negativeColorMapping)
+        g.snapshotNegative
       );
       b_.line(
         g.gameAreaOffset.add(v_(this._center.x + dxOuter - 1, sy)),
         v_(dxInner - dxOuter, 1),
-        new BpxMappingColor(canvasSnapshotId, g.negativeColorMapping)
+        g.snapshotNegative
       );
     }
   }

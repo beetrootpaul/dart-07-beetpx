@@ -14,7 +14,7 @@ export class PauseMenuEntrySimple implements PauseMenuEntry {
     this._text = text;
     this._onExecute = onExecute;
 
-    this.size = u_.measureText(text);
+    this.size = u_.measureText(text)[1];
   }
 
   execute() {

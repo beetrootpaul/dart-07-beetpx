@@ -4,9 +4,9 @@
 import {
   b_,
   BpxSprite,
+  BpxSpriteColorMapping,
   BpxVector2d,
   spr_,
-  transparent_,
   u_,
   v_,
 } from "@beetpx/beetpx";
@@ -148,9 +148,13 @@ export class Level {
     CurrentMission.m.levelBgDraw();
 
     if (this._phase === "main") {
-      const prevMapping = b_.mapSpriteColors([
-        { from: Pico8Colors.black, to: transparent_ },
-      ]);
+      const prevMapping = b_.setSpriteColorMapping(
+        BpxSpriteColorMapping.of((color) =>
+          color?.cssHex === Pico8Colors.black.cssHex
+            ? null
+            : g.baseSpriteMapping.getMappedColor(color)
+        )
+      );
 
       for (
         let distance = Math.floor(this._minVisibleDistance);
@@ -168,7 +172,7 @@ export class Level {
         }
       }
 
-      b_.mapSpriteColors(prevMapping);
+      b_.setSpriteColorMapping(prevMapping);
     }
   }
 

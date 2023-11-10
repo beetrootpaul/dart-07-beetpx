@@ -1,4 +1,4 @@
-import { b_, BpxEasing, BpxSolidColor, u_, v_ } from "@beetpx/beetpx";
+import { b_, BpxEasing, BpxRgbColor, u_, v_ } from "@beetpx/beetpx";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 import { Movement } from "../movement/Movement";
@@ -9,7 +9,7 @@ import { MovementToTarget } from "../movement/MovementToTarget";
 export class SlidingInfo {
   private readonly _text1: string | undefined;
   private readonly _text2: string;
-  private readonly _mainColor: BpxSolidColor;
+  private readonly _mainColor: BpxRgbColor;
   private readonly _movement: Movement;
   private _roundingFn: "ceil" | "floor" = "ceil";
 
@@ -20,7 +20,7 @@ export class SlidingInfo {
     slideInFrames: number;
     presentFrames: number;
     slideOutFrames: number;
-    mainColor: BpxSolidColor;
+    mainColor: BpxRgbColor;
   }) {
     this._text1 = params.text1;
     this._text2 = params.text2;
@@ -70,7 +70,7 @@ export class SlidingInfo {
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, xy.y - 17),
         CurrentMission.m.bgColor,
         this._mainColor,
-        [true, false]
+        { centerXy: [true, false] }
       );
     }
 
@@ -79,7 +79,7 @@ export class SlidingInfo {
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, xy.y - 8),
       CurrentMission.m.bgColor,
       this._mainColor,
-      [true, false]
+      { centerXy: [true, false] }
     );
 
     b_.line(xy, v_(g.gameAreaSize.x, 1), this._mainColor);

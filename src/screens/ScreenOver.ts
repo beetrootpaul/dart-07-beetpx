@@ -135,7 +135,7 @@ export class ScreenOver implements GameScreen {
         12
       ),
       v_(x, y),
-      v_(w, 1)
+      { scaleXy: v_(w, 1) }
     );
 
     // button text
@@ -162,7 +162,7 @@ export class ScreenOver implements GameScreen {
       this._isWin ? "you made it!" : "game over",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, 22),
       this._isWin ? c.blueGreen : c.red,
-      [true, false]
+      { centerXy: [true, false] }
     );
 
     // score
@@ -171,7 +171,7 @@ export class ScreenOver implements GameScreen {
       "your score",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY),
       c.white,
-      [true, false]
+      { centerXy: [true, false] }
     );
     this._game.score.draw(
       v_(52, scoreBaseY + 10),
@@ -184,7 +184,7 @@ export class ScreenOver implements GameScreen {
         "new high score!",
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY + 20),
         this._isWin ? c.peach : c.darkOrange,
-        [true, false]
+        { centerXy: [true, false] }
       );
     }
 

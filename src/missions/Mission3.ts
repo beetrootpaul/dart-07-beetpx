@@ -1,6 +1,6 @@
 import {
   b_,
-  BpxSolidColor,
+  BpxRgbColor,
   BpxSoundSequence,
   BpxVector2d,
   timer_,
@@ -24,8 +24,8 @@ export class Mission3 implements Mission {
   readonly missionName: string = "(wip) phoslar mine";
   readonly bossName: string = "? ? ?";
 
-  readonly bgColor: BpxSolidColor = c.darkerPurple;
-  readonly missionInfoColor: BpxSolidColor = c.darkGreen;
+  readonly bgColor: BpxRgbColor = c.darkerPurple;
+  readonly missionInfoColor: BpxRgbColor = c.darkGreen;
 
   readonly scrollPerFrame: number = 1;
 

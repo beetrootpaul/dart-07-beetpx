@@ -1,6 +1,6 @@
 import {
   b_,
-  BpxSolidColor,
+  BpxRgbColor,
   BpxSoundSequence,
   BpxVector2d,
   timer_,
@@ -24,8 +24,8 @@ export class Mission2 implements Mission {
   readonly missionName: string = "(wip) outpost in space";
   readonly bossName: string = "cargo guardian";
 
-  readonly bgColor: BpxSolidColor = c.darkerBlue;
-  readonly missionInfoColor: BpxSolidColor = c.lightGrey;
+  readonly bgColor: BpxRgbColor = c.darkerBlue;
+  readonly missionInfoColor: BpxRgbColor = c.lightGrey;
 
   readonly scrollPerFrame: number = 1;
 
@@ -45,7 +45,7 @@ export class Mission2 implements Mission {
 
   private _stars: Array<{
     xy: BpxVector2d;
-    color: BpxSolidColor;
+    color: BpxRgbColor;
     speed: number;
   }> = [];
 

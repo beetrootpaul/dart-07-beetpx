@@ -1,4 +1,4 @@
-import { b_, BpxSolidColor, BpxVector2d } from "@beetpx/beetpx";
+import { b_, BpxRgbColor, BpxVector2d } from "@beetpx/beetpx";
 
 export class Score {
   private static _valueLimit: number = 999_999;
@@ -30,8 +30,8 @@ export class Score {
 
   draw(
     xy: BpxVector2d,
-    digitColor: BpxSolidColor,
-    blankColor: BpxSolidColor,
+    digitColor: BpxRgbColor,
+    blankColor: BpxRgbColor,
     vertical: boolean
   ) {
     for (let i = 0; i < this._text.length; i++) {

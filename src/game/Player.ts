@@ -1,10 +1,9 @@
 import {
   b_,
-  BpxColorMapping,
+  BpxSpriteColorMapping,
   BpxTimer,
   BpxVector2d,
   timer_,
-  transparent_,
   v_,
 } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
@@ -184,31 +183,33 @@ export class Player {
   }
 
   draw(): void {
-    let prevMapping: BpxColorMapping | undefined;
+    const flash = BpxSpriteColorMapping.from([
+      [Pico8Colors.black, c.white],
+      [Pico8Colors.storm, c.darkerBlue],
+      [Pico8Colors.wine, c.white],
+      [Pico8Colors.moss, c.white],
+      [Pico8Colors.tan, c.white],
+      [Pico8Colors.slate, c.white],
+      [Pico8Colors.silver, c.white],
+      [Pico8Colors.white, c.white],
+      [Pico8Colors.ember, c.white],
+      [Pico8Colors.orange, c.white],
+      [Pico8Colors.lemon, null],
+      [Pico8Colors.lime, null],
+      [Pico8Colors.sky, c.white],
+      [Pico8Colors.dusk, c.white],
+      [Pico8Colors.pink, c.white],
+      [Pico8Colors.peach, c.white],
+    ]);
+
+    let prevMapping: BpxSpriteColorMapping | undefined;
     if (
       this._invincibleAfterDamageTimer &&
       this._invincibleAfterDamageTimer.framesLeft %
         (2 * Player._invincibilityFlashFrames) <
         Player._invincibilityFlashFrames
     ) {
-      prevMapping = b_.mapSpriteColors([
-        { from: Pico8Colors.black, to: c.white },
-        { from: Pico8Colors.storm, to: c.darkerBlue },
-        { from: Pico8Colors.wine, to: c.white },
-        { from: Pico8Colors.moss, to: c.white },
-        { from: Pico8Colors.tan, to: c.white },
-        { from: Pico8Colors.slate, to: c.white },
-        { from: Pico8Colors.silver, to: c.white },
-        { from: Pico8Colors.white, to: c.white },
-        { from: Pico8Colors.ember, to: c.white },
-        { from: Pico8Colors.orange, to: c.white },
-        { from: Pico8Colors.lemon, to: transparent_ },
-        { from: Pico8Colors.lime, to: transparent_ },
-        { from: Pico8Colors.sky, to: c.white },
-        { from: Pico8Colors.dusk, to: c.white },
-        { from: Pico8Colors.pink, to: c.white },
-        { from: Pico8Colors.peach, to: c.white },
-      ]);
+      prevMapping = b_.setSpriteColorMapping(flash);
     }
 
     this._shipSpriteCurrent.draw(this._xy);
@@ -216,7 +217,7 @@ export class Player {
     this._jetSprite?.draw(this._xy);
 
     if (prevMapping) {
-      b_.mapSpriteColors(prevMapping);
+      b_.setSpriteColorMapping(prevMapping);
     }
   }
 }

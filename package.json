@@ -23,13 +23,13 @@
     "syncAssets": "node ./scripts/syncAssets.js",
     "syncAssets:watch": "node ./scripts/syncAssets.js watch",
     "start": "npm run dev",
-    "dev": "beetpx dev",
+    "dev": "beetpx dev --open",
     "prod": "npm run cleanup && npm run typecheck && beetpx build && beetpx preview",
     "itch": "npm run cleanup && npm run typecheck && beetpx build && beetpx zip",
     "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "devDependencies": {
-    "@beetpx/beetpx": "git+ssh://git@github.com:beetrootpaul/beetpx#98d35e2da68d20e9602cd027d584f5f2db5906b1",
+    "@beetpx/beetpx": "git+ssh://git@github.com:beetrootpaul/beetpx#5bdee940a7a01a7be46153ef50b7e9ac5f59f9a7",
     "@jest/globals": "29.5.0",
     "husky": "8.0.3",
     "jest": "29.6.2",
