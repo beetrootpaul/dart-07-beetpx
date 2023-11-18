@@ -79,7 +79,7 @@ export class PauseMenu {
           }
         }
       ),
-      new PauseMenuEntrySimple("exit to title", () => {
+      new PauseMenuEntrySimple("restart game", () => {
         this._restartFadeOut = new Fade("out", { fadeFrames: 30 });
       }),
     ];
