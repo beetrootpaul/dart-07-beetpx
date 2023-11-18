@@ -23,9 +23,9 @@
     "syncAssets": "node ./scripts/syncAssets.js",
     "syncAssets:watch": "node ./scripts/syncAssets.js watch",
     "start": "npm run dev",
-    "dev": "beetpx dev --open",
-    "prod": "npm run cleanup && npm run typecheck && beetpx build && beetpx preview",
-    "itch": "npm run cleanup && npm run typecheck && beetpx build && beetpx zip",
+    "dev": "beetpx dev --open --htmlTitle \"[dev] Dart-07\" --htmlIcon ./assets/ship.png",
+    "prod": "npm run cleanup && npm run typecheck && beetpx build --htmlTitle Dart-07 --htmlIcon ./assets/ship.png && beetpx preview",
+    "itch": "npm run cleanup && npm run typecheck && beetpx build --htmlTitle Dart-07 --htmlIcon ./assets/ship.png && beetpx zip",
     "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "devDependencies": {
