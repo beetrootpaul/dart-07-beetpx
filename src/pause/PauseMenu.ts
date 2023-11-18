@@ -19,8 +19,6 @@ import { PauseMenuEntryToggle } from "./PauseMenuEntryToggle";
 
 // TODO: __NEW_BEETPX__ pause menu: add full screen enter/exit if full screen supported
 
-// TODO: __NEW_BEETPX__ make it possible to open pause menu with an Esc or Enter alone, then choose options with up/down and pause menu button again
-
 export class PauseMenu {
   static isGamePaused: boolean = false;
 

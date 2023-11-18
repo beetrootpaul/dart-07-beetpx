@@ -106,25 +106,20 @@ export class Player {
     return this._isDestroyed;
   }
 
-  setMovement(
-    left: boolean,
-    right: boolean,
-    up: boolean,
-    down: boolean,
-    fastMovement: boolean
-  ) {
-    this._shipSpriteCurrent = left
-      ? this._shipSpriteFlyingLeft
-      : right
-      ? this._shipSpriteFlyingRight
-      : this._shipSpriteNeutral;
+  setMovement(directionVector: BpxVector2d, fastMovement: boolean) {
+    this._shipSpriteCurrent =
+      directionVector.x < 0
+        ? this._shipSpriteFlyingLeft
+        : directionVector.x > 0
+        ? this._shipSpriteFlyingRight
+        : this._shipSpriteNeutral;
 
-    this._jetSprite = down ? null : this._jetSpriteVisible;
+    this._jetSprite = directionVector.y > 0 ? null : this._jetSpriteVisible;
 
     const speed = fastMovement ? 1.5 : 1;
     let diff = v_(
-      right ? speed : left ? -speed : 0,
-      down ? speed : up ? -speed : 0
+      directionVector.x > 0 ? speed : directionVector.x < 0 ? -speed : 0,
+      directionVector.y > 0 ? speed : directionVector.y < 0 ? -speed : 0
     );
     if (diff.x !== 0 && diff.y !== 0) {
       // normalization of diagonal speed

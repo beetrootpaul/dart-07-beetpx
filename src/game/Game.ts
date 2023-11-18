@@ -410,12 +410,8 @@ export class Game {
   }
 
   update(): void {
-    // TODO: __NEW_BEETPX__ use new API which returns a vector: areDirectionsPressedAsVector
     this._player?.setMovement(
-      b_.isPressed("left"),
-      b_.isPressed("right"),
-      b_.isPressed("up"),
-      b_.isPressed("down"),
+      b_.areDirectionsPressedAsVector(),
       this._fastMovement
     );
     if (b_.isPressed("a")) {
