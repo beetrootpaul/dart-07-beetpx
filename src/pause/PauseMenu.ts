@@ -62,6 +62,8 @@ export class PauseMenu {
 
   private _restartFadeOut: Fade | null = null;
 
+  private _lastProcessedFramed: number = -1;
+
   constructor() {
     this._entries = [
       new PauseMenuEntrySimple("continue", () => {
@@ -86,9 +88,14 @@ export class PauseMenu {
   }
 
   update(): void {
-    if (b_.wasJustPressed("a")) {
+    if (
+      b_.wasJustPressed("a") ||
+      (b_.frameNumber === this._lastProcessedFramed + 1 &&
+        b_.wasJustPressed("menu"))
+    ) {
       this._entries[this._focusedEntry]!.execute();
     }
+    this._lastProcessedFramed = b_.frameNumber;
 
     if (b_.wasJustPressed("up")) {
       this._focusedEntry =

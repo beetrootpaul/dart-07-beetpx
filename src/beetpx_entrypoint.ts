@@ -103,13 +103,9 @@ b_.init(
   b_.setOnUpdate(() => {
     debugGameInfo.update();
 
-    if (b_.wasJustPressed("menu")) {
-      PauseMenu.isGamePaused = !PauseMenu.isGamePaused;
-      if (PauseMenu.isGamePaused) {
-        b_.pauseAudio();
-      } else {
-        b_.resumeAudio();
-      }
+    if (!PauseMenu.isGamePaused && b_.wasJustPressed("menu")) {
+      PauseMenu.isGamePaused = true;
+      b_.pauseAudio();
     }
 
     b_.setCameraXy(v_0_0_);
