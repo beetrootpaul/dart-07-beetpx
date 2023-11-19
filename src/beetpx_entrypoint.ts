@@ -78,7 +78,7 @@ b_.init(
     ],
     jsons: [{ url: g.assets.levelsJson }],
   }
-).then(({ startGame }) => {
+).then(async ({ startGame }) => {
   b_.setOnStarted(() => {
     // Better set font first, because other constructors might rely
     //   on it when calculating text size.
@@ -135,13 +135,7 @@ b_.init(
     }
   });
 
-  startGame()
-    .then(() => {
-      console.log("Game started");
-    })
-    .catch((err) => {
-      console.error("Encountered an error when called startGame():", err);
-    });
+  await startGame();
 });
 
 // TODO: use versioned BeetPx from npm
