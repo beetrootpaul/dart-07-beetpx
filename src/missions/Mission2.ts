@@ -1,6 +1,6 @@
 import {
   b_,
-  BpxSolidColor,
+  BpxRgbColor,
   BpxSoundSequence,
   BpxVector2d,
   timer_,
@@ -24,8 +24,8 @@ export class Mission2 implements Mission {
   readonly missionName: string = "(wip) outpost in space";
   readonly bossName: string = "cargo guardian";
 
-  readonly bgColor: BpxSolidColor = c.darkerBlue;
-  readonly missionInfoColor: BpxSolidColor = c.lightGrey;
+  readonly bgColor: BpxRgbColor = c.darkerBlue;
+  readonly missionInfoColor: BpxRgbColor = c.lightGrey;
 
   readonly scrollPerFrame: number = 1;
 
@@ -45,7 +45,7 @@ export class Mission2 implements Mission {
 
   private _stars: Array<{
     xy: BpxVector2d;
-    color: BpxSolidColor;
+    color: BpxRgbColor;
     speed: number;
   }> = [];
 
@@ -121,8 +121,8 @@ export class Mission2 implements Mission {
                     baseSpeedXy: enemyMovement.speed,
                     angle: 1 / 16 + i / 8,
                     angledSpeed: 1,
-                  })(enemyMovement.xy)
-                )
+                  })(enemyMovement.xy),
+                ),
               );
             }
             return bullets;
@@ -171,7 +171,7 @@ export class Mission2 implements Mission {
                   baseSpeedXy: v_(0, bossMovement.speed.y),
                   angle: 0.25,
                   angledSpeed: 0.5,
-                })(bossMovement.xy.add(0, 3))
+                })(bossMovement.xy.add(0, 3)),
               ),
             ];
           },

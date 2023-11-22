@@ -11,7 +11,7 @@
     "url": "git+https://github.com/beetrootpaul/dart-07-beetpx.git"
   },
   "engines": {
-    "node": ">=14.18.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "prepare": "husky install",
@@ -23,20 +23,20 @@
     "syncAssets": "node ./scripts/syncAssets.js",
     "syncAssets:watch": "node ./scripts/syncAssets.js watch",
     "start": "npm run dev",
-    "dev": "beetpx dev",
-    "prod": "npm run cleanup && npm run typecheck && beetpx build && beetpx preview",
-    "itch": "npm run cleanup && npm run typecheck && beetpx build && beetpx zip",
+    "dev": "beetpx dev --open --htmlTitle \"[dev] Dart-07\" --htmlIcon ./assets/ship.png",
+    "prod": "npm run cleanup && npm run typecheck && beetpx build --htmlTitle Dart-07 --htmlIcon ./assets/ship.png && beetpx preview",
+    "itch": "npm run cleanup && npm run typecheck && beetpx build --htmlTitle Dart-07 --htmlIcon ./assets/ship.png && beetpx zip",
     "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "devDependencies": {
-    "@beetpx/beetpx": "0.19.0",
-    "@jest/globals": "29.5.0",
+    "@beetpx/beetpx": "git+ssh://git@github.com:beetrootpaul/beetpx#749a3e7e8a19fa47b08528c1adc5b99afd14b16d",
+    "@jest/globals": "29.7.0",
     "husky": "8.0.3",
-    "jest": "29.6.2",
-    "prettier": "2.8.8",
-    "prettier-plugin-organize-imports": "3.2.3",
-    "rimraf": "5.0.0",
+    "jest": "29.7.0",
+    "prettier": "3.1.0",
+    "prettier-plugin-organize-imports": "3.2.4",
+    "rimraf": "5.0.5",
     "ts-jest": "29.1.1",
-    "typescript": "5.0.4"
+    "typescript": "5.2.2"
   }
 }

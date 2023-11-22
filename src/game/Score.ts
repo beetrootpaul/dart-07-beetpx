@@ -1,4 +1,4 @@
-import { b_, BpxSolidColor, BpxVector2d } from "@beetpx/beetpx";
+import { b_, BpxRgbColor, BpxVector2d } from "@beetpx/beetpx";
 
 export class Score {
   private static _valueLimit: number = 999_999;
@@ -23,16 +23,16 @@ export class Score {
   add(scoreToAdd: number): void {
     this._value = Math.min(
       Score._valueLimit,
-      this._value + scoreToAdd * Score._multiplier
+      this._value + scoreToAdd * Score._multiplier,
     );
     this._text = this._as6DigitsTextWithExtraZero();
   }
 
   draw(
     xy: BpxVector2d,
-    digitColor: BpxSolidColor,
-    blankColor: BpxSolidColor,
-    vertical: boolean
+    digitColor: BpxRgbColor,
+    blankColor: BpxRgbColor,
+    vertical: boolean,
   ) {
     for (let i = 0; i < this._text.length; i++) {
       const digitXy = xy.add((vertical ? 0 : i) * 4, (vertical ? i : 0) * 6);

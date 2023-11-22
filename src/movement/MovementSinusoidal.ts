@@ -13,7 +13,7 @@ export class MovementSinusoidal implements Movement {
         startXy,
         params.speedY,
         params.ageDivisor,
-        params.magnitude
+        params.magnitude,
       );
 
   private readonly _startXy: BpxVector2d;
@@ -28,7 +28,7 @@ export class MovementSinusoidal implements Movement {
     startXy: BpxVector2d,
     speedY: number,
     ageDivisor: number,
-    magnitude: number
+    magnitude: number,
   ) {
     this._startXy = startXy;
     this._ageDivisor = ageDivisor;

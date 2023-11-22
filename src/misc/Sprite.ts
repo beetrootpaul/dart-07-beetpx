@@ -18,7 +18,7 @@ export abstract class Sprite {
         spriteH: number,
         spriteX: number,
         spriteY: number,
-        fromLeftTopCorner: boolean = false
+        fromLeftTopCorner: boolean = false,
       ): StaticSprite {
         return new StaticSprite(
           spritesheetUrl,
@@ -26,7 +26,7 @@ export abstract class Sprite {
           spriteH,
           spriteX,
           spriteY,
-          fromLeftTopCorner
+          fromLeftTopCorner,
         );
       },
       animated(
@@ -34,7 +34,7 @@ export abstract class Sprite {
         spriteH: number,
         spriteXs: number[],
         spriteY: number,
-        fromLeftTopCorner: boolean = false
+        fromLeftTopCorner: boolean = false,
       ): AnimatedSprite {
         return new AnimatedSprite(
           spritesheetUrl,
@@ -42,7 +42,7 @@ export abstract class Sprite {
           spriteH,
           spriteXs,
           spriteY,
-          fromLeftTopCorner
+          fromLeftTopCorner,
         );
       },
     };
@@ -64,7 +64,7 @@ export class StaticSprite implements Sprite {
     spriteH: number,
     spriteX: number,
     spriteY: number,
-    fromLeftTopCorner: boolean = false
+    fromLeftTopCorner: boolean = false,
   ) {
     this._sprite = spr_(spritesheetUrl)(spriteX, spriteY, spriteW, spriteH);
 
@@ -94,14 +94,14 @@ export class AnimatedSprite implements Sprite {
     spriteH: number,
     spriteXs: number[],
     spriteY: number,
-    fromLeftTopCorner: boolean = false
+    fromLeftTopCorner: boolean = false,
   ) {
     this._maxFrame = spriteXs.length;
 
     this._sprites = u_
       .range(this._maxFrame)
       .map((frame) =>
-        spr_(spritesheetUrl)(spriteXs[frame]!, spriteY, spriteW, spriteH)
+        spr_(spritesheetUrl)(spriteXs[frame]!, spriteY, spriteW, spriteH),
       );
 
     this._drawOffset = fromLeftTopCorner
@@ -116,7 +116,7 @@ export class AnimatedSprite implements Sprite {
   draw(xy: BpxVector2d): void {
     b_.sprite(
       this._sprites[this._frame]!,
-      xy.add(g.gameAreaOffset).add(this._drawOffset)
+      xy.add(g.gameAreaOffset).add(this._drawOffset),
     );
   }
 }

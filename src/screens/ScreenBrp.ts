@@ -1,4 +1,12 @@
-import { b_, BpxSprite, BpxTimer, spr_, timer_, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxSprite,
+  BpxSpriteColorMapping,
+  BpxTimer,
+  spr_,
+  timer_,
+  v_,
+} from "@beetpx/beetpx";
 import { c, g } from "../globals";
 import { Music } from "../misc/Music";
 import { Pico8Colors } from "../pico8/Pico8Color";
@@ -10,7 +18,7 @@ export class ScreenBrp implements GameScreen {
     99,
     114,
     29,
-    14
+    14,
   );
 
   private readonly _screenTimer: BpxTimer;
@@ -75,15 +83,19 @@ export class ScreenBrp implements GameScreen {
     }
 
     if (!this._fadeOutTimer.hasFinished) {
-      const prevMapping = b_.mapSpriteColors([
-        { from: Pico8Colors.lemon, to: logoColor },
-      ]);
+      const prevMapping = b_.setSpriteColorMapping(
+        BpxSpriteColorMapping.of((color) =>
+          color?.cssHex === Pico8Colors.lemon.cssHex
+            ? logoColor
+            : g.baseSpriteMapping.getMappedColor(color),
+        ),
+      );
       b_.sprite(
         this._brpLogo,
         g.viewportSize.sub(this._brpLogo.size().mul(2)).div(2),
-        v_(2, 2)
+        { scaleXy: v_(2, 2) },
       );
-      b_.mapSpriteColors(prevMapping);
+      b_.setSpriteColorMapping(prevMapping);
     }
   }
 }

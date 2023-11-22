@@ -10,7 +10,7 @@ export class Collisions {
       ignoreGameplayAreaCheck: boolean;
     } = {
       ignoreGameplayAreaCheck: false,
-    }
+    },
   ): boolean {
     cc1 = "collisionCircle" in cc1 ? cc1.collisionCircle : cc1;
     cc2 = "collisionCircle" in cc2 ? cc2.collisionCircle : cc2;
@@ -31,19 +31,19 @@ export class Collisions {
   }
 
   static isCollisionCircleNearlyOutsideTopEdgeOfGameplayArea(
-    collisionCircle: CollisionCircle
+    collisionCircle: CollisionCircle,
   ): boolean {
     return collisionCircle.center.y + collisionCircle.r < 3;
   }
 
   static debugDrawCollisionCircle(
-    cc: CollisionCircle | { collisionCircle: CollisionCircle }
+    cc: CollisionCircle | { collisionCircle: CollisionCircle },
   ): void {
     cc = "collisionCircle" in cc ? cc.collisionCircle : cc;
     b_.ellipse(
       g.gameAreaOffset.add(cc.center).sub(cc.r),
       v_(2, 2).mul(cc.r),
-      c.darkGreen
+      c.darkGreen,
     );
   }
 }

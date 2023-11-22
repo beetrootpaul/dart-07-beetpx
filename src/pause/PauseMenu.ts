@@ -1,6 +1,7 @@
 import {
   b_,
-  BpxMappingColor,
+  BpxPixels,
+  BpxSpriteColorMapping,
   BpxVector2d,
   u_,
   v_,
@@ -14,7 +15,9 @@ import { PauseMenuEntry } from "./PauseMenuEntry";
 import { PauseMenuEntrySimple } from "./PauseMenuEntrySimple";
 import { PauseMenuEntryToggle } from "./PauseMenuEntryToggle";
 
-// TODO: pause menu: input tester
+// TODO: __NEW_BEETPX__ pause menu: input tester
+
+// TODO: __NEW_BEETPX__ pause menu: add full screen enter/exit if full screen supported
 
 export class PauseMenu {
   static isGamePaused: boolean = false;
@@ -27,7 +30,13 @@ export class PauseMenu {
   };
   private static _gapBetweenEntries = 6;
 
-  private static _arrowPixels = ["#__", "##_", "###", "##_", "#__"];
+  private static _arrowPixels = BpxPixels.from(`
+    #--
+    ##-
+    ###
+    ##-
+    #--
+  `);
 
   private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -35,7 +44,7 @@ export class PauseMenu {
     6,
     56,
     0,
-    true
+    true,
   );
   private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -43,13 +52,15 @@ export class PauseMenu {
     6,
     56,
     6,
-    true
+    true,
   );
 
   private readonly _entries: PauseMenuEntry[];
   private _focusedEntry: number = 0;
 
   private _restartFadeOut: Fade | null = null;
+
+  private _lastProcessedFramed: number = -1;
 
   constructor() {
     this._entries = [
@@ -66,18 +77,23 @@ export class PauseMenu {
           } else {
             b_.muteAudio();
           }
-        }
+        },
       ),
-      new PauseMenuEntrySimple("exit to title", () => {
+      new PauseMenuEntrySimple("restart game", () => {
         this._restartFadeOut = new Fade("out", { fadeFrames: 30 });
       }),
     ];
   }
 
   update(): void {
-    if (b_.wasJustPressed("a")) {
+    if (
+      b_.wasJustPressed("a") ||
+      (b_.frameNumber === this._lastProcessedFramed + 1 &&
+        b_.wasJustPressed("menu"))
+    ) {
       this._entries[this._focusedEntry]!.execute();
     }
+    this._lastProcessedFramed = b_.frameNumber;
 
     if (b_.wasJustPressed("up")) {
       this._focusedEntry =
@@ -106,18 +122,18 @@ export class PauseMenu {
         v_(
           Math.max(
             whTotal.x,
-            PauseMenu._padding.left + entry.size.x + PauseMenu._padding.right
+            PauseMenu._padding.left + entry.size.x + PauseMenu._padding.right,
           ),
           whTotal.y +
             entry.size.y +
             (index < this._entries.length - 1
               ? PauseMenu._gapBetweenEntries
-              : 0)
+              : 0),
         ),
       v_(
         PauseMenu._padding.left + PauseMenu._padding.right,
-        PauseMenu._padding.top + PauseMenu._padding.bottom
-      )
+        PauseMenu._padding.top + PauseMenu._padding.bottom,
+      ),
     );
     // make sure the width is even, therefore the pause menu will be placed horizontally in the center
     wh = v_(wh.x % 2 ? wh.x + 1 : wh.x, wh.y);
@@ -134,11 +150,8 @@ export class PauseMenu {
   }
 
   private _dimContentBehind(): void {
-    b_.rectFilled(
-      v_0_0_,
-      g.viewportSize,
-      new BpxMappingColor(b_.takeCanvasSnapshot(), g.darkerColorMapping)
-    );
+    b_.takeCanvasSnapshot();
+    b_.rectFilled(v_0_0_, g.viewportSize, g.snapshotDarker);
   }
 
   private _drawMenuBox(xy: BpxVector2d, wh: BpxVector2d): void {
@@ -151,29 +164,37 @@ export class PauseMenu {
     entry: PauseMenuEntry,
     entryIndex: number,
     xy: BpxVector2d,
-    wh: BpxVector2d
+    wh: BpxVector2d,
   ): void {
     xy = xy.add(PauseMenu._padding.left);
 
     entry.draw(xy);
 
     if (this._focusedEntry === entryIndex) {
-      b_.pixels(xy.sub(7, 0), c.white, PauseMenu._arrowPixels);
+      b_.pixels(PauseMenu._arrowPixels, xy.sub(7, 0), c.white);
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? this._xSprite
         : this._xSpritePressed;
-      const prevMapping = b_.mapSpriteColors([
-        { from: Pico8Colors.pink, to: c.darkerPurple },
-      ]);
+      const prevMapping = b_.setSpriteColorMapping(
+        BpxSpriteColorMapping.of((color) =>
+          color?.cssHex === Pico8Colors.pink.cssHex
+            ? c.darkerPurple
+            : g.baseSpriteMapping.getMappedColor(color),
+        ),
+      );
       sprite.draw(
         xy
           .add(
             wh.x - PauseMenu._padding.left - PauseMenu._padding.right + 4,
-            -1
+            -1,
           )
-          .sub(g.gameAreaOffset)
+          .sub(g.gameAreaOffset),
       );
-      b_.mapSpriteColors(prevMapping);
+      b_.setSpriteColorMapping(prevMapping);
     }
   }
 }
+
+// TODO: confirm with menu button as well
+
+// TODO: rename back to title to restart game if outside mission?

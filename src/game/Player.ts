@@ -1,10 +1,9 @@
 import {
   b_,
-  BpxColorMapping,
+  BpxSpriteColorMapping,
   BpxTimer,
   BpxVector2d,
   timer_,
-  transparent_,
   v_,
 } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
@@ -33,21 +32,21 @@ export class Player {
     10,
     10,
     19,
-    0
+    0,
   );
   private readonly _shipSpriteFlyingLeft: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
     9,
-    0
+    0,
   );
   private readonly _shipSpriteFlyingRight: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
     29,
-    0
+    0,
   );
   private _shipSpriteCurrent: Sprite = this._shipSpriteNeutral;
 
@@ -56,7 +55,7 @@ export class Player {
     4,
     20,
     [0, 0, 0, 0, 4, 4, 4, 4],
-    9
+    9,
   );
   private _jetSprite: Sprite | null = null;
 
@@ -107,25 +106,20 @@ export class Player {
     return this._isDestroyed;
   }
 
-  setMovement(
-    left: boolean,
-    right: boolean,
-    up: boolean,
-    down: boolean,
-    fastMovement: boolean
-  ) {
-    this._shipSpriteCurrent = left
-      ? this._shipSpriteFlyingLeft
-      : right
-      ? this._shipSpriteFlyingRight
-      : this._shipSpriteNeutral;
+  setMovement(directionVector: BpxVector2d, fastMovement: boolean) {
+    this._shipSpriteCurrent =
+      directionVector.x < 0
+        ? this._shipSpriteFlyingLeft
+        : directionVector.x > 0
+          ? this._shipSpriteFlyingRight
+          : this._shipSpriteNeutral;
 
-    this._jetSprite = down ? null : this._jetSpriteVisible;
+    this._jetSprite = directionVector.y > 0 ? null : this._jetSpriteVisible;
 
     const speed = fastMovement ? 1.5 : 1;
     let diff = v_(
-      right ? speed : left ? -speed : 0,
-      down ? speed : up ? -speed : 0
+      directionVector.x > 0 ? speed : directionVector.x < 0 ? -speed : 0,
+      directionVector.y > 0 ? speed : directionVector.y < 0 ? -speed : 0,
     );
     if (diff.x !== 0 && diff.y !== 0) {
       // normalization of diagonal speed
@@ -135,7 +129,7 @@ export class Player {
       .add(diff)
       .clamp(
         Player._size.div(2).add(1),
-        g.gameAreaSize.sub(Player._size.div(2)).sub(1)
+        g.gameAreaSize.sub(Player._size.div(2)).sub(1),
       );
   }
 
@@ -143,15 +137,15 @@ export class Player {
     this._onBulletsSpawned.invokeIfReady(
       tripleShoot ? (fastShoot ? 10 : 16) : fastShoot ? 8 : 12,
       (tripleShoot ? this._createTripleBullet : this._createSingleBullet).bind(
-        this
-      )
+        this,
+      ),
     );
   }
 
   triggerShockwave(): void {
     this._onShockwaveTriggered.invokeIfReady(
       60,
-      this._createShockwave.bind(this)
+      this._createShockwave.bind(this),
     );
   }
 
@@ -162,7 +156,7 @@ export class Player {
   takeDamage(updatedHealth: number): void {
     if (updatedHealth > 0) {
       this._invincibleAfterDamageTimer = timer_(
-        5 * Player._invincibilityFlashFrames
+        5 * Player._invincibilityFlashFrames,
       );
       this._onDamaged();
     } else {
@@ -184,31 +178,33 @@ export class Player {
   }
 
   draw(): void {
-    let prevMapping: BpxColorMapping | undefined;
+    const flash = BpxSpriteColorMapping.from([
+      [Pico8Colors.black, c.white],
+      [Pico8Colors.storm, c.darkerBlue],
+      [Pico8Colors.wine, c.white],
+      [Pico8Colors.moss, c.white],
+      [Pico8Colors.tan, c.white],
+      [Pico8Colors.slate, c.white],
+      [Pico8Colors.silver, c.white],
+      [Pico8Colors.white, c.white],
+      [Pico8Colors.ember, c.white],
+      [Pico8Colors.orange, c.white],
+      [Pico8Colors.lemon, null],
+      [Pico8Colors.lime, null],
+      [Pico8Colors.sky, c.white],
+      [Pico8Colors.dusk, c.white],
+      [Pico8Colors.pink, c.white],
+      [Pico8Colors.peach, c.white],
+    ]);
+
+    let prevMapping: BpxSpriteColorMapping | undefined;
     if (
       this._invincibleAfterDamageTimer &&
       this._invincibleAfterDamageTimer.framesLeft %
         (2 * Player._invincibilityFlashFrames) <
         Player._invincibilityFlashFrames
     ) {
-      prevMapping = b_.mapSpriteColors([
-        { from: Pico8Colors.black, to: c.white },
-        { from: Pico8Colors.storm, to: c.darkerBlue },
-        { from: Pico8Colors.wine, to: c.white },
-        { from: Pico8Colors.moss, to: c.white },
-        { from: Pico8Colors.tan, to: c.white },
-        { from: Pico8Colors.slate, to: c.white },
-        { from: Pico8Colors.silver, to: c.white },
-        { from: Pico8Colors.white, to: c.white },
-        { from: Pico8Colors.ember, to: c.white },
-        { from: Pico8Colors.orange, to: c.white },
-        { from: Pico8Colors.lemon, to: transparent_ },
-        { from: Pico8Colors.lime, to: transparent_ },
-        { from: Pico8Colors.sky, to: c.white },
-        { from: Pico8Colors.dusk, to: c.white },
-        { from: Pico8Colors.pink, to: c.white },
-        { from: Pico8Colors.peach, to: c.white },
-      ]);
+      prevMapping = b_.setSpriteColorMapping(flash);
     }
 
     this._shipSpriteCurrent.draw(this._xy);
@@ -216,7 +212,7 @@ export class Player {
     this._jetSprite?.draw(this._xy);
 
     if (prevMapping) {
-      b_.mapSpriteColors(prevMapping);
+      b_.setSpriteColorMapping(prevMapping);
     }
   }
 }

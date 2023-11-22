@@ -17,6 +17,6 @@ module.exports = {
     ],
   },
   globals: {
-    __BEETPX_IS_PROD__: false,
+    BEETPX_IS_PROD: false,
   },
 };

@@ -18,15 +18,15 @@ export class Enemy {
   private readonly _onBulletsSpawned: (
     spawnBulletsFn: (
       enemyMovement: Movement,
-      playerCollisionCircle: CollisionCircle
+      playerCollisionCircle: CollisionCircle,
     ) => EnemyBullet[],
-    enemyMovement: Movement
+    enemyMovement: Movement,
   ) => void;
   private readonly _onDamaged: (mainCollisionCircle: CollisionCircle) => void;
   private readonly _onDestroyed: (
     mainCollisionCircle: CollisionCircle,
     scoreToAdd: number,
-    powerupType: string
+    powerupType: string,
   ) => void;
 
   private _health: number;
@@ -39,15 +39,15 @@ export class Enemy {
     onBulletsSpawned: (
       spawnBulletsFn: (
         enemyMovement: Movement,
-        playerCollisionCircle: CollisionCircle
+        playerCollisionCircle: CollisionCircle,
       ) => EnemyBullet[],
-      enemyMovement: Movement
+      enemyMovement: Movement,
     ) => void;
     onDamaged: (mainCollisionCircle: CollisionCircle) => void;
     onDestroyed: (
       mainCollisionCircle: CollisionCircle,
       scoreToAdd: number,
-      powerupType: string
+      powerupType: string,
     ) => void;
   }) {
     this._properties = params.properties;
@@ -85,7 +85,7 @@ export class Enemy {
       this._onDestroyed(
         mainCollisionCircle,
         this._properties.score,
-        powerupType
+        powerupType,
       );
     }
   }
@@ -107,7 +107,7 @@ export class Enemy {
           for (const cc of this.collisionCircles) {
             if (
               !Collisions.isCollisionCircleNearlyOutsideTopEdgeOfGameplayArea(
-                cc
+                cc,
               )
             ) {
               canSpawnBullets ||= true;
@@ -116,7 +116,7 @@ export class Enemy {
           if (canSpawnBullets) {
             this._onBulletsSpawned(
               this._properties.spawnBullets,
-              this._movement
+              this._movement,
             );
           }
         }

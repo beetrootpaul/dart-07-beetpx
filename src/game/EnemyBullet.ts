@@ -21,7 +21,7 @@ export class EnemyBullet {
   private constructor(
     sprite: Sprite,
     collisionCircleR: number,
-    movement: Movement
+    movement: Movement,
   ) {
     this._sprite = sprite;
     this._collisionCircleR = collisionCircleR;

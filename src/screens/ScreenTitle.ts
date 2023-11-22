@@ -1,10 +1,10 @@
 import {
   b_,
-  BpxSolidColor,
+  BpxRgbColor,
   BpxSprite,
+  BpxSpriteColorMapping,
   BpxVector2d,
   spr_,
-  transparent_,
   u_,
   v_,
 } from "@beetpx/beetpx";
@@ -91,7 +91,7 @@ export class ScreenTitle implements GameScreen {
     99,
     114,
     29,
-    14
+    14,
   );
   private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -99,7 +99,7 @@ export class ScreenTitle implements GameScreen {
     6,
     56,
     0,
-    true
+    true,
   );
   private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -107,7 +107,7 @@ export class ScreenTitle implements GameScreen {
     6,
     56,
     6,
-    true
+    true,
   );
 
   private readonly _fadeIn: Fade | null;
@@ -116,7 +116,7 @@ export class ScreenTitle implements GameScreen {
 
   private _stars: Array<{
     xy: BpxVector2d;
-    color: BpxSolidColor;
+    color: BpxRgbColor;
     speed: number;
   }> = [];
 
@@ -132,7 +132,7 @@ export class ScreenTitle implements GameScreen {
       : null;
 
     this._highScore = new Score(
-      b_.loadPersistedState<PersistedState>()?.highScore ?? 0
+      b_.loadPersistedState<PersistedState>()?.highScore ?? 0,
     );
 
     for (let y = 0; y < g.viewportSize.y; y++) {
@@ -188,9 +188,13 @@ export class ScreenTitle implements GameScreen {
       ? this._bgCoverTiles
       : this._bgTiles;
 
-    const prevMapping = b_.mapSpriteColors([
-      { from: Pico8Colors.black, to: transparent_ },
-    ]);
+    const prevMapping = b_.setSpriteColorMapping(
+      BpxSpriteColorMapping.of((color) =>
+        color?.cssHex === Pico8Colors.black.cssHex
+          ? null
+          : g.baseSpriteMapping.getMappedColor(color),
+      ),
+    );
 
     tiles.forEach((tilesRow, rowIndex) => {
       tilesRow.forEach((tile, colIndex) => {
@@ -200,15 +204,15 @@ export class ScreenTitle implements GameScreen {
               tile.x * g.tileSize.x,
               tile.y * g.tileSize.y,
               g.tileSize.x,
-              g.tileSize.y
+              g.tileSize.y,
             ),
-            g.tileSize.mul(colIndex, rowIndex)
+            g.tileSize.mul(colIndex, rowIndex),
           );
         }
       });
     });
 
-    b_.mapSpriteColors(prevMapping);
+    b_.setSpriteColorMapping(prevMapping);
   }
 
   private _drawVersion(baseY: number): void {
@@ -216,27 +220,31 @@ export class ScreenTitle implements GameScreen {
       g.gameVersion,
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
       c.mauve,
-      [true, false]
+      { centerXy: [true, false] },
     );
   }
 
   private _drawTitle(baseY: number): void {
-    const prevMapping = b_.mapSpriteColors([
-      { from: Pico8Colors.black, to: transparent_ },
-    ]);
+    const prevMapping = b_.setSpriteColorMapping(
+      BpxSpriteColorMapping.of((color) =>
+        color?.cssHex === Pico8Colors.black.cssHex
+          ? null
+          : g.baseSpriteMapping.getMappedColor(color),
+      ),
+    );
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(96, 32, 32, 26),
-      v_((g.viewportSize.x - 96) / 2, baseY)
+      v_((g.viewportSize.x - 96) / 2, baseY),
     );
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(96, 58, 32, 26),
-      v_((g.viewportSize.x - 96) / 2 + 32, baseY)
+      v_((g.viewportSize.x - 96) / 2 + 32, baseY),
     );
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(96, 84, 32, 26),
-      v_((g.viewportSize.x - 96) / 2 + 64, baseY)
+      v_((g.viewportSize.x - 96) / 2 + 64, baseY),
     );
-    b_.mapSpriteColors(prevMapping);
+    b_.setSpriteColorMapping(prevMapping);
   }
 
   private _drawHighScore(baseY: number): void {
@@ -244,7 +252,7 @@ export class ScreenTitle implements GameScreen {
       "high score",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
       c.lightGrey,
-      [true, false]
+      { centerXy: [true, false] },
     );
     this._highScore.draw(v_(52, baseY + 10), c.white, c.mauve, false);
   }
@@ -254,13 +262,13 @@ export class ScreenTitle implements GameScreen {
     w: number,
     baseX: number,
     baseY: number,
-    selected: boolean
+    selected: boolean,
   ): void {
     // button shape
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
       v_(baseX, baseY),
-      v_(w, 1)
+      { scaleXy: v_(w, 1) },
     );
 
     // button text
@@ -286,22 +294,27 @@ export class ScreenTitle implements GameScreen {
 
     if (ScreenTitle._gameCoverMode) {
       // BRP
-      const prevMapping = b_.mapSpriteColors([
-        { from: Pico8Colors.black, to: transparent_ },
-        { from: Pico8Colors.lemon, to: c.mauve },
-      ]);
+      const prevMapping = b_.setSpriteColorMapping(
+        BpxSpriteColorMapping.of((color) =>
+          color?.cssHex === Pico8Colors.black.cssHex
+            ? null
+            : color?.cssHex === Pico8Colors.lemon.cssHex
+              ? c.mauve
+              : g.baseSpriteMapping.getMappedColor(color),
+        ),
+      );
       b_.sprite(
         this._brpLogo,
         v_((g.viewportSize.x - this._brpLogo.size().x * 2) / 2, 6),
-        v_(2, 2)
+        { scaleXy: v_(2, 2) },
       );
-      b_.mapSpriteColors(prevMapping);
+      b_.setSpriteColorMapping(prevMapping);
 
       this._drawTitle(55);
 
       // ship
       new StaticSprite(g.assets.mainSpritesheetUrl, 10, 10, 18, 0).draw(
-        v_(g.gameAreaSize.x / 2, 110)
+        v_(g.gameAreaSize.x / 2, 110),
       );
     } else {
       this._drawVersion(1);
@@ -312,14 +325,14 @@ export class ScreenTitle implements GameScreen {
         98,
         15,
         82,
-        ScreenTitle._playSelected && !PauseMenu.isGamePaused
+        ScreenTitle._playSelected && !PauseMenu.isGamePaused,
       );
       this._drawButton(
         "controls",
         98,
         15,
         104,
-        !ScreenTitle._playSelected && !PauseMenu.isGamePaused
+        !ScreenTitle._playSelected && !PauseMenu.isGamePaused,
       );
     }
 

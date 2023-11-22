@@ -18,7 +18,7 @@ export class ScreenOver implements GameScreen {
     6,
     56,
     0,
-    true
+    true,
   );
   private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -26,7 +26,7 @@ export class ScreenOver implements GameScreen {
     6,
     56,
     6,
-    true
+    true,
   );
   private readonly _xSpriteWin: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -34,7 +34,7 @@ export class ScreenOver implements GameScreen {
     6,
     56,
     12,
-    true
+    true,
   );
   private readonly _xSpritePressedWin: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -42,7 +42,7 @@ export class ScreenOver implements GameScreen {
     6,
     56,
     18,
-    true
+    true,
   );
 
   private readonly _game: Game;
@@ -132,10 +132,10 @@ export class ScreenOver implements GameScreen {
         selected ? (this._isWin ? 37 : 35) : 36,
         12,
         1,
-        12
+        12,
       ),
       v_(x, y),
-      v_(w, 1)
+      { scaleXy: v_(w, 1) },
     );
 
     // button text
@@ -162,7 +162,7 @@ export class ScreenOver implements GameScreen {
       this._isWin ? "you made it!" : "game over",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, 22),
       this._isWin ? c.blueGreen : c.red,
-      [true, false]
+      { centerXy: [true, false] },
     );
 
     // score
@@ -171,20 +171,20 @@ export class ScreenOver implements GameScreen {
       "your score",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY),
       c.white,
-      [true, false]
+      { centerXy: [true, false] },
     );
     this._game.score.draw(
       v_(52, scoreBaseY + 10),
       c.white,
       this._isWin ? c.blueGreen : c.mauve,
-      false
+      false,
     );
     if (this._gotHighScore) {
       b_.print(
         "new high score!",
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY + 20),
         this._isWin ? c.peach : c.darkOrange,
-        [true, false]
+        { centerXy: [true, false] },
       );
     }
 
@@ -193,13 +193,13 @@ export class ScreenOver implements GameScreen {
       this._drawButton(
         `try mission ${CurrentMission.current} again`,
         81,
-        this._retry && !PauseMenu.isGamePaused
+        this._retry && !PauseMenu.isGamePaused,
       );
     }
     this._drawButton(
       "go to title screen",
       this._isWin ? 85 : 103,
-      (!this._retry || this._isWin) && !PauseMenu.isGamePaused
+      (!this._retry || this._isWin) && !PauseMenu.isGamePaused,
     );
 
     this._fadeIn.draw();

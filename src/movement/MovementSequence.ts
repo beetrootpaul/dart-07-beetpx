@@ -21,7 +21,7 @@ export class MovementSequence implements Movement {
   private constructor(
     startXy: BpxVector2d,
     looped: boolean,
-    sequence: MovementFactory[]
+    sequence: MovementFactory[],
   ) {
     this._looped = looped;
     this._sequence = sequence.length > 0 ? sequence : [MovementFixed.of({})];
@@ -52,12 +52,12 @@ export class MovementSequence implements Movement {
       if (this._sequenceIndex < this._sequence.length - 1) {
         this._sequenceIndex += 1;
         this._currentSubMovement = this._sequence[this._sequenceIndex]!(
-          this._currentSubMovement.xy
+          this._currentSubMovement.xy,
         );
       } else if (this._looped) {
         this._sequenceIndex = 0;
         this._currentSubMovement = this._sequence[this._sequenceIndex]!(
-          this._currentSubMovement.xy
+          this._currentSubMovement.xy,
         );
       }
     }

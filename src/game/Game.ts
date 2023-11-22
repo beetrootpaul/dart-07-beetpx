@@ -79,7 +79,7 @@ export class Game {
     this._tripleShoot = params.tripleShoot;
 
     this._level = new Level(
-      new LevelDescriptor(b_.getJsonAsset(g.assets.levelsJson).json)
+      new LevelDescriptor(b_.getJsonAsset(g.assets.levelsJson).json),
     );
 
     this._player = new Player({
@@ -88,7 +88,7 @@ export class Game {
         b_.playSoundOnce(
           this._tripleShoot
             ? g.assets.sfxPlayerTripleShoot
-            : g.assets.sfxPlayerShoot
+            : g.assets.sfxPlayerShoot,
         );
         this._playerBullets.push(...bullets);
       },
@@ -112,7 +112,7 @@ export class Game {
             startXy: playerCc.center,
             magnitude: 3 * playerCc.r,
             waitFrames: 12 + Math.random() * 8,
-          })
+          }),
         );
       },
     });
@@ -162,7 +162,7 @@ export class Game {
       this._floats.push(new Float({ startXy: xy, score: 10 }));
     }
     b_.playSoundOnce(
-      hasEffect ? g.assets.sfxPowerupPicked : g.assets.sfxPowerupNoEffect
+      hasEffect ? g.assets.sfxPowerupPicked : g.assets.sfxPowerupNoEffect,
     );
   }
 
@@ -307,7 +307,7 @@ export class Game {
       onBulletsSpawned: (spawnBulletsFn, bossMovement) => {
         if (this._player) {
           this._enemyBullets.push(
-            ...spawnBulletsFn(bossMovement, this._player.collisionCircle)
+            ...spawnBulletsFn(bossMovement, this._player.collisionCircle),
           );
         }
       },
@@ -319,12 +319,15 @@ export class Game {
 
         this.score.add(scoreToAdd);
         this._floats.push(
-          new Float({ startXy: collisionCircles[0]!.center, score: scoreToAdd })
+          new Float({
+            startXy: collisionCircles[0]!.center,
+            score: scoreToAdd,
+          }),
         );
 
         for (const cc of collisionCircles) {
           this._explosions.push(
-            new Explosion({ startXy: cc.center, magnitude: 0.75 * cc.r })
+            new Explosion({ startXy: cc.center, magnitude: 0.75 * cc.r }),
           );
         }
       },
@@ -333,7 +336,10 @@ export class Game {
 
         this.score.add(scoreToAdd);
         this._floats.push(
-          new Float({ startXy: collisionCircles[0]!.center, score: scoreToAdd })
+          new Float({
+            startXy: collisionCircles[0]!.center,
+            score: scoreToAdd,
+          }),
         );
 
         for (const cc of collisionCircles) {
@@ -364,7 +370,7 @@ export class Game {
               startXy: cc.center,
               magnitude: 5 * cc.r,
               waitFrames: 50 + Math.random() * 6,
-            })
+            }),
           );
         }
       },
@@ -411,11 +417,8 @@ export class Game {
 
   update(): void {
     this._player?.setMovement(
-      b_.isPressed("left"),
-      b_.isPressed("right"),
-      b_.isPressed("up"),
-      b_.isPressed("down"),
-      this._fastMovement
+      b_.areDirectionsPressedAsVector(),
+      this._fastMovement,
     );
     if (b_.isPressed("a")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);
@@ -450,7 +453,7 @@ export class Game {
           onBulletsSpawned: (spawnBulletsFn, enemyMovement) => {
             if (this._player) {
               this._enemyBullets.push(
-                ...spawnBulletsFn(enemyMovement, this._player.collisionCircle)
+                ...spawnBulletsFn(enemyMovement, this._player.collisionCircle),
               );
             }
           },
@@ -460,7 +463,7 @@ export class Game {
               new Explosion({
                 startXy: mainCollisionCircle.center,
                 magnitude: 0.5 * mainCollisionCircle.r,
-              })
+              }),
             );
           },
           onDestroyed: (mainCollisionCircle, scoreToAdd, powerupType) => {
@@ -470,25 +473,25 @@ export class Game {
               new Float({
                 startXy: mainCollisionCircle.center,
                 score: scoreToAdd,
-              })
+              }),
             );
             this._explosions.push(
               new Explosion({
                 startXy: mainCollisionCircle.center,
                 magnitude: 2.5 * mainCollisionCircle.r,
-              })
+              }),
             );
             const powerup = Powerup.for(
               powerupType,
               this._level.syncWithLevelScrollFractionalPart(
-                mainCollisionCircle.center
-              )
+                mainCollisionCircle.center,
+              ),
             );
             if (powerup) {
               this._powerups.push(powerup);
             }
           },
-        })
+        }),
       );
     }
 
@@ -496,8 +499,8 @@ export class Game {
       // subtracting 1 here makes the last factor always equal to 0, which makes camera reset to its neutral position
       // const factor = this._cameraShakeTimer.framesLeft - 1;
       const factor = this._cameraShakeTimer.framesLeft - 1;
-      b_.setCameraOffset(
-        v_((Math.random() - 0.5) * factor, (Math.random() - 0.5) * factor)
+      b_.setCameraXy(
+        v_((Math.random() - 0.5) * factor, (Math.random() - 0.5) * factor),
       );
     }
 
@@ -515,7 +518,7 @@ export class Game {
       "f:",
       this._floats.length,
       "s:",
-      this._shockwaves.length
+      this._shockwaves.length,
     );
   }
 

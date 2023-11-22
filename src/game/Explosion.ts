@@ -1,7 +1,7 @@
 import {
   b_,
-  BpxCompositeColor,
-  BpxFillPattern,
+  BpxPattern,
+  BpxPatternColors,
   BpxTimer,
   BpxVector2d,
   timer_,
@@ -43,7 +43,7 @@ export class Explosion {
     this._particles = u_.range(9).map(() => ({
       angle: 0.75 + 0.5 * randNegPos05(),
       xy: params.startXy.add(
-        v_(randNegPos05(), randNegPos05()).mul(params.magnitude)
+        v_(randNegPos05(), randNegPos05()).mul(params.magnitude),
       ),
       r: params.magnitude / 2 + Math.random() * (params.magnitude / 2),
     }));
@@ -73,27 +73,34 @@ export class Explosion {
 
   draw(): void {
     if (this._waitTimer.hasFinished) {
-      b_.setFillPattern(BpxFillPattern.of(0xa5a5));
+      b_.setPattern(
+        BpxPattern.from(`
+          -#-#
+          #-#-
+          -#-#
+          #-#-
+        `),
+      );
       for (const p of this._particles) {
         if (p.r > 0) {
-          let color = new BpxCompositeColor(c.darkOrange, c.red);
+          let color = BpxPatternColors.of(c.darkOrange, c.red);
           if (p.r < this._magnitude * 0.2) {
-            color = new BpxCompositeColor(c.lavender, c.mauve);
+            color = BpxPatternColors.of(c.lavender, c.mauve);
           } else if (p.r < this._magnitude * 0.4) {
-            color = new BpxCompositeColor(c.lightGrey, c.lavender);
+            color = BpxPatternColors.of(c.lightGrey, c.lavender);
           } else if (p.r < this._magnitude * 0.6) {
-            color = new BpxCompositeColor(c.lightGrey, c.peach);
+            color = BpxPatternColors.of(c.lightGrey, c.peach);
           } else if (p.r < this._magnitude * 0.8) {
-            color = new BpxCompositeColor(c.peach, c.darkOrange);
+            color = BpxPatternColors.of(c.peach, c.darkOrange);
           }
           b_.ellipseFilled(
             g.gameAreaOffset.add(p.xy).sub(p.r),
             v_(2, 2).mul(p.r),
-            color
+            color,
           );
         }
       }
-      b_.setFillPattern(BpxFillPattern.primaryOnly);
+      b_.setPattern(BpxPattern.primaryOnly);
     }
   }
 }

@@ -11,7 +11,7 @@ function hudSprite(
   spriteW: number,
   spriteH: number,
   spriteX: number,
-  spriteY: number
+  spriteY: number,
 ): Sprite {
   return new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -19,7 +19,7 @@ function hudSprite(
     spriteH,
     spriteX,
     spriteY,
-    true
+    true,
   );
 }
 
@@ -74,19 +74,19 @@ export class Hud {
     b_.rectFilled(
       v_(0, 0).sub(Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
-      c.black
+      c.black,
     );
     b_.rectFilled(
       g.viewportSize.sub(Hud._barSize).sub(0, Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
-      c.black
+      c.black,
     );
     if (b_.debug) {
       b_.rectFilled(v_(0, 0), Hud._barSize, c.blueGreen);
       b_.rectFilled(
         g.viewportSize.sub(Hud._barSize),
         Hud._barSize,
-        c.blueGreen
+        c.blueGreen,
       );
     }
 
@@ -113,7 +113,7 @@ export class Hud {
     const missionProgressX = g.gameAreaOffset.x + xy.x + 5;
     b_.line(v_(missionProgressX, 4), v_(1, missionProgressH), c.lavender);
     this._shipIndicator.draw(
-      xy.sub(-4, 77 + game.missionProgressFraction * (missionProgressH - 3))
+      xy.sub(-4, 77 + game.missionProgressFraction * (missionProgressH - 3)),
     );
 
     //
@@ -143,9 +143,9 @@ export class Hud {
     (["fastMovement", "fastShoot", "tripleShoot"] as const).forEach(
       (prop, i) => {
         this._powerups[prop][game[prop] ? "on" : "off"].draw(
-          v_(xy.x - 1, 46 + 6 * i)
+          v_(xy.x - 1, 46 + 6 * i),
         );
-      }
+      },
     );
 
     //
@@ -156,21 +156,21 @@ export class Hud {
       const bossHealthBarMargin = 2;
       const bossHealthW = g.gameAreaSize.x - 2 * bossHealthBarMargin - 4;
       this._bossHealthBarStart.draw(
-        v_(bossHealthBarMargin, bossHealthBarMargin)
+        v_(bossHealthBarMargin, bossHealthBarMargin),
       );
       this._bossHealthBarEnd.draw(
-        v_(g.gameAreaSize.x - bossHealthBarMargin - 4, bossHealthBarMargin)
+        v_(g.gameAreaSize.x - bossHealthBarMargin - 4, bossHealthBarMargin),
       );
       b_.line(
         g.gameAreaOffset.add(bossHealthBarMargin).add(2, 2),
         v_(bossHealthW, 1),
-        c.mauve
+        c.mauve,
       );
       if (bossHealthFraction > 0) {
         b_.line(
           g.gameAreaOffset.add(bossHealthBarMargin).add(2, 1),
           v_(bossHealthFraction * bossHealthW, 1),
-          c.red
+          c.red,
         );
       }
     }

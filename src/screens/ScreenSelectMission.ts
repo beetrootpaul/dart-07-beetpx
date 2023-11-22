@@ -20,14 +20,14 @@ export class ScreenSelectMission implements GameScreen {
     10,
     10,
     19,
-    0
+    0,
   );
   private readonly _jetSprite: Sprite = new AnimatedSprite(
     g.assets.mainSpritesheetUrl,
     4,
     20,
     [0, 0, 0, 0, 4, 4, 4, 4],
-    9
+    9,
   );
   private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -35,7 +35,7 @@ export class ScreenSelectMission implements GameScreen {
     6,
     56,
     0,
-    true
+    true,
   );
   private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -43,7 +43,7 @@ export class ScreenSelectMission implements GameScreen {
     6,
     56,
     6,
-    true
+    true,
   );
 
   private _shipMovement: Movement | null = null;
@@ -78,7 +78,7 @@ export class ScreenSelectMission implements GameScreen {
 
   private _initShipMovement(): void {
     const [buttonXy, buttonWh] = this._missionButtonXyWh(
-      ScreenSelectMission._selectedMission
+      ScreenSelectMission._selectedMission,
     );
     this._shipMovement = MovementToTarget.of({
       targetY: buttonXy.sub(0, 10).y,
@@ -140,7 +140,7 @@ export class ScreenSelectMission implements GameScreen {
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 38 : 39, 12, 1, 19),
       buttonXy1.sub(1),
-      v_(buttonWh.x + 2, 1)
+      { scaleXy: v_(buttonWh.x + 2, 1) },
     );
 
     // draw level sample
@@ -150,9 +150,9 @@ export class ScreenSelectMission implements GameScreen {
         0,
         selected ? sy : sy - 48,
         buttonWh.x,
-        buttonWh.y
+        buttonWh.y,
       ),
-      buttonXy1
+      buttonXy1,
     );
 
     if (mission > 1) {
@@ -162,7 +162,7 @@ export class ScreenSelectMission implements GameScreen {
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, buttonXy1.y + 2),
         selected ? c.white : c.lightGrey,
         selected ? c.darkOrange : c.lavender,
-        [true, false]
+        { centerXy: [true, false] },
       );
     }
 
@@ -170,7 +170,7 @@ export class ScreenSelectMission implements GameScreen {
     b_.print(
       `mission ${mission}`,
       buttonXy1.add(0, buttonWh.y + 4),
-      selected ? c.white : c.lavender
+      selected ? c.white : c.lavender,
     );
 
     if (selected) {
@@ -193,7 +193,7 @@ export class ScreenSelectMission implements GameScreen {
     b_.sprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
       buttonXy1.sub(1),
-      v_(buttonWh.x + 2, 1)
+      { scaleXy: v_(buttonWh.x + 2, 1) },
     );
 
     // button text
@@ -205,14 +205,14 @@ export class ScreenSelectMission implements GameScreen {
         ? this._xSprite
         : this._xSpritePressed;
       sprite.draw(
-        buttonXy1.add(buttonWh.x, 0).add(-16, 13).sub(g.gameAreaOffset)
+        buttonXy1.add(buttonWh.x, 0).add(-16, 13).sub(g.gameAreaOffset),
       );
     }
   }
 
   private _drawShip(): void {
     const [buttonXy, buttonWh] = this._missionButtonXyWh(
-      ScreenSelectMission._selectedMission
+      ScreenSelectMission._selectedMission,
     );
     b_.setClippingRegion(buttonXy, buttonWh);
 

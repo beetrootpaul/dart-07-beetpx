@@ -56,7 +56,7 @@ export class Powerup {
           9,
           8,
           18,
-          16
+          16,
         );
         break;
       }
@@ -66,7 +66,7 @@ export class Powerup {
           9,
           8,
           9,
-          16
+          16,
         );
         break;
       }
@@ -76,7 +76,7 @@ export class Powerup {
           9,
           8,
           18,
-          24
+          24,
         );
         break;
       }
@@ -86,7 +86,7 @@ export class Powerup {
           9,
           8,
           9,
-          24
+          24,
         );
         break;
       }
@@ -96,7 +96,7 @@ export class Powerup {
           9,
           8,
           27,
-          24
+          24,
         );
         break;
       }

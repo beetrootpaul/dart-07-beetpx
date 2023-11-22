@@ -11,7 +11,7 @@ export class PlayerBullet {
     4,
     5,
     9,
-    11
+    11,
   );
 
   private readonly _movement: Movement;
