@@ -23,7 +23,7 @@ export class Score {
   add(scoreToAdd: number): void {
     this._value = Math.min(
       Score._valueLimit,
-      this._value + scoreToAdd * Score._multiplier
+      this._value + scoreToAdd * Score._multiplier,
     );
     this._text = this._as6DigitsTextWithExtraZero();
   }
@@ -32,7 +32,7 @@ export class Score {
     xy: BpxVector2d,
     digitColor: BpxRgbColor,
     blankColor: BpxRgbColor,
-    vertical: boolean
+    vertical: boolean,
   ) {
     for (let i = 0; i < this._text.length; i++) {
       const digitXy = xy.add((vertical ? 0 : i) * 4, (vertical ? i : 0) * 6);

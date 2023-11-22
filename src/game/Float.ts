@@ -30,7 +30,7 @@ export class Float {
       this._scoreText,
       g.gameAreaOffset.add(this._movement.xy),
       c.white,
-      { centerXy: [true, false] }
+      { centerXy: [true, false] },
     );
   }
 }

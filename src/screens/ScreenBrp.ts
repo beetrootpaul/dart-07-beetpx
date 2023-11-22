@@ -18,7 +18,7 @@ export class ScreenBrp implements GameScreen {
     99,
     114,
     29,
-    14
+    14,
   );
 
   private readonly _screenTimer: BpxTimer;
@@ -87,13 +87,13 @@ export class ScreenBrp implements GameScreen {
         BpxSpriteColorMapping.of((color) =>
           color?.cssHex === Pico8Colors.lemon.cssHex
             ? logoColor
-            : g.baseSpriteMapping.getMappedColor(color)
-        )
+            : g.baseSpriteMapping.getMappedColor(color),
+        ),
       );
       b_.sprite(
         this._brpLogo,
         g.viewportSize.sub(this._brpLogo.size().mul(2)).div(2),
-        { scaleXy: v_(2, 2) }
+        { scaleXy: v_(2, 2) },
       );
       b_.setSpriteColorMapping(prevMapping);
     }

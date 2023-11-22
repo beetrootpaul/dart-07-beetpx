@@ -156,7 +156,7 @@ export const g = {
         default:
           return canvasColor;
       }
-    }
+    },
   ),
 
   snapshotDarker: BpxCanvasSnapshotColorMapping.of(
@@ -183,6 +183,6 @@ export const g = {
         default:
           return canvasColor;
       }
-    }
+    },
   ),
 };

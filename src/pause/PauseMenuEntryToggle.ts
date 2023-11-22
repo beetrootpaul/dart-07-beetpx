@@ -26,7 +26,7 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
   constructor(
     text: string,
     getValue: () => boolean,
-    onToggle: (newValue: boolean) => void
+    onToggle: (newValue: boolean) => void,
   ) {
     this._label = text;
     this._getValue = getValue;
@@ -45,7 +45,7 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
         this._orW +
         this._gapYesOrNo +
         this._noW,
-      0
+      0,
     );
   }
 
@@ -63,15 +63,15 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
     b_.print(
       this._yes,
       xy.add(this._labelSize.x + this._gapLabelYes, 0),
-      this._value ? (this._isFocused ? c.white : c.lavender) : c.darkerPurple
+      this._value ? (this._isFocused ? c.white : c.lavender) : c.darkerPurple,
     );
     b_.print(
       this._or,
       xy.add(
         this._labelSize.x + this._gapLabelYes + this._yesW + this._gapYesOrNo,
-        0
+        0,
       ),
-      c.darkerPurple
+      c.darkerPurple,
     );
     b_.print(
       this._no,
@@ -82,9 +82,9 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
           this._gapYesOrNo +
           this._orW +
           this._gapYesOrNo,
-        0
+        0,
       ),
-      this._value ? c.darkerPurple : this._isFocused ? c.white : c.lavender
+      this._value ? c.darkerPurple : this._isFocused ? c.white : c.lavender,
     );
   }
 }

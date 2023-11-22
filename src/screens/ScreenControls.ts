@@ -16,7 +16,7 @@ export class ScreenControls implements GameScreen {
     6,
     56,
     0,
-    true
+    true,
   );
   private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -24,7 +24,7 @@ export class ScreenControls implements GameScreen {
     6,
     56,
     6,
-    true
+    true,
   );
   private readonly _coSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -32,7 +32,7 @@ export class ScreenControls implements GameScreen {
     6,
     56,
     24,
-    true
+    true,
   );
   private readonly _pauseSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -40,7 +40,7 @@ export class ScreenControls implements GameScreen {
     6,
     41,
     0,
-    true
+    true,
   );
 
   private _proceed: boolean = false;
@@ -67,10 +67,10 @@ export class ScreenControls implements GameScreen {
         !PauseMenu.isGamePaused ? 35 : 36,
         12,
         1,
-        12
+        12,
       ),
       v_(baseX, baseY),
-      { scaleXy: v_(w, 1) }
+      { scaleXy: v_(w, 1) },
     );
 
     // button text

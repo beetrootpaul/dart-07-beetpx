@@ -23,7 +23,7 @@ export class Shockwave {
     this._rProgress = MovementLine.of({
       // keep in sync: amount of steps to add to "_rMax" here is taken from the smallest circle drawn in "draw()"
       frames: Math.ceil(
-        (Shockwave._rMax + 4 * Shockwave._rStep) / Shockwave._rSpeed
+        (Shockwave._rMax + 4 * Shockwave._rStep) / Shockwave._rSpeed,
       ),
       angle: 0,
       angledSpeed: Shockwave._rSpeed,
@@ -55,20 +55,20 @@ export class Shockwave {
     for (let dy = -rOuter; dy <= rOuter; dy++) {
       const sy = this._center.y + dy;
       const dxOuter = Math.ceil(
-        Math.sqrt(Math.max(0, rOuter * rOuter - dy * dy))
+        Math.sqrt(Math.max(0, rOuter * rOuter - dy * dy)),
       );
       const dxInner = Math.ceil(
-        Math.sqrt(Math.max(0, rInner * rInner - dy * dy))
+        Math.sqrt(Math.max(0, rInner * rInner - dy * dy)),
       );
       b_.line(
         g.gameAreaOffset.add(v_(this._center.x - dxOuter + 1, sy)),
         v_(dxOuter - dxInner, 1),
-        g.snapshotNegative
+        g.snapshotNegative,
       );
       b_.line(
         g.gameAreaOffset.add(v_(this._center.x + dxOuter - 1, sy)),
         v_(dxInner - dxOuter, 1),
-        g.snapshotNegative
+        g.snapshotNegative,
       );
     }
   }
@@ -78,7 +78,7 @@ export class Shockwave {
       b_.ellipse(
         g.gameAreaOffset.add(this._center).sub(r),
         v_(r, r).mul(2),
-        c.lightGrey
+        c.lightGrey,
       );
     }
   }

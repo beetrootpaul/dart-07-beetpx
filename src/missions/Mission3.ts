@@ -101,7 +101,7 @@ export class Mission3 implements Mission {
 
   levelBgUpdate(): void {
     this._particles = this._particles.filter(
-      (p) => p.xy.y <= g.gameAreaSize.y + g.tileSize.y
+      (p) => p.xy.y <= g.gameAreaSize.y + g.tileSize.y,
     );
 
     for (const particle of this._particles) {
@@ -120,7 +120,7 @@ export class Mission3 implements Mission {
     for (let lane = 1; lane <= 12; lane++) {
       for (let distance = 0; distance <= 16; distance++) {
         this._tubeTiles[lane - 1]?.draw(
-          g.tileSize.mul(lane - 1, distance - 1).add(0, this._tubeTilesOffsetY)
+          g.tileSize.mul(lane - 1, distance - 1).add(0, this._tubeTilesOffsetY),
         );
       }
     }
@@ -167,8 +167,8 @@ export class Mission3 implements Mission {
                     baseSpeedXy: enemyMovement.speed,
                     angle: 1 / 16 + i / 8,
                     angledSpeed: 1,
-                  })(enemyMovement.xy)
-                )
+                  })(enemyMovement.xy),
+                ),
               );
             }
             return bullets;
@@ -199,7 +199,7 @@ export class Mission3 implements Mission {
                   baseSpeedXy: v_(0, bossMovement.speed.y),
                   angle: 0.25,
                   angledSpeed: 0.5,
-                })(bossMovement.xy.add(0, 3))
+                })(bossMovement.xy.add(0, 3)),
               ),
             ];
           },

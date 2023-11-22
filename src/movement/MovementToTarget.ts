@@ -23,7 +23,7 @@ export class MovementToTarget implements Movement {
         v_(params.targetX ?? startXy.x, params.targetY ?? startXy.y),
         params.frames,
         params.easingFn ?? BpxEasing.linear,
-        params.onFinished
+        params.onFinished,
       );
 
   private readonly _startXy: BpxVector2d;
@@ -39,7 +39,7 @@ export class MovementToTarget implements Movement {
     targetXy: BpxVector2d,
     frames: number,
     easingFn: BpxEasingFn,
-    onFinished?: () => void
+    onFinished?: () => void,
   ) {
     this._startXy = startXy;
     this._targetXy = targetXy;
@@ -55,7 +55,7 @@ export class MovementToTarget implements Movement {
     return BpxVector2d.lerp(
       this._startXy,
       this._targetXy,
-      this._easingFn(this._timer.progress)
+      this._easingFn(this._timer.progress),
     );
   }
 

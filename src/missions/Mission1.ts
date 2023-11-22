@@ -61,7 +61,7 @@ export class Mission1 implements Mission {
       ...u_.range(24).map(() => 48),
     ],
     56,
-    true
+    true,
   );
 
   private _waveTileOffsetY: number = 0;
@@ -78,8 +78,8 @@ export class Mission1 implements Mission {
         this._waveTile.draw(
           v_(
             (lane - 1) * g.tileSize.x,
-            Math.ceil((distance - 1) * g.tileSize.y + this._waveTileOffsetY)
-          )
+            Math.ceil((distance - 1) * g.tileSize.y + this._waveTileOffsetY),
+          ),
         );
       }
     }
@@ -192,7 +192,7 @@ export class Mission1 implements Mission {
                   baseSpeedXy: v_(0, enemyMovement.speed.y),
                   angle: 0.25,
                   angledSpeed: 1,
-                })(enemyMovement.xy)
+                })(enemyMovement.xy),
               ),
             ];
           },
@@ -256,8 +256,8 @@ export class Mission1 implements Mission {
                     baseSpeedXy: enemyMovement.speed,
                     angle: (t() % 1) + i / 8,
                     angledSpeed: 1,
-                  })(enemyMovement.xy)
-                )
+                  })(enemyMovement.xy),
+                ),
               );
             }
             return bullets;
@@ -301,19 +301,19 @@ export class Mission1 implements Mission {
                 MovementLine.of({
                   targetXy: playerXy,
                   angledSpeed: 1,
-                })(enemyXy.sub(0, 7))
+                })(enemyXy.sub(0, 7)),
               ),
               eb_(
                 MovementLine.of({
                   targetXy: playerXy,
                   angledSpeed: 1,
-                })(enemyXy.sub(0, 1))
+                })(enemyXy.sub(0, 1)),
               ),
               eb_(
                 MovementLine.of({
                   targetXy: playerXy,
                   angledSpeed: 1,
-                })(enemyXy.add(0, 5))
+                })(enemyXy.add(0, 5)),
               ),
             ];
           },
@@ -341,8 +341,8 @@ export class Mission1 implements Mission {
                     baseSpeedXy: enemyMovement.speed,
                     angle: 1 / 16 + i / 8,
                     angledSpeed: 1,
-                  })(enemyMovement.xy)
-                )
+                  })(enemyMovement.xy),
+                ),
               );
             }
             return bullets;
@@ -379,7 +379,7 @@ export class Mission1 implements Mission {
                 MovementLine.of({
                   angle: 0.25,
                   angledSpeed: 1.5,
-                })(bossMovement.xy.add(0, 3))
+                })(bossMovement.xy.add(0, 3)),
               ),
             ];
           },
@@ -401,8 +401,8 @@ export class Mission1 implements Mission {
                       baseSpeedXy: v_(0, bossMovement.speed.y),
                       angle: (t() % 1) + i / 8,
                       angledSpeed: 1,
-                    })(bossMovement.xy)
-                  )
+                    })(bossMovement.xy),
+                  ),
                 );
               }
             }
@@ -443,13 +443,13 @@ export class Mission1 implements Mission {
                   MovementLine.of({
                     angle: 0.25,
                     angledSpeed: 1.5,
-                  })(bossMovement.xy.add(-20, -3))
+                  })(bossMovement.xy.add(-20, -3)),
                 ),
                 eb_(
                   MovementLine.of({
                     angle: 0.25,
                     angledSpeed: 1.5,
-                  })(bossMovement.xy.add(20, -3))
+                  })(bossMovement.xy.add(20, -3)),
                 ),
               ];
             }
@@ -462,7 +462,7 @@ export class Mission1 implements Mission {
                     speedY: 1.5,
                     ageDivisor: 60,
                     magnitude: 9,
-                  })(bossMovement.xy.add(0, 3))
+                  })(bossMovement.xy.add(0, 3)),
                 ),
               ];
             }

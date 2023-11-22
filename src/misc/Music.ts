@@ -24,13 +24,13 @@ export class Music {
 
   static playLevelMusicMain(): void {
     Music._playbackId = b_.playSoundSequence(
-      CurrentMission.m.audioSequenceMain
+      CurrentMission.m.audioSequenceMain,
     );
   }
 
   static playLevelMusicBoss(): void {
     Music._playbackId = b_.playSoundSequence(
-      CurrentMission.m.audioSequenceBoss
+      CurrentMission.m.audioSequenceBoss,
     );
   }
 

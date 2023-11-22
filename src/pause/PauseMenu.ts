@@ -44,7 +44,7 @@ export class PauseMenu {
     6,
     56,
     0,
-    true
+    true,
   );
   private readonly _xSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -52,7 +52,7 @@ export class PauseMenu {
     6,
     56,
     6,
-    true
+    true,
   );
 
   private readonly _entries: PauseMenuEntry[];
@@ -77,7 +77,7 @@ export class PauseMenu {
           } else {
             b_.muteAudio();
           }
-        }
+        },
       ),
       new PauseMenuEntrySimple("restart game", () => {
         this._restartFadeOut = new Fade("out", { fadeFrames: 30 });
@@ -122,18 +122,18 @@ export class PauseMenu {
         v_(
           Math.max(
             whTotal.x,
-            PauseMenu._padding.left + entry.size.x + PauseMenu._padding.right
+            PauseMenu._padding.left + entry.size.x + PauseMenu._padding.right,
           ),
           whTotal.y +
             entry.size.y +
             (index < this._entries.length - 1
               ? PauseMenu._gapBetweenEntries
-              : 0)
+              : 0),
         ),
       v_(
         PauseMenu._padding.left + PauseMenu._padding.right,
-        PauseMenu._padding.top + PauseMenu._padding.bottom
-      )
+        PauseMenu._padding.top + PauseMenu._padding.bottom,
+      ),
     );
     // make sure the width is even, therefore the pause menu will be placed horizontally in the center
     wh = v_(wh.x % 2 ? wh.x + 1 : wh.x, wh.y);
@@ -164,7 +164,7 @@ export class PauseMenu {
     entry: PauseMenuEntry,
     entryIndex: number,
     xy: BpxVector2d,
-    wh: BpxVector2d
+    wh: BpxVector2d,
   ): void {
     xy = xy.add(PauseMenu._padding.left);
 
@@ -179,16 +179,16 @@ export class PauseMenu {
         BpxSpriteColorMapping.of((color) =>
           color?.cssHex === Pico8Colors.pink.cssHex
             ? c.darkerPurple
-            : g.baseSpriteMapping.getMappedColor(color)
-        )
+            : g.baseSpriteMapping.getMappedColor(color),
+        ),
       );
       sprite.draw(
         xy
           .add(
             wh.x - PauseMenu._padding.left - PauseMenu._padding.right + 4,
-            -1
+            -1,
           )
-          .sub(g.gameAreaOffset)
+          .sub(g.gameAreaOffset),
       );
       b_.setSpriteColorMapping(prevMapping);
     }

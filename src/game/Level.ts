@@ -44,8 +44,8 @@ export class Level {
                 (tileId % 16) * g.tileSize.x,
                 Math.floor(tileId / 16) * g.tileSize.y,
                 g.tileSize.x,
-                g.tileSize.y
-              )
+                g.tileSize.y,
+              ),
             );
           }
         }
@@ -56,7 +56,7 @@ export class Level {
   syncWithLevelScrollFractionalPart(v: BpxVector2d): BpxVector2d {
     return v_(
       v.x,
-      Math.floor(v.y) + ((this._maxVisibleDistance * g.tileSize.y) % 1)
+      Math.floor(v.y) + ((this._maxVisibleDistance * g.tileSize.y) % 1),
     );
   }
 
@@ -70,7 +70,7 @@ export class Level {
       0,
       (this._minVisibleDistance + g.gameAreaTiles.y) /
         (this._levelDescriptor.maxDefinedDistance + g.gameAreaTiles.y),
-      1
+      1,
     );
   }
 
@@ -94,8 +94,8 @@ export class Level {
               id: enemyId,
               xy: v_(0, g.gameAreaSize.y).add(
                 g.tileSize.mul(
-                  v_(lane, this._minVisibleDistance - this._distanceNextSpawn)
-                )
+                  v_(lane, this._minVisibleDistance - this._distanceNextSpawn),
+                ),
               ),
             });
           }
@@ -140,7 +140,7 @@ export class Level {
       "visible distance: " +
         this._minVisibleDistance.toFixed(2) +
         " : " +
-        this._maxVisibleDistance.toFixed(2)
+        this._maxVisibleDistance.toFixed(2),
     );
   }
 
@@ -152,8 +152,8 @@ export class Level {
         BpxSpriteColorMapping.of((color) =>
           color?.cssHex === Pico8Colors.black.cssHex
             ? null
-            : g.baseSpriteMapping.getMappedColor(color)
-        )
+            : g.baseSpriteMapping.getMappedColor(color),
+        ),
       );
 
       for (
@@ -181,7 +181,7 @@ export class Level {
       this._sprites.get(tileId)!,
       g.gameAreaOffset
         .add(v_(0, g.gameAreaSize.y))
-        .add(g.tileSize.mul(v_(lane - 1, this._minVisibleDistance - distance)))
+        .add(g.tileSize.mul(v_(lane - 1, this._minVisibleDistance - distance))),
     );
   }
 }

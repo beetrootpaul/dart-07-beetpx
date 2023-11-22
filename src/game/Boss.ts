@@ -16,18 +16,18 @@ export class Boss {
   private readonly _onBulletsSpawned: (
     spawnBulletsFn: (
       bossMovement: Movement,
-      playerCollisionCircle: CollisionCircle
+      playerCollisionCircle: CollisionCircle,
     ) => EnemyBullet[],
-    bossMovement: Movement
+    bossMovement: Movement,
   ) => void;
   private readonly _onDamaged: () => void;
   private readonly _onEnteredNextPhase: (
     collisionCircles: CollisionCircle[],
-    scoreToAdd: number
+    scoreToAdd: number,
   ) => void;
   private readonly _onDestroyed: (
     collisionCircles: CollisionCircle[],
-    scoreToAdd: number
+    scoreToAdd: number,
   ) => void;
 
   private _invincibleDuringIntro: boolean = true;
@@ -45,18 +45,18 @@ export class Boss {
     onBulletsSpawned: (
       spawnBulletsFn: (
         bossMovement: Movement,
-        playerCollisionCircle: CollisionCircle
+        playerCollisionCircle: CollisionCircle,
       ) => EnemyBullet[],
-      bossMovement: Movement
+      bossMovement: Movement,
     ) => void;
     onDamaged: () => void;
     onEnteredNextPhase: (
       collisionCircles: CollisionCircle[],
-      scoreToAdd: number
+      scoreToAdd: number,
     ) => void;
     onDestroyed: (
       collisionCircles: CollisionCircle[],
-      scoreToAdd: number
+      scoreToAdd: number,
     ) => void;
   }) {
     this._movement = MovementToTarget.of({
@@ -88,7 +88,7 @@ export class Boss {
     return (
       this._properties.phases[this._currentPhaseNumber] ??
       u_.throwError(
-        `Tried to access non-existent boss phase at index ${this._currentPhaseNumber}`
+        `Tried to access non-existent boss phase at index ${this._currentPhaseNumber}`,
       )
     );
   }
@@ -99,7 +99,7 @@ export class Boss {
       u_.throwError(
         `Tried to access non-existent boss phase at index ${
           this._currentPhaseNumber + 1
-        }`
+        }`,
       )
     );
   }
@@ -126,7 +126,7 @@ export class Boss {
       this._isDestroyed = true;
       this._onDestroyed(
         this.collisionCircles,
-        this._properties.phases[this._properties.phases.length - 1]!.score
+        this._properties.phases[this._properties.phases.length - 1]!.score,
       );
     }
   }
@@ -142,7 +142,7 @@ export class Boss {
       ) {
         this._onEnteredNextPhase(
           this.collisionCircles,
-          this._currentPhase.score
+          this._currentPhase.score,
         );
         this._currentPhaseNumber += 1;
         this._movement = this._currentPhase.movementFactory(this._movement.xy);

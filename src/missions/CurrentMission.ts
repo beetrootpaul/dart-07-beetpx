@@ -33,9 +33,9 @@ export class CurrentMission {
       mission === 1
         ? new Mission1()
         : mission === 2
-        ? new Mission2()
-        : mission === 3
-        ? new Mission3()
-        : u_.throwError(`Unexpected mission number: ${mission}`);
+          ? new Mission2()
+          : mission === 3
+            ? new Mission3()
+            : u_.throwError(`Unexpected mission number: ${mission}`);
   }
 }

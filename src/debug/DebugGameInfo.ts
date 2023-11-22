@@ -5,7 +5,7 @@ export class DebugGameInfo {
   private readonly _updateCallsData = {
     history: Array.from(
       { length: Math.floor((g.viewportSize.x - 1) / 2) },
-      () => 0
+      () => 0,
     ),
     index: 0,
   };
@@ -13,7 +13,7 @@ export class DebugGameInfo {
   private readonly _fpsData = {
     history: Array.from(
       { length: Math.floor((g.viewportSize.x - 1) / 2) },
-      () => 0
+      () => 0,
     ),
     index: 0,
   };
@@ -51,7 +51,7 @@ export class DebugGameInfo {
       for (let dot = 0; dot < calls; dot++) {
         b_.pixel(
           v_(1 + column * 2, 1 + dot * 2),
-          column === this._updateCallsData.index ? c.white : c.lavender
+          column === this._updateCallsData.index ? c.white : c.lavender,
         );
       }
     }
@@ -68,8 +68,8 @@ export class DebugGameInfo {
           column === this._fpsData.index
             ? c.white
             : (dot + 1) % 3 === 0
-            ? c.peach
-            : c.lavender
+              ? c.peach
+              : c.lavender,
         );
       }
     }
@@ -84,14 +84,14 @@ export class DebugGameInfo {
       audioState === "suspended"
         ? "s"
         : audioState === "running"
-        ? "r"
-        : audioState === "closed"
-        ? "c"
-        : "@";
+          ? "r"
+          : audioState === "closed"
+            ? "c"
+            : "@";
     b_.print(
       audioStateText,
       v_(g.viewportSize.x - u_.measureText(audioStateText)[1].x, 0),
-      c.white
+      c.white,
     );
   }
 }

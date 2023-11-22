@@ -24,7 +24,7 @@ export type BossProperties = {
     bulletFireTimer: BpxTimer;
     spawnBullets: (
       bossMovement: Movement,
-      playerCollisionCircle: CollisionCircle
+      playerCollisionCircle: CollisionCircle,
     ) => EnemyBullet[];
 
     movementFactory: MovementFactory;

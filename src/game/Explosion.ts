@@ -43,7 +43,7 @@ export class Explosion {
     this._particles = u_.range(9).map(() => ({
       angle: 0.75 + 0.5 * randNegPos05(),
       xy: params.startXy.add(
-        v_(randNegPos05(), randNegPos05()).mul(params.magnitude)
+        v_(randNegPos05(), randNegPos05()).mul(params.magnitude),
       ),
       r: params.magnitude / 2 + Math.random() * (params.magnitude / 2),
     }));
@@ -79,7 +79,7 @@ export class Explosion {
           #-#-
           -#-#
           #-#-
-        `)
+        `),
       );
       for (const p of this._particles) {
         if (p.r > 0) {
@@ -96,7 +96,7 @@ export class Explosion {
           b_.ellipseFilled(
             g.gameAreaOffset.add(p.xy).sub(p.r),
             v_(2, 2).mul(p.r),
-            color
+            color,
           );
         }
       }

@@ -70,7 +70,7 @@ export class SlidingInfo {
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, xy.y - 17),
         CurrentMission.m.bgColor,
         this._mainColor,
-        { centerXy: [true, false] }
+        { centerXy: [true, false] },
       );
     }
 
@@ -79,7 +79,7 @@ export class SlidingInfo {
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, xy.y - 8),
       CurrentMission.m.bgColor,
       this._mainColor,
-      { centerXy: [true, false] }
+      { centerXy: [true, false] },
     );
 
     b_.line(xy, v_(g.gameAreaSize.x, 1), this._mainColor);

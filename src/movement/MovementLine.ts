@@ -17,7 +17,7 @@ export class MovementLine implements Movement {
             targetXy: BpxVector2d;
             angledSpeed: number;
             frames?: number;
-          }
+          },
     ): MovementFactory =>
     (startXy) =>
       new MovementLine(
@@ -27,7 +27,7 @@ export class MovementLine implements Movement {
           : params.targetXy.sub(startXy).toAngle(),
         params.angledSpeed,
         params.baseSpeedXy,
-        params.frames
+        params.frames,
       );
 
   private _xy: BpxVector2d;
@@ -39,12 +39,12 @@ export class MovementLine implements Movement {
     angle: number,
     angledSpeed: number,
     baseSpeedXy: BpxVector2d = v_0_0_,
-    frames: number | undefined
+    frames: number | undefined,
   ) {
     this._xy = startXy;
 
     this._speed = baseSpeedXy.add(
-      BpxVector2d.unitFromAngle(angle).mul(angledSpeed)
+      BpxVector2d.unitFromAngle(angle).mul(angledSpeed),
     );
 
     this._timer = frames ? timer_(frames) : null;

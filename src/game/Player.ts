@@ -32,21 +32,21 @@ export class Player {
     10,
     10,
     19,
-    0
+    0,
   );
   private readonly _shipSpriteFlyingLeft: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
     9,
-    0
+    0,
   );
   private readonly _shipSpriteFlyingRight: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     10,
     10,
     29,
-    0
+    0,
   );
   private _shipSpriteCurrent: Sprite = this._shipSpriteNeutral;
 
@@ -55,7 +55,7 @@ export class Player {
     4,
     20,
     [0, 0, 0, 0, 4, 4, 4, 4],
-    9
+    9,
   );
   private _jetSprite: Sprite | null = null;
 
@@ -111,15 +111,15 @@ export class Player {
       directionVector.x < 0
         ? this._shipSpriteFlyingLeft
         : directionVector.x > 0
-        ? this._shipSpriteFlyingRight
-        : this._shipSpriteNeutral;
+          ? this._shipSpriteFlyingRight
+          : this._shipSpriteNeutral;
 
     this._jetSprite = directionVector.y > 0 ? null : this._jetSpriteVisible;
 
     const speed = fastMovement ? 1.5 : 1;
     let diff = v_(
       directionVector.x > 0 ? speed : directionVector.x < 0 ? -speed : 0,
-      directionVector.y > 0 ? speed : directionVector.y < 0 ? -speed : 0
+      directionVector.y > 0 ? speed : directionVector.y < 0 ? -speed : 0,
     );
     if (diff.x !== 0 && diff.y !== 0) {
       // normalization of diagonal speed
@@ -129,7 +129,7 @@ export class Player {
       .add(diff)
       .clamp(
         Player._size.div(2).add(1),
-        g.gameAreaSize.sub(Player._size.div(2)).sub(1)
+        g.gameAreaSize.sub(Player._size.div(2)).sub(1),
       );
   }
 
@@ -137,15 +137,15 @@ export class Player {
     this._onBulletsSpawned.invokeIfReady(
       tripleShoot ? (fastShoot ? 10 : 16) : fastShoot ? 8 : 12,
       (tripleShoot ? this._createTripleBullet : this._createSingleBullet).bind(
-        this
-      )
+        this,
+      ),
     );
   }
 
   triggerShockwave(): void {
     this._onShockwaveTriggered.invokeIfReady(
       60,
-      this._createShockwave.bind(this)
+      this._createShockwave.bind(this),
     );
   }
 
@@ -156,7 +156,7 @@ export class Player {
   takeDamage(updatedHealth: number): void {
     if (updatedHealth > 0) {
       this._invincibleAfterDamageTimer = timer_(
-        5 * Player._invincibilityFlashFrames
+        5 * Player._invincibilityFlashFrames,
       );
       this._onDamaged();
     } else {

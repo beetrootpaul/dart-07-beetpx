@@ -77,7 +77,7 @@ b_.init(
       { url: g.assets.mission3Music33 },
     ],
     jsons: [{ url: g.assets.levelsJson }],
-  }
+  },
 ).then(async ({ startGame }) => {
   b_.setOnStarted(() => {
     // Better set font first, because other constructors might rely

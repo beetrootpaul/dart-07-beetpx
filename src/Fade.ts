@@ -89,7 +89,7 @@ export class Fade {
 
   constructor(
     direction: FadeDirection,
-    params: { waitFrames?: number; fadeFrames: number }
+    params: { waitFrames?: number; fadeFrames: number },
   ) {
     this._direction = direction;
 
@@ -137,7 +137,7 @@ export class Fade {
       b_.rectFilled(
         v_(0, y),
         v_(g.viewportSize.x, stripH),
-        BpxPatternColors.of(c.black, null)
+        BpxPatternColors.of(c.black, null),
       );
     }
     b_.setPattern(BpxPattern.primaryOnly);

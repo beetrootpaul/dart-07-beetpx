@@ -24,6 +24,6 @@ export type EnemyProperties = {
   bulletFireTimer?: BpxTimer;
   spawnBullets?: (
     enemyMovement: Movement,
-    playerCollisionCircle: CollisionCircle
+    playerCollisionCircle: CollisionCircle,
   ) => EnemyBullet[];
 };

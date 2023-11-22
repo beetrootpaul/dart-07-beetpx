@@ -40,23 +40,23 @@ export class LevelDescriptor {
     const expectedVersion = "1.4.0";
     if (levelsJson.jsonVersion !== expectedVersion) {
       throw Error(
-        `Levels JSON generated from unexpected Ldtk version: "${levelsJson.jsonVersion}" (expected: "${expectedVersion}").`
+        `Levels JSON generated from unexpected Ldtk version: "${levelsJson.jsonVersion}" (expected: "${expectedVersion}").`,
       );
     }
     if (levelsJson.externalLevels) {
       throw Error(
-        `Levels JSON has "externalLevels" set to "true", which is unsupported in this game`
+        `Levels JSON has "externalLevels" set to "true", which is unsupported in this game`,
       );
     }
     if (levelsJson.simplifiedExport) {
       throw Error(
-        `Levels JSON has "simplifiedExport" set to "true", which is unsupported in this game`
+        `Levels JSON has "simplifiedExport" set to "true", which is unsupported in this game`,
       );
     }
 
     this.maxDefinedDistance =
       levelsJson.levels.find(
-        (l: any) => l.identifier === CurrentMission.m.ldtk.level
+        (l: any) => l.identifier === CurrentMission.m.ldtk.level,
       )!.pxHei /
         g.tileSize.y -
       2 * tileMarginY;
@@ -65,7 +65,7 @@ export class LevelDescriptor {
       levelsJson.levels
         .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)!
         .layerInstances.find(
-          (li: any) => li.__identifier === CurrentMission.m.ldtk.landLayer
+          (li: any) => li.__identifier === CurrentMission.m.ldtk.landLayer,
         )!
         .autoLayerTiles.map((alt: any) => ({
           tileY: alt.px[1] / 8 - tileMarginY,
@@ -73,7 +73,7 @@ export class LevelDescriptor {
           id: alt.t,
         }))
         .filter(
-          (alt: any) => alt.tileY >= 0 && alt.tileY < this.maxDefinedDistance
+          (alt: any) => alt.tileY >= 0 && alt.tileY < this.maxDefinedDistance,
         );
     const lanes = 12;
 
@@ -81,7 +81,7 @@ export class LevelDescriptor {
       levelsJson.levels
         .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)!
         .layerInstances.find(
-          (li: any) => li.__identifier === CurrentMission.m.ldtk.enemiesLayer
+          (li: any) => li.__identifier === CurrentMission.m.ldtk.enemiesLayer,
         )!
         .entityInstances.map((ei: any) => ({
           id: ei.__identifier,
@@ -89,7 +89,7 @@ export class LevelDescriptor {
           tileY: ei.__grid[1] - tileMarginY,
         }))
         .filter(
-          (ei: any) => ei.tileY >= 0 && ei.tileY < this.maxDefinedDistance
+          (ei: any) => ei.tileY >= 0 && ei.tileY < this.maxDefinedDistance,
         );
 
     this.structures = u_
@@ -114,7 +114,7 @@ export class LevelDescriptor {
       .find((l: any) => l.identifier === CurrentMission.m.ldtk.level)!
       .layerInstances.find(
         (li: any) =>
-          li.__identifier === CurrentMission.m.ldtk.progressionMarkersLayer
+          li.__identifier === CurrentMission.m.ldtk.progressionMarkersLayer,
       )!
       .entityInstances.filter((ei: any) => ei.__identifier === "level_end")
       .map((ei: any) => ({
@@ -123,7 +123,7 @@ export class LevelDescriptor {
       .filter((ei: any) => ei.tileY >= 0 && ei.tileY < this.maxDefinedDistance)
       .reduce(
         (maxTileY: number, nextEi: any) => Math.max(maxTileY, nextEi.tileY),
-        -markerOffsetY
+        -markerOffsetY,
       );
     this.maxDefinedDistance =
       this.maxDefinedDistance - levelEndMarkerTileY - markerOffsetY;

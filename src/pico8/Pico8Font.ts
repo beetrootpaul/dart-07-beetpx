@@ -13,7 +13,7 @@ function glyph(
   tileX1: number,
   tileY1: number,
   pxW: number = 3,
-  pxH: number = 5
+  pxH: number = 5,
 ): [BpxVector2d, BpxVector2d] {
   return [v_(tileX1 * 8, tileY1 * 8), v_(pxW, pxH)];
 }
