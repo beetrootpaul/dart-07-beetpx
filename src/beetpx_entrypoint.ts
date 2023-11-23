@@ -138,8 +138,6 @@ b_.init(
   await startGame();
 });
 
-// TODO: use versioned BeetPx from npm
-
 // TODO: polishing: music: mission 2
 // TODO: polishing: music: mission 2 boss
 // TODO: polishing: music: mission 3
@@ -153,6 +151,6 @@ b_.init(
 // TODO: balancing: mission 2: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 // TODO: balancing: mission 3: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 
-// TODO: __NEW_BEETPX__ adapt button images to whatever input method was used last
+// TODO: __NEXT__ adapt button images to whatever input method was used last
 
-// TODO: __NEW_BEETPX__ input tester on first start, then from the menu
+// TODO: __NEXT__ input tester on first start, then from the menu

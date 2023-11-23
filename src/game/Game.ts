@@ -423,7 +423,7 @@ export class Game {
     if (b_.isPressed("a")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);
     }
-    // TODO: this implementation (combined with a throttle inside the player) can end up with incorrectly used charges
+    // TODO: __NEXT__ this implementation (combined with a throttle inside the player) can end up with incorrectly used charges
     if (b_.wasJustPressed("b")) {
       if (this._shockwaveCharges > 0 && this._player) {
         this._shockwaveCharges -= 1;

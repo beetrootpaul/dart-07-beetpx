@@ -23,31 +23,29 @@ export class MovementLine implements Movement {
       new MovementLine(
         startXy,
         "angle" in params
-          ? params.angle
-          : params.targetXy.sub(startXy).toAngle(),
-        params.angledSpeed,
+          ? BpxVector2d.unitFromAngle(params.angle).mul(params.angledSpeed)
+          : params.targetXy.sub(startXy).normalize().mul(params.angledSpeed),
         params.baseSpeedXy,
         params.frames,
       );
 
   private _xy: BpxVector2d;
-  private readonly _speed: BpxVector2d;
+  private _speed: BpxVector2d;
   private readonly _timer: BpxTimer | null;
 
   private constructor(
     startXy: BpxVector2d,
-    angle: number,
-    angledSpeed: number,
+    angledSpeed: BpxVector2d,
     baseSpeedXy: BpxVector2d = v_0_0_,
     frames: number | undefined,
   ) {
     this._xy = startXy;
 
-    this._speed = baseSpeedXy.add(
-      BpxVector2d.unitFromAngle(angle).mul(angledSpeed),
-    );
+    this._timer = typeof frames === "number" ? timer_(frames) : null;
 
-    this._timer = frames ? timer_(frames) : null;
+    this._speed = this._timer?.hasFinished
+      ? v_0_0_
+      : baseSpeedXy.add(angledSpeed);
   }
 
   get xy(): BpxVector2d {
@@ -63,9 +61,10 @@ export class MovementLine implements Movement {
   }
 
   update(): void {
+    this._xy = this._xy.add(this._speed);
     this._timer?.update();
-    if (!this._timer || !this._timer.hasFinished) {
-      this._xy = this._xy.add(this._speed);
+    if (this._timer?.hasFinished) {
+      this._speed = v_0_0_;
     }
   }
 }

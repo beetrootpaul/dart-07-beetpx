@@ -11,7 +11,7 @@ export class MovementFixed implements Movement {
   private readonly _xy: BpxVector2d;
 
   private constructor(startXy: BpxVector2d, frames?: number) {
-    this._timer = frames ? timer_(frames) : null;
+    this._timer = typeof frames === "number" ? timer_(frames) : null;
     this._xy = startXy;
   }
 

@@ -5,9 +5,9 @@ import { PauseMenu } from "../pause/PauseMenu";
 import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
 
-// TODO: rework controls? Rework them in general in BeetPx? Also no longer show both keyboard and gamepad
+// TODO: __NEXT__ rework controls? Rework them in general in BeetPx? Also no longer show both keyboard and gamepad
 
-// TODO: update controls sprites to match new BeetPx setup
+// TODO: __NEXT__ update controls sprites to match new BeetPx setup
 
 export class ScreenControls implements GameScreen {
   private readonly _xSprite: Sprite = new StaticSprite(

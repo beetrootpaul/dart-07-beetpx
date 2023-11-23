@@ -29,10 +29,11 @@
     "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "devDependencies": {
-    "@beetpx/beetpx": "0.23.0",
+    "@beetpx/beetpx": "0.23.2",
     "@jest/globals": "29.7.0",
     "husky": "8.0.3",
     "jest": "29.7.0",
+    "jest-environment-jsdom": "29.7.0",
     "prettier": "3.1.0",
     "prettier-plugin-organize-imports": "3.2.4",
     "rimraf": "5.0.5",

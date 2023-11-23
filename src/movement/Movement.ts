@@ -1,7 +1,5 @@
 import { BpxVector2d } from "@beetpx/beetpx";
 
-// TODO: __NEW_BEETPX__ unit tests for various movements
-
 export interface MovementFactory {
   (startXy: BpxVector2d): Movement;
 }

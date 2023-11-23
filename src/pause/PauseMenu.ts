@@ -15,9 +15,9 @@ import { PauseMenuEntry } from "./PauseMenuEntry";
 import { PauseMenuEntrySimple } from "./PauseMenuEntrySimple";
 import { PauseMenuEntryToggle } from "./PauseMenuEntryToggle";
 
-// TODO: __NEW_BEETPX__ pause menu: input tester
+// TODO: __NEXT__ pause menu: input tester
 
-// TODO: __NEW_BEETPX__ pause menu: add full screen enter/exit if full screen supported
+// TODO: __NEXT__ pause menu: add full screen enter/exit if full screen supported
 
 export class PauseMenu {
   static isGamePaused: boolean = false;
@@ -195,6 +195,4 @@ export class PauseMenu {
   }
 }
 
-// TODO: confirm with menu button as well
-
-// TODO: rename back to title to restart game if outside mission?
+// TODO: __NEXT__ rename back to title to restart game if outside mission?
