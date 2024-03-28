@@ -3,7 +3,7 @@
 
 npm run format
 npm install
-npm run typecheck
+npm run tsc
 npm test
 
 git add --all .

@@ -8,7 +8,7 @@ interstellar Phoslar Mine
 In separate consoles, run:
 
 ```shell
-npm run typecheck:watch
+npm run tsc:watch
 ```
 
 ```shell
@@ -19,9 +19,9 @@ npm run syncAssets:watch
 npm start
 ```
 
-### Typecheck
+### Type check
 
-If you want to check if your TypeScript types are correct, run either `npm run typecheck` or `npm run typecheck:watch` (the latter runs continuously, performing the check on every file change).
+If you want to check if your TypeScript types are correct, run either `npm run tsc` or `npm run tsc:watch` (the latter runs continuously, performing the check on every file change).
 
 ### Assets sync
 
@@ -47,7 +47,7 @@ Things you should be aware of:
 - type checking is NOT performed here
 
 In other words:
-- run `npm run typecheck:watch` in parallel for a type checking
+- run `npm run tsc:watch` in parallel for a type checking
 - if you run `npm run syncAssets:watch`, then saving changes in asset files in `assets/` will make the game reload
 
 ## Game cover
