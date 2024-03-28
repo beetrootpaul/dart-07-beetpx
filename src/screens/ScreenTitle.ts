@@ -93,7 +93,7 @@ export class ScreenTitle implements GameScreen {
     29,
     14,
   );
-  private readonly _xSprite: Sprite = new StaticSprite(
+  private readonly _cSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -101,7 +101,7 @@ export class ScreenTitle implements GameScreen {
     0,
     true,
   );
-  private readonly _xSpritePressed: Sprite = new StaticSprite(
+  private readonly _cSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -277,8 +277,8 @@ export class ScreenTitle implements GameScreen {
     // "x" press incentive
     if (selected) {
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
-        ? this._xSprite
-        : this._xSpritePressed;
+        ? this._cSprite
+        : this._cSpritePressed;
       sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
     }
   }

@@ -29,7 +29,7 @@ export class ScreenSelectMission implements GameScreen {
     [0, 0, 0, 0, 4, 4, 4, 4],
     9,
   );
-  private readonly _xSprite: Sprite = new StaticSprite(
+  private readonly _cSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -37,7 +37,7 @@ export class ScreenSelectMission implements GameScreen {
     0,
     true,
   );
-  private readonly _xSpritePressed: Sprite = new StaticSprite(
+  private readonly _cSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -177,8 +177,8 @@ export class ScreenSelectMission implements GameScreen {
       // draw "x" button press incentive and its label
       b_.print("start", buttonXy1.add(buttonWh).add(-37, 4), c.white);
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
-        ? this._xSprite
-        : this._xSpritePressed;
+        ? this._cSprite
+        : this._cSpritePressed;
       sprite.draw(buttonXy1.add(buttonWh.add(-15, 3)).sub(g.gameAreaOffset));
     }
   }
@@ -202,8 +202,8 @@ export class ScreenSelectMission implements GameScreen {
     if (selected) {
       // draw "x" button press incentive
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
-        ? this._xSprite
-        : this._xSpritePressed;
+        ? this._cSprite
+        : this._cSpritePressed;
       sprite.draw(
         buttonXy1.add(buttonWh.x, 0).add(-16, 13).sub(g.gameAreaOffset),
       );

@@ -38,7 +38,7 @@ export class PauseMenu {
     #--
   `);
 
-  private readonly _xSprite: Sprite = new StaticSprite(
+  private readonly _cSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -46,7 +46,7 @@ export class PauseMenu {
     0,
     true,
   );
-  private readonly _xSpritePressed: Sprite = new StaticSprite(
+  private readonly _cSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -173,8 +173,8 @@ export class PauseMenu {
     if (this._focusedEntry === entryIndex) {
       b_.pixels(PauseMenu._arrowPixels, xy.sub(7, 0), c.white);
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
-        ? this._xSprite
-        : this._xSpritePressed;
+        ? this._cSprite
+        : this._cSpritePressed;
       const prevMapping = b_.setSpriteColorMapping(
         BpxSpriteColorMapping.of((color) =>
           color?.cssHex === Pico8Colors.pink.cssHex

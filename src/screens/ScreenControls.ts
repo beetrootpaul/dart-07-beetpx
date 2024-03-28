@@ -10,7 +10,7 @@ import { ScreenTitle } from "./ScreenTitle";
 // TODO: __NEXT__ update controls sprites to match new BeetPx setup
 
 export class ScreenControls implements GameScreen {
-  private readonly _xSprite: Sprite = new StaticSprite(
+  private readonly _cSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -18,7 +18,7 @@ export class ScreenControls implements GameScreen {
     0,
     true,
   );
-  private readonly _xSpritePressed: Sprite = new StaticSprite(
+  private readonly _cSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -26,7 +26,7 @@ export class ScreenControls implements GameScreen {
     6,
     true,
   );
-  private readonly _coSprite: Sprite = new StaticSprite(
+  private readonly _xSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -79,8 +79,8 @@ export class ScreenControls implements GameScreen {
     if (!PauseMenu.isGamePaused) {
       // "x" press incentive
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
-        ? this._xSprite
-        : this._xSpritePressed;
+        ? this._cSprite
+        : this._cSpritePressed;
       sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
     }
   }
@@ -95,12 +95,12 @@ export class ScreenControls implements GameScreen {
     y += 10;
 
     b_.print("press & hold", v_(baseX, y), c.lightGrey);
-    this._xSprite.draw(v_(baseX + 49, y - 1).sub(g.gameAreaOffset));
+    this._cSprite.draw(v_(baseX + 49, y - 1).sub(g.gameAreaOffset));
     b_.print("to fire", v_(baseX + 67, y), c.lightGrey);
     y += 10;
 
     b_.print("press", v_(baseX, y), c.lightGrey);
-    this._coSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
+    this._xSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
     b_.print("to trigger", v_(baseX + 41, y), c.lightGrey);
     b_.print("a schockwave", v_(baseX, y + 7), c.lightGrey);
     y += 20;
@@ -115,7 +115,7 @@ export class ScreenControls implements GameScreen {
     y += 17;
 
     b_.print("press", v_(baseX, y), c.lightGrey);
-    this._xSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
+    this._cSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
     b_.print("to confirm", v_(baseX + 41, y), c.lightGrey);
   }
 

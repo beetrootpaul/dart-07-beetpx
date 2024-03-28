@@ -12,7 +12,7 @@ import { ScreenMissionMain } from "./ScreenMissionMain";
 import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenOver implements GameScreen {
-  private readonly _xSprite: Sprite = new StaticSprite(
+  private readonly _cSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -20,7 +20,7 @@ export class ScreenOver implements GameScreen {
     0,
     true,
   );
-  private readonly _xSpritePressed: Sprite = new StaticSprite(
+  private readonly _cSpritePressed: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -28,7 +28,7 @@ export class ScreenOver implements GameScreen {
     6,
     true,
   );
-  private readonly _xSpriteWin: Sprite = new StaticSprite(
+  private readonly _cSpriteWin: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -36,7 +36,7 @@ export class ScreenOver implements GameScreen {
     12,
     true,
   );
-  private readonly _xSpritePressedWin: Sprite = new StaticSprite(
+  private readonly _cSpritePressedWin: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
     15,
     6,
@@ -143,10 +143,10 @@ export class ScreenOver implements GameScreen {
 
     // "x" press incentive
     if (selected) {
-      const xSprite = this._isWin ? this._xSpriteWin : this._xSprite;
+      const xSprite = this._isWin ? this._cSpriteWin : this._cSprite;
       const xSpritePressed = this._isWin
-        ? this._xSpritePressedWin
-        : this._xSpritePressed;
+        ? this._cSpritePressedWin
+        : this._cSpritePressed;
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? xSprite
         : xSpritePressed;
