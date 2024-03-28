@@ -101,7 +101,7 @@ export class Enemy {
 
     if (this._properties.bulletFireTimer) {
       this._properties.bulletFireTimer.update();
-      if (this._properties.bulletFireTimer.hasFinished) {
+      if (this._properties.bulletFireTimer.hasJustFinished) {
         if (this._properties.spawnBullets) {
           let canSpawnBullets = false;
           for (const cc of this.collisionCircles) {
@@ -124,7 +124,7 @@ export class Enemy {
       }
     }
 
-    if (this._flashingAfterDamageTimer?.hasFinished) {
+    if (this._flashingAfterDamageTimer?.hasJustFinished) {
       this._flashingAfterDamageTimer = null;
     }
     this._flashingAfterDamageTimer?.update();

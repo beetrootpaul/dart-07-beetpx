@@ -28,7 +28,7 @@ export class ScreenMissionEnd implements GameScreen {
   preUpdate(): GameScreen | undefined {
     this._game.preUpdate();
 
-    if (this._screenTimer.hasFinished) {
+    if (this._screenTimer.hasJustFinished) {
       if (CurrentMission.current < CurrentMission.max) {
         return new ScreenMissionMain({
           mission: CurrentMission.next,

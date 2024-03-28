@@ -56,7 +56,7 @@ export class ScreenMissionBoss implements GameScreen {
   }
 
   update(): void {
-    if (this._musicStartTimer?.hasFinished) {
+    if (this._musicStartTimer?.hasJustFinished) {
       this._musicStartTimer = null;
       Music.playLevelMusicBoss();
     }

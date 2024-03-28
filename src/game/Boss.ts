@@ -153,13 +153,13 @@ export class Boss {
 
     if (this._currentPhaseNumber >= 0) {
       this._currentPhase.bulletFireTimer.update();
-      if (this._currentPhase.bulletFireTimer.hasFinished) {
+      if (this._currentPhase.bulletFireTimer.hasJustFinished) {
         this._onBulletsSpawned(this._currentPhase.spawnBullets, this._movement);
         this._currentPhase.bulletFireTimer.restart();
       }
     }
 
-    if (this._flashingAfterDamageTimer?.hasFinished) {
+    if (this._flashingAfterDamageTimer?.hasJustFinished) {
       this._flashingAfterDamageTimer = null;
     }
     this._flashingAfterDamageTimer?.update();
@@ -168,7 +168,7 @@ export class Boss {
   draw(): void {
     this._properties.spriteMain.draw(this._movement.xy);
 
-    if (!(this._flashingAfterDamageTimer?.hasFinished ?? true)) {
+    if (!(this._flashingAfterDamageTimer?.hasJustFinished ?? true)) {
       this._properties.spriteFlash.draw(this._movement.xy);
     }
   }
