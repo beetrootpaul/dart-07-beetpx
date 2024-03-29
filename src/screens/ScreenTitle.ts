@@ -88,10 +88,10 @@ export class ScreenTitle implements GameScreen {
   ];
 
   private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(
-    99,
-    114,
     29,
     14,
+    99,
+    114,
   );
   private readonly _cSprite: Sprite = new StaticSprite(
     g.assets.mainSpritesheetUrl,
@@ -203,10 +203,10 @@ export class ScreenTitle implements GameScreen {
         if (tile) {
           b_.drawSprite(
             spr_(g.assets.mission2SpritesheetUrl)(
-              tile.x * g.tileSize.x,
-              tile.y * g.tileSize.y,
               g.tileSize.x,
               g.tileSize.y,
+              tile.x * g.tileSize.x,
+              tile.y * g.tileSize.y,
             ),
             g.tileSize.mul(colIndex, rowIndex),
           );
@@ -235,15 +235,15 @@ export class ScreenTitle implements GameScreen {
       ),
     );
     b_.drawSprite(
-      spr_(g.assets.mainSpritesheetUrl)(96, 32, 32, 26),
+      spr_(g.assets.mainSpritesheetUrl)(32, 26, 96, 32),
       v_((g.viewportSize.x - 96) / 2, baseY),
     );
     b_.drawSprite(
-      spr_(g.assets.mainSpritesheetUrl)(96, 58, 32, 26),
+      spr_(g.assets.mainSpritesheetUrl)(32, 26, 96, 58),
       v_((g.viewportSize.x - 96) / 2 + 32, baseY),
     );
     b_.drawSprite(
-      spr_(g.assets.mainSpritesheetUrl)(96, 84, 32, 26),
+      spr_(g.assets.mainSpritesheetUrl)(32, 26, 96, 84),
       v_((g.viewportSize.x - 96) / 2 + 64, baseY),
     );
     b_.setSpriteColorMapping(prevMapping);
@@ -268,7 +268,7 @@ export class ScreenTitle implements GameScreen {
   ): void {
     // button shape
     b_.drawSprite(
-      spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
+      spr_(g.assets.mainSpritesheetUrl)(1, 12, selected ? 35 : 36, 12),
       v_(baseX, baseY),
       { scaleXy: v_(w, 1) },
     );
@@ -307,7 +307,7 @@ export class ScreenTitle implements GameScreen {
       );
       b_.drawSprite(
         this._brpLogo,
-        v_((g.viewportSize.x - this._brpLogo.size().x * 2) / 2, 6),
+        v_((g.viewportSize.x - this._brpLogo.size.x * 2) / 2, 6),
         { scaleXy: v_(2, 2) },
       );
       b_.setSpriteColorMapping(prevMapping);

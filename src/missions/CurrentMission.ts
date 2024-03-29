@@ -8,7 +8,7 @@ export class CurrentMission {
   static readonly first: number = 1;
 
   private static _current: number = CurrentMission.first;
-  private static _m: Mission = new Mission1();
+  private static _m?: Mission;
 
   static get current(): number {
     return this._current;
@@ -24,6 +24,10 @@ export class CurrentMission {
   }
 
   static get m(): Mission {
+    // TODO: should be possible to remove after we make BeetPx.frameNumber return 0 instead of throwing if called before init()
+    if (!this._m) {
+      this._m = new Mission1();
+    }
     return this._m;
   }
 

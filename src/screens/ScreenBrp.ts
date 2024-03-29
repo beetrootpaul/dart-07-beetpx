@@ -15,10 +15,10 @@ import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenBrp implements GameScreen {
   private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(
-    99,
-    114,
     29,
     14,
+    99,
+    114,
   );
 
   private readonly _screenTimer: BpxTimer;
@@ -92,7 +92,7 @@ export class ScreenBrp implements GameScreen {
       );
       b_.drawSprite(
         this._brpLogo,
-        g.viewportSize.sub(this._brpLogo.size().mul(2)).div(2),
+        g.viewportSize.sub(this._brpLogo.size.mul(2)).div(2),
         { scaleXy: v_(2, 2) },
       );
       b_.setSpriteColorMapping(prevMapping);

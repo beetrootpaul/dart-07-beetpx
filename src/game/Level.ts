@@ -41,10 +41,10 @@ export class Level {
             this._sprites.set(
               tileId,
               spr_(CurrentMission.m.ldtk.tilesetPng)(
-                (tileId % 16) * g.tileSize.x,
-                Math.floor(tileId / 16) * g.tileSize.y,
                 g.tileSize.x,
                 g.tileSize.y,
+                (tileId % 16) * g.tileSize.x,
+                Math.floor(tileId / 16) * g.tileSize.y,
               ),
             );
           }

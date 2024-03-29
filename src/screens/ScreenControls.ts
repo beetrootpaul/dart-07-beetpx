@@ -65,9 +65,9 @@ export class ScreenControls implements GameScreen {
     // button shape
     b_.drawSprite(
       spr_(g.assets.mainSpritesheetUrl)(
-        !PauseMenu.isGamePaused ? 35 : 36,
-        12,
         1,
+        12,
+        !PauseMenu.isGamePaused ? 35 : 36,
         12,
       ),
       v_(baseX, baseY),

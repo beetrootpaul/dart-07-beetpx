@@ -141,7 +141,7 @@ export class ScreenSelectMission implements GameScreen {
 
     // draw button shape
     b_.drawSprite(
-      spr_(g.assets.mainSpritesheetUrl)(selected ? 38 : 39, 12, 1, 19),
+      spr_(g.assets.mainSpritesheetUrl)(1, 19, selected ? 38 : 39, 12),
       buttonXy1.sub(1),
       { scaleXy: v_(buttonWh.x + 2, 1) },
     );
@@ -150,10 +150,10 @@ export class ScreenSelectMission implements GameScreen {
     const sy = 80 + (mission - 1) * 16;
     b_.drawSprite(
       spr_(g.assets.mainSpritesheetUrl)(
-        0,
-        selected ? sy : sy - 48,
         buttonWh.x,
         buttonWh.y,
+        0,
+        selected ? sy : sy - 48,
       ),
       buttonXy1,
     );
@@ -194,7 +194,7 @@ export class ScreenSelectMission implements GameScreen {
 
     // button shape
     b_.drawSprite(
-      spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
+      spr_(g.assets.mainSpritesheetUrl)(1, 12, selected ? 35 : 36, 12),
       buttonXy1.sub(1),
       { scaleXy: v_(buttonWh.x + 2, 1) },
     );

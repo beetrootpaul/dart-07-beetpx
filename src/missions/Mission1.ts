@@ -25,7 +25,7 @@ const sspr_ = Sprite.for(g.assets.mission1SpritesheetUrl).static;
 const eb_ = EnemyBullet.factory(sspr_(4, 4, 124, 64), 2);
 
 function t(): number {
-  return b_.frame / g.fps;
+  return b_.frameNumber / g.fps;
 }
 
 export class Mission1 implements Mission {

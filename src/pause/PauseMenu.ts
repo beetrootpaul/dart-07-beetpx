@@ -88,12 +88,12 @@ export class PauseMenu {
   update(): void {
     if (
       b_.wasButtonJustPressed("a") ||
-      (b_.frame === this._lastProcessedFramed + 1 &&
+      (b_.frameNumber === this._lastProcessedFramed + 1 &&
         b_.wasButtonJustPressed("menu"))
     ) {
       this._entries[this._focusedEntry]!.execute();
     }
-    this._lastProcessedFramed = b_.frame;
+    this._lastProcessedFramed = b_.frameNumber;
 
     if (b_.wasButtonJustPressed("up")) {
       this._focusedEntry =

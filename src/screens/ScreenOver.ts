@@ -132,9 +132,9 @@ export class ScreenOver implements GameScreen {
     // button shape
     b_.drawSprite(
       spr_(g.assets.mainSpritesheetUrl)(
-        selected ? (this._isWin ? 37 : 35) : 36,
-        12,
         1,
+        12,
+        selected ? (this._isWin ? 37 : 35) : 36,
         12,
       ),
       v_(x, y),

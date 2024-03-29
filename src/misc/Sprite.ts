@@ -1,10 +1,11 @@
 import {
+  aspr_,
   b_,
+  BpxAnimatedSprite,
   BpxImageUrl,
   BpxSprite,
   BpxVector2d,
   spr_,
-  u_,
   v_,
   v_0_0_,
 } from "@beetpx/beetpx";
@@ -66,7 +67,7 @@ export class StaticSprite implements Sprite {
     spriteY: number,
     fromLeftTopCorner: boolean = false,
   ) {
-    this._sprite = spr_(spritesheetUrl)(spriteX, spriteY, spriteW, spriteH);
+    this._sprite = spr_(spritesheetUrl)(spriteW, spriteH, spriteX, spriteY);
 
     this._drawOffset = fromLeftTopCorner
       ? v_0_0_
@@ -81,7 +82,7 @@ export class StaticSprite implements Sprite {
 }
 
 export class AnimatedSprite implements Sprite {
-  private readonly _sprites: BpxSprite[];
+  private readonly _animatedSprite: BpxAnimatedSprite;
 
   private readonly _drawOffset: BpxVector2d;
 
@@ -98,11 +99,12 @@ export class AnimatedSprite implements Sprite {
   ) {
     this._maxFrame = spriteXs.length;
 
-    this._sprites = u_
-      .range(this._maxFrame)
-      .map((frame) =>
-        spr_(spritesheetUrl)(spriteXs[frame]!, spriteY, spriteW, spriteH),
-      );
+    // TODO: this animates even when the game is paused. Fix it
+    this._animatedSprite = aspr_(spritesheetUrl)(
+      spriteW,
+      spriteH,
+      spriteXs.map((x) => [x, spriteY]),
+    );
 
     this._drawOffset = fromLeftTopCorner
       ? v_0_0_
@@ -115,7 +117,7 @@ export class AnimatedSprite implements Sprite {
 
   draw(xy: BpxVector2d): void {
     b_.drawSprite(
-      this._sprites[this._frame]!,
+      this._animatedSprite.current,
       xy.add(g.gameAreaOffset).add(this._drawOffset),
     );
   }
