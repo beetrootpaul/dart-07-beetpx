@@ -47,7 +47,7 @@ export class ScreenBrp implements GameScreen {
   }
 
   update(): void {
-    if (b_.wasJustPressed("a") || b_.wasJustPressed("b")) {
+    if (b_.wasButtonJustPressed("a") || b_.wasButtonJustPressed("b")) {
       this._skip = true;
     }
 
@@ -90,7 +90,7 @@ export class ScreenBrp implements GameScreen {
             : g.baseSpriteMapping.getMappedColor(color),
         ),
       );
-      b_.sprite(
+      b_.drawSprite(
         this._brpLogo,
         g.viewportSize.sub(this._brpLogo.size().mul(2)).div(2),
         { scaleXy: v_(2, 2) },

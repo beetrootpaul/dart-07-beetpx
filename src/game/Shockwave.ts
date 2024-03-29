@@ -60,12 +60,12 @@ export class Shockwave {
       const dxInner = Math.ceil(
         Math.sqrt(Math.max(0, rInner * rInner - dy * dy)),
       );
-      b_.line(
+      b_.drawLine(
         g.gameAreaOffset.add(v_(this._center.x - dxOuter + 1, sy)),
         v_(dxOuter - dxInner, 1),
         g.snapshotNegative,
       );
-      b_.line(
+      b_.drawLine(
         g.gameAreaOffset.add(v_(this._center.x + dxOuter - 1, sy)),
         v_(dxInner - dxOuter, 1),
         g.snapshotNegative,
@@ -75,7 +75,7 @@ export class Shockwave {
 
   private _drawCircle(r: number): void {
     if (r === u_.clamp(Shockwave._rMin, r, Shockwave._rMax)) {
-      b_.ellipse(
+      b_.drawEllipse(
         g.gameAreaOffset.add(this._center).sub(r),
         v_(r, r).mul(2),
         c.lightGrey,

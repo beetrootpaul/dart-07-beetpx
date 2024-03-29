@@ -36,8 +36,8 @@ export class Score {
   ) {
     for (let i = 0; i < this._text.length; i++) {
       const digitXy = xy.add((vertical ? 0 : i) * 4, (vertical ? i : 0) * 6);
-      b_.print("8", digitXy, blankColor);
-      b_.print(this._text[i]!, digitXy, digitColor);
+      b_.drawText("8", digitXy, blankColor);
+      b_.drawText(this._text[i]!, digitXy, digitColor);
     }
   }
 }

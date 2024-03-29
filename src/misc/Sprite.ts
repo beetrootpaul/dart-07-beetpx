@@ -76,7 +76,7 @@ export class StaticSprite implements Sprite {
   update(): void {}
 
   draw(xy: BpxVector2d): void {
-    b_.sprite(this._sprite, xy.add(g.gameAreaOffset).add(this._drawOffset));
+    b_.drawSprite(this._sprite, xy.add(g.gameAreaOffset).add(this._drawOffset));
   }
 }
 
@@ -114,7 +114,7 @@ export class AnimatedSprite implements Sprite {
   }
 
   draw(xy: BpxVector2d): void {
-    b_.sprite(
+    b_.drawSprite(
       this._sprites[this._frame]!,
       xy.add(g.gameAreaOffset).add(this._drawOffset),
     );

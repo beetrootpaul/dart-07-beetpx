@@ -85,22 +85,28 @@ export class Game {
     this._player = new Player({
       onBulletsSpawned: (bullets) => {
         // TODO: consider not playing a bullet sound at all
-        b_.playSoundOnce(
-          this._tripleShoot
-            ? g.assets.sfxPlayerTripleShoot
-            : g.assets.sfxPlayerShoot,
+        // TODO: why do I need to unmute immediately?
+        b_.unmutePlayback(
+          b_.startPlayback(
+            this._tripleShoot
+              ? g.assets.sfxPlayerTripleShoot
+              : g.assets.sfxPlayerShoot,
+          ),
         );
         this._playerBullets.push(...bullets);
       },
       onShockwaveTriggered: (shockwave) => {
-        b_.playSoundOnce(g.assets.sfxPlayerShockwave);
+        // TODO: why do I need to unmute immediately?
+        b_.unmutePlayback(b_.startPlayback(g.assets.sfxPlayerShockwave));
         this._shockwaves.push(shockwave);
       },
       onDamaged: () => {
-        b_.playSoundOnce(g.assets.sfxDamagePlayer);
+        // TODO: why do I need to unmute immediately?
+        b_.unmutePlayback(b_.startPlayback(g.assets.sfxDamagePlayer));
       },
       onDestroyed: (playerCc) => {
-        b_.playSoundOnce(g.assets.sfxDestroyPlayer);
+        // TODO: why do I need to unmute immediately?
+        b_.unmutePlayback(b_.startPlayback(g.assets.sfxDestroyPlayer));
         this._explosions.push(
           new Explosion({ startXy: playerCc.center, magnitude: playerCc.r }),
           new Explosion({
@@ -161,8 +167,11 @@ export class Game {
       this.score.add(10);
       this._floats.push(new Float({ startXy: xy, score: 10 }));
     }
-    b_.playSoundOnce(
-      hasEffect ? g.assets.sfxPowerupPicked : g.assets.sfxPowerupNoEffect,
+    // TODO: why do I need to unmute immediately?
+    b_.unmutePlayback(
+      b_.startPlayback(
+        hasEffect ? g.assets.sfxPowerupPicked : g.assets.sfxPowerupNoEffect,
+      ),
     );
   }
 
@@ -312,10 +321,12 @@ export class Game {
         }
       },
       onDamaged: () => {
-        b_.playSoundOnce(g.assets.sfxDamageEnemy);
+        // TODO: why do I need to unmute immediately?
+        b_.unmutePlayback(b_.startPlayback(g.assets.sfxDamageEnemy));
       },
       onEnteredNextPhase: (collisionCircles, scoreToAdd) => {
-        b_.playSoundOnce(g.assets.sfxDestroyBossPhase);
+        // TODO: why do I need to unmute immediately?
+        b_.unmutePlayback(b_.startPlayback(g.assets.sfxDestroyBossPhase));
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -332,7 +343,8 @@ export class Game {
         }
       },
       onDestroyed: (collisionCircles, scoreToAdd) => {
-        b_.playSoundOnce(g.assets.sfxDestroyBossFinal1);
+        // TODO: why do I need to unmute immediately?
+        b_.unmutePlayback(b_.startPlayback(g.assets.sfxDestroyBossFinal1));
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -350,7 +362,10 @@ export class Game {
               magnitude: 1.4 * cc.r,
               waitFrames: 4 + Math.random() * 44,
               onStarted: () => {
-                b_.playSoundOnce(g.assets.sfxDestroyBossFinal2);
+                // TODO: why do I need to unmute immediately?
+                b_.unmutePlayback(
+                  b_.startPlayback(g.assets.sfxDestroyBossFinal2),
+                );
               },
             }),
             new Explosion({
@@ -358,7 +373,10 @@ export class Game {
               magnitude: 1.8 * cc.r,
               waitFrames: 12 + Math.random() * 36,
               onStarted: () => {
-                b_.playSoundOnce(g.assets.sfxDestroyBossFinal3);
+                // TODO: why do I need to unmute immediately?
+                b_.unmutePlayback(
+                  b_.startPlayback(g.assets.sfxDestroyBossFinal3),
+                );
               },
             }),
             new Explosion({
@@ -416,15 +434,12 @@ export class Game {
   }
 
   update(): void {
-    this._player?.setMovement(
-      b_.areDirectionsPressedAsVector(),
-      this._fastMovement,
-    );
-    if (b_.isPressed("a")) {
+    this._player?.setMovement(b_.getPressedDirection(), this._fastMovement);
+    if (b_.isButtonPressed("a")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);
     }
     // TODO: __NEXT__ this implementation (combined with a throttle inside the player) can end up with incorrectly used charges
-    if (b_.wasJustPressed("b")) {
+    if (b_.wasButtonJustPressed("b")) {
       if (this._shockwaveCharges > 0 && this._player) {
         this._shockwaveCharges -= 1;
         this._player.triggerShockwave();
@@ -458,7 +473,8 @@ export class Game {
             }
           },
           onDamaged: (mainCollisionCircle) => {
-            b_.playSoundOnce(g.assets.sfxDamagePlayer);
+            // TODO: why do I need to unmute immediately?
+            b_.unmutePlayback(b_.startPlayback(g.assets.sfxDamagePlayer));
             this._explosions.push(
               new Explosion({
                 startXy: mainCollisionCircle.center,
@@ -467,7 +483,8 @@ export class Game {
             );
           },
           onDestroyed: (mainCollisionCircle, scoreToAdd, powerupType) => {
-            b_.playSoundOnce(g.assets.sfxDestroyEnemy);
+            // TODO: why do I need to unmute immediately?
+            b_.unmutePlayback(b_.startPlayback(g.assets.sfxDestroyEnemy));
             this.score.add(scoreToAdd);
             this._floats.push(
               new Float({

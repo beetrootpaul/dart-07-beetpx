@@ -71,19 +71,19 @@ export class Hud {
   }
 
   draw(game: Game): void {
-    b_.rectFilled(
+    b_.drawRectFilled(
       v_(0, 0).sub(Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
       c.black,
     );
-    b_.rectFilled(
+    b_.drawRectFilled(
       g.viewportSize.sub(Hud._barSize).sub(0, Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
       c.black,
     );
     if (b_.debug) {
-      b_.rectFilled(v_(0, 0), Hud._barSize, c.blueGreen);
-      b_.rectFilled(
+      b_.drawRectFilled(v_(0, 0), Hud._barSize, c.blueGreen);
+      b_.drawRectFilled(
         g.viewportSize.sub(Hud._barSize),
         Hud._barSize,
         c.blueGreen,
@@ -111,7 +111,7 @@ export class Hud {
     //
     const missionProgressH = 35;
     const missionProgressX = g.gameAreaOffset.x + xy.x + 5;
-    b_.line(v_(missionProgressX, 4), v_(1, missionProgressH), c.lavender);
+    b_.drawLine(v_(missionProgressX, 4), v_(1, missionProgressH), c.lavender);
     this._shipIndicator.draw(
       xy.sub(-4, 77 + game.missionProgressFraction * (missionProgressH - 3)),
     );
@@ -161,13 +161,13 @@ export class Hud {
       this._bossHealthBarEnd.draw(
         v_(g.gameAreaSize.x - bossHealthBarMargin - 4, bossHealthBarMargin),
       );
-      b_.line(
+      b_.drawLine(
         g.gameAreaOffset.add(bossHealthBarMargin).add(2, 2),
         v_(bossHealthW, 1),
         c.mauve,
       );
       if (bossHealthFraction > 0) {
-        b_.line(
+        b_.drawLine(
           g.gameAreaOffset.add(bossHealthBarMargin).add(2, 1),
           v_(bossHealthFraction * bossHealthW, 1),
           c.red,

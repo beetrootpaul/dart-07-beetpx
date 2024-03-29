@@ -26,6 +26,6 @@ export class PauseMenuEntrySimple implements PauseMenuEntry {
   }
 
   draw(xy: BpxVector2d): void {
-    b_.print(this._text, xy, this._isFocused ? c.white : c.lavender);
+    b_.drawText(this._text, xy, this._isFocused ? c.white : c.lavender);
   }
 }

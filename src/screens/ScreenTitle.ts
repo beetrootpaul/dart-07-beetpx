@@ -162,13 +162,15 @@ export class ScreenTitle implements GameScreen {
   }
 
   update(): void {
-    if (b_.wasJustPressed("up") || b_.wasJustPressed("down")) {
-      b_.playSoundOnce(g.assets.sfxOptionsChange);
+    if (b_.wasButtonJustPressed("up") || b_.wasButtonJustPressed("down")) {
+      // TODO: why do I need to unmute immediately?Ķ
+      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsChange));
       ScreenTitle._playSelected = !ScreenTitle._playSelected;
     }
 
-    if (b_.wasJustPressed("a")) {
-      b_.playSoundOnce(g.assets.sfxOptionsConfirm);
+    if (b_.wasButtonJustPressed("a")) {
+      // TODO: why do I need to unmute immediately?Ķ
+      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsConfirm));
       this._proceed = true;
     }
 
@@ -199,7 +201,7 @@ export class ScreenTitle implements GameScreen {
     tiles.forEach((tilesRow, rowIndex) => {
       tilesRow.forEach((tile, colIndex) => {
         if (tile) {
-          b_.sprite(
+          b_.drawSprite(
             spr_(g.assets.mission2SpritesheetUrl)(
               tile.x * g.tileSize.x,
               tile.y * g.tileSize.y,
@@ -216,7 +218,7 @@ export class ScreenTitle implements GameScreen {
   }
 
   private _drawVersion(baseY: number): void {
-    b_.print(
+    b_.drawText(
       g.gameVersion,
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
       c.mauve,
@@ -232,15 +234,15 @@ export class ScreenTitle implements GameScreen {
           : g.baseSpriteMapping.getMappedColor(color),
       ),
     );
-    b_.sprite(
+    b_.drawSprite(
       spr_(g.assets.mainSpritesheetUrl)(96, 32, 32, 26),
       v_((g.viewportSize.x - 96) / 2, baseY),
     );
-    b_.sprite(
+    b_.drawSprite(
       spr_(g.assets.mainSpritesheetUrl)(96, 58, 32, 26),
       v_((g.viewportSize.x - 96) / 2 + 32, baseY),
     );
-    b_.sprite(
+    b_.drawSprite(
       spr_(g.assets.mainSpritesheetUrl)(96, 84, 32, 26),
       v_((g.viewportSize.x - 96) / 2 + 64, baseY),
     );
@@ -248,7 +250,7 @@ export class ScreenTitle implements GameScreen {
   }
 
   private _drawHighScore(baseY: number): void {
-    b_.print(
+    b_.drawText(
       "high score",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
       c.lightGrey,
@@ -265,14 +267,14 @@ export class ScreenTitle implements GameScreen {
     selected: boolean,
   ): void {
     // button shape
-    b_.sprite(
+    b_.drawSprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
       v_(baseX, baseY),
       { scaleXy: v_(w, 1) },
     );
 
     // button text
-    b_.print(text, v_(baseX + 4, baseY + 3), c.mauve);
+    b_.drawText(text, v_(baseX + 4, baseY + 3), c.mauve);
 
     // "x" press incentive
     if (selected) {
@@ -287,7 +289,7 @@ export class ScreenTitle implements GameScreen {
     b_.clearCanvas(c.darkerBlue);
 
     for (const star of this._stars) {
-      b_.pixel(star.xy, star.color);
+      b_.drawPixel(star.xy, star.color);
     }
 
     this._drawBackground();
@@ -303,7 +305,7 @@ export class ScreenTitle implements GameScreen {
               : g.baseSpriteMapping.getMappedColor(color),
         ),
       );
-      b_.sprite(
+      b_.drawSprite(
         this._brpLogo,
         v_((g.viewportSize.x - this._brpLogo.size().x * 2) / 2, 6),
         { scaleXy: v_(2, 2) },

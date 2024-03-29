@@ -65,7 +65,7 @@ export class SlidingInfo {
     const xy = this._movement.xy[this._roundingFn]();
 
     if (this._text1) {
-      u_.printWithOutline(
+      u_.drawTextWithOutline(
         this._text1,
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, xy.y - 17),
         CurrentMission.m.bgColor,
@@ -74,7 +74,7 @@ export class SlidingInfo {
       );
     }
 
-    u_.printWithOutline(
+    u_.drawTextWithOutline(
       this._text2,
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, xy.y - 8),
       CurrentMission.m.bgColor,
@@ -82,6 +82,6 @@ export class SlidingInfo {
       { centerXy: [true, false] },
     );
 
-    b_.line(xy, v_(g.gameAreaSize.x, 1), this._mainColor);
+    b_.drawLine(xy, v_(g.gameAreaSize.x, 1), this._mainColor);
   }
 }

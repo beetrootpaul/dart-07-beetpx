@@ -23,7 +23,7 @@ export class DebugGameInfo {
   }
 
   preDraw(): void {
-    this._fpsData.history[this._updateCallsData.index] = b_.renderFps;
+    this._fpsData.history[this._updateCallsData.index] = b_.renderingFps;
   }
 
   draw(): void {
@@ -49,7 +49,7 @@ export class DebugGameInfo {
     ) {
       const calls = this._updateCallsData.history[column]!;
       for (let dot = 0; dot < calls; dot++) {
-        b_.pixel(
+        b_.drawPixel(
           v_(1 + column * 2, 1 + dot * 2),
           column === this._updateCallsData.index ? c.white : c.lavender,
         );
@@ -58,12 +58,12 @@ export class DebugGameInfo {
   }
 
   private _drawFps(): void {
-    this._fpsData.history[this._fpsData.index] = b_.renderFps;
+    this._fpsData.history[this._fpsData.index] = b_.renderingFps;
 
     for (let column = 0; column < this._fpsData.history.length; column++) {
       const tensOfFps = Math.round(this._fpsData.history[column]! / 10);
       for (let dot = 0; dot < tensOfFps; dot++) {
-        b_.pixel(
+        b_.drawPixel(
           v_(1 + column * 2, g.viewportSize.y - 2 - dot * 2),
           column === this._fpsData.index
             ? c.white
@@ -79,7 +79,7 @@ export class DebugGameInfo {
   }
 
   private _drawAudioState(): void {
-    const audioState = b_.__internal__audioContext().state;
+    const audioState = b_.getAudioContext().state;
     const audioStateText =
       audioState === "suspended"
         ? "s"
@@ -88,7 +88,7 @@ export class DebugGameInfo {
           : audioState === "closed"
             ? "c"
             : "@";
-    b_.print(
+    b_.drawText(
       audioStateText,
       v_(g.viewportSize.x - u_.measureText(audioStateText)[1].x, 0),
       c.white,

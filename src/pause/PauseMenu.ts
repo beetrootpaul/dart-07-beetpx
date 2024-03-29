@@ -87,19 +87,19 @@ export class PauseMenu {
 
   update(): void {
     if (
-      b_.wasJustPressed("a") ||
-      (b_.frameNumber === this._lastProcessedFramed + 1 &&
-        b_.wasJustPressed("menu"))
+      b_.wasButtonJustPressed("a") ||
+      (b_.frame === this._lastProcessedFramed + 1 &&
+        b_.wasButtonJustPressed("menu"))
     ) {
       this._entries[this._focusedEntry]!.execute();
     }
-    this._lastProcessedFramed = b_.frameNumber;
+    this._lastProcessedFramed = b_.frame;
 
-    if (b_.wasJustPressed("up")) {
+    if (b_.wasButtonJustPressed("up")) {
       this._focusedEntry =
         (this._focusedEntry - 1 + this._entries.length) % this._entries.length;
     }
-    if (b_.wasJustPressed("down")) {
+    if (b_.wasButtonJustPressed("down")) {
       this._focusedEntry = (this._focusedEntry + 1) % this._entries.length;
     }
 
@@ -151,13 +151,13 @@ export class PauseMenu {
 
   private _dimContentBehind(): void {
     b_.takeCanvasSnapshot();
-    b_.rectFilled(v_0_0_, g.viewportSize, g.snapshotDarker);
+    b_.drawRectFilled(v_0_0_, g.viewportSize, g.snapshotDarker);
   }
 
   private _drawMenuBox(xy: BpxVector2d, wh: BpxVector2d): void {
-    b_.rectFilled(xy.sub(2), wh.add(4), c.black);
+    b_.drawRectFilled(xy.sub(2), wh.add(4), c.black);
 
-    b_.rect(xy.sub(1), wh.add(2), c.lightGrey);
+    b_.drawRect(xy.sub(1), wh.add(2), c.lightGrey);
   }
 
   private _drawEntry(
@@ -171,7 +171,7 @@ export class PauseMenu {
     entry.draw(xy);
 
     if (this._focusedEntry === entryIndex) {
-      b_.pixels(PauseMenu._arrowPixels, xy.sub(7, 0), c.white);
+      b_.drawPixels(PauseMenu._arrowPixels, xy.sub(7, 0), c.white);
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? this._cSprite
         : this._cSpritePressed;

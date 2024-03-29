@@ -1,6 +1,6 @@
 import {
   b_,
-  BpxPattern,
+  BpxDrawingPattern,
   BpxPatternColors,
   BpxTimer,
   BpxVector2d,
@@ -73,8 +73,8 @@ export class Explosion {
 
   draw(): void {
     if (this._waitTimer.hasFinished) {
-      b_.setPattern(
-        BpxPattern.from(`
+      b_.setDrawingPattern(
+        BpxDrawingPattern.from(`
           -#-#
           #-#-
           -#-#
@@ -93,14 +93,14 @@ export class Explosion {
           } else if (p.r < this._magnitude * 0.8) {
             color = BpxPatternColors.of(c.peach, c.darkOrange);
           }
-          b_.ellipseFilled(
+          b_.drawEllipseFilled(
             g.gameAreaOffset.add(p.xy).sub(p.r),
             v_(2, 2).mul(p.r),
             color,
           );
         }
       }
-      b_.setPattern(BpxPattern.primaryOnly);
+      b_.setDrawingPattern(BpxDrawingPattern.primaryOnly);
     }
   }
 }

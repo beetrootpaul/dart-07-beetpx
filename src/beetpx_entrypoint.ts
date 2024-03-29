@@ -87,13 +87,13 @@ b_.init(
     pauseMenu = new PauseMenu();
     PauseMenu.isGamePaused = false;
 
-    b_.setRepeating("left", false);
-    b_.setRepeating("right", false);
-    b_.setRepeating("up", false);
-    b_.setRepeating("down", false);
-    b_.setRepeating("a", false);
-    b_.setRepeating("b", false);
-    b_.setRepeating("menu", false);
+    b_.setButtonRepeating("left", false);
+    b_.setButtonRepeating("right", false);
+    b_.setButtonRepeating("up", false);
+    b_.setButtonRepeating("down", false);
+    b_.setButtonRepeating("a", false);
+    b_.setButtonRepeating("b", false);
+    b_.setButtonRepeating("menu", false);
 
     b_.setSpriteColorMapping(g.baseSpriteMapping);
 
@@ -103,7 +103,7 @@ b_.init(
   b_.setOnUpdate(() => {
     debugGameInfo.update();
 
-    if (!PauseMenu.isGamePaused && b_.wasJustPressed("menu")) {
+    if (!PauseMenu.isGamePaused && b_.wasButtonJustPressed("menu")) {
       PauseMenu.isGamePaused = true;
       b_.pauseAudio();
     }

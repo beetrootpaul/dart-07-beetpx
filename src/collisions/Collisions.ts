@@ -40,7 +40,7 @@ export class Collisions {
     cc: CollisionCircle | { collisionCircle: CollisionCircle },
   ): void {
     cc = "collisionCircle" in cc ? cc.collisionCircle : cc;
-    b_.ellipse(
+    b_.drawEllipse(
       g.gameAreaOffset.add(cc.center).sub(cc.r),
       v_(2, 2).mul(cc.r),
       c.darkGreen,

@@ -96,21 +96,24 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   update(): void {
-    if (b_.wasJustPressed("up")) {
-      b_.playSoundOnce(g.assets.sfxOptionsChange);
+    if (b_.wasButtonJustPressed("up")) {
+      // TODO: why do I need to unmute immediately?
+      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsChange));
       ScreenSelectMission._selectedMission =
         (ScreenSelectMission._selectedMission + 4 - 1) % 4;
       this._initShipMovement();
     }
-    if (b_.wasJustPressed("down")) {
-      b_.playSoundOnce(g.assets.sfxOptionsChange);
+    if (b_.wasButtonJustPressed("down")) {
+      // TODO: why do I need to unmute immediately?
+      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsChange));
       ScreenSelectMission._selectedMission =
         (ScreenSelectMission._selectedMission + 1) % 4;
       this._initShipMovement();
     }
 
-    if (b_.wasJustPressed("a")) {
-      b_.playSoundOnce(g.assets.sfxOptionsConfirm);
+    if (b_.wasButtonJustPressed("a")) {
+      // TODO: why do I need to unmute immediately?
+      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsConfirm));
       if (ScreenSelectMission._selectedMission > 0) {
         Music.fadeOutCurrentMusic();
       }
@@ -137,7 +140,7 @@ export class ScreenSelectMission implements GameScreen {
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(mission);
 
     // draw button shape
-    b_.sprite(
+    b_.drawSprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 38 : 39, 12, 1, 19),
       buttonXy1.sub(1),
       { scaleXy: v_(buttonWh.x + 2, 1) },
@@ -145,7 +148,7 @@ export class ScreenSelectMission implements GameScreen {
 
     // draw level sample
     const sy = 80 + (mission - 1) * 16;
-    b_.sprite(
+    b_.drawSprite(
       spr_(g.assets.mainSpritesheetUrl)(
         0,
         selected ? sy : sy - 48,
@@ -157,7 +160,7 @@ export class ScreenSelectMission implements GameScreen {
 
     if (mission > 1) {
       // draw WIP info
-      u_.printWithOutline(
+      u_.drawTextWithOutline(
         "under development",
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, buttonXy1.y + 2),
         selected ? c.white : c.lightGrey,
@@ -167,7 +170,7 @@ export class ScreenSelectMission implements GameScreen {
     }
 
     // draw label
-    b_.print(
+    b_.drawText(
       `mission ${mission}`,
       buttonXy1.add(0, buttonWh.y + 4),
       selected ? c.white : c.lavender,
@@ -175,7 +178,7 @@ export class ScreenSelectMission implements GameScreen {
 
     if (selected) {
       // draw "x" button press incentive and its label
-      b_.print("start", buttonXy1.add(buttonWh).add(-37, 4), c.white);
+      b_.drawText("start", buttonXy1.add(buttonWh).add(-37, 4), c.white);
       const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
         ? this._cSprite
         : this._cSpritePressed;
@@ -190,14 +193,14 @@ export class ScreenSelectMission implements GameScreen {
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(0);
 
     // button shape
-    b_.sprite(
+    b_.drawSprite(
       spr_(g.assets.mainSpritesheetUrl)(selected ? 35 : 36, 12, 1, 12),
       buttonXy1.sub(1),
       { scaleXy: v_(buttonWh.x + 2, 1) },
     );
 
     // button text
-    b_.print("back", buttonXy1.add(3, 2), c.mauve);
+    b_.drawText("back", buttonXy1.add(3, 2), c.mauve);
 
     if (selected) {
       // draw "x" button press incentive

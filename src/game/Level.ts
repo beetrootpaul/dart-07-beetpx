@@ -177,7 +177,7 @@ export class Level {
   }
 
   private _drawTile(tileId: number, distance: number, lane: number): void {
-    b_.sprite(
+    b_.drawSprite(
       this._sprites.get(tileId)!,
       g.gameAreaOffset
         .add(v_(0, g.gameAreaSize.y))

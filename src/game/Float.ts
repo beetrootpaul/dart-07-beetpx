@@ -26,7 +26,7 @@ export class Float {
   }
 
   draw(): void {
-    b_.print(
+    b_.drawText(
       this._scoreText,
       g.gameAreaOffset.add(this._movement.xy),
       c.white,

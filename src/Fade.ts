@@ -1,4 +1,10 @@
-import { b_, BpxPattern, BpxPatternColors, u_, v_ } from "@beetpx/beetpx";
+import {
+  b_,
+  BpxDrawingPattern,
+  BpxPatternColors,
+  u_,
+  v_,
+} from "@beetpx/beetpx";
 import { c, g } from "./globals";
 import { Movement } from "./movement/Movement";
 import { MovementFixed } from "./movement/MovementFixed";
@@ -13,68 +19,68 @@ export class Fade {
   private readonly _movement: Movement;
 
   // from fully transparent to fully black
-  private readonly patterns: BpxPattern[] = [
-    BpxPattern.from(`
+  private readonly patterns: BpxDrawingPattern[] = [
+    BpxDrawingPattern.from(`
       ----
       ----
       ----
       ----
     `),
-    BpxPattern.from(`
+    BpxDrawingPattern.from(`
       ----
       ----
       --#-
       ----
     `),
-    BpxPattern.from(`
+    BpxDrawingPattern.from(`
       #---
       ----
       --#-
       ----
     `),
-    BpxPattern.from(`
+    BpxDrawingPattern.from(`
       #-#-
       ----
       #-#-
       ----
     `),
-    BpxPattern.from(`
+    BpxDrawingPattern.from(`
       #-#-
       -#--
       #-#-
       ---#
     `),
-    BpxPattern.from(`
+    BpxDrawingPattern.from(`
       #-#-
       -#-#
       #-#-
       -#-#
     `),
-    BpxPattern.from(`
+    BpxDrawingPattern.from(`
       #-#-
       -###
       #-#-
       ##-#
     `),
-    BpxPattern.from(`
+    BpxDrawingPattern.from(`
       #-#-
       ####
       #-#-
       ####
     `),
-    BpxPattern.from(`
+    BpxDrawingPattern.from(`
       ###-
       ####
       #-##
       ####
     `),
-    BpxPattern.from(`
+    BpxDrawingPattern.from(`
       ####
       ####
       #-##
       ####
     `),
-    BpxPattern.from(`
+    BpxDrawingPattern.from(`
       ####
       ####
       ####
@@ -133,13 +139,13 @@ export class Fade {
           this._direction === "in" ? i : this.patterns.length - i - 1
         ]!;
 
-      b_.setPattern(pattern);
-      b_.rectFilled(
+      b_.setDrawingPattern(pattern);
+      b_.drawRectFilled(
         v_(0, y),
         v_(g.viewportSize.x, stripH),
         BpxPatternColors.of(c.black, null),
       );
     }
-    b_.setPattern(BpxPattern.primaryOnly);
+    b_.setDrawingPattern(BpxDrawingPattern.primaryOnly);
   }
 }

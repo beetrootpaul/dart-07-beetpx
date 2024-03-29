@@ -64,7 +64,8 @@ export class ScreenOver implements GameScreen {
     this._fadeOut = new Fade("out", { fadeFrames: 30 });
 
     if (params.isWin) {
-      b_.playSoundOnce(g.assets.sfxGameWin);
+      // TODO: why do I need to unmute immediately?
+      b_.unmutePlayback(b_.startPlayback(g.assets.sfxGameWin));
     }
 
     const currentScore = this._game.score.rawValue;
@@ -103,14 +104,16 @@ export class ScreenOver implements GameScreen {
 
   update(): void {
     if (!this._isWin) {
-      if (b_.wasJustPressed("up") || b_.wasJustPressed("down")) {
-        b_.playSoundOnce(g.assets.sfxOptionsChange);
+      if (b_.wasButtonJustPressed("up") || b_.wasButtonJustPressed("down")) {
+        // TODO: why do I need to unmute immediately?
+        b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsChange));
         this._retry = !this._retry;
       }
     }
 
-    if (b_.wasJustPressed("a")) {
-      b_.playSoundOnce(g.assets.sfxOptionsConfirm);
+    if (b_.wasButtonJustPressed("a")) {
+      // TODO: why do I need to unmute immediately?
+      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsConfirm));
       Music.fadeOutCurrentMusic();
       this._proceed = true;
     }
@@ -127,7 +130,7 @@ export class ScreenOver implements GameScreen {
     const x = 24;
 
     // button shape
-    b_.sprite(
+    b_.drawSprite(
       spr_(g.assets.mainSpritesheetUrl)(
         selected ? (this._isWin ? 37 : 35) : 36,
         12,
@@ -139,7 +142,7 @@ export class ScreenOver implements GameScreen {
     );
 
     // button text
-    b_.print(text, v_(x + 4, y + 3), this._isWin ? c.blueGreen : c.mauve);
+    b_.drawText(text, v_(x + 4, y + 3), this._isWin ? c.blueGreen : c.mauve);
 
     // "x" press incentive
     if (selected) {
@@ -158,7 +161,7 @@ export class ScreenOver implements GameScreen {
     b_.clearCanvas(this._isWin ? c.darkGreen : c.darkerPurple);
 
     // heading
-    b_.print(
+    b_.drawText(
       this._isWin ? "you made it!" : "game over",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, 22),
       this._isWin ? c.blueGreen : c.red,
@@ -167,7 +170,7 @@ export class ScreenOver implements GameScreen {
 
     // score
     const scoreBaseY = this._gotHighScore ? 42 : 47;
-    b_.print(
+    b_.drawText(
       "your score",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY),
       c.white,
@@ -180,7 +183,7 @@ export class ScreenOver implements GameScreen {
       false,
     );
     if (this._gotHighScore) {
-      b_.print(
+      b_.drawText(
         "new high score!",
         g.gameAreaOffset.add(g.gameAreaSize.x / 2, scoreBaseY + 20),
         this._isWin ? c.peach : c.darkOrange,

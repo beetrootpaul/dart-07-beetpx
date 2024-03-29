@@ -80,7 +80,7 @@ export class Mission2 implements Mission {
 
   levelBgDraw(): void {
     for (const star of this._stars) {
-      b_.pixel(g.gameAreaOffset.add(star.xy), star.color);
+      b_.drawPixel(g.gameAreaOffset.add(star.xy), star.color);
     }
   }
 
@@ -112,7 +112,8 @@ export class Mission2 implements Mission {
           }),
           bulletFireTimer: timer_(40),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            // TODO: why do I need to unmute immediately?
+            b_.unmutePlayback(b_.startPlayback(g.assets.sfxEnemyMultiShoot));
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -164,7 +165,8 @@ export class Mission2 implements Mission {
           score: 1,
           bulletFireTimer: timer_(80),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            b_.playSoundOnce(g.assets.sfxEnemyMultiShoot);
+            // TODO: why do I need to unmute immediately?
+            b_.unmutePlayback(b_.startPlayback(g.assets.sfxEnemyMultiShoot));
             return [
               eb_(
                 MovementLine.of({
