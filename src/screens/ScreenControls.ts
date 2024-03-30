@@ -51,6 +51,10 @@ export class ScreenControls implements GameScreen {
     }
   }
 
+  pauseAnimations(): void {}
+
+  resumeAnimations(): void {}
+
   update(): void {
     if (b_.wasButtonJustPressed("a")) {
       b_.startPlayback(g.assets.sfxOptionsConfirm);

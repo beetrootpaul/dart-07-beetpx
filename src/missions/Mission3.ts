@@ -99,6 +99,9 @@ export class Mission3 implements Mission {
     }
   }
 
+  pauseAnimations(): void {}
+  resumeAnimations(): void {}
+
   levelBgUpdate(): void {
     this._particles = this._particles.filter(
       (p) => p.xy.y <= g.gameAreaSize.y + g.tileSize.y,

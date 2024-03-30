@@ -101,6 +101,10 @@ export class ScreenOver implements GameScreen {
     return;
   }
 
+  pauseAnimations(): void {}
+
+  resumeAnimations(): void {}
+
   update(): void {
     if (!this._isWin) {
       if (b_.wasButtonJustPressed("up") || b_.wasButtonJustPressed("down")) {

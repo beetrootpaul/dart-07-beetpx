@@ -111,12 +111,14 @@ b_.init(
     b_.setCameraXy(v_0_0_);
 
     if (PauseMenu.isGamePaused) {
+      currentScreen?.pauseAnimations();
       pauseMenu?.update();
     } else {
       nextScreen = currentScreen?.preUpdate();
       if (nextScreen) {
         currentScreen = nextScreen;
       }
+      currentScreen?.resumeAnimations();
       currentScreen?.update();
     }
   });

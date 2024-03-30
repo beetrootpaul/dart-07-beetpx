@@ -49,7 +49,9 @@ export abstract class Sprite {
     };
   }
 
-  abstract update(): void;
+  abstract pause(): void;
+
+  abstract resume(): void;
 
   abstract draw(xy: BpxVector2d): void;
 }
@@ -74,7 +76,9 @@ export class StaticSprite implements Sprite {
       : v_(-spriteW / 2, -spriteH / 2);
   }
 
-  update(): void {}
+  pause(): void {}
+
+  resume(): void {}
 
   draw(xy: BpxVector2d): void {
     b_.drawSprite(this._sprite, xy.add(g.gameAreaOffset).add(this._drawOffset));
@@ -86,9 +90,6 @@ export class AnimatedSprite implements Sprite {
 
   private readonly _drawOffset: BpxVector2d;
 
-  private _frame: number = 0;
-  private readonly _maxFrame: number;
-
   constructor(
     spritesheetUrl: BpxImageUrl,
     spriteW: number,
@@ -97,9 +98,6 @@ export class AnimatedSprite implements Sprite {
     spriteY: number,
     fromLeftTopCorner: boolean = false,
   ) {
-    this._maxFrame = spriteXs.length;
-
-    // TODO: this animates even when the game is paused. Fix it
     this._animatedSprite = aspr_(spritesheetUrl)(
       spriteW,
       spriteH,
@@ -111,8 +109,12 @@ export class AnimatedSprite implements Sprite {
       : v_(-spriteW / 2, -spriteH / 2);
   }
 
-  update(): void {
-    this._frame = (this._frame + 1) % this._maxFrame;
+  pause(): void {
+    this._animatedSprite.pause();
+  }
+
+  resume(): void {
+    this._animatedSprite.resume();
   }
 
   draw(xy: BpxVector2d): void {

@@ -68,6 +68,9 @@ export class Mission2 implements Mission {
     }
   }
 
+  pauseAnimations(): void {}
+  resumeAnimations(): void {}
+
   levelBgUpdate(): void {
     for (const star of this._stars) {
       star.xy = star.xy.add(0, star.speed);

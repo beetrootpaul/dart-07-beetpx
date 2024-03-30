@@ -415,6 +415,16 @@ export class Game {
     this._floats = this._floats.filter((f) => !f.hasFinished);
   }
 
+  pauseAnimations(): void {
+    this._level.pauseAnimations();
+    this._player?.pauseAnimations();
+  }
+
+  resumeAnimations(): void {
+    this._level.resumeAnimations();
+    this._player?.resumeAnimations();
+  }
+
   update(): void {
     this._player?.setMovement(b_.getPressedDirection(), this._fastMovement);
     if (b_.isButtonPressed("a")) {

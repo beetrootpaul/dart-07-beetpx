@@ -55,6 +55,14 @@ export class ScreenMissionBoss implements GameScreen {
     }
   }
 
+  pauseAnimations(): void {
+    this._game.pauseAnimations();
+  }
+
+  resumeAnimations(): void {
+    this._game.resumeAnimations();
+  }
+
   update(): void {
     if (this._musicStartTimer?.hasJustFinished) {
       this._musicStartTimer = null;

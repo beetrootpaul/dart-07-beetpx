@@ -37,6 +37,14 @@ export class ScreenMissionDefeat implements GameScreen {
     }
   }
 
+  pauseAnimations(): void {
+    this._game.pauseAnimations();
+  }
+
+  resumeAnimations(): void {
+    this._game.resumeAnimations();
+  }
+
   update(): void {
     this._game.update();
     this._hud.update();

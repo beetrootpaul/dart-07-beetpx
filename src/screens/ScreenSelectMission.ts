@@ -76,6 +76,16 @@ export class ScreenSelectMission implements GameScreen {
     }
   }
 
+  pauseAnimations(): void {
+    this._shipSprite.pause();
+    this._jetSprite.pause();
+  }
+
+  resumeAnimations(): void {
+    this._shipSprite.resume();
+    this._jetSprite.resume();
+  }
+
   private _initShipMovement(): void {
     const [buttonXy, buttonWh] = this._missionButtonXyWh(
       ScreenSelectMission._selectedMission,
@@ -116,9 +126,6 @@ export class ScreenSelectMission implements GameScreen {
       }
       this._proceed = true;
     }
-
-    this._shipSprite.update();
-    this._jetSprite.update();
 
     if (this._proceed) {
       if (this._shipMovement?.hasFinished) {

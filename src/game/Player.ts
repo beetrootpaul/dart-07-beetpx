@@ -165,6 +165,14 @@ export class Player {
     }
   }
 
+  pauseAnimations(): void {
+    this._jetSprite?.pause();
+  }
+
+  resumeAnimations(): void {
+    this._jetSprite?.resume();
+  }
+
   update(): void {
     if (this._invincibleAfterDamageTimer?.hasFinished) {
       this._invincibleAfterDamageTimer = null;
@@ -173,8 +181,6 @@ export class Player {
 
     this._onBulletsSpawned.update();
     this._onShockwaveTriggered.update();
-
-    this._jetSprite?.update();
   }
 
   draw(): void {

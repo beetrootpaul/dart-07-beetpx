@@ -46,6 +46,10 @@ export class ScreenBrp implements GameScreen {
     }
   }
 
+  pauseAnimations(): void {}
+
+  resumeAnimations(): void {}
+
   update(): void {
     if (b_.wasButtonJustPressed("a") || b_.wasButtonJustPressed("b")) {
       this._skip = true;

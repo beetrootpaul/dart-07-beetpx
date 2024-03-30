@@ -107,6 +107,13 @@ export class Level {
     return result;
   }
 
+  pauseAnimations(): void {
+    CurrentMission.m.pauseAnimations();
+  }
+  resumeAnimations(): void {
+    CurrentMission.m.resumeAnimations();
+  }
+
   update(): void {
     CurrentMission.m.levelBgUpdate();
 

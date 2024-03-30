@@ -161,6 +161,10 @@ export class ScreenTitle implements GameScreen {
     }
   }
 
+  pauseAnimations(): void {}
+
+  resumeAnimations(): void {}
+
   update(): void {
     if (b_.wasButtonJustPressed("up") || b_.wasButtonJustPressed("down")) {
       b_.startPlayback(g.assets.sfxOptionsChange);

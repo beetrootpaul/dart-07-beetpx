@@ -66,10 +66,16 @@ export class Mission1 implements Mission {
 
   private _waveTileOffsetY: number = 0;
 
+  pauseAnimations(): void {
+    this._waveTile.pause();
+  }
+  resumeAnimations(): void {
+    this._waveTile.resume();
+  }
+
   levelBgUpdate(): void {
     this._waveTileOffsetY =
       (this._waveTileOffsetY + this.scrollPerFrame) % g.tileSize.y;
-    this._waveTile.update();
   }
 
   levelBgDraw(): void {
