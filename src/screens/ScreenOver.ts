@@ -64,8 +64,7 @@ export class ScreenOver implements GameScreen {
     this._fadeOut = new Fade("out", { fadeFrames: 30 });
 
     if (params.isWin) {
-      // TODO: why do I need to unmute immediately?
-      b_.unmutePlayback(b_.startPlayback(g.assets.sfxGameWin));
+      b_.startPlayback(g.assets.sfxGameWin);
     }
 
     const currentScore = this._game.score.rawValue;
@@ -105,15 +104,13 @@ export class ScreenOver implements GameScreen {
   update(): void {
     if (!this._isWin) {
       if (b_.wasButtonJustPressed("up") || b_.wasButtonJustPressed("down")) {
-        // TODO: why do I need to unmute immediately?
-        b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsChange));
+        b_.startPlayback(g.assets.sfxOptionsChange);
         this._retry = !this._retry;
       }
     }
 
     if (b_.wasButtonJustPressed("a")) {
-      // TODO: why do I need to unmute immediately?
-      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsConfirm));
+      b_.startPlayback(g.assets.sfxOptionsConfirm);
       Music.fadeOutCurrentMusic();
       this._proceed = true;
     }

@@ -97,23 +97,20 @@ export class ScreenSelectMission implements GameScreen {
 
   update(): void {
     if (b_.wasButtonJustPressed("up")) {
-      // TODO: why do I need to unmute immediately?
-      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsChange));
+      b_.startPlayback(g.assets.sfxOptionsChange);
       ScreenSelectMission._selectedMission =
         (ScreenSelectMission._selectedMission + 4 - 1) % 4;
       this._initShipMovement();
     }
     if (b_.wasButtonJustPressed("down")) {
-      // TODO: why do I need to unmute immediately?
-      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsChange));
+      b_.startPlayback(g.assets.sfxOptionsChange);
       ScreenSelectMission._selectedMission =
         (ScreenSelectMission._selectedMission + 1) % 4;
       this._initShipMovement();
     }
 
     if (b_.wasButtonJustPressed("a")) {
-      // TODO: why do I need to unmute immediately?
-      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsConfirm));
+      b_.startPlayback(g.assets.sfxOptionsConfirm);
       if (ScreenSelectMission._selectedMission > 0) {
         Music.fadeOutCurrentMusic();
       }

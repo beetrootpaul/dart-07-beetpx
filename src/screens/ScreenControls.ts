@@ -53,8 +53,7 @@ export class ScreenControls implements GameScreen {
 
   update(): void {
     if (b_.wasButtonJustPressed("a")) {
-      // TODO: why do I need to unmute immediately?
-      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsConfirm));
+      b_.startPlayback(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }
   }

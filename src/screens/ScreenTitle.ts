@@ -163,14 +163,12 @@ export class ScreenTitle implements GameScreen {
 
   update(): void {
     if (b_.wasButtonJustPressed("up") || b_.wasButtonJustPressed("down")) {
-      // TODO: why do I need to unmute immediately?Ķ
-      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsChange));
+      b_.startPlayback(g.assets.sfxOptionsChange);
       ScreenTitle._playSelected = !ScreenTitle._playSelected;
     }
 
     if (b_.wasButtonJustPressed("a")) {
-      // TODO: why do I need to unmute immediately?Ķ
-      b_.unmutePlayback(b_.startPlayback(g.assets.sfxOptionsConfirm));
+      b_.startPlayback(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }
 

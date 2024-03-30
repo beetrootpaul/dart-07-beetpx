@@ -85,28 +85,22 @@ export class Game {
     this._player = new Player({
       onBulletsSpawned: (bullets) => {
         // TODO: consider not playing a bullet sound at all
-        // TODO: why do I need to unmute immediately?
-        b_.unmutePlayback(
-          b_.startPlayback(
-            this._tripleShoot
-              ? g.assets.sfxPlayerTripleShoot
-              : g.assets.sfxPlayerShoot,
-          ),
+        b_.startPlayback(
+          this._tripleShoot
+            ? g.assets.sfxPlayerTripleShoot
+            : g.assets.sfxPlayerShoot,
         );
         this._playerBullets.push(...bullets);
       },
       onShockwaveTriggered: (shockwave) => {
-        // TODO: why do I need to unmute immediately?
-        b_.unmutePlayback(b_.startPlayback(g.assets.sfxPlayerShockwave));
+        b_.startPlayback(g.assets.sfxPlayerShockwave);
         this._shockwaves.push(shockwave);
       },
       onDamaged: () => {
-        // TODO: why do I need to unmute immediately?
-        b_.unmutePlayback(b_.startPlayback(g.assets.sfxDamagePlayer));
+        b_.startPlayback(g.assets.sfxDamagePlayer);
       },
       onDestroyed: (playerCc) => {
-        // TODO: why do I need to unmute immediately?
-        b_.unmutePlayback(b_.startPlayback(g.assets.sfxDestroyPlayer));
+        b_.startPlayback(g.assets.sfxDestroyPlayer);
         this._explosions.push(
           new Explosion({ startXy: playerCc.center, magnitude: playerCc.r }),
           new Explosion({
@@ -167,11 +161,8 @@ export class Game {
       this.score.add(10);
       this._floats.push(new Float({ startXy: xy, score: 10 }));
     }
-    // TODO: why do I need to unmute immediately?
-    b_.unmutePlayback(
-      b_.startPlayback(
-        hasEffect ? g.assets.sfxPowerupPicked : g.assets.sfxPowerupNoEffect,
-      ),
+    b_.startPlayback(
+      hasEffect ? g.assets.sfxPowerupPicked : g.assets.sfxPowerupNoEffect,
     );
   }
 
@@ -321,12 +312,10 @@ export class Game {
         }
       },
       onDamaged: () => {
-        // TODO: why do I need to unmute immediately?
-        b_.unmutePlayback(b_.startPlayback(g.assets.sfxDamageEnemy));
+        b_.startPlayback(g.assets.sfxDamageEnemy);
       },
       onEnteredNextPhase: (collisionCircles, scoreToAdd) => {
-        // TODO: why do I need to unmute immediately?
-        b_.unmutePlayback(b_.startPlayback(g.assets.sfxDestroyBossPhase));
+        b_.startPlayback(g.assets.sfxDestroyBossPhase);
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -343,8 +332,7 @@ export class Game {
         }
       },
       onDestroyed: (collisionCircles, scoreToAdd) => {
-        // TODO: why do I need to unmute immediately?
-        b_.unmutePlayback(b_.startPlayback(g.assets.sfxDestroyBossFinal1));
+        b_.startPlayback(g.assets.sfxDestroyBossFinal1);
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -362,10 +350,7 @@ export class Game {
               magnitude: 1.4 * cc.r,
               waitFrames: 4 + Math.random() * 44,
               onStarted: () => {
-                // TODO: why do I need to unmute immediately?
-                b_.unmutePlayback(
-                  b_.startPlayback(g.assets.sfxDestroyBossFinal2),
-                );
+                b_.startPlayback(g.assets.sfxDestroyBossFinal2);
               },
             }),
             new Explosion({
@@ -373,10 +358,7 @@ export class Game {
               magnitude: 1.8 * cc.r,
               waitFrames: 12 + Math.random() * 36,
               onStarted: () => {
-                // TODO: why do I need to unmute immediately?
-                b_.unmutePlayback(
-                  b_.startPlayback(g.assets.sfxDestroyBossFinal3),
-                );
+                b_.startPlayback(g.assets.sfxDestroyBossFinal3);
               },
             }),
             new Explosion({
@@ -473,8 +455,7 @@ export class Game {
             }
           },
           onDamaged: (mainCollisionCircle) => {
-            // TODO: why do I need to unmute immediately?
-            b_.unmutePlayback(b_.startPlayback(g.assets.sfxDamagePlayer));
+            b_.startPlayback(g.assets.sfxDamagePlayer);
             this._explosions.push(
               new Explosion({
                 startXy: mainCollisionCircle.center,
@@ -483,8 +464,7 @@ export class Game {
             );
           },
           onDestroyed: (mainCollisionCircle, scoreToAdd, powerupType) => {
-            // TODO: why do I need to unmute immediately?
-            b_.unmutePlayback(b_.startPlayback(g.assets.sfxDestroyEnemy));
+            b_.startPlayback(g.assets.sfxDestroyEnemy);
             this.score.add(scoreToAdd);
             this._floats.push(
               new Float({

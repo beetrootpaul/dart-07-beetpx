@@ -112,8 +112,7 @@ export class Mission2 implements Mission {
           }),
           bulletFireTimer: timer_(40),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            // TODO: why do I need to unmute immediately?
-            b_.unmutePlayback(b_.startPlayback(g.assets.sfxEnemyMultiShoot));
+            b_.startPlayback(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -165,8 +164,7 @@ export class Mission2 implements Mission {
           score: 1,
           bulletFireTimer: timer_(80),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            // TODO: why do I need to unmute immediately?
-            b_.unmutePlayback(b_.startPlayback(g.assets.sfxEnemyMultiShoot));
+            b_.startPlayback(g.assets.sfxEnemyMultiShoot);
             return [
               eb_(
                 MovementLine.of({
