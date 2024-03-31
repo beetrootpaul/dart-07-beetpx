@@ -12,13 +12,11 @@ let pauseMenu: PauseMenu | undefined;
 
 const debugGameInfo: DebugGameInfo = new DebugGameInfo();
 
-b_.init(
-  {
-    gameCanvasSize: "128x128",
-    desiredUpdateFps: g.fps,
-    debugFeatures: !BEETPX__IS_PROD,
-  },
-  {
+b_.init({
+  gameCanvasSize: "128x128",
+  fixedTimestep: "60fps",
+  debugMode: !BEETPX__IS_PROD,
+  assets: {
     images: [
       { url: g.assets.mainSpritesheetUrl },
       { url: g.assets.mission1SpritesheetUrl },
@@ -78,7 +76,7 @@ b_.init(
     ],
     jsons: [{ url: g.assets.levelsJson }],
   },
-).then(async ({ startGame }) => {
+}).then(async ({ startGame }) => {
   b_.setOnStarted(() => {
     // Better set font first, because other constructors might rely
     //   on it when calculating text size.
