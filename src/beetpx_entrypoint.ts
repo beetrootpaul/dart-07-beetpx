@@ -153,6 +153,6 @@ b_.init(
 // TODO: balancing: mission 2: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 // TODO: balancing: mission 3: enemy types, health, speed, their bullets: timer, speed, amount, angles, timer, SFX or not
 
-// TODO: __NEXT__ adapt button images to whatever input method was used last
+// TODO: adapt button images to whatever input method was used last
 
-// TODO: __NEXT__ input tester on first start, then from the menu
+// TODO: input tester on first start, then from the menu

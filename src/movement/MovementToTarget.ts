@@ -30,7 +30,7 @@ export class MovementToTarget implements Movement {
   private readonly _targetXy: BpxVector2d;
   private readonly _timer: BpxTimer;
   private readonly _easingFn: BpxEasingFn;
-  private _onFinished: (() => void) | undefined;
+  private readonly _onFinished: (() => void) | undefined;
   private _xy: BpxVector2d;
   private _speed: BpxVector2d;
 
@@ -82,11 +82,10 @@ export class MovementToTarget implements Movement {
   update(): void {
     this._speed = this._nextXy().sub(this._xy);
     this._xy = this._xy.add(this._speed);
-    if (this._onFinished && this._timer.hasFinished) {
+    if (this._onFinished && this._timer.hasJustFinished) {
       this._onFinished();
-      this._onFinished = undefined;
     }
   }
 }
 
-// TODO: __NEXT__ tests for this movement
+// TODO: tests for this movement

@@ -70,7 +70,7 @@ export class MovementLine implements Movement {
 
   update(): void {
     this._xy = this._xy.add(this._speed);
-    if (this._timer?.hasFinished) {
+    if (this._timer?.hasJustFinished) {
       this._speed = v_0_0_;
     }
   }

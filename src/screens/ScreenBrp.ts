@@ -3,8 +3,10 @@ import {
   BpxSprite,
   BpxSpriteColorMapping,
   BpxTimer,
+  BpxTimerSequence,
   spr_,
   timer_,
+  timerSeq_,
   v_,
 } from "@beetpx/beetpx";
 import { c, g } from "../globals";
@@ -22,9 +24,9 @@ export class ScreenBrp implements GameScreen {
   );
 
   private readonly _screenTimer: BpxTimer;
-  private readonly _fadeInTimer: BpxTimer;
-  private readonly _presentTimer: BpxTimer;
-  private readonly _fadeOutTimer: BpxTimer;
+  private readonly _brpPresentingTimer: BpxTimerSequence<
+    "fade_in" | "present" | "fade_out"
+  >;
 
   private _skip: boolean = false;
 
@@ -33,9 +35,13 @@ export class ScreenBrp implements GameScreen {
     const fadeFrames = 24;
 
     this._screenTimer = timer_(screenFrames);
-    this._fadeInTimer = timer_(fadeFrames);
-    this._presentTimer = timer_(screenFrames - 2 * fadeFrames - 20);
-    this._fadeOutTimer = timer_(fadeFrames);
+    this._brpPresentingTimer = timerSeq_({
+      intro: [
+        ["fade_in", fadeFrames],
+        ["present", screenFrames - 2 * fadeFrames - 20],
+        ["fade_out", fadeFrames],
+      ],
+    });
 
     Music.playTitleMusic({ withIntro: true });
   }
@@ -48,39 +54,17 @@ export class ScreenBrp implements GameScreen {
 
   pauseAnimationsAndTimers(): void {
     this._screenTimer.pause();
-    this._fadeInTimer.pause();
-    this._presentTimer.pause();
-    this._fadeOutTimer.pause();
+    this._brpPresentingTimer.pause();
   }
 
   resumeAnimationsAndTimers(): void {
     this._screenTimer.resume();
-    if (!this._fadeInTimer.hasFinished) {
-      this._fadeInTimer.resume();
-    } else if (!this._presentTimer.hasFinished) {
-      this._presentTimer.resume();
-    } else {
-      this._fadeOutTimer.resume();
-    }
+    this._brpPresentingTimer.resume();
   }
 
   update(): void {
     if (b_.wasButtonJustPressed("a") || b_.wasButtonJustPressed("b")) {
       this._skip = true;
-    }
-
-    if (!this._fadeInTimer.hasFinished) {
-      this._presentTimer.pause();
-      this._fadeOutTimer.pause();
-      this._fadeInTimer.resume();
-    } else if (!this._presentTimer.hasFinished) {
-      this._fadeInTimer.pause();
-      this._fadeOutTimer.pause();
-      this._presentTimer.resume();
-    } else {
-      this._fadeInTimer.pause();
-      this._presentTimer.pause();
-      this._fadeOutTimer.resume();
     }
   }
 
@@ -88,23 +72,27 @@ export class ScreenBrp implements GameScreen {
     b_.clearCanvas(c.black);
 
     let logoColor = c.peach;
-    if (this._fadeInTimer.progress < 0.33) {
-      logoColor = c.darkerPurple;
-    } else if (this._fadeInTimer.progress < 0.66) {
-      logoColor = c.mauve;
-    } else if (this._fadeInTimer.progress < 1) {
-      logoColor = c.lavender;
-    } else if (this._presentTimer.progress < 1) {
+    if (this._brpPresentingTimer.currentPhase === "fade_in") {
+      if (this._brpPresentingTimer.progress < 0.33) {
+        logoColor = c.darkerPurple;
+      } else if (this._brpPresentingTimer.progress < 0.66) {
+        logoColor = c.mauve;
+      } else {
+        logoColor = c.lavender;
+      }
+    } else if (this._brpPresentingTimer.currentPhase === "present") {
       // do nothing
-    } else if (this._fadeOutTimer.progress < 0.33) {
-      logoColor = c.lavender;
-    } else if (this._fadeOutTimer.progress < 0.66) {
-      logoColor = c.mauve;
     } else {
-      logoColor = c.darkerPurple;
+      if (this._brpPresentingTimer.progress < 0.33) {
+        logoColor = c.lavender;
+      } else if (this._brpPresentingTimer.progress < 0.33) {
+        logoColor = c.mauve;
+      } else {
+        logoColor = c.darkerPurple;
+      }
     }
 
-    if (!this._fadeOutTimer.hasFinished) {
+    if (!this._brpPresentingTimer.hasFinishedOverall) {
       const prevMapping = b_.setSpriteColorMapping(
         BpxSpriteColorMapping.of((color) =>
           color?.cssHex === Pico8Colors.lemon.cssHex
