@@ -161,9 +161,13 @@ export class ScreenTitle implements GameScreen {
     }
   }
 
-  pauseAnimations(): void {}
+  pauseAnimationsAndTimers(): void {
+    this._fadeIn?.pause();
+  }
 
-  resumeAnimations(): void {}
+  resumeAnimationsAndTimers(): void {
+    this._fadeIn?.resume();
+  }
 
   update(): void {
     if (b_.wasButtonJustPressed("up") || b_.wasButtonJustPressed("down")) {

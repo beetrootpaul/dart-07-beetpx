@@ -51,9 +51,9 @@ export class ScreenControls implements GameScreen {
     }
   }
 
-  pauseAnimations(): void {}
+  pauseAnimationsAndTimers(): void {}
 
-  resumeAnimations(): void {}
+  resumeAnimationsAndTimers(): void {}
 
   update(): void {
     if (b_.wasButtonJustPressed("a")) {

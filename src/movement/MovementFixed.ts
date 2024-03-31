@@ -27,7 +27,13 @@ export class MovementFixed implements Movement {
     return this._timer ? this._timer.hasFinished : false;
   }
 
-  update(): void {
-    this._timer?.update();
+  pause(): void {
+    this._timer?.pause();
   }
+
+  resume(): void {
+    this._timer?.resume();
+  }
+
+  update(): void {}
 }

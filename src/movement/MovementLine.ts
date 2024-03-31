@@ -60,9 +60,16 @@ export class MovementLine implements Movement {
     return this._timer ? this._timer.hasFinished : false;
   }
 
+  pause(): void {
+    this._timer?.pause();
+  }
+
+  resume(): void {
+    this._timer?.resume();
+  }
+
   update(): void {
     this._xy = this._xy.add(this._speed);
-    this._timer?.update();
     if (this._timer?.hasFinished) {
       this._speed = v_0_0_;
     }

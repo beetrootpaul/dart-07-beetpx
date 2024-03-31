@@ -189,7 +189,7 @@ export class Mission1 implements Mission {
             ageDivisor: 120,
             magnitude: 14,
           }),
-          bulletFireTimer: timer_(40),
+          bulletFireTimer: timer_(40, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
             b_.startPlayback(g.assets.sfxEnemyShoot);
             return [
@@ -251,7 +251,7 @@ export class Mission1 implements Mission {
               easingFn: BpxEasing.inQuartic,
             }),
           ]),
-          bulletFireTimer: timer_(33),
+          bulletFireTimer: timer_(33, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
             b_.startPlayback(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
@@ -297,7 +297,7 @@ export class Mission1 implements Mission {
               easingFn: BpxEasing.inQuadratic,
             }),
           ]),
-          bulletFireTimer: timer_(60),
+          bulletFireTimer: timer_(60, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
             b_.startPlayback(g.assets.sfxEnemyShoot);
             const enemyXy = enemyMovement.xy;
@@ -336,7 +336,7 @@ export class Mission1 implements Mission {
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          bulletFireTimer: timer_(60),
+          bulletFireTimer: timer_(60, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
             b_.startPlayback(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
@@ -374,7 +374,7 @@ export class Mission1 implements Mission {
         {
           triggeringHealthFraction: 1,
           score: 50,
-          bulletFireTimer: timer_(8),
+          bulletFireTimer: timer_(8, { loop: true }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             if (t() % 2 < 1) return [];
 
@@ -395,7 +395,7 @@ export class Mission1 implements Mission {
         {
           triggeringHealthFraction: 0.8,
           score: 300,
-          bulletFireTimer: timer_(28),
+          bulletFireTimer: timer_(28, { loop: true }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             const bullets: EnemyBullet[] = [];
             if (t() > 0.6) {
@@ -439,7 +439,7 @@ export class Mission1 implements Mission {
         {
           triggeringHealthFraction: 0.4,
           score: 650,
-          bulletFireTimer: timer_(8),
+          bulletFireTimer: timer_(8, { loop: true }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             b_.startPlayback(g.assets.sfxEnemyShoot);
             if (t() % 2 > 1.5) {

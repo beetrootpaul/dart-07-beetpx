@@ -71,8 +71,15 @@ export class MovementToTarget implements Movement {
     return this._timer.hasFinished;
   }
 
+  pause(): void {
+    this._timer.pause();
+  }
+
+  resume(): void {
+    this._timer.resume();
+  }
+
   update(): void {
-    this._timer.update();
     this._speed = this._nextXy().sub(this._xy);
     this._xy = this._xy.add(this._speed);
     if (this._onFinished && this._timer.hasFinished) {

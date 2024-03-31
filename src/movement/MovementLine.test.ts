@@ -1,8 +1,20 @@
-import { u_, v_, v_0_0_ } from "@beetpx/beetpx";
-import { describe, expect, test } from "@jest/globals";
+import { BeetPx, u_, v_, v_0_0_ } from "@beetpx/beetpx";
+import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 import { MovementLine } from "./MovementLine";
 
 describe("MovementLine", () => {
+  let stubbedFrameNumber = 1;
+
+  function incrementFrameNumber(): void {
+    stubbedFrameNumber += 1;
+  }
+
+  beforeEach(() => {
+    jest
+      .spyOn(BeetPx, "frameNumber", "get")
+      .mockImplementation(() => stubbedFrameNumber);
+  });
+
   [
     {
       caseName: "right",
@@ -72,6 +84,7 @@ describe("MovementLine", () => {
       expect(movement.speed.y).toBeCloseTo(expectedSpeed.y, 11);
       expect(movement.hasFinished).toBe(false);
 
+      incrementFrameNumber();
       movement.update();
 
       expect(movement.xy.x).toBeCloseTo(startXy.x + expectedSpeed.x, 11);
@@ -94,6 +107,7 @@ describe("MovementLine", () => {
     expect(movement.speed.y).toBeCloseTo(-654 + Math.sqrt(2), 11);
     expect(movement.hasFinished).toBe(false);
 
+    incrementFrameNumber();
     movement.update();
 
     expect(movement.xy.x).toBeCloseTo(10 + 9.87 - Math.sqrt(2), 11);
@@ -102,7 +116,9 @@ describe("MovementLine", () => {
     expect(movement.speed.y).toBeCloseTo(-654 + Math.sqrt(2), 11);
     expect(movement.hasFinished).toBe(false);
 
+    incrementFrameNumber();
     movement.update();
+    incrementFrameNumber();
     movement.update();
 
     expect(movement.xy.x).toBeCloseTo(10 + 3 * (9.87 - Math.sqrt(2)), 11);
@@ -123,6 +139,7 @@ describe("MovementLine", () => {
     expect(movement.speed).toEqual(v_(2, 0));
     expect(movement.hasFinished).toBe(false);
 
+    incrementFrameNumber();
     movement.update();
 
     expect(movement.xy).toEqual(v_(12, 200));
@@ -130,6 +147,7 @@ describe("MovementLine", () => {
     expect(movement.hasFinished).toBe(false);
 
     u_.range(8).forEach(() => {
+      incrementFrameNumber();
       movement.update();
     });
 
@@ -137,14 +155,18 @@ describe("MovementLine", () => {
     expect(movement.speed).toEqual(v_(2, 0));
     expect(movement.hasFinished).toBe(false);
 
+    incrementFrameNumber();
     movement.update();
 
     expect(movement.xy).toEqual(v_(30, 200));
     expect(movement.speed).toEqual(v_0_0_);
     expect(movement.hasFinished).toBe(true);
 
+    incrementFrameNumber();
     movement.update();
+    incrementFrameNumber();
     movement.update();
+    incrementFrameNumber();
     movement.update();
 
     expect(movement.xy).toEqual(v_(30, 200));
@@ -163,14 +185,18 @@ describe("MovementLine", () => {
     expect(movement.speed).toEqual(v_(2, 0));
     expect(movement.hasFinished).toBe(false);
 
+    incrementFrameNumber();
     movement.update();
 
     expect(movement.xy).toEqual(v_(12, 200));
     expect(movement.speed).toEqual(v_0_0_);
     expect(movement.hasFinished).toBe(true);
 
+    incrementFrameNumber();
     movement.update();
+    incrementFrameNumber();
     movement.update();
+    incrementFrameNumber();
     movement.update();
 
     expect(movement.xy).toEqual(v_(12, 200));
@@ -189,8 +215,11 @@ describe("MovementLine", () => {
     expect(movement.speed).toEqual(v_0_0_);
     expect(movement.hasFinished).toBe(true);
 
+    incrementFrameNumber();
     movement.update();
+    incrementFrameNumber();
     movement.update();
+    incrementFrameNumber();
     movement.update();
 
     expect(movement.xy).toEqual(v_(10, 200));
@@ -209,8 +238,11 @@ describe("MovementLine", () => {
     expect(movement.speed).toEqual(v_0_0_);
     expect(movement.hasFinished).toBe(true);
 
+    incrementFrameNumber();
     movement.update();
+    incrementFrameNumber();
     movement.update();
+    incrementFrameNumber();
     movement.update();
 
     expect(movement.xy).toEqual(v_(10, 200));
@@ -274,6 +306,7 @@ describe("MovementLine", () => {
       expect(movement.speed.y).toBeCloseTo(expectedSpeed.y, 11);
       expect(movement.hasFinished).toBe(false);
 
+      incrementFrameNumber();
       movement.update();
 
       expect(movement.xy.x).toBeCloseTo(startXy.x + expectedSpeed.x, 11);

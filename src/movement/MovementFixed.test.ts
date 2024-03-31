@@ -1,8 +1,20 @@
-import { u_, v_, v_0_0_ } from "@beetpx/beetpx";
-import { describe, expect, test } from "@jest/globals";
+import { BeetPx, u_, v_, v_0_0_ } from "@beetpx/beetpx";
+import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 import { MovementFixed } from "./MovementFixed";
 
 describe("MovementFixed", () => {
+  let stubbedFrameNumber = 1;
+
+  function incrementFrameNumber(): void {
+    stubbedFrameNumber += 1;
+  }
+
+  beforeEach(() => {
+    jest
+      .spyOn(BeetPx, "frameNumber", "get")
+      .mockImplementation(() => stubbedFrameNumber);
+  });
+
   [
     v_(0, 0),
     v_(1, 2),
@@ -17,12 +29,14 @@ describe("MovementFixed", () => {
       expect(movement.speed).toEqual(v_0_0_);
       expect(movement.hasFinished).toBe(false);
 
+      incrementFrameNumber();
       movement.update();
 
       expect(movement.xy).toEqual(startXy);
       expect(movement.speed).toEqual(v_0_0_);
       expect(movement.hasFinished).toBe(false);
 
+      incrementFrameNumber();
       movement.update();
 
       expect(movement.xy).toEqual(startXy);
@@ -38,6 +52,7 @@ describe("MovementFixed", () => {
       expect(movement.hasFinished).toBe(false);
 
       u_.range(122).forEach(() => {
+        incrementFrameNumber();
         movement.update();
       });
 
@@ -45,12 +60,14 @@ describe("MovementFixed", () => {
       expect(movement.speed).toEqual(v_0_0_);
       expect(movement.hasFinished).toBe(false);
 
+      incrementFrameNumber();
       movement.update();
 
       expect(movement.xy).toEqual(startXy);
       expect(movement.speed).toEqual(v_0_0_);
       expect(movement.hasFinished).toBe(true);
 
+      incrementFrameNumber();
       movement.update();
 
       expect(movement.xy).toEqual(startXy);
@@ -65,12 +82,14 @@ describe("MovementFixed", () => {
       expect(movement.speed).toEqual(v_0_0_);
       expect(movement.hasFinished).toBe(false);
 
+      incrementFrameNumber();
       movement.update();
 
       expect(movement.xy).toEqual(startXy);
       expect(movement.speed).toEqual(v_0_0_);
       expect(movement.hasFinished).toBe(true);
 
+      incrementFrameNumber();
       movement.update();
 
       expect(movement.xy).toEqual(startXy);
@@ -85,6 +104,7 @@ describe("MovementFixed", () => {
       expect(movement.speed).toEqual(v_0_0_);
       expect(movement.hasFinished).toBe(true);
 
+      incrementFrameNumber();
       movement.update();
 
       expect(movement.xy).toEqual(startXy);
@@ -99,6 +119,7 @@ describe("MovementFixed", () => {
       expect(movement.speed).toEqual(v_0_0_);
       expect(movement.hasFinished).toBe(true);
 
+      incrementFrameNumber();
       movement.update();
 
       expect(movement.xy).toEqual(startXy);

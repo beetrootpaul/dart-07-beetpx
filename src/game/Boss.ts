@@ -131,6 +131,22 @@ export class Boss {
     }
   }
 
+  pauseTimers(): void {
+    this._flashingAfterDamageTimer?.pause();
+    this._movement.pause();
+    if (this._currentPhaseNumber >= 0) {
+      this._currentPhase.bulletFireTimer.pause();
+    }
+  }
+
+  resumeTimers(): void {
+    this._flashingAfterDamageTimer?.resume();
+    this._movement.resume();
+    if (this._currentPhaseNumber >= 0) {
+      this._currentPhase.bulletFireTimer.resume();
+    }
+  }
+
   update(): void {
     if (
       this._currentPhaseNumber >= 0 &&
@@ -152,17 +168,15 @@ export class Boss {
     this._movement.update();
 
     if (this._currentPhaseNumber >= 0) {
-      this._currentPhase.bulletFireTimer.update();
+      this._currentPhase.bulletFireTimer.resume();
       if (this._currentPhase.bulletFireTimer.hasJustFinished) {
         this._onBulletsSpawned(this._currentPhase.spawnBullets, this._movement);
-        this._currentPhase.bulletFireTimer.restart();
       }
     }
 
     if (this._flashingAfterDamageTimer?.hasJustFinished) {
       this._flashingAfterDamageTimer = null;
     }
-    this._flashingAfterDamageTimer?.update();
   }
 
   draw(): void {

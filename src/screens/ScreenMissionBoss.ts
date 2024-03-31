@@ -55,12 +55,18 @@ export class ScreenMissionBoss implements GameScreen {
     }
   }
 
-  pauseAnimations(): void {
-    this._game.pauseAnimations();
+  pauseAnimationsAndTimers(): void {
+    this._game.pauseAnimationsAndTimers();
+    this._hud.pause();
+    this._bossInfo?.pause();
+    this._musicStartTimer?.pause();
   }
 
-  resumeAnimations(): void {
-    this._game.resumeAnimations();
+  resumeAnimationsAndTimers(): void {
+    this._game.resumeAnimationsAndTimers();
+    this._hud.resume();
+    this._bossInfo?.resume();
+    this._musicStartTimer?.resume();
   }
 
   update(): void {
@@ -72,7 +78,6 @@ export class ScreenMissionBoss implements GameScreen {
     this._game.update();
     this._hud.update();
     this._bossInfo?.update();
-    this._musicStartTimer?.update();
   }
 
   draw(): void {

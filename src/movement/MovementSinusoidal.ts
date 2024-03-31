@@ -57,6 +57,10 @@ export class MovementSinusoidal implements Movement {
     return false;
   }
 
+  pause(): void {}
+
+  resume(): void {}
+
   update(): void {
     this._speed = v_(this.x() - this._xy.x, this._speed.y);
     this._xy = this._xy.add(this._speed);

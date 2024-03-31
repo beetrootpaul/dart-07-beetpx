@@ -96,11 +96,22 @@ export class Enemy {
     );
   }
 
+  pauseTimers(): void {
+    this._movement.pause();
+    this._properties.bulletFireTimer?.pause();
+    this._flashingAfterDamageTimer?.pause();
+  }
+
+  resumeTimers(): void {
+    this._movement.resume();
+    this._properties.bulletFireTimer?.resume();
+    this._flashingAfterDamageTimer?.resume();
+  }
+
   update(): void {
     this._movement.update();
 
     if (this._properties.bulletFireTimer) {
-      this._properties.bulletFireTimer.update();
       if (this._properties.bulletFireTimer.hasJustFinished) {
         if (this._properties.spawnBullets) {
           let canSpawnBullets = false;
@@ -127,7 +138,6 @@ export class Enemy {
     if (this._flashingAfterDamageTimer?.hasJustFinished) {
       this._flashingAfterDamageTimer = null;
     }
-    this._flashingAfterDamageTimer?.update();
   }
 
   draw(): void {

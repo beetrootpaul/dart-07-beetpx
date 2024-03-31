@@ -101,9 +101,18 @@ export class ScreenOver implements GameScreen {
     return;
   }
 
-  pauseAnimations(): void {}
+  pauseAnimationsAndTimers(): void {
+    this._fadeOut.pause();
+    this._fadeIn.pause();
+  }
 
-  resumeAnimations(): void {}
+  resumeAnimationsAndTimers(): void {
+    if (this._proceed) {
+      this._fadeOut.resume();
+    } else {
+      this._fadeIn.resume();
+    }
+  }
 
   update(): void {
     if (!this._isWin) {
@@ -120,8 +129,12 @@ export class ScreenOver implements GameScreen {
     }
 
     if (this._proceed) {
+      this._fadeIn.pause();
+      this._fadeOut.resume();
       this._fadeOut.update();
     } else {
+      this._fadeOut.pause();
+      this._fadeIn.resume();
       this._fadeIn.update();
     }
   }

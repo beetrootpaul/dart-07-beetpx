@@ -46,23 +46,41 @@ export class ScreenBrp implements GameScreen {
     }
   }
 
-  pauseAnimations(): void {}
+  pauseAnimationsAndTimers(): void {
+    this._screenTimer.pause();
+    this._fadeInTimer.pause();
+    this._presentTimer.pause();
+    this._fadeOutTimer.pause();
+  }
 
-  resumeAnimations(): void {}
+  resumeAnimationsAndTimers(): void {
+    this._screenTimer.resume();
+    if (!this._fadeInTimer.hasFinished) {
+      this._fadeInTimer.resume();
+    } else if (!this._presentTimer.hasFinished) {
+      this._presentTimer.resume();
+    } else {
+      this._fadeOutTimer.resume();
+    }
+  }
 
   update(): void {
     if (b_.wasButtonJustPressed("a") || b_.wasButtonJustPressed("b")) {
       this._skip = true;
     }
 
-    this._screenTimer.update();
-
     if (!this._fadeInTimer.hasFinished) {
-      this._fadeInTimer.update();
+      this._presentTimer.pause();
+      this._fadeOutTimer.pause();
+      this._fadeInTimer.resume();
     } else if (!this._presentTimer.hasFinished) {
-      this._presentTimer.update();
+      this._fadeInTimer.pause();
+      this._fadeOutTimer.pause();
+      this._presentTimer.resume();
     } else {
-      this._fadeOutTimer.update();
+      this._fadeInTimer.pause();
+      this._presentTimer.pause();
+      this._fadeOutTimer.resume();
     }
   }
 

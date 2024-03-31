@@ -11,5 +11,9 @@ export interface Movement {
 
   get hasFinished(): boolean;
 
+  pause(): void;
+
+  resume(): void;
+
   update(): void;
 }

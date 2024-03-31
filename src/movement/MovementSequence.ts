@@ -45,6 +45,14 @@ export class MovementSequence implements Movement {
     );
   }
 
+  pause(): void {
+    this._currentSubMovement.pause();
+  }
+
+  resume(): void {
+    this._currentSubMovement.resume();
+  }
+
   update(): void {
     this._currentSubMovement.update();
 

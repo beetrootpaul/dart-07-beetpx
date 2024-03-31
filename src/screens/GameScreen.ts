@@ -1,9 +1,9 @@
 export interface GameScreen {
   preUpdate(): GameScreen | undefined;
 
-  pauseAnimations(): void;
+  pauseAnimationsAndTimers(): void;
 
-  resumeAnimations(): void;
+  resumeAnimationsAndTimers(): void;
 
   update(): void;
 

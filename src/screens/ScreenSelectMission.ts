@@ -76,14 +76,23 @@ export class ScreenSelectMission implements GameScreen {
     }
   }
 
-  pauseAnimations(): void {
+  pauseAnimationsAndTimers(): void {
     this._shipSprite.pause();
     this._jetSprite.pause();
+    this._shipMovement?.pause();
+    this._fadeOut.pause();
   }
 
-  resumeAnimations(): void {
+  resumeAnimationsAndTimers(): void {
     this._shipSprite.resume();
     this._jetSprite.resume();
+    if (this._proceed) {
+      if (this._shipMovement?.hasFinished) {
+        this._fadeOut.resume();
+      } else {
+        this._shipMovement?.resume();
+      }
+    }
   }
 
   private _initShipMovement(): void {
@@ -129,10 +138,17 @@ export class ScreenSelectMission implements GameScreen {
 
     if (this._proceed) {
       if (this._shipMovement?.hasFinished) {
+        this._shipMovement?.pause();
+        this._fadeOut.resume();
         this._fadeOut.update();
       } else {
+        this._fadeOut.pause();
+        this._shipMovement?.resume();
         this._shipMovement?.update();
       }
+    } else {
+      this._fadeOut.pause();
+      this._shipMovement?.pause();
     }
   }
 

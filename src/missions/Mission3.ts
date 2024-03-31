@@ -159,7 +159,7 @@ export class Mission3 implements Mission {
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          bulletFireTimer: timer_(40),
+          bulletFireTimer: timer_(40, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
             b_.startPlayback(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
@@ -193,7 +193,7 @@ export class Mission3 implements Mission {
         {
           triggeringHealthFraction: 1,
           score: 1,
-          bulletFireTimer: timer_(80),
+          bulletFireTimer: timer_(80, { loop: true }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             b_.startPlayback(g.assets.sfxEnemyMultiShoot);
             return [

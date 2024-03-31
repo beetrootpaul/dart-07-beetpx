@@ -165,19 +165,20 @@ export class Player {
     }
   }
 
-  pauseAnimations(): void {
+  pauseAnimationsAndTimers(): void {
     this._jetSprite?.pause();
+    this._invincibleAfterDamageTimer?.pause();
   }
 
-  resumeAnimations(): void {
+  resumeAnimationsAndTimers(): void {
     this._jetSprite?.resume();
+    this._invincibleAfterDamageTimer?.resume();
   }
 
   update(): void {
     if (this._invincibleAfterDamageTimer?.hasFinished) {
       this._invincibleAfterDamageTimer = null;
     }
-    this._invincibleAfterDamageTimer?.update();
 
     this._onBulletsSpawned.update();
     this._onShockwaveTriggered.update();

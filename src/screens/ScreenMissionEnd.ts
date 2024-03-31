@@ -45,19 +45,24 @@ export class ScreenMissionEnd implements GameScreen {
     }
   }
 
-  pauseAnimations(): void {
-    this._game.pauseAnimations();
+  pauseAnimationsAndTimers(): void {
+    this._game.pauseAnimationsAndTimers();
+    this._hud.pause();
+    this._screenTimer.pause();
+    this._fadeOut.pause();
   }
 
-  resumeAnimations(): void {
-    this._game.resumeAnimations();
+  resumeAnimationsAndTimers(): void {
+    this._game.resumeAnimationsAndTimers();
+    this._hud.resume();
+    this._screenTimer.resume();
+    this._fadeOut.resume();
   }
 
   update(): void {
     this._game.update();
     this._hud.update();
     this._fadeOut.update();
-    this._screenTimer.update();
   }
 
   draw(): void {
