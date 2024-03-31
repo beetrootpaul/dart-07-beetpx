@@ -10,6 +10,8 @@ import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 import { ScreenTitle } from "./ScreenTitle";
 
+// TODO: it is possible to change selection after it is confirmed. Fix it
+
 export class ScreenSelectMission implements GameScreen {
   // 0 = back button, 1-3 = missions from 1 to 3
   private static _selectedMission: number = 1;
