@@ -314,7 +314,7 @@ export class ScreenTitle implements GameScreen {
       b_.drawSprite(
         this._brpLogo,
         v_((g.viewportSize.x - this._brpLogo.size.x * 2) / 2, 6),
-        { scaleXy: v_(2, 2) },
+        { scaleXy: v_(2) },
       );
       b_.setSpriteColorMapping(prevMapping);
 

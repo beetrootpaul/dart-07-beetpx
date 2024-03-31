@@ -31,12 +31,12 @@ export const g = {
 
   fps: 60 as const,
 
-  viewportSize: v_(128, 128),
-  viewportTiles: v_(16, 16),
+  viewportSize: v_(128),
+  viewportTiles: v_(16),
   gameAreaSize: v_(96, 128),
   gameAreaTiles: v_(12, 16),
   gameAreaOffset: v_(16, 0),
-  tileSize: v_(8, 8),
+  tileSize: v_(8),
 
   assets: {
     // PICO-8 font
