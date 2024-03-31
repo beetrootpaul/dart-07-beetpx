@@ -1,42 +1,42 @@
 // noinspection JSUnusedGlobalSymbols
-import { BpxRgbColor } from "@beetpx/beetpx";
+import { rgb_ } from "@beetpx/beetpx";
 
 export class Pico8Colors {
   // hex values taken from https://pico-8.fandom.com/wiki/Palette#The_system_palette
 
   // standard colors
-  static black = BpxRgbColor.fromCssHex("#000000");
-  static storm = BpxRgbColor.fromCssHex("#1D2B53");
-  static wine = BpxRgbColor.fromCssHex("#7E2553");
-  static moss = BpxRgbColor.fromCssHex("#008751");
-  static tan = BpxRgbColor.fromCssHex("#AB5236");
-  static slate = BpxRgbColor.fromCssHex("#5F574F");
-  static silver = BpxRgbColor.fromCssHex("#C2C3C7");
-  static white = BpxRgbColor.fromCssHex("#FFF1E8");
-  static ember = BpxRgbColor.fromCssHex("#FF004D");
-  static orange = BpxRgbColor.fromCssHex("#FFA300");
-  static lemon = BpxRgbColor.fromCssHex("#FFEC27");
-  static lime = BpxRgbColor.fromCssHex("#00E436");
-  static sky = BpxRgbColor.fromCssHex("#29ADFF");
-  static dusk = BpxRgbColor.fromCssHex("#83769C");
-  static pink = BpxRgbColor.fromCssHex("#FF77A8");
-  static peach = BpxRgbColor.fromCssHex("#FFCCAA");
+  static black = rgb_("#000000");
+  static storm = rgb_("#1D2B53");
+  static wine = rgb_("#7E2553");
+  static moss = rgb_("#008751");
+  static tan = rgb_("#AB5236");
+  static slate = rgb_("#5F574F");
+  static silver = rgb_("#C2C3C7");
+  static white = rgb_("#FFF1E8");
+  static ember = rgb_("#FF004D");
+  static orange = rgb_("#FFA300");
+  static lemon = rgb_("#FFEC27");
+  static lime = rgb_("#00E436");
+  static sky = rgb_("#29ADFF");
+  static dusk = rgb_("#83769C");
+  static pink = rgb_("#FF77A8");
+  static peach = rgb_("#FFCCAA");
 
   // "secret" colors
-  static cocoa = BpxRgbColor.fromCssHex("#291814");
-  static midnight = BpxRgbColor.fromCssHex("#111D35");
-  static port = BpxRgbColor.fromCssHex("#422136");
-  static sea = BpxRgbColor.fromCssHex("#125359");
-  static leather = BpxRgbColor.fromCssHex("#742F29");
-  static charcoal = BpxRgbColor.fromCssHex("#49333B");
-  static olive = BpxRgbColor.fromCssHex("#A28879");
-  static sand = BpxRgbColor.fromCssHex("#F3EF7D");
-  static crimson = BpxRgbColor.fromCssHex("#BE1250");
-  static amber = BpxRgbColor.fromCssHex("#FF6C24");
-  static tea = BpxRgbColor.fromCssHex("#A8E72E");
-  static jade = BpxRgbColor.fromCssHex("#00B543");
-  static denim = BpxRgbColor.fromCssHex("#065AB5");
-  static aubergine = BpxRgbColor.fromCssHex("#754665");
-  static salmon = BpxRgbColor.fromCssHex("#FF6E59");
-  static coral = BpxRgbColor.fromCssHex("#FF9D81");
+  static cocoa = rgb_("#291814");
+  static midnight = rgb_("#111D35");
+  static port = rgb_("#422136");
+  static sea = rgb_("#125359");
+  static leather = rgb_("#742F29");
+  static charcoal = rgb_("#49333B");
+  static olive = rgb_("#A28879");
+  static sand = rgb_("#F3EF7D");
+  static crimson = rgb_("#BE1250");
+  static amber = rgb_("#FF6C24");
+  static tea = rgb_("#A8E72E");
+  static jade = rgb_("#00B543");
+  static denim = rgb_("#065AB5");
+  static aubergine = rgb_("#754665");
+  static salmon = rgb_("#FF6E59");
+  static coral = rgb_("#FF9D81");
 }

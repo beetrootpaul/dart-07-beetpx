@@ -39,10 +39,6 @@ export const g = {
   tileSize: v_(8),
 
   assets: {
-    // PICO-8 font
-    pico8FontId: "pico8",
-    pico8FontImage: "pico-8-font.png",
-
     // sprite sheets
     mainSpritesheetUrl: "spritesheet_main.png",
     mission1SpritesheetUrl: "spritesheet_mission_1.png",

@@ -1,4 +1,4 @@
-import { b_, BpxVector2d, u_ } from "@beetpx/beetpx";
+import { b_, BpxVector2d } from "@beetpx/beetpx";
 import { c } from "../globals";
 import { PauseMenuEntry } from "./PauseMenuEntry";
 
@@ -14,7 +14,7 @@ export class PauseMenuEntrySimple implements PauseMenuEntry {
     this._text = text;
     this._onExecute = onExecute;
 
-    this.size = u_.measureText(text)[1];
+    this.size = b_.measureText(text).wh;
   }
 
   execute() {

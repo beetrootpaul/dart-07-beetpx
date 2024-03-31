@@ -1,4 +1,4 @@
-import { b_, u_, v_ } from "@beetpx/beetpx";
+import { b_, v_ } from "@beetpx/beetpx";
 import { c, g } from "../globals";
 
 export class DebugGameInfo {
@@ -90,7 +90,7 @@ export class DebugGameInfo {
             : "@";
     b_.drawText(
       audioStateText,
-      v_(g.viewportSize.x - u_.measureText(audioStateText)[1].x, 0),
+      v_(g.viewportSize.x - b_.measureText(audioStateText).wh.x, 0),
       c.white,
     );
   }

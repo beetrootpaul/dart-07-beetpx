@@ -1,6 +1,6 @@
 import { b_, v_0_0_ } from "@beetpx/beetpx";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
-import { c, g } from "./globals";
+import { g } from "./globals";
 import { PauseMenu } from "./pause/PauseMenu";
 import { Pico8Font } from "./pico8/Pico8Font";
 import { GameScreen } from "./screens/GameScreen";
@@ -16,71 +16,65 @@ b_.init({
   gameCanvasSize: "128x128",
   fixedTimestep: "60fps",
   debugMode: !BEETPX__IS_PROD,
-  assets: {
-    images: [
-      { url: g.assets.mainSpritesheetUrl },
-      { url: g.assets.mission1SpritesheetUrl },
-      { url: g.assets.mission2SpritesheetUrl },
-      { url: g.assets.mission3SpritesheetUrl },
-    ],
-    fonts: [
-      {
-        font: new Pico8Font(),
-        spriteTextColor: c.white,
-      },
-    ],
-    sounds: [
-      { url: g.assets.sfxOptionsChange },
-      { url: g.assets.sfxOptionsConfirm },
-      { url: g.assets.sfxPowerupNoEffect },
-      { url: g.assets.sfxPowerupPicked },
-      { url: g.assets.sfxPlayerShoot },
-      { url: g.assets.sfxPlayerTripleShoot },
-      { url: g.assets.sfxPlayerShockwave },
-      { url: g.assets.sfxEnemyShoot },
-      { url: g.assets.sfxEnemyMultiShoot },
-      { url: g.assets.sfxDamagePlayer },
-      { url: g.assets.sfxDamageEnemy },
-      { url: g.assets.sfxDestroyPlayer },
-      { url: g.assets.sfxDestroyEnemy },
-      { url: g.assets.sfxDestroyBossPhase },
-      { url: g.assets.sfxDestroyBossFinal1 },
-      { url: g.assets.sfxDestroyBossFinal2 },
-      { url: g.assets.sfxDestroyBossFinal3 },
-      { url: g.assets.sfxGameWin },
-      { url: g.assets.music32 },
-      { url: g.assets.music33 },
-      { url: g.assets.music34 },
-      { url: g.assets.music35 },
-      { url: g.assets.music36 },
-      { url: g.assets.music37 },
-      { url: g.assets.mission1Music40 },
-      { url: g.assets.mission1Music41 },
-      { url: g.assets.mission1Music42 },
-      { url: g.assets.mission1Music43 },
-      { url: g.assets.mission1Music44 },
-      { url: g.assets.mission1Music45 },
-      { url: g.assets.mission1Music48 },
-      { url: g.assets.mission1Music49 },
-      { url: g.assets.mission1Music50 },
-      { url: g.assets.mission1Music51 },
-      { url: g.assets.mission1Music52 },
-      { url: g.assets.mission1Music53 },
-      { url: g.assets.mission1Music54 },
-      { url: g.assets.mission1Music55 },
-      { url: g.assets.mission1Music56 },
-      { url: g.assets.mission2Music32 },
-      { url: g.assets.mission2Music33 },
-      { url: g.assets.mission3Music32 },
-      { url: g.assets.mission3Music33 },
-    ],
-    jsons: [{ url: g.assets.levelsJson }],
-  },
+  assets: [
+    // IMAGE files
+    g.assets.mainSpritesheetUrl,
+    g.assets.mission1SpritesheetUrl,
+    g.assets.mission2SpritesheetUrl,
+    g.assets.mission3SpritesheetUrl,
+    // SFX files
+    g.assets.sfxOptionsChange,
+    g.assets.sfxOptionsConfirm,
+    g.assets.sfxPowerupNoEffect,
+    g.assets.sfxPowerupPicked,
+    g.assets.sfxPlayerShoot,
+    g.assets.sfxPlayerTripleShoot,
+    g.assets.sfxPlayerShockwave,
+    g.assets.sfxEnemyShoot,
+    g.assets.sfxEnemyMultiShoot,
+    g.assets.sfxDamagePlayer,
+    g.assets.sfxDamageEnemy,
+    g.assets.sfxDestroyPlayer,
+    g.assets.sfxDestroyEnemy,
+    g.assets.sfxDestroyBossPhase,
+    g.assets.sfxDestroyBossFinal1,
+    g.assets.sfxDestroyBossFinal2,
+    g.assets.sfxDestroyBossFinal3,
+    g.assets.sfxGameWin,
+    // MUSIC files
+    g.assets.music32,
+    g.assets.music33,
+    g.assets.music34,
+    g.assets.music35,
+    g.assets.music36,
+    g.assets.music37,
+    g.assets.mission1Music40,
+    g.assets.mission1Music41,
+    g.assets.mission1Music42,
+    g.assets.mission1Music43,
+    g.assets.mission1Music44,
+    g.assets.mission1Music45,
+    g.assets.mission1Music48,
+    g.assets.mission1Music49,
+    g.assets.mission1Music50,
+    g.assets.mission1Music51,
+    g.assets.mission1Music52,
+    g.assets.mission1Music53,
+    g.assets.mission1Music54,
+    g.assets.mission1Music55,
+    g.assets.mission1Music56,
+    g.assets.mission2Music32,
+    g.assets.mission2Music33,
+    g.assets.mission3Music32,
+    g.assets.mission3Music33,
+    // JSON files
+    g.assets.levelsJson,
+  ],
 }).then(async ({ startGame }) => {
   b_.setOnStarted(() => {
     // Better set font first, because other constructors might rely
     //   on it when calculating text size.
-    b_.setFont(g.assets.pico8FontId);
+    b_.useFont(new Pico8Font());
 
     pauseMenu = new PauseMenu();
     PauseMenu.isGamePaused = false;

@@ -1,4 +1,4 @@
-import { b_, BpxVector2d, u_ } from "@beetpx/beetpx";
+import { b_, BpxVector2d } from "@beetpx/beetpx";
 import { c } from "../globals";
 import { PauseMenuEntry } from "./PauseMenuEntry";
 
@@ -34,10 +34,10 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
 
     this._value = this._getValue();
 
-    this._labelSize = u_.measureText(this._label)[1];
-    this._yesW = u_.measureText(this._yes)[1].x;
-    this._orW = u_.measureText(this._or)[1].x;
-    this._noW = u_.measureText(this._no)[1].x;
+    this._labelSize = b_.measureText(this._label).wh;
+    this._yesW = b_.measureText(this._yes).wh.x;
+    this._orW = b_.measureText(this._or).wh.x;
+    this._noW = b_.measureText(this._no).wh.x;
     this.size = this._labelSize.add(
       this._gapLabelYes +
         this._yesW +
