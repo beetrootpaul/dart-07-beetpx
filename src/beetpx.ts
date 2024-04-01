@@ -15,7 +15,6 @@ const debugGameInfo: DebugGameInfo = new DebugGameInfo();
 b_.init({
   gameCanvasSize: "128x128",
   fixedTimestep: "60fps",
-  debugMode: !window.BEETPX__IS_PROD,
   assets: [
     // IMAGE files
     g.assets.mainSpritesheetUrl,
@@ -70,6 +69,12 @@ b_.init({
     // JSON files
     g.assets.levelsJson,
   ],
+  debugMode: {
+    available: !window.BEETPX__IS_PROD,
+  },
+  frameByFrame: {
+    available: !window.BEETPX__IS_PROD,
+  },
 }).then(async ({ startGame }) => {
   b_.setOnStarted(() => {
     // Better set font first, because other constructors might rely
