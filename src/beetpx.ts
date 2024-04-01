@@ -84,14 +84,6 @@ b_.init({
     pauseMenu = new PauseMenu();
     PauseMenu.isGamePaused = false;
 
-    b_.setButtonRepeating("left", false);
-    b_.setButtonRepeating("right", false);
-    b_.setButtonRepeating("up", false);
-    b_.setButtonRepeating("down", false);
-    b_.setButtonRepeating("a", false);
-    b_.setButtonRepeating("b", false);
-    b_.setButtonRepeating("menu", false);
-
     b_.setSpriteColorMapping(g.baseSpriteMapping);
 
     currentScreen = new ScreenBrp();
