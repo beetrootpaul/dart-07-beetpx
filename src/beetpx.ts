@@ -15,7 +15,7 @@ const debugGameInfo: DebugGameInfo = new DebugGameInfo();
 b_.init({
   gameCanvasSize: "128x128",
   fixedTimestep: "60fps",
-  debugMode: !BEETPX__IS_PROD,
+  debugMode: !window.BEETPX__IS_PROD,
   assets: [
     // IMAGE files
     g.assets.mainSpritesheetUrl,

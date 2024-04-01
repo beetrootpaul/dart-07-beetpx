@@ -24,12 +24,12 @@
     "syncAssets:watch": "node ./scripts/syncAssets.js watch",
     "start": "beetpx dev --open --htmlTitle \"[dev] Dart-07\" --htmlIcon ./assets/ship.png",
     "build": "npm run cleanup && npm run tsc && beetpx build --htmlTitle Dart-07 --htmlIcon ./assets/ship.png",
-    "prod": "npm run build && beetpx preview",
+    "prod": "npm run build && beetpx preview --open",
     "itch": "npm run build && beetpx zip",
     "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "devDependencies": {
-    "@beetpx/beetpx": "0.31.0-fix2",
+    "@beetpx/beetpx": "0.32.0-fix1",
     "@jest/globals": "29.7.0",
     "husky": "8.0.3",
     "jest": "29.7.0",
