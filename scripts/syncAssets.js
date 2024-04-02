@@ -87,19 +87,19 @@ function exportAsepriteToPng(asepriteInputPath, pngOutputPath) {
 
   childProcess.execSync(
     `${asperiteCli} ${asepriteInputPath} --sheet ${pngOutputPath} --batch`,
-    { stdio: "inherit" }
+    { stdio: "inherit" },
   );
 }
 
 function convertWavToFlac(wavInputDir, flacOutputDir) {
   console.log(wavInputDir, "-->", flacOutputDir);
   fs.readdirSync(wavInputDir)
-    .filter((filename) => filename.toLowerCase().endsWith(".wav"))
-    .forEach((filename) => {
+    .filter(filename => filename.toLowerCase().endsWith(".wav"))
+    .forEach(filename => {
       const inputPath = path.resolve(wavInputDir, filename);
       const outputPath = path.resolve(
         flacOutputDir,
-        filename.toLowerCase().replace(".wav", ".flac")
+        filename.toLowerCase().replace(".wav", ".flac"),
       );
       const shortInputPath = path.relative(rootDir, inputPath);
       const shortOutputPath = path.relative(rootDir, outputPath);
@@ -107,7 +107,7 @@ function convertWavToFlac(wavInputDir, flacOutputDir) {
 
       childProcess.execSync(
         `${ffmpegExecutable} -y -i ${shortInputPath} ${shortOutputPath}`,
-        { stdio: "inherit" }
+        { stdio: "inherit" },
       );
     });
 }
@@ -116,10 +116,10 @@ function simplifyLdtkJson(missionsLdtkPath, simplifiedMissionJsonPath) {
   const shortMissionsLdtkPath = path.relative(rootDir, missionsLdtkPath);
   const shortSimplifiedMissionJsonPath = path.relative(
     rootDir,
-    simplifiedMissionJsonPath
+    simplifiedMissionJsonPath,
   );
   console.log(
-    `[syncAssets] ${shortMissionsLdtkPath} -> ${shortSimplifiedMissionJsonPath} ...`
+    `[syncAssets] ${shortMissionsLdtkPath} -> ${shortSimplifiedMissionJsonPath} ...`,
   );
 
   const fullJsonRaw = fs.readFileSync(shortMissionsLdtkPath, "utf-8");
@@ -129,16 +129,16 @@ function simplifyLdtkJson(missionsLdtkPath, simplifiedMissionJsonPath) {
     jsonVersion: fullJson.jsonVersion,
     externalLevels: fullJson.externalLevels,
     simplifiedExport: fullJson.simplifiedExport,
-    levels: fullJson.levels.map((l) => ({
+    levels: fullJson.levels.map(l => ({
       identifier: l.identifier,
       pxHei: l.pxHei,
-      layerInstances: l.layerInstances.map((li) => ({
+      layerInstances: l.layerInstances.map(li => ({
         __identifier: li.__identifier,
-        autoLayerTiles: li.autoLayerTiles.map((alt) => ({
+        autoLayerTiles: li.autoLayerTiles.map(alt => ({
           px: [alt.px[0], alt.px[1]],
           t: alt.t,
         })),
-        entityInstances: li.entityInstances.map((ei) => ({
+        entityInstances: li.entityInstances.map(ei => ({
           __identifier: ei.__identifier,
           __grid: [ei.__grid[0], ei.__grid[1]],
         })),
@@ -151,6 +151,6 @@ function simplifyLdtkJson(missionsLdtkPath, simplifiedMissionJsonPath) {
     JSON.stringify(simplifiedJson),
     {
       encoding: "utf-8",
-    }
+    },
   );
 }

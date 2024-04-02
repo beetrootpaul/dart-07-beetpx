@@ -15,17 +15,16 @@
   },
   "scripts": {
     "prepare": "husky",
-    "cleanup": "rimraf ./.beetpx/ ./index.html ./itch_io_simulation.html",
-    "format": "prettier --ignore-path .gitignore --write src/ README.md",
-    "tsc": "tsc",
-    "tsc:watch": "tsc --watch",
-    "test": "vitest run",
     "syncAssets": "node ./scripts/syncAssets.js",
     "syncAssets:watch": "node ./scripts/syncAssets.js watch",
     "start": "beetpx dev --open --htmlTitle \"[dev] Dart-07\" --htmlIcon ./assets/ship.png",
-    "build": "npm run cleanup && npm run tsc && beetpx build --htmlTitle Dart-07 --htmlIcon ./assets/ship.png",
+    "build": "npm run tsc && beetpx build --htmlTitle \"Dart-07\" --htmlIcon ./assets/ship.png",
     "prod": "npm run build && beetpx preview --open",
     "itch": "npm run build && beetpx zip",
+    "format": "prettier --ignore-path .gitignore --write scripts/ src/ README.md",
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "test": "vitest run",
     "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "devDependencies": {
@@ -33,7 +32,6 @@
     "husky": "9.0.11",
     "prettier": "3.2.5",
     "prettier-plugin-organize-imports": "3.2.4",
-    "rimraf": "5.0.5",
     "typescript": "5.4.3",
     "vitest": "1.4.0"
   }
