@@ -1,5 +1,5 @@
 import { BeetPx, u_, v_, v_0_0_ } from "@beetpx/beetpx";
-import { beforeEach, describe, expect, jest, test } from "@jest/globals";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { MovementFixed } from "./MovementFixed";
 
 describe("MovementFixed", () => {
@@ -10,9 +10,9 @@ describe("MovementFixed", () => {
   }
 
   beforeEach(() => {
-    jest
-      .spyOn(BeetPx, "frameNumber", "get")
-      .mockImplementation(() => stubbedFrameNumber);
+    vi.spyOn(BeetPx, "frameNumber", "get").mockImplementation(
+      () => stubbedFrameNumber,
+    );
   });
 
   [
