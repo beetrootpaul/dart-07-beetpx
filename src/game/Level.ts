@@ -34,8 +34,8 @@ export class Level {
   constructor(levelDescriptor: LevelDescriptor) {
     this._levelDescriptor = levelDescriptor;
 
-    this._levelDescriptor.structures.forEach((structuresAtDistances) => {
-      structuresAtDistances.forEach((tileId) => {
+    this._levelDescriptor.structures.forEach(structuresAtDistances => {
+      structuresAtDistances.forEach(tileId => {
         if (tileId) {
           if (!this._sprites.has(tileId)) {
             this._sprites.set(
@@ -156,10 +156,10 @@ export class Level {
 
     if (this._phase === "main") {
       const prevMapping = b_.setSpriteColorMapping(
-        BpxSpriteColorMapping.of((color) =>
-          color?.cssHex === Pico8Colors.black.cssHex
-            ? null
-            : g.baseSpriteMapping.getMappedColor(color),
+        BpxSpriteColorMapping.of(color =>
+          color?.cssHex === Pico8Colors.black.cssHex ?
+            null
+          : g.baseSpriteMapping.getMappedColor(color),
         ),
       );
 

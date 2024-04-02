@@ -17,7 +17,7 @@ export class MovementToTarget implements Movement {
       easingFn?: BpxEasingFn;
       onFinished?: () => void;
     }): MovementFactory =>
-    (startXy) =>
+    startXy =>
       new MovementToTarget(
         startXy,
         v_(params.targetX ?? startXy.x, params.targetY ?? startXy.y),

@@ -34,12 +34,9 @@ export class CurrentMission {
   static changeTo(mission: number): void {
     this._current = mission;
     this._m =
-      mission === 1
-        ? new Mission1()
-        : mission === 2
-          ? new Mission2()
-          : mission === 3
-            ? new Mission3()
-            : u_.throwError(`Unexpected mission number: ${mission}`);
+      mission === 1 ? new Mission1()
+      : mission === 2 ? new Mission2()
+      : mission === 3 ? new Mission3()
+      : u_.throwError(`Unexpected mission number: ${mission}`);
   }
 }

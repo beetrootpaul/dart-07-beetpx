@@ -80,8 +80,9 @@ export class ScreenControls implements GameScreen {
 
     if (!PauseMenu.isGamePaused) {
       // "x" press incentive
-      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
-        ? this._cSprite
+      const sprite =
+        u_.booleanChangingEveryNthFrame(g.fps / 3) ?
+          this._cSprite
         : this._cSpritePressed;
       sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
     }

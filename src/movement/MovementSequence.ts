@@ -5,12 +5,12 @@ import { MovementFixed } from "./MovementFixed";
 export class MovementSequence implements Movement {
   static of =
     (sequence: MovementFactory[]): MovementFactory =>
-    (startXy) =>
+    startXy =>
       new MovementSequence(startXy, false, sequence);
 
   static loopedOf =
     (sequence: MovementFactory[]): MovementFactory =>
-    (startXy) =>
+    startXy =>
       new MovementSequence(startXy, true, sequence);
 
   private readonly _looped: boolean;

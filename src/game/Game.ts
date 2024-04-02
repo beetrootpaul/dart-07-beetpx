@@ -83,23 +83,23 @@ export class Game {
     );
 
     this._player = new Player({
-      onBulletsSpawned: (bullets) => {
+      onBulletsSpawned: bullets => {
         // TODO: consider not playing a bullet sound at all
         b_.startPlayback(
-          this._tripleShoot
-            ? g.assets.sfxPlayerTripleShoot
-            : g.assets.sfxPlayerShoot,
+          this._tripleShoot ?
+            g.assets.sfxPlayerTripleShoot
+          : g.assets.sfxPlayerShoot,
         );
         this._playerBullets.push(...bullets);
       },
-      onShockwaveTriggered: (shockwave) => {
+      onShockwaveTriggered: shockwave => {
         b_.startPlayback(g.assets.sfxPlayerShockwave);
         this._shockwaves.push(shockwave);
       },
       onDamaged: () => {
         b_.startPlayback(g.assets.sfxDamagePlayer);
       },
-      onDestroyed: (playerCc) => {
+      onDestroyed: playerCc => {
         b_.startPlayback(g.assets.sfxDestroyPlayer);
         this._explosions.push(
           new Explosion({ startXy: playerCc.center, magnitude: playerCc.r }),
@@ -406,40 +406,40 @@ export class Game {
       this._enemyBullets = [];
     }
 
-    this._shockwaves = this._shockwaves.filter((s) => !s.hasFinished);
-    this._playerBullets = this._playerBullets.filter((pb) => !pb.hasFinished);
-    this._enemyBullets = this._enemyBullets.filter((eb) => !eb.hasFinished);
-    this._enemies = this._enemies.filter((e) => !e.hasFinished);
-    this._powerups = this._powerups.filter((p) => !p.hasFinished);
-    this._explosions = this._explosions.filter((e) => !e.hasFinished);
-    this._floats = this._floats.filter((f) => !f.hasFinished);
+    this._shockwaves = this._shockwaves.filter(s => !s.hasFinished);
+    this._playerBullets = this._playerBullets.filter(pb => !pb.hasFinished);
+    this._enemyBullets = this._enemyBullets.filter(eb => !eb.hasFinished);
+    this._enemies = this._enemies.filter(e => !e.hasFinished);
+    this._powerups = this._powerups.filter(p => !p.hasFinished);
+    this._explosions = this._explosions.filter(e => !e.hasFinished);
+    this._floats = this._floats.filter(f => !f.hasFinished);
   }
 
   pauseAnimationsAndTimers(): void {
     this._level.pauseAnimations();
-    this._shockwaves.forEach((s) => s.pause());
-    this._playerBullets.forEach((pb) => pb.pause());
-    this._enemyBullets.forEach((eb) => eb.pause());
+    this._shockwaves.forEach(s => s.pause());
+    this._playerBullets.forEach(pb => pb.pause());
+    this._enemyBullets.forEach(eb => eb.pause());
     this._player?.pauseAnimationsAndTimers();
-    this._enemies.forEach((e) => e.pauseTimers());
+    this._enemies.forEach(e => e.pauseTimers());
     this._boss?.pauseTimers();
-    this._powerups.forEach((p) => p.pause());
-    this._explosions.forEach((e) => e.pauseTimers());
-    this._floats.forEach((f) => f.pause());
+    this._powerups.forEach(p => p.pause());
+    this._explosions.forEach(e => e.pauseTimers());
+    this._floats.forEach(f => f.pause());
     this._cameraShakeTimer.pause();
   }
 
   resumeAnimationsAndTimers(): void {
     this._level.resumeAnimations();
-    this._shockwaves.forEach((s) => s.resume());
-    this._playerBullets.forEach((pb) => pb.resume());
-    this._enemyBullets.forEach((eb) => eb.resume());
+    this._shockwaves.forEach(s => s.resume());
+    this._playerBullets.forEach(pb => pb.resume());
+    this._enemyBullets.forEach(eb => eb.resume());
     this._player?.resumeAnimationsAndTimers();
-    this._enemies.forEach((e) => e.resumeTimers());
+    this._enemies.forEach(e => e.resumeTimers());
     this._boss?.resumeTimers();
-    this._powerups.forEach((p) => p.resume());
-    this._explosions.forEach((e) => e.resumeTimers());
-    this._floats.forEach((f) => f.resume());
+    this._powerups.forEach(p => p.resume());
+    this._explosions.forEach(e => e.resumeTimers());
+    this._floats.forEach(f => f.resume());
     this._cameraShakeTimer.resume();
   }
 
@@ -457,15 +457,15 @@ export class Game {
     }
 
     this._level.update();
-    this._shockwaves.forEach((s) => s.update());
-    this._playerBullets.forEach((pb) => pb.update());
-    this._enemyBullets.forEach((eb) => eb.update());
+    this._shockwaves.forEach(s => s.update());
+    this._playerBullets.forEach(pb => pb.update());
+    this._enemyBullets.forEach(eb => eb.update());
     this._player?.update();
-    this._enemies.forEach((e) => e.update());
+    this._enemies.forEach(e => e.update());
     this._boss?.update();
-    this._powerups.forEach((p) => p.update());
-    this._explosions.forEach((e) => e.update());
-    this._floats.forEach((f) => f.update());
+    this._powerups.forEach(p => p.update());
+    this._explosions.forEach(e => e.update());
+    this._floats.forEach(f => f.update());
 
     this._handleCollisions();
 
@@ -481,7 +481,7 @@ export class Game {
               );
             }
           },
-          onDamaged: (mainCollisionCircle) => {
+          onDamaged: mainCollisionCircle => {
             b_.startPlayback(g.assets.sfxDamagePlayer);
             this._explosions.push(
               new Explosion({
@@ -553,21 +553,21 @@ export class Game {
     this._boss?.draw();
     // Some enemies are placed on a ground and have collision circle smaller than a sprite,
     //   therefore have to be drawn before a player and bullets.
-    this._enemies.forEach((e) => e.draw());
-    this._playerBullets.forEach((pb) => pb.draw());
-    this._enemyBullets.forEach((eb) => eb.draw());
+    this._enemies.forEach(e => e.draw());
+    this._playerBullets.forEach(pb => pb.draw());
+    this._enemyBullets.forEach(eb => eb.draw());
     this._player?.draw();
-    this._powerups.forEach((p) => p.draw());
-    this._explosions.forEach((e) => e.draw());
+    this._powerups.forEach(p => p.draw());
+    this._explosions.forEach(e => e.draw());
     // Draw shockwaves on top of all in-world objects, since they are supposed to affect what is seen.
-    this._shockwaves.forEach((s) => s.draw());
+    this._shockwaves.forEach(s => s.draw());
     // But keep GUI elements (floats) on top of shockwaves.
-    this._floats.forEach((f) => f.draw());
+    this._floats.forEach(f => f.draw());
 
     b_.removeClippingRegion();
 
     if (b_.debug) {
-      this._enemies.forEach((e) => {
+      this._enemies.forEach(e => {
         e.collisionCircles.forEach(Collisions.debugDrawCollisionCircle);
       });
       this._playerBullets.forEach(Collisions.debugDrawCollisionCircle);

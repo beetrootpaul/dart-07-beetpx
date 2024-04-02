@@ -27,13 +27,13 @@ export class SlidingInfo {
     this._mainColor = params.mainColor;
 
     this._movement = MovementSequence.of([
-      ...(params.waitFrames
-        ? [
-            MovementFixed.of({
-              frames: params.waitFrames,
-            }),
-          ]
-        : []),
+      ...(params.waitFrames ?
+        [
+          MovementFixed.of({
+            frames: params.waitFrames,
+          }),
+        ]
+      : []),
       MovementToTarget.of({
         targetY: g.gameAreaSize.y / 2,
         frames: params.slideInFrames,

@@ -106,9 +106,9 @@ export class Hud {
       .ceil();
     this._heart.draw(xy.add(1, 6));
     for (let segment = 0; segment < g.healthMax; segment++) {
-      (game.health > segment
-        ? this._healthBarSegmentFull
-        : this._healthBarSegmentEmpty
+      (game.health > segment ?
+        this._healthBarSegmentFull
+      : this._healthBarSegmentEmpty
       ).draw(xy.sub(0, 10 + segment * 6));
     }
     // we have to draw health_bar_start after health_bar_segment_full in order to cover 1st segment's joint with black pixels

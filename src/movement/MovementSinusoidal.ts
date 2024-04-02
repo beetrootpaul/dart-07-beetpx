@@ -8,7 +8,7 @@ export class MovementSinusoidal implements Movement {
       ageDivisor: number;
       magnitude: number;
     }): MovementFactory =>
-    (startXy) =>
+    startXy =>
       new MovementSinusoidal(
         startXy,
         params.speedY,

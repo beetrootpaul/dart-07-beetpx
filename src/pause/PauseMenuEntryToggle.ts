@@ -63,7 +63,11 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
     b_.drawText(
       this._yes,
       xy.add(this._labelSize.x + this._gapLabelYes, 0),
-      this._value ? (this._isFocused ? c.white : c.lavender) : c.darkerPurple,
+      this._value ?
+        this._isFocused ?
+          c.white
+        : c.lavender
+      : c.darkerPurple,
     );
     b_.drawText(
       this._or,
@@ -84,7 +88,9 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
           this._gapYesOrNo,
         0,
       ),
-      this._value ? c.darkerPurple : this._isFocused ? c.white : c.lavender,
+      this._value ? c.darkerPurple
+      : this._isFocused ? c.white
+      : c.lavender,
     );
   }
 }

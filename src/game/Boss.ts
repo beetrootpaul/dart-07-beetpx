@@ -75,9 +75,9 @@ export class Boss {
   }
 
   get healthFraction(): number | null {
-    return this._invincibleDuringIntro
-      ? null
-      : this._health / this._properties.health;
+    return this._invincibleDuringIntro ? null : (
+        this._health / this._properties.health
+      );
   }
 
   get hasFinished(): boolean {

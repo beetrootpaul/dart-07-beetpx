@@ -62,7 +62,9 @@ export class Mission2 implements Mission {
         xy: v_(Math.ceil(1 + Math.random() * g.gameAreaSize.x - 3), y),
         speed: speed,
         color:
-          speed >= 0.75 ? c.lightGrey : speed >= 0.5 ? c.lavender : c.mauve,
+          speed >= 0.75 ? c.lightGrey
+          : speed >= 0.5 ? c.lavender
+          : c.mauve,
       };
       this._stars.push(star);
     }
@@ -76,7 +78,7 @@ export class Mission2 implements Mission {
       star.xy = star.xy.add(0, star.speed);
     }
 
-    this._stars = this._stars.filter((s) => s.xy.y <= g.gameAreaSize.y);
+    this._stars = this._stars.filter(s => s.xy.y <= g.gameAreaSize.y);
 
     this._maybeAddStar(0);
   }

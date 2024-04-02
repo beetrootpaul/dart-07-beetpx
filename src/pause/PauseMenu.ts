@@ -71,7 +71,7 @@ export class PauseMenu {
       new PauseMenuEntryToggle(
         "sounds:",
         () => !b_.isAudioMuted(),
-        (newValue) => {
+        newValue => {
           if (newValue) {
             b_.unmuteAudio();
           } else {
@@ -126,9 +126,9 @@ export class PauseMenu {
           ),
           whTotal.y +
             entry.size.y +
-            (index < this._entries.length - 1
-              ? PauseMenu._gapBetweenEntries
-              : 0),
+            (index < this._entries.length - 1 ?
+              PauseMenu._gapBetweenEntries
+            : 0),
         ),
       v_(
         PauseMenu._padding.left + PauseMenu._padding.right,
@@ -172,14 +172,15 @@ export class PauseMenu {
 
     if (this._focusedEntry === entryIndex) {
       b_.drawPixels(PauseMenu._arrowPixels, xy.sub(7, 0), c.white);
-      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
-        ? this._cSprite
+      const sprite =
+        u_.booleanChangingEveryNthFrame(g.fps / 3) ?
+          this._cSprite
         : this._cSpritePressed;
       const prevMapping = b_.setSpriteColorMapping(
-        BpxSpriteColorMapping.of((color) =>
-          color?.cssHex === Pico8Colors.pink.cssHex
-            ? c.darkerPurple
-            : g.baseSpriteMapping.getMappedColor(color),
+        BpxSpriteColorMapping.of(color =>
+          color?.cssHex === Pico8Colors.pink.cssHex ?
+            c.darkerPurple
+          : g.baseSpriteMapping.getMappedColor(color),
         ),
       );
       sprite.draw(

@@ -21,7 +21,7 @@ describe("MovementFixed", () => {
     v_(-1, -2),
     v_(-999_999, 999_999),
     v_(1.234, 5.678),
-  ].forEach((startXy) => {
+  ].forEach(startXy => {
     test(`without frames limit (${startXy.x},${startXy.y})`, () => {
       const movement = MovementFixed.of({})(startXy);
 

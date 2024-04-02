@@ -71,9 +71,8 @@ export class StaticSprite implements Sprite {
   ) {
     this._sprite = spr_(spritesheetUrl)(spriteW, spriteH, spriteX, spriteY);
 
-    this._drawOffset = fromLeftTopCorner
-      ? v_0_0_
-      : v_(-spriteW / 2, -spriteH / 2);
+    this._drawOffset =
+      fromLeftTopCorner ? v_0_0_ : v_(-spriteW / 2, -spriteH / 2);
   }
 
   pause(): void {}
@@ -101,12 +100,11 @@ export class AnimatedSprite implements Sprite {
     this._animatedSprite = aspr_(spritesheetUrl)(
       spriteW,
       spriteH,
-      spriteXs.map((x) => [x, spriteY]),
+      spriteXs.map(x => [x, spriteY]),
     );
 
-    this._drawOffset = fromLeftTopCorner
-      ? v_0_0_
-      : v_(-spriteW / 2, -spriteH / 2);
+    this._drawOffset =
+      fromLeftTopCorner ? v_0_0_ : v_(-spriteW / 2, -spriteH / 2);
   }
 
   pause(): void {

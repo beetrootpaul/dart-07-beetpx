@@ -4,7 +4,7 @@ import { Movement, MovementFactory } from "./Movement";
 export class MovementFixed implements Movement {
   static of =
     (params: { frames?: number }): MovementFactory =>
-    (startXy) =>
+    startXy =>
       new MovementFixed(startXy, params.frames);
 
   private readonly _timer: BpxTimer | null;

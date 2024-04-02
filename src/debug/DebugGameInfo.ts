@@ -65,11 +65,9 @@ export class DebugGameInfo {
       for (let dot = 0; dot < tensOfFps; dot++) {
         b_.drawPixel(
           v_(1 + column * 2, g.viewportSize.y - 2 - dot * 2),
-          column === this._fpsData.index
-            ? c.white
-            : (dot + 1) % 3 === 0
-              ? c.peach
-              : c.lavender,
+          column === this._fpsData.index ? c.white
+          : (dot + 1) % 3 === 0 ? c.peach
+          : c.lavender,
         );
       }
     }
@@ -81,13 +79,10 @@ export class DebugGameInfo {
   private _drawAudioState(): void {
     const audioState = b_.getAudioContext().state;
     const audioStateText =
-      audioState === "suspended"
-        ? "s"
-        : audioState === "running"
-          ? "r"
-          : audioState === "closed"
-            ? "c"
-            : "@";
+      audioState === "suspended" ? "s"
+      : audioState === "running" ? "r"
+      : audioState === "closed" ? "c"
+      : "@";
     b_.drawText(
       audioStateText,
       v_(g.viewportSize.x - b_.measureText(audioStateText).wh.x, 0),

@@ -104,7 +104,7 @@ export class Mission3 implements Mission {
 
   levelBgUpdate(): void {
     this._particles = this._particles.filter(
-      (p) => p.xy.y <= g.gameAreaSize.y + g.tileSize.y,
+      p => p.xy.y <= g.gameAreaSize.y + g.tileSize.y,
     );
 
     for (const particle of this._particles) {

@@ -148,7 +148,11 @@ export class ScreenOver implements GameScreen {
       spr_(g.assets.mainSpritesheetUrl)(
         1,
         12,
-        selected ? (this._isWin ? 37 : 35) : 36,
+        selected ?
+          this._isWin ?
+            37
+          : 35
+        : 36,
         12,
       ),
       v_(x, y),
@@ -161,12 +165,10 @@ export class ScreenOver implements GameScreen {
     // "x" press incentive
     if (selected) {
       const xSprite = this._isWin ? this._cSpriteWin : this._cSprite;
-      const xSpritePressed = this._isWin
-        ? this._cSpritePressedWin
-        : this._cSpritePressed;
-      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
-        ? xSprite
-        : xSpritePressed;
+      const xSpritePressed =
+        this._isWin ? this._cSpritePressedWin : this._cSpritePressed;
+      const sprite =
+        u_.booleanChangingEveryNthFrame(g.fps / 3) ? xSprite : xSpritePressed;
       sprite.draw(v_(x + w - 16, y + 13).sub(g.gameAreaOffset));
     }
   }

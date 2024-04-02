@@ -50,7 +50,7 @@ export class Explosion {
   }
 
   get hasFinished(): boolean {
-    return this._particles.every((p) => p.r <= 0);
+    return this._particles.every(p => p.r <= 0);
   }
 
   pauseTimers(): void {

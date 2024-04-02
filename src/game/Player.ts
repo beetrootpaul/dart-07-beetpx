@@ -108,18 +108,20 @@ export class Player {
 
   setMovement(directionVector: BpxVector2d, fastMovement: boolean) {
     this._shipSpriteCurrent =
-      directionVector.x < 0
-        ? this._shipSpriteFlyingLeft
-        : directionVector.x > 0
-          ? this._shipSpriteFlyingRight
-          : this._shipSpriteNeutral;
+      directionVector.x < 0 ? this._shipSpriteFlyingLeft
+      : directionVector.x > 0 ? this._shipSpriteFlyingRight
+      : this._shipSpriteNeutral;
 
     this._jetSprite = directionVector.y > 0 ? null : this._jetSpriteVisible;
 
     const speed = fastMovement ? 1.5 : 1;
     let diff = v_(
-      directionVector.x > 0 ? speed : directionVector.x < 0 ? -speed : 0,
-      directionVector.y > 0 ? speed : directionVector.y < 0 ? -speed : 0,
+      directionVector.x > 0 ? speed
+      : directionVector.x < 0 ? -speed
+      : 0,
+      directionVector.y > 0 ? speed
+      : directionVector.y < 0 ? -speed
+      : 0,
     );
     if (diff.x !== 0 && diff.y !== 0) {
       // normalization of diagonal speed
@@ -135,7 +137,11 @@ export class Player {
 
   fire(fastShoot: boolean, tripleShoot: boolean): void {
     this._onBulletsSpawned.invokeIfReady(
-      tripleShoot ? (fastShoot ? 10 : 16) : fastShoot ? 8 : 12,
+      tripleShoot ?
+        fastShoot ? 10
+        : 16
+      : fastShoot ? 8
+      : 12,
       (tripleShoot ? this._createTripleBullet : this._createSingleBullet).bind(
         this,
       ),

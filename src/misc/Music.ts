@@ -9,8 +9,9 @@ export class Music {
     const halfDuration = (fullSoundDurationMs: number) =>
       (fullSoundDurationMs * 16) / 32;
     Music._playbackId = b_.startPlaybackSequence({
-      intro: opts.withIntro
-        ? [
+      intro:
+        opts.withIntro ?
+          [
             [{ url: g.assets.music32, durationMs: halfDuration }],
             [{ url: g.assets.music33, durationMs: halfDuration }],
           ]

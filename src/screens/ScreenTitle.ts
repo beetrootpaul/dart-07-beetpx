@@ -127,9 +127,8 @@ export class ScreenTitle implements GameScreen {
       Music.playTitleMusic({ withIntro: false });
     }
 
-    this._fadeIn = params.startFadeIn
-      ? new Fade("in", { fadeFrames: 30 })
-      : null;
+    this._fadeIn =
+      params.startFadeIn ? new Fade("in", { fadeFrames: 30 }) : null;
 
     this._highScore = new Score(
       b_.loadPersistedState<PersistedState>()?.highScore ?? 0,
@@ -147,7 +146,9 @@ export class ScreenTitle implements GameScreen {
         xy: v_(Math.ceil(1 + Math.random() * g.viewportSize.x - 3), y),
         speed: speed,
         color:
-          speed >= 0.75 ? c.lightGrey : speed >= 0.5 ? c.lavender : c.mauve,
+          speed >= 0.75 ? c.lightGrey
+          : speed >= 0.5 ? c.lavender
+          : c.mauve,
       };
       this._stars.push(star);
     }
@@ -155,8 +156,8 @@ export class ScreenTitle implements GameScreen {
 
   preUpdate(): GameScreen | undefined {
     if (this._proceed) {
-      return ScreenTitle._playSelected
-        ? new ScreenSelectMission()
+      return ScreenTitle._playSelected ?
+          new ScreenSelectMission()
         : new ScreenControls();
     }
   }
@@ -184,7 +185,7 @@ export class ScreenTitle implements GameScreen {
       star.xy = star.xy.add(0, star.speed);
     }
 
-    this._stars = this._stars.filter((s) => s.xy.y <= g.gameAreaSize.y);
+    this._stars = this._stars.filter(s => s.xy.y <= g.gameAreaSize.y);
 
     this._maybeAddStar(0);
 
@@ -192,15 +193,14 @@ export class ScreenTitle implements GameScreen {
   }
 
   private _drawBackground(): void {
-    const tiles = ScreenTitle._gameCoverMode
-      ? this._bgCoverTiles
-      : this._bgTiles;
+    const tiles =
+      ScreenTitle._gameCoverMode ? this._bgCoverTiles : this._bgTiles;
 
     const prevMapping = b_.setSpriteColorMapping(
-      BpxSpriteColorMapping.of((color) =>
-        color?.cssHex === Pico8Colors.black.cssHex
-          ? null
-          : g.baseSpriteMapping.getMappedColor(color),
+      BpxSpriteColorMapping.of(color =>
+        color?.cssHex === Pico8Colors.black.cssHex ?
+          null
+        : g.baseSpriteMapping.getMappedColor(color),
       ),
     );
 
@@ -234,10 +234,10 @@ export class ScreenTitle implements GameScreen {
 
   private _drawTitle(baseY: number): void {
     const prevMapping = b_.setSpriteColorMapping(
-      BpxSpriteColorMapping.of((color) =>
-        color?.cssHex === Pico8Colors.black.cssHex
-          ? null
-          : g.baseSpriteMapping.getMappedColor(color),
+      BpxSpriteColorMapping.of(color =>
+        color?.cssHex === Pico8Colors.black.cssHex ?
+          null
+        : g.baseSpriteMapping.getMappedColor(color),
       ),
     );
     b_.drawSprite(
@@ -284,8 +284,9 @@ export class ScreenTitle implements GameScreen {
 
     // "x" press incentive
     if (selected) {
-      const sprite = u_.booleanChangingEveryNthFrame(g.fps / 3)
-        ? this._cSprite
+      const sprite =
+        u_.booleanChangingEveryNthFrame(g.fps / 3) ?
+          this._cSprite
         : this._cSpritePressed;
       sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
     }
@@ -303,12 +304,10 @@ export class ScreenTitle implements GameScreen {
     if (ScreenTitle._gameCoverMode) {
       // BRP
       const prevMapping = b_.setSpriteColorMapping(
-        BpxSpriteColorMapping.of((color) =>
-          color?.cssHex === Pico8Colors.black.cssHex
-            ? null
-            : color?.cssHex === Pico8Colors.lemon.cssHex
-              ? c.mauve
-              : g.baseSpriteMapping.getMappedColor(color),
+        BpxSpriteColorMapping.of(color =>
+          color?.cssHex === Pico8Colors.black.cssHex ? null
+          : color?.cssHex === Pico8Colors.lemon.cssHex ? c.mauve
+          : g.baseSpriteMapping.getMappedColor(color),
         ),
       );
       b_.drawSprite(
