@@ -1,4 +1,4 @@
-# LDtk backups
+# LDtk: backups
 /assets/.ldtk_backups/
 
 # BeetPx: generated and temporary files
@@ -8,9 +8,6 @@
 
 # Node.js: dependencies
 /node_modules/
-
-# JetBrains IDEs: project configuration
-/.idea/
 
 # local playground etc.
 /tmp/
