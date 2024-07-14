@@ -52,16 +52,6 @@ export class ScreenBrp implements GameScreen {
     }
   }
 
-  pauseAnimationsAndTimers(): void {
-    this._screenTimer.pause();
-    this._brpPresentingTimer.pause();
-  }
-
-  resumeAnimationsAndTimers(): void {
-    this._screenTimer.resume();
-    this._brpPresentingTimer.resume();
-  }
-
   update(): void {
     if (b_.wasButtonJustPressed("a") || b_.wasButtonJustPressed("b")) {
       this._skip = true;

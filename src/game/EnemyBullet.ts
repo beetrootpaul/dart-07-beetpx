@@ -45,14 +45,6 @@ export class EnemyBullet {
     this._isDestroyed = true;
   }
 
-  pause(): void {
-    this._movement.pause();
-  }
-
-  resume(): void {
-    this._movement.resume();
-  }
-
   update(): void {
     this._movement.update();
   }

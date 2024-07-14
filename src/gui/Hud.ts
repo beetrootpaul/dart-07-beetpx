@@ -66,14 +66,6 @@ export class Hud {
     ])(v_(-20, 0));
   }
 
-  pause(): void {
-    this._slideInOffset.pause();
-  }
-
-  resume(): void {
-    this._slideInOffset.resume();
-  }
-
   update(): void {
     this._slideInOffset.update();
   }

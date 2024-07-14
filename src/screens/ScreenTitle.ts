@@ -13,7 +13,6 @@ import { Score } from "../game/Score";
 import { c, g } from "../globals";
 import { Music } from "../misc/Music";
 import { Sprite, StaticSprite } from "../misc/Sprite";
-import { PauseMenu } from "../pause/PauseMenu";
 import { PersistedState } from "../PersistedState";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
@@ -160,14 +159,6 @@ export class ScreenTitle implements GameScreen {
           new ScreenSelectMission()
         : new ScreenControls();
     }
-  }
-
-  pauseAnimationsAndTimers(): void {
-    this._fadeIn?.pause();
-  }
-
-  resumeAnimationsAndTimers(): void {
-    this._fadeIn?.resume();
   }
 
   update(): void {
@@ -332,14 +323,14 @@ export class ScreenTitle implements GameScreen {
         98,
         15,
         82,
-        ScreenTitle._playSelected && !PauseMenu.isGamePaused,
+        ScreenTitle._playSelected && !b_.isPaused,
       );
       this._drawButton(
         "controls",
         98,
         15,
         104,
-        !ScreenTitle._playSelected && !PauseMenu.isGamePaused,
+        !ScreenTitle._playSelected && !b_.isPaused,
       );
     }
 

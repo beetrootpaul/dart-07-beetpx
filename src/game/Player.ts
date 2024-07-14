@@ -171,16 +171,6 @@ export class Player {
     }
   }
 
-  pauseAnimationsAndTimers(): void {
-    this._jetSprite?.pause();
-    this._invincibleAfterDamageTimer?.pause();
-  }
-
-  resumeAnimationsAndTimers(): void {
-    this._jetSprite?.resume();
-    this._invincibleAfterDamageTimer?.resume();
-  }
-
   update(): void {
     if (this._invincibleAfterDamageTimer?.hasFinished) {
       this._invincibleAfterDamageTimer = null;

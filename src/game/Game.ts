@@ -415,34 +415,6 @@ export class Game {
     this._floats = this._floats.filter(f => !f.hasFinished);
   }
 
-  pauseAnimationsAndTimers(): void {
-    this._level.pauseAnimations();
-    this._shockwaves.forEach(s => s.pause());
-    this._playerBullets.forEach(pb => pb.pause());
-    this._enemyBullets.forEach(eb => eb.pause());
-    this._player?.pauseAnimationsAndTimers();
-    this._enemies.forEach(e => e.pauseTimers());
-    this._boss?.pauseTimers();
-    this._powerups.forEach(p => p.pause());
-    this._explosions.forEach(e => e.pauseTimers());
-    this._floats.forEach(f => f.pause());
-    this._cameraShakeTimer.pause();
-  }
-
-  resumeAnimationsAndTimers(): void {
-    this._level.resumeAnimations();
-    this._shockwaves.forEach(s => s.resume());
-    this._playerBullets.forEach(pb => pb.resume());
-    this._enemyBullets.forEach(eb => eb.resume());
-    this._player?.resumeAnimationsAndTimers();
-    this._enemies.forEach(e => e.resumeTimers());
-    this._boss?.resumeTimers();
-    this._powerups.forEach(p => p.resume());
-    this._explosions.forEach(e => e.resumeTimers());
-    this._floats.forEach(f => f.resume());
-    this._cameraShakeTimer.resume();
-  }
-
   update(): void {
     this._player?.setMovement(b_.getPressedDirection(), this._fastMovement);
     if (b_.isButtonPressed("a")) {

@@ -20,8 +20,6 @@ import { PauseMenuEntryToggle } from "./PauseMenuEntryToggle";
 // TODO: pause menu: add full screen enter/exit if full screen supported
 
 export class PauseMenu {
-  static isGamePaused: boolean = false;
-
   private static _padding = {
     left: 12,
     right: 22,
@@ -65,8 +63,7 @@ export class PauseMenu {
   constructor() {
     this._entries = [
       new PauseMenuEntrySimple("continue", () => {
-        PauseMenu.isGamePaused = false;
-        b_.resumeAudio();
+        b_.resume();
       }),
       new PauseMenuEntryToggle(
         "sounds:",
@@ -86,11 +83,7 @@ export class PauseMenu {
   }
 
   update(): void {
-    if (
-      b_.wasButtonJustPressed("a") ||
-      (b_.frameNumber === this._lastProcessedFramed + 1 &&
-        b_.wasButtonJustPressed("menu"))
-    ) {
+    if (b_.wasButtonJustPressed("a")) {
       this._entries[this._focusedEntry]!.execute();
     }
     this._lastProcessedFramed = b_.frameNumber;

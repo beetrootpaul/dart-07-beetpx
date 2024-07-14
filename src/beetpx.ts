@@ -15,6 +15,9 @@ const debugGameInfo: DebugGameInfo = new DebugGameInfo();
 b_.init({
   canvasSize: "128x128",
   fixedTimestep: "60fps",
+  globalPause: {
+    available: true,
+  },
   assets: [
     // IMAGE files
     g.assets.mainSpritesheetUrl,
@@ -82,7 +85,6 @@ b_.init({
     b_.useFont(new Pico8Font());
 
     pauseMenu = new PauseMenu();
-    PauseMenu.isGamePaused = false;
 
     b_.setSpriteColorMapping(g.baseSpriteMapping);
 
@@ -92,22 +94,15 @@ b_.init({
   b_.setOnUpdate(() => {
     debugGameInfo.update();
 
-    if (!PauseMenu.isGamePaused && b_.wasButtonJustPressed("menu")) {
-      PauseMenu.isGamePaused = true;
-      b_.pauseAudio();
-    }
-
     b_.setCameraXy(v_0_0_);
 
-    if (PauseMenu.isGamePaused) {
-      currentScreen?.pauseAnimationsAndTimers();
+    if (b_.isPaused) {
       pauseMenu?.update();
     } else {
       nextScreen = currentScreen?.preUpdate();
       if (nextScreen) {
         currentScreen = nextScreen;
       }
-      currentScreen?.resumeAnimationsAndTimers();
       currentScreen?.update();
     }
   });
@@ -115,7 +110,7 @@ b_.init({
   b_.setOnDraw(() => {
     currentScreen?.draw();
 
-    if (PauseMenu.isGamePaused) {
+    if (b_.isPaused) {
       pauseMenu?.draw();
     }
 
@@ -145,3 +140,5 @@ b_.init({
 // TODO: adapt button images to whatever input method was used last
 
 // TODO: input tester on first start, then from the menu
+
+// TODO: bullet is fired immediately on mission start if the A was pressed for a bit longer on mission select screen

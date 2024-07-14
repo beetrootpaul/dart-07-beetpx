@@ -49,10 +49,6 @@ export abstract class Sprite {
     };
   }
 
-  abstract pause(): void;
-
-  abstract resume(): void;
-
   abstract draw(xy: BpxVector2d): void;
 }
 
@@ -74,10 +70,6 @@ export class StaticSprite implements Sprite {
     this._drawOffset =
       fromLeftTopCorner ? v_0_0_ : v_(-spriteW / 2, -spriteH / 2);
   }
-
-  pause(): void {}
-
-  resume(): void {}
 
   draw(xy: BpxVector2d): void {
     b_.drawSprite(this._sprite, xy.add(g.gameAreaOffset).add(this._drawOffset));
@@ -105,14 +97,6 @@ export class AnimatedSprite implements Sprite {
 
     this._drawOffset =
       fromLeftTopCorner ? v_0_0_ : v_(-spriteW / 2, -spriteH / 2);
-  }
-
-  pause(): void {
-    this._animatedSprite.pause();
-  }
-
-  resume(): void {
-    this._animatedSprite.resume();
   }
 
   draw(xy: BpxVector2d): void {

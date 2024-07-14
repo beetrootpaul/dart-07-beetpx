@@ -41,14 +41,6 @@ export class Shockwave {
     return this._rProgress.hasFinished;
   }
 
-  pause(): void {
-    this._rProgress.pause();
-  }
-
-  resume(): void {
-    this._rProgress.resume();
-  }
-
   update(): void {
     this._rProgress.update();
   }

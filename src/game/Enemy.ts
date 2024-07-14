@@ -96,18 +96,6 @@ export class Enemy {
     );
   }
 
-  pauseTimers(): void {
-    this._movement.pause();
-    this._properties.bulletFireTimer?.pause();
-    this._flashingAfterDamageTimer?.pause();
-  }
-
-  resumeTimers(): void {
-    this._movement.resume();
-    this._properties.bulletFireTimer?.resume();
-    this._flashingAfterDamageTimer?.resume();
-  }
-
   update(): void {
     this._movement.update();
 

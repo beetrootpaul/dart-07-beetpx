@@ -21,14 +21,6 @@ export class Float {
     return this._movement.hasFinished;
   }
 
-  pause(): void {
-    this._movement.pause();
-  }
-
-  resume(): void {
-    this._movement.resume();
-  }
-
   update(): void {
     this._movement.update();
   }

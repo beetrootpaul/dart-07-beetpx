@@ -80,20 +80,6 @@ export class ScreenMissionMain implements GameScreen {
     }
   }
 
-  pauseAnimationsAndTimers(): void {
-    this._game.pauseAnimationsAndTimers();
-    this._hud.pause();
-    this._missionInfo?.pause();
-    this._fadeIn?.pause();
-  }
-
-  resumeAnimationsAndTimers(): void {
-    this._game.resumeAnimationsAndTimers();
-    this._hud.resume();
-    this._missionInfo?.resume();
-    this._fadeIn?.resume();
-  }
-
   update(): void {
     this._game.update();
     this._hud.update();

@@ -5,7 +5,6 @@ import { Music } from "../misc/Music";
 import { AnimatedSprite, Sprite, StaticSprite } from "../misc/Sprite";
 import { Movement } from "../movement/Movement";
 import { MovementToTarget } from "../movement/MovementToTarget";
-import { PauseMenu } from "../pause/PauseMenu";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 import { ScreenTitle } from "./ScreenTitle";
@@ -78,25 +77,6 @@ export class ScreenSelectMission implements GameScreen {
     }
   }
 
-  pauseAnimationsAndTimers(): void {
-    this._shipSprite.pause();
-    this._jetSprite.pause();
-    this._shipMovement?.pause();
-    this._fadeOut.pause();
-  }
-
-  resumeAnimationsAndTimers(): void {
-    this._shipSprite.resume();
-    this._jetSprite.resume();
-    if (this._proceed) {
-      if (this._shipMovement?.hasFinished) {
-        this._fadeOut.resume();
-      } else {
-        this._shipMovement?.resume();
-      }
-    }
-  }
-
   private _initShipMovement(): void {
     const [buttonXy, buttonWh] = this._missionButtonXyWh(
       ScreenSelectMission._selectedMission,
@@ -156,8 +136,7 @@ export class ScreenSelectMission implements GameScreen {
 
   private _drawMissionButton(mission: number): void {
     const selected =
-      mission === ScreenSelectMission._selectedMission &&
-      !PauseMenu.isGamePaused;
+      mission === ScreenSelectMission._selectedMission && !b_.isPaused;
 
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(mission);
 
@@ -210,8 +189,7 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   private _drawBackButton(): void {
-    const selected =
-      0 === ScreenSelectMission._selectedMission && !PauseMenu.isGamePaused;
+    const selected = 0 === ScreenSelectMission._selectedMission && !b_.isPaused;
 
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(0);
 

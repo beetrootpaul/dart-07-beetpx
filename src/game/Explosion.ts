@@ -53,14 +53,6 @@ export class Explosion {
     return this._particles.every(p => p.r <= 0);
   }
 
-  pauseTimers(): void {
-    this._waitTimer.pause();
-  }
-
-  resumeTimers(): void {
-    this._waitTimer.resume();
-  }
-
   update(): void {
     if (this._waitTimer.hasFinished) {
       if (this._onStarted) {

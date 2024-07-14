@@ -6,7 +6,6 @@ import { c, g } from "../globals";
 import { Music } from "../misc/Music";
 import { Sprite, StaticSprite } from "../misc/Sprite";
 import { CurrentMission } from "../missions/CurrentMission";
-import { PauseMenu } from "../pause/PauseMenu";
 import { GameScreen } from "./GameScreen";
 import { ScreenMissionMain } from "./ScreenMissionMain";
 import { ScreenTitle } from "./ScreenTitle";
@@ -99,19 +98,6 @@ export class ScreenOver implements GameScreen {
     }
 
     return;
-  }
-
-  pauseAnimationsAndTimers(): void {
-    this._fadeOut.pause();
-    this._fadeIn.pause();
-  }
-
-  resumeAnimationsAndTimers(): void {
-    if (this._proceed) {
-      this._fadeOut.resume();
-    } else {
-      this._fadeIn.resume();
-    }
   }
 
   update(): void {
@@ -212,13 +198,13 @@ export class ScreenOver implements GameScreen {
       this._drawButton(
         `try mission ${CurrentMission.current} again`,
         81,
-        this._retry && !PauseMenu.isGamePaused,
+        this._retry && !b_.isPaused,
       );
     }
     this._drawButton(
       "go to title screen",
       this._isWin ? 85 : 103,
-      (!this._retry || this._isWin) && !PauseMenu.isGamePaused,
+      (!this._retry || this._isWin) && !b_.isPaused,
     );
 
     this._fadeIn.draw();

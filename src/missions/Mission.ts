@@ -19,9 +19,6 @@ export interface Mission {
     progressionMarkersLayer: string;
   };
 
-  pauseAnimations(): void;
-  resumeAnimations(): void;
-
   levelBgUpdate(): void;
   levelBgDraw(): void;
 
