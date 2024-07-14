@@ -10,7 +10,7 @@ describe("MovementFixed", () => {
   }
 
   beforeEach(() => {
-    vi.spyOn(BeetPx, "frameNumber", "get").mockImplementation(
+    vi.spyOn(BeetPx, "frameNumberOutsidePause", "get").mockImplementation(
       () => stubbedFrameNumber,
     );
   });

@@ -58,8 +58,6 @@ export class PauseMenu {
 
   private _restartFadeOut: Fade | null = null;
 
-  private _lastProcessedFramed: number = -1;
-
   constructor() {
     this._entries = [
       new PauseMenuEntrySimple("continue", () => {
@@ -86,7 +84,6 @@ export class PauseMenu {
     if (b_.wasButtonJustPressed("a")) {
       this._entries[this._focusedEntry]!.execute();
     }
-    this._lastProcessedFramed = b_.frameNumber;
 
     if (b_.wasButtonJustPressed("up")) {
       this._focusedEntry =
@@ -166,7 +163,7 @@ export class PauseMenu {
     if (this._focusedEntry === entryIndex) {
       b_.drawPixels(PauseMenu._arrowPixels, xy.sub(7, 0), c.white);
       const sprite =
-        u_.booleanChangingEveryNthFrame(g.fps / 3) ?
+        u_.booleanChangingEveryNthFrame(g.fps / 3, { onGamePause: "ignore" }) ?
           this._cSprite
         : this._cSpritePressed;
       const prevMapping = b_.setSpriteColorMapping(
