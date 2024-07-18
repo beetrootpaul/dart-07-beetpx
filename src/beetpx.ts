@@ -2,7 +2,7 @@ import { b_, v_0_0_ } from "@beetpx/beetpx";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { g } from "./globals";
 import { PauseMenu } from "./pause/PauseMenu";
-import { Pico8Font } from "./pico8/Pico8Font";
+import { pico8Font } from "./pico8/Pico8Font";
 import { GameScreen } from "./screens/GameScreen";
 import { ScreenBrp } from "./screens/ScreenBrp";
 
@@ -82,7 +82,7 @@ b_.init({
   b_.setOnStarted(() => {
     // Better set font first, because other constructors might rely
     //   on it when calculating text size.
-    b_.useFont(new Pico8Font());
+    b_.useFont(pico8Font);
 
     pauseMenu = new PauseMenu();
 
