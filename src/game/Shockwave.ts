@@ -1,4 +1,4 @@
-import { b_, BpxVector2d, u_, v_, v_0_0_ } from "@beetpx/beetpx";
+import { $d, $u, $v, $v_0_0, BpxVector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { c, g } from "../globals";
 import { Movement } from "../movement/Movement";
@@ -27,7 +27,7 @@ export class Shockwave {
       ),
       angle: 0,
       angledSpeed: Shockwave._rSpeed,
-    })(v_0_0_);
+    })($v_0_0);
   }
 
   get collisionCircle(): CollisionCircle {
@@ -46,11 +46,11 @@ export class Shockwave {
   }
 
   private _drawNegativeRing(rOuter: number, rInner: number): void {
-    rOuter = u_.clamp(rInner, rOuter, Shockwave._rMax);
-    rInner = u_.clamp(Shockwave._rMin, rInner, rOuter);
+    rOuter = $u.clamp(rInner, rOuter, Shockwave._rMax);
+    rInner = $u.clamp(Shockwave._rMin, rInner, rOuter);
     if (rInner === rOuter) return;
 
-    b_.takeCanvasSnapshot();
+    $d.takeCanvasSnapshot();
 
     for (let dy = -rOuter; dy <= rOuter; dy++) {
       const sy = this._center.y + dy;
@@ -60,24 +60,24 @@ export class Shockwave {
       const dxInner = Math.ceil(
         Math.sqrt(Math.max(0, rInner * rInner - dy * dy)),
       );
-      b_.drawLine(
-        g.gameAreaOffset.add(v_(this._center.x - dxOuter + 1, sy)),
-        v_(dxOuter - dxInner, 1),
+      $d.line(
+        g.gameAreaOffset.add($v(this._center.x - dxOuter + 1, sy)),
+        $v(dxOuter - dxInner, 1),
         g.snapshotNegative,
       );
-      b_.drawLine(
-        g.gameAreaOffset.add(v_(this._center.x + dxOuter - 1, sy)),
-        v_(dxInner - dxOuter, 1),
+      $d.line(
+        g.gameAreaOffset.add($v(this._center.x + dxOuter - 1, sy)),
+        $v(dxInner - dxOuter, 1),
         g.snapshotNegative,
       );
     }
   }
 
   private _drawCircle(r: number): void {
-    if (r === u_.clamp(Shockwave._rMin, r, Shockwave._rMax)) {
-      b_.drawEllipse(
+    if (r === $u.clamp(Shockwave._rMin, r, Shockwave._rMax)) {
+      $d.ellipse(
         g.gameAreaOffset.add(this._center).sub(r),
-        v_(r, r).mul(2),
+        $v(r, r).mul(2),
         c.lightGrey,
       );
     }

@@ -1,4 +1,4 @@
-import { BpxEasing, BpxTimer, timer_, u_, v_, v_0_0_ } from "@beetpx/beetpx";
+import { $timer, $u, $v, $v_0_0, BpxEasing, BpxTimer } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
@@ -64,7 +64,7 @@ export class Boss {
       targetY: 20,
       frames: 180,
       easingFn: BpxEasing.outQuartic,
-    })(v_(g.gameAreaSize.x / 2, -120));
+    })($v(g.gameAreaSize.x / 2, -120));
 
     this._onBulletsSpawned = params.onBulletsSpawned;
     this._onDamaged = params.onDamaged;
@@ -87,7 +87,7 @@ export class Boss {
   private get _currentPhase(): BossProperties["phases"][0] {
     return (
       this._properties.phases[this._currentPhaseNumber] ??
-      u_.throwError(
+      $u.throwError(
         `Tried to access non-existent boss phase at index ${this._currentPhaseNumber}`,
       )
     );
@@ -96,7 +96,7 @@ export class Boss {
   private get _nextPhase(): BossProperties["phases"][0] {
     return (
       this._properties.phases[this._currentPhaseNumber + 1] ??
-      u_.throwError(
+      $u.throwError(
         `Tried to access non-existent boss phase at index ${
           this._currentPhaseNumber + 1
         }`,
@@ -112,7 +112,7 @@ export class Boss {
 
   get collisionCircles(): CollisionCircle[] {
     return this._properties.collisionCirclesProps.map(({ r, offset }) => ({
-      center: this._movement.xy.add(offset ?? v_0_0_),
+      center: this._movement.xy.add(offset ?? $v_0_0),
       r,
     }));
   }
@@ -120,7 +120,7 @@ export class Boss {
   takeDamage(damage: number): void {
     this._health = Math.max(0, this._health - damage);
     if (this._health > 0) {
-      this._flashingAfterDamageTimer = timer_(4);
+      this._flashingAfterDamageTimer = $timer(4);
       this._onDamaged();
     } else {
       this._isDestroyed = true;

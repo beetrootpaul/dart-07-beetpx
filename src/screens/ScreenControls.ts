@@ -1,4 +1,4 @@
-import { b_, spr_, u_, v_ } from "@beetpx/beetpx";
+import { $, $d, $spr, $u, $v } from "@beetpx/beetpx";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
 import { GameScreen } from "./GameScreen";
@@ -49,8 +49,8 @@ export class ScreenControls implements GameScreen {
   }
 
   update(): void {
-    if (b_.wasButtonJustPressed("a")) {
-      b_.startPlayback(g.assets.sfxOptionsConfirm);
+    if ($.wasButtonJustPressed("a")) {
+      $.startPlayback(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }
   }
@@ -59,61 +59,61 @@ export class ScreenControls implements GameScreen {
     const w = g.viewportSize.x - 2 * baseX;
 
     // button shape
-    b_.drawSprite(
-      spr_(g.assets.mainSpritesheetUrl)(1, 12, !b_.isPaused ? 35 : 36, 12),
-      v_(baseX, baseY),
-      { scaleXy: v_(w, 1) },
+    $d.sprite(
+      $spr(g.assets.mainSpritesheetUrl)(1, 12, !$.isPaused ? 35 : 36, 12),
+      $v(baseX, baseY),
+      { scaleXy: $v(w, 1) },
     );
 
     // button text
-    b_.drawText("back", v_(baseX + 4, baseY + 3), c.mauve);
+    $d.text("back", $v(baseX + 4, baseY + 3), c.mauve);
 
-    if (!b_.isPaused) {
+    if (!$.isPaused) {
       // "x" press incentive
       const sprite =
-        u_.booleanChangingEveryNthFrame(g.fps / 3) ?
+        $u.booleanChangingEveryNthFrame(g.fps / 3) ?
           this._cSprite
         : this._cSpritePressed;
-      sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
+      sprite.draw($v(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
     }
   }
 
   private _drawControls(baseX: number, baseY: number): void {
     let y = baseY;
 
-    b_.drawText("in game:", v_(baseX, y), c.peach);
+    $d.text("in game:", $v(baseX, y), c.peach);
     y += 10;
 
-    b_.drawText("use arrows to move", v_(baseX, y), c.lightGrey);
+    $d.text("use arrows to move", $v(baseX, y), c.lightGrey);
     y += 10;
 
-    b_.drawText("press & hold", v_(baseX, y), c.lightGrey);
-    this._cSprite.draw(v_(baseX + 49, y - 1).sub(g.gameAreaOffset));
-    b_.drawText("to fire", v_(baseX + 67, y), c.lightGrey);
+    $d.text("press & hold", $v(baseX, y), c.lightGrey);
+    this._cSprite.draw($v(baseX + 49, y - 1).sub(g.gameAreaOffset));
+    $d.text("to fire", $v(baseX + 67, y), c.lightGrey);
     y += 10;
 
-    b_.drawText("press", v_(baseX, y), c.lightGrey);
-    this._xSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
-    b_.drawText("to trigger", v_(baseX + 41, y), c.lightGrey);
-    b_.drawText("a schockwave", v_(baseX, y + 7), c.lightGrey);
+    $d.text("press", $v(baseX, y), c.lightGrey);
+    this._xSprite.draw($v(baseX + 23, y - 1).sub(g.gameAreaOffset));
+    $d.text("to trigger", $v(baseX + 41, y), c.lightGrey);
+    $d.text("a schockwave", $v(baseX, y + 7), c.lightGrey);
     y += 20;
 
-    b_.drawText("other:", v_(baseX, y), c.peach);
+    $d.text("other:", $v(baseX, y), c.peach);
     y += 10;
 
-    b_.drawText("press", v_(baseX, y), c.lightGrey);
-    this._pauseSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
-    b_.drawText("to open", v_(baseX + 41, y), c.lightGrey);
-    b_.drawText("the pause menu", v_(baseX, y + 7), c.lightGrey);
+    $d.text("press", $v(baseX, y), c.lightGrey);
+    this._pauseSprite.draw($v(baseX + 23, y - 1).sub(g.gameAreaOffset));
+    $d.text("to open", $v(baseX + 41, y), c.lightGrey);
+    $d.text("the pause menu", $v(baseX, y + 7), c.lightGrey);
     y += 17;
 
-    b_.drawText("press", v_(baseX, y), c.lightGrey);
-    this._cSprite.draw(v_(baseX + 23, y - 1).sub(g.gameAreaOffset));
-    b_.drawText("to confirm", v_(baseX + 41, y), c.lightGrey);
+    $d.text("press", $v(baseX, y), c.lightGrey);
+    this._cSprite.draw($v(baseX + 23, y - 1).sub(g.gameAreaOffset));
+    $d.text("to confirm", $v(baseX + 41, y), c.lightGrey);
   }
 
   draw(): void {
-    b_.clearCanvas(c.darkerBlue);
+    $d.clearCanvas(c.darkerBlue);
 
     this._drawControls(15, 15);
     this._drawBackButton(15, 104);

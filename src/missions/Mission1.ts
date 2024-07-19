@@ -1,11 +1,11 @@
 import {
-  b_,
+  $,
+  $timer,
+  $u,
+  $v,
   BpxEasing,
   BpxRgbColor,
   BpxSoundSequence,
-  timer_,
-  u_,
-  v_,
 } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
@@ -19,13 +19,13 @@ import { MovementSinusoidal } from "../movement/MovementSinusoidal";
 import { MovementToTarget } from "../movement/MovementToTarget";
 import { Mission } from "./Mission";
 
-const aspr_ = Sprite.for(g.assets.mission1SpritesheetUrl).animated;
-const sspr_ = Sprite.for(g.assets.mission1SpritesheetUrl).static;
+const $aspr = Sprite.for(g.assets.mission1SpritesheetUrl).animated;
+const $sspr = Sprite.for(g.assets.mission1SpritesheetUrl).static;
 
-const eb_ = EnemyBullet.factory(sspr_(4, 4, 124, 64), 2);
+const $eb = EnemyBullet.factory($sspr(4, 4, 124, 64), 2);
 
 function t(): number {
-  return b_.frameNumber / g.fps;
+  return $.frameNumber / g.fps;
 }
 
 export class Mission1 implements Mission {
@@ -51,14 +51,14 @@ export class Mission1 implements Mission {
     progressionMarkersLayer: "progression_markers",
   };
 
-  private readonly _waveTile: Sprite = aspr_(
+  private readonly _waveTile: Sprite = $aspr(
     8,
     8,
     [
-      ...u_.range(24).map(() => 24),
-      ...u_.range(24).map(() => 32),
-      ...u_.range(24).map(() => 40),
-      ...u_.range(24).map(() => 48),
+      ...$u.range(24).map(() => 24),
+      ...$u.range(24).map(() => 32),
+      ...$u.range(24).map(() => 40),
+      ...$u.range(24).map(() => 48),
     ],
     56,
     true,
@@ -75,7 +75,7 @@ export class Mission1 implements Mission {
     for (let distance = 0; distance <= 16; distance++) {
       for (let lane = 1; lane <= 12; lane++) {
         this._waveTile.draw(
-          v_(
+          $v(
             (lane - 1) * g.tileSize.x,
             Math.ceil((distance - 1) * g.tileSize.y + this._waveTileOffsetY),
           ),
@@ -160,9 +160,9 @@ export class Mission1 implements Mission {
           score: 2,
           powerupsDistribution:
             "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,f,f,t,s",
-          spriteMain: sspr_(8, 8, 0, 88),
-          spriteFlash: sspr_(6, 6, 22, 79),
-          collisionCirclesProps: [{ r: 3, offset: v_(0, 1) }],
+          spriteMain: $sspr(8, 8, 0, 88),
+          spriteFlash: $sspr(6, 6, 22, 79),
+          collisionCirclesProps: [{ r: 3, offset: $v(0, 1) }],
           movementFactory: MovementLine.of({
             angle: 0.25,
             angledSpeed: 1.5,
@@ -174,21 +174,21 @@ export class Mission1 implements Mission {
           score: 5,
           powerupsDistribution:
             "-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,h,m,m,m,f,f,t,t,s",
-          spriteMain: sspr_(10, 10, 22, 86),
-          spriteFlash: sspr_(8, 8, 13, 88),
+          spriteMain: $sspr(10, 10, 22, 86),
+          spriteFlash: $sspr(8, 8, 13, 88),
           collisionCirclesProps: [{ r: 4 }],
           movementFactory: MovementSinusoidal.of({
             speedY: 0.75,
             ageDivisor: 120,
             magnitude: 14,
           }),
-          bulletFireTimer: timer_(40, { loop: true }),
+          bulletFireTimer: $timer(40, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b_.startPlayback(g.assets.sfxEnemyShoot);
+            $.startPlayback(g.assets.sfxEnemyShoot);
             return [
-              eb_(
+              $eb(
                 MovementLine.of({
-                  baseSpeedXy: v_(0, enemyMovement.speed.y),
+                  baseSpeedXy: $v(0, enemyMovement.speed.y),
                   angle: 0.25,
                   angledSpeed: 1,
                 })(enemyMovement.xy),
@@ -201,8 +201,8 @@ export class Mission1 implements Mission {
           health: 7,
           score: 20,
           powerupsDistribution: "-,-,-,-,-,-,-,-,-,-,h,h,m,f,t,s,s",
-          spriteMain: sspr_(16, 14, 22, 64),
-          spriteFlash: sspr_(14, 12, 32, 84),
+          spriteMain: $sspr(16, 14, 22, 64),
+          spriteFlash: $sspr(14, 12, 32, 84),
           collisionCirclesProps: [{ r: 7 }],
           movementFactory: MovementSequence.of([
             MovementLine.of({
@@ -221,13 +221,13 @@ export class Mission1 implements Mission {
           health: 40,
           score: 100,
           powerupsDistribution: "h,s",
-          spriteMain: sspr_(24, 20, 64, 64),
-          spriteFlash: sspr_(22, 18, 88, 65),
+          spriteMain: $sspr(24, 20, 64, 64),
+          spriteFlash: $sspr(22, 18, 88, 65),
           collisionCirclesProps: [
-            { r: 10, offset: v_(0, 1) },
-            { r: 5, offset: v_(-7, 0) },
-            { r: 5, offset: v_(7, 0) },
-            { r: 5, offset: v_(0, -4) },
+            { r: 10, offset: $v(0, 1) },
+            { r: 5, offset: $v(-7, 0) },
+            { r: 5, offset: $v(7, 0) },
+            { r: 5, offset: $v(0, -4) },
           ],
           movementFactory: MovementSequence.of([
             MovementToTarget.of({
@@ -244,13 +244,13 @@ export class Mission1 implements Mission {
               easingFn: BpxEasing.inQuartic,
             }),
           ]),
-          bulletFireTimer: timer_(33, { loop: true }),
+          bulletFireTimer: $timer(33, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b_.startPlayback(g.assets.sfxEnemyMultiShoot);
+            $.startPlayback(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
-                eb_(
+                $eb(
                   MovementLine.of({
                     baseSpeedXy: enemyMovement.speed,
                     angle: (t() % 1) + i / 8,
@@ -267,12 +267,12 @@ export class Mission1 implements Mission {
           health: 4,
           score: 40,
           powerupsDistribution: "-,-,-,-,-,-,h,m,m,f,f,f,t,t,s",
-          spriteMain: sspr_(8, 22, 50, 64),
-          spriteFlash: sspr_(6, 20, 58, 65),
+          spriteMain: $sspr(8, 22, 50, 64),
+          spriteFlash: $sspr(6, 20, 58, 65),
           collisionCirclesProps: [
             { r: 4 },
-            { r: 4, offset: v_(0, 7) },
-            { r: 4, offset: v_(0, -7) },
+            { r: 4, offset: $v(0, 7) },
+            { r: 4, offset: $v(0, -7) },
           ],
           movementFactory: MovementSequence.of([
             MovementToTarget.of({
@@ -290,25 +290,25 @@ export class Mission1 implements Mission {
               easingFn: BpxEasing.inQuadratic,
             }),
           ]),
-          bulletFireTimer: timer_(60, { loop: true }),
+          bulletFireTimer: $timer(60, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b_.startPlayback(g.assets.sfxEnemyShoot);
+            $.startPlayback(g.assets.sfxEnemyShoot);
             const enemyXy = enemyMovement.xy;
             const playerXy = playerCollisionCircle.center;
             return [
-              eb_(
+              $eb(
                 MovementLine.of({
                   targetXy: playerXy,
                   angledSpeed: 1,
                 })(enemyXy.sub(0, 7)),
               ),
-              eb_(
+              $eb(
                 MovementLine.of({
                   targetXy: playerXy,
                   angledSpeed: 1,
                 })(enemyXy.sub(0, 1)),
               ),
-              eb_(
+              $eb(
                 MovementLine.of({
                   targetXy: playerXy,
                   angledSpeed: 1,
@@ -322,20 +322,20 @@ export class Mission1 implements Mission {
           health: 10,
           score: 50,
           powerupsDistribution: "-,-,-,h,h,m,f,t,t,s,s,s",
-          spriteMain: sspr_(22, 24, 0, 64),
-          spriteFlash: sspr_(12, 12, 38, 64),
+          spriteMain: $sspr(22, 24, 0, 64),
+          spriteFlash: $sspr(12, 12, 38, 64),
           collisionCirclesProps: [{ r: 6 }],
           movementFactory: MovementLine.of({
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          bulletFireTimer: timer_(60, { loop: true }),
+          bulletFireTimer: $timer(60, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b_.startPlayback(g.assets.sfxEnemyMultiShoot);
+            $.startPlayback(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
-                eb_(
+                $eb(
                   MovementLine.of({
                     baseSpeedXy: enemyMovement.speed,
                     angle: 1 / 16 + i / 8,
@@ -348,33 +348,33 @@ export class Mission1 implements Mission {
           },
         };
       default:
-        return u_.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
+        return $u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
     }
   }
 
   bossProperties(): BossProperties {
     return {
       health: 130,
-      spriteMain: sspr_(54, 20, 0, 96),
-      spriteFlash: sspr_(52, 18, 54, 97),
+      spriteMain: $sspr(54, 20, 0, 96),
+      spriteFlash: $sspr(52, 18, 54, 97),
       collisionCirclesProps: [
         { r: 11 },
-        { r: 6, offset: v_(20, -3) },
-        { r: 6, offset: v_(-20, -3) },
+        { r: 6, offset: $v(20, -3) },
+        { r: 6, offset: $v(-20, -3) },
       ],
       phases: [
         // phase 1
         {
           triggeringHealthFraction: 1,
           score: 50,
-          bulletFireTimer: timer_(8, { loop: true }),
+          bulletFireTimer: $timer(8, { loop: true }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             if (t() % 2 < 1) return [];
 
-            b_.startPlayback(g.assets.sfxEnemyShoot);
+            $.startPlayback(g.assets.sfxEnemyShoot);
 
             return [
-              eb_(
+              $eb(
                 MovementLine.of({
                   angle: 0.25,
                   angledSpeed: 1.5,
@@ -388,16 +388,16 @@ export class Mission1 implements Mission {
         {
           triggeringHealthFraction: 0.8,
           score: 300,
-          bulletFireTimer: timer_(28, { loop: true }),
+          bulletFireTimer: $timer(28, { loop: true }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             const bullets: EnemyBullet[] = [];
             if (t() > 0.6) {
-              b_.startPlayback(g.assets.sfxEnemyMultiShoot);
+              $.startPlayback(g.assets.sfxEnemyMultiShoot);
               for (let i = 1; i <= 8; i++) {
                 bullets.push(
-                  eb_(
+                  $eb(
                     MovementLine.of({
-                      baseSpeedXy: v_(0, bossMovement.speed.y),
+                      baseSpeedXy: $v(0, bossMovement.speed.y),
                       angle: (t() % 1) + i / 8,
                       angledSpeed: 1,
                     })(bossMovement.xy),
@@ -432,19 +432,19 @@ export class Mission1 implements Mission {
         {
           triggeringHealthFraction: 0.4,
           score: 650,
-          bulletFireTimer: timer_(8, { loop: true }),
+          bulletFireTimer: $timer(8, { loop: true }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            b_.startPlayback(g.assets.sfxEnemyShoot);
+            $.startPlayback(g.assets.sfxEnemyShoot);
             if (t() % 2 > 1.5) {
               // side bullets
               return [
-                eb_(
+                $eb(
                   MovementLine.of({
                     angle: 0.25,
                     angledSpeed: 1.5,
                   })(bossMovement.xy.add(-20, -3)),
                 ),
-                eb_(
+                $eb(
                   MovementLine.of({
                     angle: 0.25,
                     angledSpeed: 1.5,
@@ -456,7 +456,7 @@ export class Mission1 implements Mission {
             if (t() % 2 < 0.9) {
               // sinusoidal central bullets
               return [
-                eb_(
+                $eb(
                   MovementSinusoidal.of({
                     speedY: 1.5,
                     ageDivisor: 60,

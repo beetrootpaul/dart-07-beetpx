@@ -1,5 +1,5 @@
 {
-	"__header__": {
+	"$__header_": {
 		"fileType": "LDtk Project JSON",
 		"app": "LDtk",
 		"doc": "https://ldtk.io/json",
@@ -36,7 +36,7 @@
 	"backupOnSave": true,
 	"backupLimit": 10,
 	"backupRelPath": ".ldtk_backups/missions",
-	"levelNamePattern": "mission_%idx",
+	"levelNamePattern": "$mission%idx",
 	"tutorialDesc": null,
 	"customCommands": [],
 	"flags": [],

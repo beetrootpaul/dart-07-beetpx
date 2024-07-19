@@ -1,4 +1,4 @@
-import { b_, v_ } from "@beetpx/beetpx";
+import { $d, $v } from "@beetpx/beetpx";
 import { c, g } from "../globals";
 import { CollisionCircle } from "./CollisionCircle";
 
@@ -40,9 +40,9 @@ export class Collisions {
     cc: CollisionCircle | { collisionCircle: CollisionCircle },
   ): void {
     cc = "collisionCircle" in cc ? cc.collisionCircle : cc;
-    b_.drawEllipse(
+    $d.ellipse(
       g.gameAreaOffset.add(cc.center).sub(cc.r),
-      v_(2, 2).mul(cc.r),
+      $v(2, 2).mul(cc.r),
       c.darkGreen,
     );
   }

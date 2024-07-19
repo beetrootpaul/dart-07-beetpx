@@ -1,4 +1,4 @@
-import { b_, v_ } from "@beetpx/beetpx";
+import { $, $d, $v } from "@beetpx/beetpx";
 import { c, g } from "../globals";
 
 export class DebugGameInfo {
@@ -23,7 +23,7 @@ export class DebugGameInfo {
   }
 
   preDraw(): void {
-    this._fpsData.history[this._updateCallsData.index] = b_.renderingFps;
+    this._fpsData.history[this._updateCallsData.index] = $.renderingFps;
   }
 
   draw(): void {
@@ -49,8 +49,8 @@ export class DebugGameInfo {
     ) {
       const calls = this._updateCallsData.history[column]!;
       for (let dot = 0; dot < calls; dot++) {
-        b_.drawPixel(
-          v_(1 + column * 2, 1 + dot * 2),
+        $d.pixel(
+          $v(1 + column * 2, 1 + dot * 2),
           column === this._updateCallsData.index ? c.white : c.lavender,
         );
       }
@@ -58,13 +58,13 @@ export class DebugGameInfo {
   }
 
   private _drawFps(): void {
-    this._fpsData.history[this._fpsData.index] = b_.renderingFps;
+    this._fpsData.history[this._fpsData.index] = $.renderingFps;
 
     for (let column = 0; column < this._fpsData.history.length; column++) {
       const tensOfFps = Math.round(this._fpsData.history[column]! / 10);
       for (let dot = 0; dot < tensOfFps; dot++) {
-        b_.drawPixel(
-          v_(1 + column * 2, g.viewportSize.y - 2 - dot * 2),
+        $d.pixel(
+          $v(1 + column * 2, g.viewportSize.y - 2 - dot * 2),
           column === this._fpsData.index ? c.white
           : (dot + 1) % 3 === 0 ? c.peach
           : c.lavender,
@@ -77,15 +77,15 @@ export class DebugGameInfo {
   }
 
   private _drawAudioState(): void {
-    const audioState = b_.getAudioContext().state;
+    const audioState = $.getAudioContext().state;
     const audioStateText =
       audioState === "suspended" ? "s"
       : audioState === "running" ? "r"
       : audioState === "closed" ? "c"
       : "@";
-    b_.drawText(
+    $d.text(
       audioStateText,
-      v_(g.viewportSize.x - b_.measureText(audioStateText).wh.x, 0),
+      $v(g.viewportSize.x - $d.measureText(audioStateText).wh.x, 0),
       c.white,
     );
   }

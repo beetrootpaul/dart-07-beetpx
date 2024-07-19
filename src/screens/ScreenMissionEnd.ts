@@ -1,4 +1,4 @@
-import { b_, BpxTimer, timer_ } from "@beetpx/beetpx";
+import { $d, $timer, BpxTimer } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
 import { Hud } from "../gui/Hud";
@@ -20,7 +20,7 @@ export class ScreenMissionEnd implements GameScreen {
     this._hud = params.hud;
 
     this._fadeOut = new Fade("out", { waitFrames: 90, fadeFrames: 30 });
-    this._screenTimer = timer_(120);
+    this._screenTimer = $timer(120);
 
     Music.fadeOutCurrentMusic();
   }
@@ -52,7 +52,7 @@ export class ScreenMissionEnd implements GameScreen {
   }
 
   draw(): void {
-    b_.clearCanvas(CurrentMission.m.bgColor);
+    $d.clearCanvas(CurrentMission.m.bgColor);
     this._game.draw();
     this._hud.draw(this._game);
     this._fadeOut.draw();

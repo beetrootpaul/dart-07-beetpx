@@ -1,4 +1,4 @@
-import { BpxTimer, BpxVector2d, timer_, v_0_0_ } from "@beetpx/beetpx";
+import { $timer, $v_0_0, BpxTimer, BpxVector2d } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 
 export class MovementLine implements Movement {
@@ -36,15 +36,15 @@ export class MovementLine implements Movement {
   private constructor(
     startXy: BpxVector2d,
     angledSpeed: BpxVector2d,
-    baseSpeedXy: BpxVector2d = v_0_0_,
+    baseSpeedXy: BpxVector2d = $v_0_0,
     frames: number | undefined,
   ) {
     this._xy = startXy;
 
-    this._timer = typeof frames === "number" ? timer_(frames) : null;
+    this._timer = typeof frames === "number" ? $timer(frames) : null;
 
     this._speed =
-      this._timer?.hasFinished ? v_0_0_ : baseSpeedXy.add(angledSpeed);
+      this._timer?.hasFinished ? $v_0_0 : baseSpeedXy.add(angledSpeed);
   }
 
   get xy(): BpxVector2d {
@@ -70,7 +70,7 @@ export class MovementLine implements Movement {
   update(): void {
     this._xy = this._xy.add(this._speed);
     if (this._timer?.hasJustFinished) {
-      this._speed = v_0_0_;
+      this._speed = $v_0_0;
     }
   }
 }

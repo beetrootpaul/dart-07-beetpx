@@ -1,11 +1,12 @@
 import {
-  b_,
+  $,
+  $d,
+  $timer,
+  $u,
+  $v,
   BpxRgbColor,
   BpxSoundSequence,
   BpxVector2d,
-  timer_,
-  u_,
-  v_,
 } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
@@ -16,9 +17,9 @@ import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
 import { Mission } from "./Mission";
 
-const sspr_ = Sprite.for(g.assets.mission2SpritesheetUrl).static;
+const $sspr = Sprite.for(g.assets.mission2SpritesheetUrl).static;
 
-const eb_ = EnemyBullet.factory(sspr_(4, 4, 124, 64), 2);
+const $eb = EnemyBullet.factory($sspr(4, 4, 124, 64), 2);
 
 export class Mission2 implements Mission {
   readonly missionName: string = "(wip) outpost in space";
@@ -57,9 +58,9 @@ export class Mission2 implements Mission {
 
   private _maybeAddStar(y: number): void {
     if (Math.random() < 0.1) {
-      const speed = u_.randomElementOf([0.25, 0.5, 0.75])!;
+      const speed = $u.randomElementOf([0.25, 0.5, 0.75])!;
       const star = {
-        xy: v_(Math.ceil(1 + Math.random() * g.gameAreaSize.x - 3), y),
+        xy: $v(Math.ceil(1 + Math.random() * g.gameAreaSize.x - 3), y),
         speed: speed,
         color:
           speed >= 0.75 ? c.lightGrey
@@ -82,7 +83,7 @@ export class Mission2 implements Mission {
 
   levelBgDraw(): void {
     for (const star of this._stars) {
-      b_.drawPixel(g.gameAreaOffset.add(star.xy), star.color);
+      $d.pixel(g.gameAreaOffset.add(star.xy), star.color);
     }
   }
 
@@ -104,21 +105,21 @@ export class Mission2 implements Mission {
         return {
           health: 5,
           score: 1,
-          spriteMain: sspr_(28, 28, 0, 64),
-          spriteFlash: sspr_(28, 28, 28, 64),
+          spriteMain: $sspr(28, 28, 0, 64),
+          spriteFlash: $sspr(28, 28, 28, 64),
           collisionCirclesProps: [{ r: 5 }],
           powerupsDistribution: "h,m,f,t,s",
           movementFactory: MovementLine.of({
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          bulletFireTimer: timer_(40, { loop: true }),
+          bulletFireTimer: $timer(40, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b_.startPlayback(g.assets.sfxEnemyMultiShoot);
+            $.startPlayback(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
-                eb_(
+                $eb(
                   MovementLine.of({
                     baseSpeedXy: enemyMovement.speed,
                     angle: 1 / 16 + i / 8,
@@ -149,28 +150,28 @@ export class Mission2 implements Mission {
       // --    }),
       // --},
       default:
-        return u_.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
+        return $u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
     }
   }
 
   bossProperties(): BossProperties {
     return {
       health: 25,
-      spriteMain: sspr_(56, 26, 4, 98),
-      spriteFlash: sspr_(56, 26, 4, 98),
-      collisionCirclesProps: [{ r: 15, offset: v_(0, -3) }],
+      spriteMain: $sspr(56, 26, 4, 98),
+      spriteFlash: $sspr(56, 26, 4, 98),
+      collisionCirclesProps: [{ r: 15, offset: $v(0, -3) }],
       phases: [
         // phase 1
         {
           triggeringHealthFraction: 1,
           score: 1,
-          bulletFireTimer: timer_(80, { loop: true }),
+          bulletFireTimer: $timer(80, { loop: true }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            b_.startPlayback(g.assets.sfxEnemyMultiShoot);
+            $.startPlayback(g.assets.sfxEnemyMultiShoot);
             return [
-              eb_(
+              $eb(
                 MovementLine.of({
-                  baseSpeedXy: v_(0, bossMovement.speed.y),
+                  baseSpeedXy: $v(0, bossMovement.speed.y),
                   angle: 0.25,
                   angledSpeed: 0.5,
                 })(bossMovement.xy.add(0, 3)),

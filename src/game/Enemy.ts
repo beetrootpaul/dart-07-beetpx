@@ -1,4 +1,4 @@
-import { BpxTimer, BpxVector2d, timer_, u_, v_0_0_ } from "@beetpx/beetpx";
+import { $timer, $u, $v_0_0, BpxTimer, BpxVector2d } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { Collisions } from "../collisions/Collisions";
 import { g } from "../globals";
@@ -63,7 +63,7 @@ export class Enemy {
 
   get collisionCircles(): CollisionCircle[] {
     return this._properties.collisionCirclesProps.map(({ r, offset }) => ({
-      center: this._movement.xy.add(offset ?? v_0_0_),
+      center: this._movement.xy.add(offset ?? $v_0_0),
       r,
     }));
   }
@@ -71,17 +71,17 @@ export class Enemy {
   takeDamage(damage: number): void {
     const mainCollisionCircle =
       this.collisionCircles[0] ??
-      u_.throwError(`Enemy has no main collision circle`);
+      $u.throwError(`Enemy has no main collision circle`);
 
     this._health = Math.max(0, this._health - damage);
     if (this._health > 0) {
-      this._flashingAfterDamageTimer = timer_(4);
+      this._flashingAfterDamageTimer = $timer(4);
       this._onDamaged(mainCollisionCircle);
     } else {
       this._isDestroyed = true;
       const powerupTypesToPickFrom =
         this._properties.powerupsDistribution.split(",");
-      const powerupType = u_.randomElementOf(powerupTypesToPickFrom)!;
+      const powerupType = $u.randomElementOf(powerupTypesToPickFrom)!;
       this._onDestroyed(
         mainCollisionCircle,
         this._properties.score,

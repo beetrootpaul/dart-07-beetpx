@@ -1,6 +1,6 @@
-import { BpxGlyph, font_, font_pico8_ } from "@beetpx/beetpx";
+import { $font, $font_pico8, BpxGlyph } from "@beetpx/beetpx";
 
-export const pico8Font = font_(font_pico8_, baseFontConfig => ({
+export const pico8Font = $font($font_pico8, baseFontConfig => ({
   ...baseFontConfig,
   glyphs: new Map<string, BpxGlyph>([
     ...baseFontConfig.glyphs,

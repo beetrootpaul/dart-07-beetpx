@@ -1,10 +1,10 @@
 import {
+  $timer,
+  $v,
   BpxEasing,
   BpxEasingFn,
   BpxTimer,
   BpxVector2d,
-  timer_,
-  v_,
 } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 
@@ -20,7 +20,7 @@ export class MovementToTarget implements Movement {
     startXy =>
       new MovementToTarget(
         startXy,
-        v_(params.targetX ?? startXy.x, params.targetY ?? startXy.y),
+        $v(params.targetX ?? startXy.x, params.targetY ?? startXy.y),
         params.frames,
         params.easingFn ?? BpxEasing.linear,
         params.onFinished,
@@ -43,7 +43,7 @@ export class MovementToTarget implements Movement {
   ) {
     this._startXy = startXy;
     this._targetXy = targetXy;
-    this._timer = timer_(frames);
+    this._timer = $timer(frames);
     this._easingFn = easingFn;
     this._onFinished = onFinished;
 

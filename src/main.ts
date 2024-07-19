@@ -1,4 +1,4 @@
-import { b_, v_0_0_ } from "@beetpx/beetpx";
+import { $, $d, $v_0_0 } from "@beetpx/beetpx";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { g } from "./globals";
 import { PauseMenu } from "./pause/PauseMenu";
@@ -12,7 +12,7 @@ let pauseMenu: PauseMenu | undefined;
 
 const debugGameInfo: DebugGameInfo = new DebugGameInfo();
 
-b_.init({
+$.init({
   canvasSize: "128x128",
   fixedTimestep: "60fps",
   globalPause: {
@@ -79,24 +79,20 @@ b_.init({
     available: !window.BEETPX__IS_PROD,
   },
 }).then(async ({ startGame }) => {
-  b_.setOnStarted(() => {
-    // Better set font first, because other constructors might rely
-    //   on it when calculating text size.
-    b_.useFont(pico8Font);
+  $.setOnStarted(() => {
+    $d.useFont(pico8Font);
 
     pauseMenu = new PauseMenu();
 
-    b_.setSpriteColorMapping(g.baseSpriteMapping);
+    $d.setSpriteColorMapping(g.baseSpriteMapping);
 
     currentScreen = new ScreenBrp();
   });
 
-  b_.setOnUpdate(() => {
+  $.setOnUpdate(() => {
     debugGameInfo.update();
 
-    b_.setCameraXy(v_0_0_);
-
-    if (b_.isPaused) {
+    if ($.isPaused) {
       pauseMenu?.update();
     } else {
       nextScreen = currentScreen?.preUpdate();
@@ -107,14 +103,16 @@ b_.init({
     }
   });
 
-  b_.setOnDraw(() => {
+  $.setOnDraw(() => {
+    $d.setCameraXy($v_0_0);
+
     currentScreen?.draw();
 
-    if (b_.isPaused) {
+    if ($.isPaused) {
       pauseMenu?.draw();
     }
 
-    if (b_.debug) {
+    if ($.debug) {
       debugGameInfo.preDraw();
       debugGameInfo.draw();
       debugGameInfo.postDraw();

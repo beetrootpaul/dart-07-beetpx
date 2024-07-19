@@ -1,8 +1,8 @@
 import {
+  $v,
   BpxCanvasSnapshotColorMapping,
   BpxRgbColor,
   BpxSpriteColorMapping,
-  v_,
 } from "@beetpx/beetpx";
 import { Helpers } from "./misc/Helpers";
 import { Pico8Colors } from "./pico8/Pico8Color";
@@ -31,12 +31,12 @@ export const g = {
 
   fps: 60 as const,
 
-  viewportSize: v_(128),
-  viewportTiles: v_(16),
-  gameAreaSize: v_(96, 128),
-  gameAreaTiles: v_(12, 16),
-  gameAreaOffset: v_(16, 0),
-  tileSize: v_(8),
+  viewportSize: $v(128),
+  viewportTiles: $v(16),
+  gameAreaSize: $v(96, 128),
+  gameAreaTiles: $v(12, 16),
+  gameAreaOffset: $v(16, 0),
+  tileSize: $v(8),
 
   assets: {
     // sprite sheets

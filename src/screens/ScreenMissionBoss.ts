@@ -1,4 +1,4 @@
-import { b_, BpxTimer, timer_ } from "@beetpx/beetpx";
+import { $d, $timer, BpxTimer } from "@beetpx/beetpx";
 import { Game } from "../game/Game";
 import { c } from "../globals";
 import { Hud } from "../gui/Hud";
@@ -33,7 +33,7 @@ export class ScreenMissionBoss implements GameScreen {
     });
 
     Music.fadeOutCurrentMusic();
-    this._musicStartTimer = timer_(60);
+    this._musicStartTimer = $timer(60);
 
     this._game.enterBossPhase();
   }
@@ -67,7 +67,7 @@ export class ScreenMissionBoss implements GameScreen {
   }
 
   draw(): void {
-    b_.clearCanvas(CurrentMission.m.bgColor);
+    $d.clearCanvas(CurrentMission.m.bgColor);
     this._game.draw();
     this._hud.draw(this._game);
     this._bossInfo?.draw();

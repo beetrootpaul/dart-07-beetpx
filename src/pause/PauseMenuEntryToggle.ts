@@ -1,4 +1,4 @@
-import { b_, BpxVector2d } from "@beetpx/beetpx";
+import { $d, BpxVector2d } from "@beetpx/beetpx";
 import { c } from "../globals";
 import { PauseMenuEntry } from "./PauseMenuEntry";
 
@@ -34,10 +34,10 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
 
     this._value = this._getValue();
 
-    this._labelSize = b_.measureText(this._label).wh;
-    this._yesW = b_.measureText(this._yes).wh.x;
-    this._orW = b_.measureText(this._or).wh.x;
-    this._noW = b_.measureText(this._no).wh.x;
+    this._labelSize = $d.measureText(this._label).wh;
+    this._yesW = $d.measureText(this._yes).wh.x;
+    this._orW = $d.measureText(this._or).wh.x;
+    this._noW = $d.measureText(this._no).wh.x;
     this.size = this._labelSize.add(
       this._gapLabelYes +
         this._yesW +
@@ -59,8 +59,8 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
   }
 
   draw(xy: BpxVector2d): void {
-    b_.drawText(this._label, xy, this._isFocused ? c.white : c.lavender);
-    b_.drawText(
+    $d.text(this._label, xy, this._isFocused ? c.white : c.lavender);
+    $d.text(
       this._yes,
       xy.add(this._labelSize.x + this._gapLabelYes, 0),
       this._value ?
@@ -69,7 +69,7 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
         : c.lavender
       : c.darkerPurple,
     );
-    b_.drawText(
+    $d.text(
       this._or,
       xy.add(
         this._labelSize.x + this._gapLabelYes + this._yesW + this._gapYesOrNo,
@@ -77,7 +77,7 @@ export class PauseMenuEntryToggle implements PauseMenuEntry {
       ),
       c.darkerPurple,
     );
-    b_.drawText(
+    $d.text(
       this._no,
       xy.add(
         this._labelSize.x +

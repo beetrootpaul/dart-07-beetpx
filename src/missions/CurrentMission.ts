@@ -1,4 +1,4 @@
-import { u_ } from "@beetpx/beetpx";
+import { $u } from "@beetpx/beetpx";
 import { Mission } from "./Mission";
 import { Mission1 } from "./Mission1";
 import { Mission2 } from "./Mission2";
@@ -37,6 +37,6 @@ export class CurrentMission {
       mission === 1 ? new Mission1()
       : mission === 2 ? new Mission2()
       : mission === 3 ? new Mission3()
-      : u_.throwError(`Unexpected mission number: ${mission}`);
+      : $u.throwError(`Unexpected mission number: ${mission}`);
   }
 }

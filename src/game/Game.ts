@@ -1,4 +1,4 @@
-import { b_, BpxTimer, BpxVector2d, timer_, v_ } from "@beetpx/beetpx";
+import { $, $d, $timer, $v, BpxTimer, BpxVector2d } from "@beetpx/beetpx";
 import { Collisions } from "../collisions/Collisions";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
@@ -61,7 +61,7 @@ export class Game {
 
   readonly score: Score;
 
-  private _cameraShakeTimer: BpxTimer = timer_(0);
+  private _cameraShakeTimer: BpxTimer = $timer(0);
 
   constructor(params: {
     health: number;
@@ -79,13 +79,13 @@ export class Game {
     this._tripleShoot = params.tripleShoot;
 
     this._level = new Level(
-      new LevelDescriptor(b_.getJsonAsset(g.assets.levelsJson).json),
+      new LevelDescriptor($.getJsonAsset(g.assets.levelsJson).json),
     );
 
     this._player = new Player({
       onBulletsSpawned: bullets => {
         // TODO: consider not playing a bullet sound at all
-        b_.startPlayback(
+        $.startPlayback(
           this._tripleShoot ?
             g.assets.sfxPlayerTripleShoot
           : g.assets.sfxPlayerShoot,
@@ -93,14 +93,14 @@ export class Game {
         this._playerBullets.push(...bullets);
       },
       onShockwaveTriggered: shockwave => {
-        b_.startPlayback(g.assets.sfxPlayerShockwave);
+        $.startPlayback(g.assets.sfxPlayerShockwave);
         this._shockwaves.push(shockwave);
       },
       onDamaged: () => {
-        b_.startPlayback(g.assets.sfxDamagePlayer);
+        $.startPlayback(g.assets.sfxDamagePlayer);
       },
       onDestroyed: playerCc => {
-        b_.startPlayback(g.assets.sfxDestroyPlayer);
+        $.startPlayback(g.assets.sfxDestroyPlayer);
         this._explosions.push(
           new Explosion({ startXy: playerCc.center, magnitude: playerCc.r }),
           new Explosion({
@@ -119,7 +119,7 @@ export class Game {
   }
 
   private _handlePlayerDamage(): void {
-    this._cameraShakeTimer = timer_(12);
+    this._cameraShakeTimer = $timer(12);
 
     this._health -= 1;
     this._fastMovement = false;
@@ -161,7 +161,7 @@ export class Game {
       this.score.add(10);
       this._floats.push(new Float({ startXy: xy, score: 10 }));
     }
-    b_.startPlayback(
+    $.startPlayback(
       hasEffect ? g.assets.sfxPowerupPicked : g.assets.sfxPowerupNoEffect,
     );
   }
@@ -312,10 +312,10 @@ export class Game {
         }
       },
       onDamaged: () => {
-        b_.startPlayback(g.assets.sfxDamageEnemy);
+        $.startPlayback(g.assets.sfxDamageEnemy);
       },
       onEnteredNextPhase: (collisionCircles, scoreToAdd) => {
-        b_.startPlayback(g.assets.sfxDestroyBossPhase);
+        $.startPlayback(g.assets.sfxDestroyBossPhase);
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -332,7 +332,7 @@ export class Game {
         }
       },
       onDestroyed: (collisionCircles, scoreToAdd) => {
-        b_.startPlayback(g.assets.sfxDestroyBossFinal1);
+        $.startPlayback(g.assets.sfxDestroyBossFinal1);
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -350,7 +350,7 @@ export class Game {
               magnitude: 1.4 * cc.r,
               waitFrames: 4 + Math.random() * 44,
               onStarted: () => {
-                b_.startPlayback(g.assets.sfxDestroyBossFinal2);
+                $.startPlayback(g.assets.sfxDestroyBossFinal2);
               },
             }),
             new Explosion({
@@ -358,7 +358,7 @@ export class Game {
               magnitude: 1.8 * cc.r,
               waitFrames: 12 + Math.random() * 36,
               onStarted: () => {
-                b_.startPlayback(g.assets.sfxDestroyBossFinal3);
+                $.startPlayback(g.assets.sfxDestroyBossFinal3);
               },
             }),
             new Explosion({
@@ -416,12 +416,12 @@ export class Game {
   }
 
   update(): void {
-    this._player?.setMovement(b_.getPressedDirection(), this._fastMovement);
-    if (b_.isButtonPressed("a")) {
+    this._player?.setMovement($.getPressedDirection(), this._fastMovement);
+    if ($.isButtonPressed("a")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);
     }
     // TODO: this implementation (combined with a throttle inside the player) can end up with incorrectly used charges
-    if (b_.wasButtonJustPressed("b")) {
+    if ($.wasButtonJustPressed("b")) {
       if (this._shockwaveCharges > 0 && this._player) {
         this._shockwaveCharges -= 1;
         this._player.triggerShockwave();
@@ -454,7 +454,7 @@ export class Game {
             }
           },
           onDamaged: mainCollisionCircle => {
-            b_.startPlayback(g.assets.sfxDamagePlayer);
+            $.startPlayback(g.assets.sfxDamagePlayer);
             this._explosions.push(
               new Explosion({
                 startXy: mainCollisionCircle.center,
@@ -463,7 +463,7 @@ export class Game {
             );
           },
           onDestroyed: (mainCollisionCircle, scoreToAdd, powerupType) => {
-            b_.startPlayback(g.assets.sfxDestroyEnemy);
+            $.startPlayback(g.assets.sfxDestroyEnemy);
             this.score.add(scoreToAdd);
             this._floats.push(
               new Float({
@@ -491,16 +491,7 @@ export class Game {
       );
     }
 
-    if (this._cameraShakeTimer.framesLeft > 0) {
-      // subtracting 1 here makes the last factor always equal to 0, which makes camera reset to its neutral position
-      // const factor = this._cameraShakeTimer.framesLeft - 1;
-      const factor = this._cameraShakeTimer.framesLeft - 1;
-      b_.setCameraXy(
-        v_((Math.random() - 0.5) * factor, (Math.random() - 0.5) * factor),
-      );
-    }
-
-    b_.logDebug(
+    $.logDebug(
       "e:",
       this._enemies.length,
       "pb:",
@@ -519,7 +510,16 @@ export class Game {
   }
 
   draw(): void {
-    b_.setClippingRegion(g.gameAreaOffset, g.gameAreaSize);
+    if (this._cameraShakeTimer.framesLeft > 0) {
+      // subtracting 1 here makes the last factor always equal to 0, which makes camera reset to its neutral position
+      // const factor = this._cameraShakeTimer.framesLeft - 1;
+      const factor = this._cameraShakeTimer.framesLeft - 1;
+      $d.setCameraXy(
+        $v((Math.random() - 0.5) * factor, (Math.random() - 0.5) * factor),
+      );
+    }
+
+    $d.setClippingRegion(g.gameAreaOffset, g.gameAreaSize);
 
     this._level.draw();
     this._boss?.draw();
@@ -536,9 +536,9 @@ export class Game {
     // But keep GUI elements (floats) on top of shockwaves.
     this._floats.forEach(f => f.draw());
 
-    b_.removeClippingRegion();
+    $d.removeClippingRegion();
 
-    if (b_.debug) {
+    if ($.debug) {
       this._enemies.forEach(e => {
         e.collisionCircles.forEach(Collisions.debugDrawCollisionCircle);
       });

@@ -1,4 +1,4 @@
-import { b_, BpxEasing, v_ } from "@beetpx/beetpx";
+import { $, $d, $v, BpxEasing } from "@beetpx/beetpx";
 import { Game } from "../game/Game";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
@@ -27,7 +27,7 @@ export class Hud {
   // we draw HUD area 20 px bigger on the outside in order to compensate for a player damage camera shake
   private static readonly _safetyBorder = 20;
 
-  private static readonly _barSize = v_(16, g.viewportSize.y);
+  private static readonly _barSize = $v(16, g.viewportSize.y);
 
   private readonly _heart = hudSprite(6, 5, 40, 24);
   private readonly _healthBarStart = hudSprite(8, 5, 40, 19);
@@ -63,7 +63,7 @@ export class Hud {
         frames: params.slideInFrames,
         easingFn: BpxEasing.outQuartic,
       }),
-    ])(v_(-20, 0));
+    ])($v(-20, 0));
   }
 
   update(): void {
@@ -71,19 +71,19 @@ export class Hud {
   }
 
   draw(game: Game): void {
-    b_.drawRectFilled(
-      v_(0, 0).sub(Hud._safetyBorder),
+    $d.rectFilled(
+      $v(0, 0).sub(Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
       c.black,
     );
-    b_.drawRectFilled(
+    $d.rectFilled(
       g.viewportSize.sub(Hud._barSize).sub(0, Hud._safetyBorder),
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
       c.black,
     );
-    if (b_.debug) {
-      b_.drawRectFilled(v_(0, 0), Hud._barSize, c.blueGreen);
-      b_.drawRectFilled(
+    if ($.debug) {
+      $d.rectFilled($v(0, 0), Hud._barSize, c.blueGreen);
+      $d.rectFilled(
         g.viewportSize.sub(Hud._barSize),
         Hud._barSize,
         c.blueGreen,
@@ -111,7 +111,7 @@ export class Hud {
     //
     const missionProgressH = 35;
     const missionProgressX = g.gameAreaOffset.x + xy.x + 5;
-    b_.drawLine(v_(missionProgressX, 4), v_(1, missionProgressH), c.lavender);
+    $d.line($v(missionProgressX, 4), $v(1, missionProgressH), c.lavender);
     this._shipIndicator.draw(
       xy.sub(-4, 77 + game.missionProgressFraction * (missionProgressH - 3)),
     );
@@ -119,7 +119,7 @@ export class Hud {
     //
     // shockwave charges
     //
-    xy = v_(g.gameAreaSize.x + 5, g.viewportSize.y - 16)
+    xy = $v(g.gameAreaSize.x + 5, g.viewportSize.y - 16)
       .sub(this._slideInOffset.xy)
       .floor();
     this._shockwave.draw(xy.add(0, 6));
@@ -135,7 +135,7 @@ export class Hud {
     //
     // score
     //
-    game.score.draw(v_(xy.x + 17, 4), c.lightGrey, c.darkerPurple, true);
+    game.score.draw($v(xy.x + 17, 4), c.lightGrey, c.darkerPurple, true);
 
     //
     // powerups
@@ -143,7 +143,7 @@ export class Hud {
     (["fastMovement", "fastShoot", "tripleShoot"] as const).forEach(
       (prop, i) => {
         this._powerups[prop][game[prop] ? "on" : "off"].draw(
-          v_(xy.x - 1, 46 + 6 * i),
+          $v(xy.x - 1, 46 + 6 * i),
         );
       },
     );
@@ -156,20 +156,20 @@ export class Hud {
       const bossHealthBarMargin = 2;
       const bossHealthW = g.gameAreaSize.x - 2 * bossHealthBarMargin - 4;
       this._bossHealthBarStart.draw(
-        v_(bossHealthBarMargin, bossHealthBarMargin),
+        $v(bossHealthBarMargin, bossHealthBarMargin),
       );
       this._bossHealthBarEnd.draw(
-        v_(g.gameAreaSize.x - bossHealthBarMargin - 4, bossHealthBarMargin),
+        $v(g.gameAreaSize.x - bossHealthBarMargin - 4, bossHealthBarMargin),
       );
-      b_.drawLine(
+      $d.line(
         g.gameAreaOffset.add(bossHealthBarMargin).add(2, 2),
-        v_(bossHealthW, 1),
+        $v(bossHealthW, 1),
         c.mauve,
       );
       if (bossHealthFraction > 0) {
-        b_.drawLine(
+        $d.line(
           g.gameAreaOffset.add(bossHealthBarMargin).add(2, 1),
-          v_(bossHealthFraction * bossHealthW, 1),
+          $v(bossHealthFraction * bossHealthW, 1),
           c.red,
         );
       }

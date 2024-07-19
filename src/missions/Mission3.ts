@@ -1,11 +1,11 @@
 import {
-  b_,
+  $,
+  $timer,
+  $u,
+  $v,
   BpxRgbColor,
   BpxSoundSequence,
   BpxVector2d,
-  timer_,
-  u_,
-  v_,
 } from "@beetpx/beetpx";
 import { BossProperties } from "../game/BossProperties";
 import { EnemyBullet } from "../game/EnemyBullet";
@@ -16,9 +16,9 @@ import { MovementFixed } from "../movement/MovementFixed";
 import { MovementLine } from "../movement/MovementLine";
 import { Mission } from "./Mission";
 
-const sspr_ = Sprite.for(g.assets.mission3SpritesheetUrl).static;
+const $sspr = Sprite.for(g.assets.mission3SpritesheetUrl).static;
 
-const eb_ = EnemyBullet.factory(sspr_(4, 4, 124, 64), 2);
+const $eb = EnemyBullet.factory($sspr(4, 4, 124, 64), 2);
 
 export class Mission3 implements Mission {
   readonly missionName: string = "(wip) phoslar mine";
@@ -44,18 +44,18 @@ export class Mission3 implements Mission {
   };
 
   private readonly _tubeTiles: Sprite[] = [
-    sspr_(8, 8, 56, 32, true),
-    sspr_(8, 8, 64, 32, true),
-    sspr_(8, 8, 56, 40, true),
-    sspr_(8, 8, 64, 40, true),
-    sspr_(8, 8, 48, 56, true),
-    sspr_(8, 8, 48, 56, true),
-    sspr_(8, 8, 48, 56, true),
-    sspr_(8, 8, 48, 56, true),
-    sspr_(8, 8, 56, 48, true),
-    sspr_(8, 8, 64, 48, true),
-    sspr_(8, 8, 56, 56, true),
-    sspr_(8, 8, 64, 56, true),
+    $sspr(8, 8, 56, 32, true),
+    $sspr(8, 8, 64, 32, true),
+    $sspr(8, 8, 56, 40, true),
+    $sspr(8, 8, 64, 40, true),
+    $sspr(8, 8, 48, 56, true),
+    $sspr(8, 8, 48, 56, true),
+    $sspr(8, 8, 48, 56, true),
+    $sspr(8, 8, 48, 56, true),
+    $sspr(8, 8, 56, 48, true),
+    $sspr(8, 8, 64, 48, true),
+    $sspr(8, 8, 56, 56, true),
+    $sspr(8, 8, 64, 56, true),
   ];
   private _tubeTilesOffsetY: number = 0;
 
@@ -73,7 +73,7 @@ export class Mission3 implements Mission {
 
   private _maybeAddParticle(y: number): void {
     if (Math.random() < 0.4) {
-      const whxy = u_.randomElementOf([
+      const whxy = $u.randomElementOf([
         // particle 1
         [3, 4, 24, 56],
         [3, 4, 24, 56],
@@ -92,8 +92,8 @@ export class Mission3 implements Mission {
         [4, 4, 34, 60],
       ])!;
       const particle = {
-        xy: v_(Math.floor(4 + Math.random() * g.gameAreaSize.x - 2 * 4), y),
-        sprite: sspr_(whxy[0]!, whxy[1]!, whxy[2]!, whxy[3]!),
+        xy: $v(Math.floor(4 + Math.random() * g.gameAreaSize.x - 2 * 4), y),
+        sprite: $sspr(whxy[0]!, whxy[1]!, whxy[2]!, whxy[3]!),
       };
       this._particles.push(particle);
     }
@@ -149,20 +149,20 @@ export class Mission3 implements Mission {
           health: 5,
           score: 1,
           powerupsDistribution: "h,m,f,t,s",
-          spriteMain: sspr_(16, 16, 0, 64),
-          spriteFlash: sspr_(10, 10, 16, 64),
+          spriteMain: $sspr(16, 16, 0, 64),
+          spriteFlash: $sspr(10, 10, 16, 64),
           collisionCirclesProps: [{ r: 5 }],
           movementFactory: MovementLine.of({
             angle: 0.25,
             angledSpeed: this.scrollPerFrame,
           }),
-          bulletFireTimer: timer_(40, { loop: true }),
+          bulletFireTimer: $timer(40, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            b_.startPlayback(g.assets.sfxEnemyMultiShoot);
+            $.startPlayback(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
-                eb_(
+                $eb(
                   MovementLine.of({
                     baseSpeedXy: enemyMovement.speed,
                     angle: 1 / 16 + i / 8,
@@ -175,28 +175,28 @@ export class Mission3 implements Mission {
           },
         };
       default:
-        return u_.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
+        return $u.throwError(`Unrecognized Enemy ID: "${enemyId}"`);
     }
   }
 
   bossProperties(): BossProperties {
     return {
       health: 25,
-      spriteMain: sspr_(56, 26, 4, 98),
-      spriteFlash: sspr_(56, 26, 4, 98),
-      collisionCirclesProps: [{ r: 15, offset: v_(0, -3) }],
+      spriteMain: $sspr(56, 26, 4, 98),
+      spriteFlash: $sspr(56, 26, 4, 98),
+      collisionCirclesProps: [{ r: 15, offset: $v(0, -3) }],
       phases: [
         // phase 1
         {
           triggeringHealthFraction: 1,
           score: 1,
-          bulletFireTimer: timer_(80, { loop: true }),
+          bulletFireTimer: $timer(80, { loop: true }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            b_.startPlayback(g.assets.sfxEnemyMultiShoot);
+            $.startPlayback(g.assets.sfxEnemyMultiShoot);
             return [
-              eb_(
+              $eb(
                 MovementLine.of({
-                  baseSpeedXy: v_(0, bossMovement.speed.y),
+                  baseSpeedXy: $v(0, bossMovement.speed.y),
                   angle: 0.25,
                   angledSpeed: 0.5,
                 })(bossMovement.xy.add(0, 3)),

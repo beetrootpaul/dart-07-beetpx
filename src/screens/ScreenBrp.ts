@@ -1,13 +1,14 @@
 import {
-  b_,
+  $,
+  $d,
+  $spr,
+  $timer,
+  $timerSeq,
+  $v,
   BpxSprite,
   BpxSpriteColorMapping,
   BpxTimer,
   BpxTimerSequence,
-  spr_,
-  timer_,
-  timerSeq_,
-  v_,
 } from "@beetpx/beetpx";
 import { c, g } from "../globals";
 import { Music } from "../misc/Music";
@@ -16,7 +17,7 @@ import { GameScreen } from "./GameScreen";
 import { ScreenTitle } from "./ScreenTitle";
 
 export class ScreenBrp implements GameScreen {
-  private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(
+  private readonly _brpLogo: BpxSprite = $spr(g.assets.mainSpritesheetUrl)(
     29,
     14,
     99,
@@ -34,8 +35,8 @@ export class ScreenBrp implements GameScreen {
     const screenFrames = 150;
     const fadeFrames = 24;
 
-    this._screenTimer = timer_(screenFrames);
-    this._brpPresentingTimer = timerSeq_({
+    this._screenTimer = $timer(screenFrames);
+    this._brpPresentingTimer = $timerSeq({
       intro: [
         ["fade_in", fadeFrames],
         ["present", screenFrames - 2 * fadeFrames - 20],
@@ -53,13 +54,13 @@ export class ScreenBrp implements GameScreen {
   }
 
   update(): void {
-    if (b_.wasButtonJustPressed("a") || b_.wasButtonJustPressed("b")) {
+    if ($.wasButtonJustPressed("a") || $.wasButtonJustPressed("b")) {
       this._skip = true;
     }
   }
 
   draw(): void {
-    b_.clearCanvas(c.black);
+    $d.clearCanvas(c.black);
 
     let logoColor = c.peach;
     if (this._brpPresentingTimer.currentPhase === "fade_in") {
@@ -83,19 +84,19 @@ export class ScreenBrp implements GameScreen {
     }
 
     if (!this._brpPresentingTimer.hasFinishedOverall) {
-      const prevMapping = b_.setSpriteColorMapping(
+      const prevMapping = $d.setSpriteColorMapping(
         BpxSpriteColorMapping.of(color =>
           color?.cssHex === Pico8Colors.lemon.cssHex ?
             logoColor
           : g.baseSpriteMapping.getMappedColor(color),
         ),
       );
-      b_.drawSprite(
+      $d.sprite(
         this._brpLogo,
         g.viewportSize.sub(this._brpLogo.size.mul(2)).div(2),
-        { scaleXy: v_(2, 2) },
+        { scaleXy: $v(2, 2) },
       );
-      b_.setSpriteColorMapping(prevMapping);
+      $d.setSpriteColorMapping(prevMapping);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { BpxTimer, BpxVector2d, timer_, v_0_0_ } from "@beetpx/beetpx";
+import { $timer, $v_0_0, BpxTimer, BpxVector2d } from "@beetpx/beetpx";
 import { Movement, MovementFactory } from "./Movement";
 
 export class MovementFixed implements Movement {
@@ -11,7 +11,7 @@ export class MovementFixed implements Movement {
   private readonly _xy: BpxVector2d;
 
   private constructor(startXy: BpxVector2d, frames?: number) {
-    this._timer = typeof frames === "number" ? timer_(frames) : null;
+    this._timer = typeof frames === "number" ? $timer(frames) : null;
     this._xy = startXy;
   }
 
@@ -20,7 +20,7 @@ export class MovementFixed implements Movement {
   }
 
   get speed(): BpxVector2d {
-    return v_0_0_;
+    return $v_0_0;
   }
 
   get hasFinished(): boolean {

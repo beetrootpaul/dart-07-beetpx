@@ -1,10 +1,10 @@
 import {
-  b_,
+  $d,
+  $timer,
+  $v,
   BpxSpriteColorMapping,
   BpxTimer,
   BpxVector2d,
-  timer_,
-  v_,
 } from "@beetpx/beetpx";
 import { CollisionCircle } from "../collisions/CollisionCircle";
 import { c, g } from "../globals";
@@ -16,7 +16,7 @@ import { Shockwave } from "./Shockwave";
 
 export class Player {
   private static readonly _invincibilityFlashFrames: number = 5;
-  private static readonly _size: BpxVector2d = v_(10, 12);
+  private static readonly _size: BpxVector2d = $v(10, 12);
 
   private readonly _onBulletsSpawned: Throttle<
     (bullets: PlayerBullet[]) => void
@@ -76,7 +76,7 @@ export class Player {
     this._onDamaged = params.onDamaged;
     this._onDestroyed = params.onDestroyed;
 
-    this._xy = v_(g.gameAreaSize.x / 2, g.gameAreaSize.y - 28);
+    this._xy = $v(g.gameAreaSize.x / 2, g.gameAreaSize.y - 28);
   }
 
   get collisionCircle(): CollisionCircle {
@@ -115,7 +115,7 @@ export class Player {
     this._jetSprite = directionVector.y > 0 ? null : this._jetSpriteVisible;
 
     const speed = fastMovement ? 1.5 : 1;
-    let diff = v_(
+    let diff = $v(
       directionVector.x > 0 ? speed
       : directionVector.x < 0 ? -speed
       : 0,
@@ -161,7 +161,7 @@ export class Player {
 
   takeDamage(updatedHealth: number): void {
     if (updatedHealth > 0) {
-      this._invincibleAfterDamageTimer = timer_(
+      this._invincibleAfterDamageTimer = $timer(
         5 * Player._invincibilityFlashFrames,
       );
       this._onDamaged();
@@ -207,7 +207,7 @@ export class Player {
         (2 * Player._invincibilityFlashFrames) <
         Player._invincibilityFlashFrames
     ) {
-      prevMapping = b_.setSpriteColorMapping(flash);
+      prevMapping = $d.setSpriteColorMapping(flash);
     }
 
     this._shipSpriteCurrent.draw(this._xy);
@@ -215,7 +215,7 @@ export class Player {
     this._jetSprite?.draw(this._xy);
 
     if (prevMapping) {
-      b_.setSpriteColorMapping(prevMapping);
+      $d.setSpriteColorMapping(prevMapping);
     }
   }
 }

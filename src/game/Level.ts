@@ -2,13 +2,14 @@
 //   - distance = how many tiles we have scrolled forward (can be fraction)
 //   - lane     = which row of tiles are we talking about, perpendicular to distance
 import {
-  b_,
+  $,
+  $d,
+  $spr,
+  $u,
+  $v,
   BpxSprite,
   BpxSpriteColorMapping,
   BpxVector2d,
-  spr_,
-  u_,
-  v_,
 } from "@beetpx/beetpx";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
@@ -40,7 +41,7 @@ export class Level {
           if (!this._sprites.has(tileId)) {
             this._sprites.set(
               tileId,
-              spr_(CurrentMission.m.ldtk.tilesetPng)(
+              $spr(CurrentMission.m.ldtk.tilesetPng)(
                 g.tileSize.x,
                 g.tileSize.y,
                 (tileId % 16) * g.tileSize.x,
@@ -54,7 +55,7 @@ export class Level {
   }
 
   syncWithLevelScrollFractionalPart(v: BpxVector2d): BpxVector2d {
-    return v_(
+    return $v(
       v.x,
       Math.floor(v.y) + ((this._maxVisibleDistance * g.tileSize.y) % 1),
     );
@@ -62,11 +63,11 @@ export class Level {
 
   enterPhaseMain(): void {
     this._phase = "main";
-    b_.logDebug("intro -> MAIN");
+    $.logDebug("intro -> MAIN");
   }
 
   get progressFraction(): number {
-    return u_.clamp(
+    return $u.clamp(
       0,
       (this._minVisibleDistance + g.gameAreaTiles.y) /
         (this._levelDescriptor.maxDefinedDistance + g.gameAreaTiles.y),
@@ -92,9 +93,9 @@ export class Level {
           if (enemyId) {
             result.push({
               id: enemyId,
-              xy: v_(0, g.gameAreaSize.y).add(
+              xy: $v(0, g.gameAreaSize.y).add(
                 g.tileSize.mul(
-                  v_(lane, this._minVisibleDistance - this._distanceNextSpawn),
+                  $v(lane, this._minVisibleDistance - this._distanceNextSpawn),
                 ),
               ),
             });
@@ -115,7 +116,7 @@ export class Level {
       this._minVisibleDistance >= this._levelDescriptor.maxDefinedDistance
     ) {
       this._phase = "outro";
-      b_.logDebug("MAIN -> outro");
+      $.logDebug("MAIN -> outro");
     }
 
     this._maxVisibleDistance =
@@ -136,7 +137,7 @@ export class Level {
 
     this._minVisibleDistance = this._maxVisibleDistance - g.gameAreaTiles.y - 1;
 
-    b_.logDebug(
+    $.logDebug(
       "visible distance: " +
         this._minVisibleDistance.toFixed(2) +
         " : " +
@@ -148,7 +149,7 @@ export class Level {
     CurrentMission.m.levelBgDraw();
 
     if (this._phase === "main") {
-      const prevMapping = b_.setSpriteColorMapping(
+      const prevMapping = $d.setSpriteColorMapping(
         BpxSpriteColorMapping.of(color =>
           color?.cssHex === Pico8Colors.black.cssHex ?
             null
@@ -172,16 +173,16 @@ export class Level {
         }
       }
 
-      b_.setSpriteColorMapping(prevMapping);
+      $d.setSpriteColorMapping(prevMapping);
     }
   }
 
   private _drawTile(tileId: number, distance: number, lane: number): void {
-    b_.drawSprite(
+    $d.sprite(
       this._sprites.get(tileId)!,
       g.gameAreaOffset
-        .add(v_(0, g.gameAreaSize.y))
-        .add(g.tileSize.mul(v_(lane - 1, this._minVisibleDistance - distance))),
+        .add($v(0, g.gameAreaSize.y))
+        .add(g.tileSize.mul($v(lane - 1, this._minVisibleDistance - distance))),
     );
   }
 }

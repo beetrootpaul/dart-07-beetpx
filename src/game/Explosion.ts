@@ -1,12 +1,12 @@
 import {
-  b_,
+  $d,
+  $timer,
+  $u,
+  $v,
   BpxDrawingPattern,
   BpxPatternColors,
   BpxTimer,
   BpxVector2d,
-  timer_,
-  u_,
-  v_,
 } from "@beetpx/beetpx";
 import { c, g } from "../globals";
 
@@ -34,16 +34,16 @@ export class Explosion {
     waitFrames?: number;
     onStarted?: () => void;
   }) {
-    this._waitTimer = timer_(params.waitFrames ?? 0);
+    this._waitTimer = $timer(params.waitFrames ?? 0);
 
     this._magnitude = params.magnitude;
 
     this._onStarted = params.onStarted ?? null;
 
-    this._particles = u_.range(9).map(() => ({
+    this._particles = $u.range(9).map(() => ({
       angle: 0.75 + 0.5 * randNegPos05(),
       xy: params.startXy.add(
-        v_(randNegPos05(), randNegPos05()).mul(params.magnitude),
+        $v(randNegPos05(), randNegPos05()).mul(params.magnitude),
       ),
       r: params.magnitude / 2 + Math.random() * (params.magnitude / 2),
     }));
@@ -72,7 +72,7 @@ export class Explosion {
 
   draw(): void {
     if (this._waitTimer.hasFinished) {
-      b_.setDrawingPattern(
+      $d.setDrawingPattern(
         BpxDrawingPattern.from(`
           -#-#
           #-#-
@@ -92,14 +92,14 @@ export class Explosion {
           } else if (p.r < this._magnitude * 0.8) {
             color = BpxPatternColors.of(c.peach, c.darkOrange);
           }
-          b_.drawEllipseFilled(
+          $d.ellipseFilled(
             g.gameAreaOffset.add(p.xy).sub(p.r),
-            v_(2, 2).mul(p.r),
+            $v(2, 2).mul(p.r),
             color,
           );
         }
       }
-      b_.setDrawingPattern(BpxDrawingPattern.primaryOnly);
+      $d.setDrawingPattern(BpxDrawingPattern.primaryOnly);
     }
   }
 }

@@ -1,11 +1,12 @@
 import {
-  b_,
+  $,
+  $d,
+  $u,
+  $v,
+  $v_0_0,
   BpxPixels,
   BpxSpriteColorMapping,
   BpxVector2d,
-  u_,
-  v_,
-  v_0_0_,
 } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { c, g } from "../globals";
@@ -61,16 +62,16 @@ export class PauseMenu {
   constructor() {
     this._entries = [
       new PauseMenuEntrySimple("continue", () => {
-        b_.resume();
+        $.resume();
       }),
       new PauseMenuEntryToggle(
         "sounds:",
-        () => !b_.isAudioMuted(),
+        () => !$.isAudioMuted(),
         newValue => {
           if (newValue) {
-            b_.unmuteAudio();
+            $.unmuteAudio();
           } else {
-            b_.muteAudio();
+            $.muteAudio();
           }
         },
       ),
@@ -81,15 +82,15 @@ export class PauseMenu {
   }
 
   update(): void {
-    if (b_.wasButtonJustPressed("a")) {
+    if ($.wasButtonJustPressed("a")) {
       this._entries[this._focusedEntry]!.execute();
     }
 
-    if (b_.wasButtonJustPressed("up")) {
+    if ($.wasButtonJustPressed("up")) {
       this._focusedEntry =
         (this._focusedEntry - 1 + this._entries.length) % this._entries.length;
     }
-    if (b_.wasButtonJustPressed("down")) {
+    if ($.wasButtonJustPressed("down")) {
       this._focusedEntry = (this._focusedEntry + 1) % this._entries.length;
     }
 
@@ -100,7 +101,7 @@ export class PauseMenu {
     this._restartFadeOut?.update();
     if (this._restartFadeOut?.hasFinished) {
       this._restartFadeOut = null;
-      b_.restart();
+      $.restart();
     }
   }
 
@@ -109,7 +110,7 @@ export class PauseMenu {
 
     let wh = this._entries.reduce(
       (whTotal, entry, index) =>
-        v_(
+        $v(
           Math.max(
             whTotal.x,
             PauseMenu._padding.left + entry.size.x + PauseMenu._padding.right,
@@ -120,13 +121,13 @@ export class PauseMenu {
               PauseMenu._gapBetweenEntries
             : 0),
         ),
-      v_(
+      $v(
         PauseMenu._padding.left + PauseMenu._padding.right,
         PauseMenu._padding.top + PauseMenu._padding.bottom,
       ),
     );
     // make sure the width is even, therefore the pause menu will be placed horizontally in the center
-    wh = v_(wh.x % 2 ? wh.x + 1 : wh.x, wh.y);
+    wh = $v(wh.x % 2 ? wh.x + 1 : wh.x, wh.y);
     let xy = g.viewportSize.sub(wh).div(2);
 
     this._drawMenuBox(xy, wh);
@@ -140,14 +141,14 @@ export class PauseMenu {
   }
 
   private _dimContentBehind(): void {
-    b_.takeCanvasSnapshot();
-    b_.drawRectFilled(v_0_0_, g.viewportSize, g.snapshotDarker);
+    $d.takeCanvasSnapshot();
+    $d.rectFilled($v_0_0, g.viewportSize, g.snapshotDarker);
   }
 
   private _drawMenuBox(xy: BpxVector2d, wh: BpxVector2d): void {
-    b_.drawRectFilled(xy.sub(2), wh.add(4), c.black);
+    $d.rectFilled(xy.sub(2), wh.add(4), c.black);
 
-    b_.drawRect(xy.sub(1), wh.add(2), c.lightGrey);
+    $d.rect(xy.sub(1), wh.add(2), c.lightGrey);
   }
 
   private _drawEntry(
@@ -161,12 +162,12 @@ export class PauseMenu {
     entry.draw(xy);
 
     if (this._focusedEntry === entryIndex) {
-      b_.drawPixels(PauseMenu._arrowPixels, xy.sub(7, 0), c.white);
+      $d.pixels(PauseMenu._arrowPixels, xy.sub(7, 0), c.white);
       const sprite =
-        u_.booleanChangingEveryNthFrame(g.fps / 3, { onGamePause: "ignore" }) ?
+        $u.booleanChangingEveryNthFrame(g.fps / 3, { onGamePause: "ignore" }) ?
           this._cSprite
         : this._cSpritePressed;
-      const prevMapping = b_.setSpriteColorMapping(
+      const prevMapping = $d.setSpriteColorMapping(
         BpxSpriteColorMapping.of(color =>
           color?.cssHex === Pico8Colors.pink.cssHex ?
             c.darkerPurple
@@ -181,7 +182,7 @@ export class PauseMenu {
           )
           .sub(g.gameAreaOffset),
       );
-      b_.setSpriteColorMapping(prevMapping);
+      $d.setSpriteColorMapping(prevMapping);
     }
   }
 }

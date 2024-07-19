@@ -1,9 +1,9 @@
 import {
-  b_,
+  $d,
+  $u,
+  $v,
   BpxDrawingPattern,
   BpxPatternColors,
-  u_,
-  v_,
 } from "@beetpx/beetpx";
 import { c, g } from "./globals";
 import { Movement } from "./movement/Movement";
@@ -89,7 +89,7 @@ export class Fade {
   ];
   private readonly _stripHs: number[] = [
     g.viewportSize.y,
-    ...u_.range(9).map(() => 4),
+    ...$u.range(9).map(() => 4),
     g.viewportSize.y,
   ];
 
@@ -116,7 +116,7 @@ export class Fade {
         frames: params.fadeFrames,
         targetY: 0,
       }),
-    ])(v_(0, yMin));
+    ])($v(0, yMin));
   }
 
   get hasFinished(): boolean {
@@ -147,13 +147,13 @@ export class Fade {
           this._direction === "in" ? i : this.patterns.length - i - 1
         ]!;
 
-      b_.setDrawingPattern(pattern);
-      b_.drawRectFilled(
-        v_(0, y),
-        v_(g.viewportSize.x, stripH),
+      $d.setDrawingPattern(pattern);
+      $d.rectFilled(
+        $v(0, y),
+        $v(g.viewportSize.x, stripH),
         BpxPatternColors.of(c.black, null),
       );
     }
-    b_.setDrawingPattern(BpxDrawingPattern.primaryOnly);
+    $d.setDrawingPattern(BpxDrawingPattern.primaryOnly);
   }
 }

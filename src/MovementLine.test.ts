@@ -1,4 +1,4 @@
-import { BeetPx, u_, v_, v_0_0_ } from "@beetpx/beetpx";
+import { $u, $v, $v_0_0, BeetPx } from "@beetpx/beetpx";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { MovementLine } from "./movement/MovementLine";
 
@@ -18,59 +18,59 @@ describe("MovementLine", () => {
   [
     {
       caseName: "right",
-      startXy: v_(123, -4.56),
+      startXy: $v(123, -4.56),
       angle: 0,
       angledSpeed: 2,
-      expectedSpeed: v_(2, 0),
+      expectedSpeed: $v(2, 0),
     },
     {
       caseName: "left",
-      startXy: v_(123, -4.56),
+      startXy: $v(123, -4.56),
       angle: 0.5,
       angledSpeed: 2,
-      expectedSpeed: v_(-2, 0),
+      expectedSpeed: $v(-2, 0),
     },
     {
       caseName: "down",
-      startXy: v_(123, -4.56),
+      startXy: $v(123, -4.56),
       angle: 0.25,
       angledSpeed: 2,
-      expectedSpeed: v_(0, 2),
+      expectedSpeed: $v(0, 2),
     },
     {
       caseName: "up",
-      startXy: v_(123, -4.56),
+      startXy: $v(123, -4.56),
       angle: 0.75,
       angledSpeed: 2,
-      expectedSpeed: v_(0, -2),
+      expectedSpeed: $v(0, -2),
     },
     {
       caseName: "up, but defined with a negative turn",
-      startXy: v_(123, -4.56),
+      startXy: $v(123, -4.56),
       angle: -0.25,
       angledSpeed: 2,
-      expectedSpeed: v_(0, -2),
+      expectedSpeed: $v(0, -2),
     },
     {
       caseName: "up, but defined with a turn over 1",
-      startXy: v_(123, -4.56),
+      startXy: $v(123, -4.56),
       angle: 987.75,
       angledSpeed: 2,
-      expectedSpeed: v_(0, -2),
+      expectedSpeed: $v(0, -2),
     },
     {
       caseName: "up, but defined with a turn over 1",
-      startXy: v_(123, -4.56),
+      startXy: $v(123, -4.56),
       angle: 987.75,
       angledSpeed: 2,
-      expectedSpeed: v_(0, -2),
+      expectedSpeed: $v(0, -2),
     },
     {
       caseName: "left-down (45deg)",
-      startXy: v_(123, -4.56),
+      startXy: $v(123, -4.56),
       angle: 3 / 8,
       angledSpeed: 2,
-      expectedSpeed: v_(-Math.sqrt(2), Math.sqrt(2)),
+      expectedSpeed: $v(-Math.sqrt(2), Math.sqrt(2)),
     },
   ].forEach(({ caseName, startXy, angle, angledSpeed, expectedSpeed }) => {
     test(`angle-based movement (case: ${caseName})`, () => {
@@ -97,12 +97,12 @@ describe("MovementLine", () => {
 
   test(`angle-based movement + base speed`, () => {
     const movement = MovementLine.of({
-      baseSpeedXy: v_(9.87, -654),
+      baseSpeedXy: $v(9.87, -654),
       angle: 3 / 8,
       angledSpeed: 2,
-    })(v_(10, 200));
+    })($v(10, 200));
 
-    expect(movement.xy).toEqual(v_(10, 200));
+    expect(movement.xy).toEqual($v(10, 200));
     expect(movement.speed.x).toBeCloseTo(9.87 - Math.sqrt(2), 11);
     expect(movement.speed.y).toBeCloseTo(-654 + Math.sqrt(2), 11);
     expect(movement.hasFinished).toBe(false);
@@ -133,33 +133,33 @@ describe("MovementLine", () => {
       angle: 0,
       angledSpeed: 2,
       frames: 10,
-    })(v_(10, 200));
+    })($v(10, 200));
 
-    expect(movement.xy).toEqual(v_(10, 200));
-    expect(movement.speed).toEqual(v_(2, 0));
+    expect(movement.xy).toEqual($v(10, 200));
+    expect(movement.speed).toEqual($v(2, 0));
     expect(movement.hasFinished).toBe(false);
 
     incrementFrameNumber();
     movement.update();
 
-    expect(movement.xy).toEqual(v_(12, 200));
-    expect(movement.speed).toEqual(v_(2, 0));
+    expect(movement.xy).toEqual($v(12, 200));
+    expect(movement.speed).toEqual($v(2, 0));
     expect(movement.hasFinished).toBe(false);
 
-    u_.range(8).forEach(() => {
+    $u.range(8).forEach(() => {
       incrementFrameNumber();
       movement.update();
     });
 
-    expect(movement.xy).toEqual(v_(28, 200));
-    expect(movement.speed).toEqual(v_(2, 0));
+    expect(movement.xy).toEqual($v(28, 200));
+    expect(movement.speed).toEqual($v(2, 0));
     expect(movement.hasFinished).toBe(false);
 
     incrementFrameNumber();
     movement.update();
 
-    expect(movement.xy).toEqual(v_(30, 200));
-    expect(movement.speed).toEqual(v_0_0_);
+    expect(movement.xy).toEqual($v(30, 200));
+    expect(movement.speed).toEqual($v_0_0);
     expect(movement.hasFinished).toBe(true);
 
     incrementFrameNumber();
@@ -169,8 +169,8 @@ describe("MovementLine", () => {
     incrementFrameNumber();
     movement.update();
 
-    expect(movement.xy).toEqual(v_(30, 200));
-    expect(movement.speed).toEqual(v_0_0_);
+    expect(movement.xy).toEqual($v(30, 200));
+    expect(movement.speed).toEqual($v_0_0);
     expect(movement.hasFinished).toBe(true);
   });
 
@@ -179,17 +179,17 @@ describe("MovementLine", () => {
       angle: 0,
       angledSpeed: 2,
       frames: 1,
-    })(v_(10, 200));
+    })($v(10, 200));
 
-    expect(movement.xy).toEqual(v_(10, 200));
-    expect(movement.speed).toEqual(v_(2, 0));
+    expect(movement.xy).toEqual($v(10, 200));
+    expect(movement.speed).toEqual($v(2, 0));
     expect(movement.hasFinished).toBe(false);
 
     incrementFrameNumber();
     movement.update();
 
-    expect(movement.xy).toEqual(v_(12, 200));
-    expect(movement.speed).toEqual(v_0_0_);
+    expect(movement.xy).toEqual($v(12, 200));
+    expect(movement.speed).toEqual($v_0_0);
     expect(movement.hasFinished).toBe(true);
 
     incrementFrameNumber();
@@ -199,8 +199,8 @@ describe("MovementLine", () => {
     incrementFrameNumber();
     movement.update();
 
-    expect(movement.xy).toEqual(v_(12, 200));
-    expect(movement.speed).toEqual(v_0_0_);
+    expect(movement.xy).toEqual($v(12, 200));
+    expect(movement.speed).toEqual($v_0_0);
     expect(movement.hasFinished).toBe(true);
   });
 
@@ -209,10 +209,10 @@ describe("MovementLine", () => {
       angle: 0,
       angledSpeed: 2,
       frames: 0,
-    })(v_(10, 200));
+    })($v(10, 200));
 
-    expect(movement.xy).toEqual(v_(10, 200));
-    expect(movement.speed).toEqual(v_0_0_);
+    expect(movement.xy).toEqual($v(10, 200));
+    expect(movement.speed).toEqual($v_0_0);
     expect(movement.hasFinished).toBe(true);
 
     incrementFrameNumber();
@@ -222,8 +222,8 @@ describe("MovementLine", () => {
     incrementFrameNumber();
     movement.update();
 
-    expect(movement.xy).toEqual(v_(10, 200));
-    expect(movement.speed).toEqual(v_0_0_);
+    expect(movement.xy).toEqual($v(10, 200));
+    expect(movement.speed).toEqual($v_0_0);
     expect(movement.hasFinished).toBe(true);
   });
 
@@ -232,10 +232,10 @@ describe("MovementLine", () => {
       angle: 0,
       angledSpeed: 2,
       frames: -123,
-    })(v_(10, 200));
+    })($v(10, 200));
 
-    expect(movement.xy).toEqual(v_(10, 200));
-    expect(movement.speed).toEqual(v_0_0_);
+    expect(movement.xy).toEqual($v(10, 200));
+    expect(movement.speed).toEqual($v_0_0);
     expect(movement.hasFinished).toBe(true);
 
     incrementFrameNumber();
@@ -245,54 +245,54 @@ describe("MovementLine", () => {
     incrementFrameNumber();
     movement.update();
 
-    expect(movement.xy).toEqual(v_(10, 200));
-    expect(movement.speed).toEqual(v_0_0_);
+    expect(movement.xy).toEqual($v(10, 200));
+    expect(movement.speed).toEqual($v_0_0);
     expect(movement.hasFinished).toBe(true);
   });
 
   [
     {
       caseName: "right",
-      startXy: v_(123, -4.56),
-      targetXy: v_(999_000, -4.56),
+      startXy: $v(123, -4.56),
+      targetXy: $v(999_000, -4.56),
       angledSpeed: 2,
-      expectedSpeed: v_(2, 0),
+      expectedSpeed: $v(2, 0),
     },
     {
       caseName: "left",
-      startXy: v_(123, -4.56),
-      targetXy: v_(-999_000, -4.56),
+      startXy: $v(123, -4.56),
+      targetXy: $v(-999_000, -4.56),
       angledSpeed: 2,
-      expectedSpeed: v_(-2, 0),
+      expectedSpeed: $v(-2, 0),
     },
     {
       caseName: "down",
-      startXy: v_(123, -4.56),
-      targetXy: v_(123, 999_000),
+      startXy: $v(123, -4.56),
+      targetXy: $v(123, 999_000),
       angledSpeed: 2,
-      expectedSpeed: v_(0, 2),
+      expectedSpeed: $v(0, 2),
     },
     {
       caseName: "up",
-      startXy: v_(123, -4.56),
-      targetXy: v_(123, -999_000),
+      startXy: $v(123, -4.56),
+      targetXy: $v(123, -999_000),
       angledSpeed: 2,
-      expectedSpeed: v_(0, -2),
+      expectedSpeed: $v(0, -2),
     },
     {
       caseName:
         "up, but with a target near to the start (movement should continue past it)",
-      startXy: v_(123, -4.56),
-      targetXy: v_(123, -4.57),
+      startXy: $v(123, -4.56),
+      targetXy: $v(123, -4.57),
       angledSpeed: 2,
-      expectedSpeed: v_(0, -2),
+      expectedSpeed: $v(0, -2),
     },
     {
       caseName: "left-down (45deg)",
-      startXy: v_(123, -4.56),
-      targetXy: v_(-999_000 + 123, 999_000 - 4.56),
+      startXy: $v(123, -4.56),
+      targetXy: $v(-999_000 + 123, 999_000 - 4.56),
       angledSpeed: 2,
-      expectedSpeed: v_(-Math.sqrt(2), Math.sqrt(2)),
+      expectedSpeed: $v(-Math.sqrt(2), Math.sqrt(2)),
     },
   ].forEach(({ caseName, startXy, targetXy, angledSpeed, expectedSpeed }) => {
     test(`target-based movement (case: ${caseName})`, () => {

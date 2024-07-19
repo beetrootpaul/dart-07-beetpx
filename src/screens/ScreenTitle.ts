@@ -1,19 +1,20 @@
 import {
-  b_,
+  $,
+  $d,
+  $spr,
+  $u,
+  $v,
   BpxRgbColor,
   BpxSprite,
   BpxSpriteColorMapping,
   BpxVector2d,
-  spr_,
-  u_,
-  v_,
 } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
+import { PersistedState } from "../PersistedState";
 import { Score } from "../game/Score";
 import { c, g } from "../globals";
 import { Music } from "../misc/Music";
 import { Sprite, StaticSprite } from "../misc/Sprite";
-import { PersistedState } from "../PersistedState";
 import { Pico8Colors } from "../pico8/Pico8Color";
 import { GameScreen } from "./GameScreen";
 import { ScreenControls } from "./ScreenControls";
@@ -25,68 +26,68 @@ export class ScreenTitle implements GameScreen {
   private static _playSelected: boolean = true;
 
   private readonly _bgCoverTiles: (BpxVector2d | null)[][] = [
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(0, 6), v_(1, 6), ...u_.range(12).map(() => null), v_(2, 6), v_(3, 6)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(0, 6), $v(1, 6), ...$u.range(12).map(() => null), $v(2, 6), $v(3, 6)],
     [
-      v_(5, 5),
-      v_(1, 7),
-      ...u_.range(12).map(() => v_(5, 4)),
-      v_(2, 7),
-      v_(5, 5),
+      $v(5, 5),
+      $v(1, 7),
+      ...$u.range(12).map(() => $v(5, 4)),
+      $v(2, 7),
+      $v(5, 5),
     ],
-    u_.range(16).map(() => v_(5, 5)),
-    u_.range(16).map(() => v_(5, 5)),
-    u_.range(16).map(() => v_(5, 5)),
+    $u.range(16).map(() => $v(5, 5)),
+    $u.range(16).map(() => $v(5, 5)),
+    $u.range(16).map(() => $v(5, 5)),
     [
-      v_(5, 5),
-      v_(1, 4),
-      ...u_.range(12).map(() => v_(5, 6)),
-      v_(2, 4),
-      v_(5, 5),
+      $v(5, 5),
+      $v(1, 4),
+      ...$u.range(12).map(() => $v(5, 6)),
+      $v(2, 4),
+      $v(5, 5),
     ],
-    [v_(0, 5), v_(1, 5), ...u_.range(12).map(() => null), v_(2, 5), v_(3, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [$v(0, 5), $v(1, 5), ...$u.range(12).map(() => null), $v(2, 5), $v(3, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
   ];
 
   private readonly _bgTiles: (BpxVector2d | null)[][] = [
-    [v_(0, 6), v_(1, 6), ...u_.range(12).map(() => null), v_(2, 6), v_(3, 6)],
+    [$v(0, 6), $v(1, 6), ...$u.range(12).map(() => null), $v(2, 6), $v(3, 6)],
     [
-      v_(5, 5),
-      v_(1, 7),
-      ...u_.range(12).map(() => v_(5, 4)),
-      v_(2, 7),
-      v_(5, 5),
+      $v(5, 5),
+      $v(1, 7),
+      ...$u.range(12).map(() => $v(5, 4)),
+      $v(2, 7),
+      $v(5, 5),
     ],
-    u_.range(16).map(() => v_(5, 5)),
-    u_.range(16).map(() => v_(5, 5)),
-    u_.range(16).map(() => v_(5, 5)),
+    $u.range(16).map(() => $v(5, 5)),
+    $u.range(16).map(() => $v(5, 5)),
+    $u.range(16).map(() => $v(5, 5)),
     [
-      v_(5, 5),
-      v_(1, 4),
-      ...u_.range(12).map(() => v_(5, 6)),
-      v_(2, 4),
-      v_(5, 5),
+      $v(5, 5),
+      $v(1, 4),
+      ...$u.range(12).map(() => $v(5, 6)),
+      $v(2, 4),
+      $v(5, 5),
     ],
-    [v_(0, 5), v_(1, 5), ...u_.range(12).map(() => null), v_(2, 5), v_(3, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
-    [v_(6, 5), ...u_.range(14).map(() => null), v_(4, 5)],
+    [$v(0, 5), $v(1, 5), ...$u.range(12).map(() => null), $v(2, 5), $v(3, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
+    [$v(6, 5), ...$u.range(14).map(() => null), $v(4, 5)],
   ];
 
-  private readonly _brpLogo: BpxSprite = spr_(g.assets.mainSpritesheetUrl)(
+  private readonly _brpLogo: BpxSprite = $spr(g.assets.mainSpritesheetUrl)(
     29,
     14,
     99,
@@ -130,7 +131,7 @@ export class ScreenTitle implements GameScreen {
       params.startFadeIn ? new Fade("in", { fadeFrames: 30 }) : null;
 
     this._highScore = new Score(
-      b_.loadPersistedState<PersistedState>()?.highScore ?? 0,
+      $.loadPersistedState<PersistedState>()?.highScore ?? 0,
     );
 
     for (let y = 0; y < g.viewportSize.y; y++) {
@@ -140,9 +141,9 @@ export class ScreenTitle implements GameScreen {
 
   private _maybeAddStar(y: number): void {
     if (Math.random() < 0.1) {
-      const speed = u_.randomElementOf([0.25, 0.5, 0.75])!;
+      const speed = $u.randomElementOf([0.25, 0.5, 0.75])!;
       const star = {
-        xy: v_(Math.ceil(1 + Math.random() * g.viewportSize.x - 3), y),
+        xy: $v(Math.ceil(1 + Math.random() * g.viewportSize.x - 3), y),
         speed: speed,
         color:
           speed >= 0.75 ? c.lightGrey
@@ -162,13 +163,13 @@ export class ScreenTitle implements GameScreen {
   }
 
   update(): void {
-    if (b_.wasButtonJustPressed("up") || b_.wasButtonJustPressed("down")) {
-      b_.startPlayback(g.assets.sfxOptionsChange);
+    if ($.wasButtonJustPressed("up") || $.wasButtonJustPressed("down")) {
+      $.startPlayback(g.assets.sfxOptionsChange);
       ScreenTitle._playSelected = !ScreenTitle._playSelected;
     }
 
-    if (b_.wasButtonJustPressed("a")) {
-      b_.startPlayback(g.assets.sfxOptionsConfirm);
+    if ($.wasButtonJustPressed("a")) {
+      $.startPlayback(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }
 
@@ -187,7 +188,7 @@ export class ScreenTitle implements GameScreen {
     const tiles =
       ScreenTitle._gameCoverMode ? this._bgCoverTiles : this._bgTiles;
 
-    const prevMapping = b_.setSpriteColorMapping(
+    const prevMapping = $d.setSpriteColorMapping(
       BpxSpriteColorMapping.of(color =>
         color?.cssHex === Pico8Colors.black.cssHex ?
           null
@@ -198,8 +199,8 @@ export class ScreenTitle implements GameScreen {
     tiles.forEach((tilesRow, rowIndex) => {
       tilesRow.forEach((tile, colIndex) => {
         if (tile) {
-          b_.drawSprite(
-            spr_(g.assets.mission2SpritesheetUrl)(
+          $d.sprite(
+            $spr(g.assets.mission2SpritesheetUrl)(
               g.tileSize.x,
               g.tileSize.y,
               tile.x * g.tileSize.x,
@@ -211,11 +212,11 @@ export class ScreenTitle implements GameScreen {
       });
     });
 
-    b_.setSpriteColorMapping(prevMapping);
+    $d.setSpriteColorMapping(prevMapping);
   }
 
   private _drawVersion(baseY: number): void {
-    b_.drawText(
+    $d.text(
       g.gameVersion,
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
       c.mauve,
@@ -224,36 +225,36 @@ export class ScreenTitle implements GameScreen {
   }
 
   private _drawTitle(baseY: number): void {
-    const prevMapping = b_.setSpriteColorMapping(
+    const prevMapping = $d.setSpriteColorMapping(
       BpxSpriteColorMapping.of(color =>
         color?.cssHex === Pico8Colors.black.cssHex ?
           null
         : g.baseSpriteMapping.getMappedColor(color),
       ),
     );
-    b_.drawSprite(
-      spr_(g.assets.mainSpritesheetUrl)(32, 26, 96, 32),
-      v_((g.viewportSize.x - 96) / 2, baseY),
+    $d.sprite(
+      $spr(g.assets.mainSpritesheetUrl)(32, 26, 96, 32),
+      $v((g.viewportSize.x - 96) / 2, baseY),
     );
-    b_.drawSprite(
-      spr_(g.assets.mainSpritesheetUrl)(32, 26, 96, 58),
-      v_((g.viewportSize.x - 96) / 2 + 32, baseY),
+    $d.sprite(
+      $spr(g.assets.mainSpritesheetUrl)(32, 26, 96, 58),
+      $v((g.viewportSize.x - 96) / 2 + 32, baseY),
     );
-    b_.drawSprite(
-      spr_(g.assets.mainSpritesheetUrl)(32, 26, 96, 84),
-      v_((g.viewportSize.x - 96) / 2 + 64, baseY),
+    $d.sprite(
+      $spr(g.assets.mainSpritesheetUrl)(32, 26, 96, 84),
+      $v((g.viewportSize.x - 96) / 2 + 64, baseY),
     );
-    b_.setSpriteColorMapping(prevMapping);
+    $d.setSpriteColorMapping(prevMapping);
   }
 
   private _drawHighScore(baseY: number): void {
-    b_.drawText(
+    $d.text(
       "high score",
       g.gameAreaOffset.add(g.gameAreaSize.x / 2, baseY),
       c.lightGrey,
       { centerXy: [true, false] },
     );
-    this._highScore.draw(v_(52, baseY + 10), c.white, c.mauve, false);
+    this._highScore.draw($v(52, baseY + 10), c.white, c.mauve, false);
   }
 
   private _drawButton(
@@ -264,55 +265,55 @@ export class ScreenTitle implements GameScreen {
     selected: boolean,
   ): void {
     // button shape
-    b_.drawSprite(
-      spr_(g.assets.mainSpritesheetUrl)(1, 12, selected ? 35 : 36, 12),
-      v_(baseX, baseY),
-      { scaleXy: v_(w, 1) },
+    $d.sprite(
+      $spr(g.assets.mainSpritesheetUrl)(1, 12, selected ? 35 : 36, 12),
+      $v(baseX, baseY),
+      { scaleXy: $v(w, 1) },
     );
 
     // button text
-    b_.drawText(text, v_(baseX + 4, baseY + 3), c.mauve);
+    $d.text(text, $v(baseX + 4, baseY + 3), c.mauve);
 
     // "x" press incentive
     if (selected) {
       const sprite =
-        u_.booleanChangingEveryNthFrame(g.fps / 3) ?
+        $u.booleanChangingEveryNthFrame(g.fps / 3) ?
           this._cSprite
         : this._cSpritePressed;
-      sprite.draw(v_(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
+      sprite.draw($v(baseX + w - 16, baseY + 13).sub(g.gameAreaOffset));
     }
   }
 
   draw(): void {
-    b_.clearCanvas(c.darkerBlue);
+    $d.clearCanvas(c.darkerBlue);
 
     for (const star of this._stars) {
-      b_.drawPixel(star.xy, star.color);
+      $d.pixel(star.xy, star.color);
     }
 
     this._drawBackground();
 
     if (ScreenTitle._gameCoverMode) {
       // BRP
-      const prevMapping = b_.setSpriteColorMapping(
+      const prevMapping = $d.setSpriteColorMapping(
         BpxSpriteColorMapping.of(color =>
           color?.cssHex === Pico8Colors.black.cssHex ? null
           : color?.cssHex === Pico8Colors.lemon.cssHex ? c.mauve
           : g.baseSpriteMapping.getMappedColor(color),
         ),
       );
-      b_.drawSprite(
+      $d.sprite(
         this._brpLogo,
-        v_((g.viewportSize.x - this._brpLogo.size.x * 2) / 2, 6),
-        { scaleXy: v_(2) },
+        $v((g.viewportSize.x - this._brpLogo.size.x * 2) / 2, 6),
+        { scaleXy: $v(2) },
       );
-      b_.setSpriteColorMapping(prevMapping);
+      $d.setSpriteColorMapping(prevMapping);
 
       this._drawTitle(55);
 
       // ship
       new StaticSprite(g.assets.mainSpritesheetUrl, 10, 10, 18, 0).draw(
-        v_(g.gameAreaSize.x / 2, 110),
+        $v(g.gameAreaSize.x / 2, 110),
       );
     } else {
       this._drawVersion(1);
@@ -323,14 +324,14 @@ export class ScreenTitle implements GameScreen {
         98,
         15,
         82,
-        ScreenTitle._playSelected && !b_.isPaused,
+        ScreenTitle._playSelected && !$.isPaused,
       );
       this._drawButton(
         "controls",
         98,
         15,
         104,
-        !ScreenTitle._playSelected && !b_.isPaused,
+        !ScreenTitle._playSelected && !$.isPaused,
       );
     }
 
