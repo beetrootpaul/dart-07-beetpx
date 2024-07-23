@@ -76,7 +76,11 @@ export class PauseMenu {
         },
       ),
       new PauseMenuEntrySimple("restart game", () => {
-        this._restartFadeOut = new Fade("out", { fadeFrames: 30 });
+        // $.restart();
+        this._restartFadeOut = new Fade("out", {
+          fadeFrames: 30,
+          ignoreGamePause: true,
+        });
       }),
     ];
   }

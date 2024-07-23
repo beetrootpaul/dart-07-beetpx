@@ -16,6 +16,7 @@ export class MovementToTarget implements Movement {
       frames: number;
       easingFn?: BpxEasingFn;
       onFinished?: () => void;
+      ignoreGamePause?: boolean;
     }): MovementFactory =>
     startXy =>
       new MovementToTarget(
@@ -24,6 +25,7 @@ export class MovementToTarget implements Movement {
         params.frames,
         params.easingFn ?? BpxEasing.linear,
         params.onFinished,
+        params.ignoreGamePause,
       );
 
   private readonly _startXy: BpxVector2d;
@@ -40,10 +42,13 @@ export class MovementToTarget implements Movement {
     frames: number,
     easingFn: BpxEasingFn,
     onFinished?: () => void,
+    ignoreGamePause?: boolean,
   ) {
     this._startXy = startXy;
     this._targetXy = targetXy;
-    this._timer = $timer(frames);
+    this._timer = $timer(frames, {
+      onGamePause: ignoreGamePause ? "ignore" : "pause",
+    });
     this._easingFn = easingFn;
     this._onFinished = onFinished;
 

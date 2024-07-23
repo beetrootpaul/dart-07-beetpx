@@ -3,15 +3,22 @@ import { Movement, MovementFactory } from "./Movement";
 
 export class MovementFixed implements Movement {
   static of =
-    (params: { frames?: number }): MovementFactory =>
+    (params: { frames?: number; ignoreGamePause?: boolean }): MovementFactory =>
     startXy =>
-      new MovementFixed(startXy, params.frames);
+      new MovementFixed(startXy, params.frames, params.ignoreGamePause);
 
   private readonly _timer: BpxTimer | null;
   private readonly _xy: BpxVector2d;
 
-  private constructor(startXy: BpxVector2d, frames?: number) {
-    this._timer = typeof frames === "number" ? $timer(frames) : null;
+  private constructor(
+    startXy: BpxVector2d,
+    frames?: number,
+    ignoreGamePause?: boolean,
+  ) {
+    this._timer =
+      typeof frames === "number" ?
+        $timer(frames, { onGamePause: ignoreGamePause ? "ignore" : "pause" })
+      : null;
     this._xy = startXy;
   }
 

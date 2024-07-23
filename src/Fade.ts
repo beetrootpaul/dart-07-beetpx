@@ -95,7 +95,11 @@ export class Fade {
 
   constructor(
     direction: FadeDirection,
-    params: { waitFrames?: number; fadeFrames: number },
+    params: {
+      waitFrames?: number;
+      fadeFrames: number;
+      ignoreGamePause?: boolean;
+    },
   ) {
     this._direction = direction;
 
@@ -109,12 +113,14 @@ export class Fade {
         [
           MovementFixed.of({
             frames: params.waitFrames,
+            ignoreGamePause: params.ignoreGamePause,
           }),
         ]
       : []),
       MovementToTarget.of({
         frames: params.fadeFrames,
         targetY: 0,
+        ignoreGamePause: params.ignoreGamePause,
       }),
     ])($v(0, yMin));
   }
