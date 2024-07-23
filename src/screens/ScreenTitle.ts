@@ -189,10 +189,10 @@ export class ScreenTitle implements GameScreen {
       ScreenTitle._gameCoverMode ? this._bgCoverTiles : this._bgTiles;
 
     const prevMapping = $d.setSpriteColorMapping(
-      BpxSpriteColorMapping.of(color =>
+      BpxSpriteColorMapping.of((color, x, y) =>
         color?.cssHex === Pico8Colors.black.cssHex ?
           null
-        : g.baseSpriteMapping.getMappedColor(color),
+        : g.baseSpriteMapping.getMappedColor(color, x, y),
       ),
     );
 
@@ -226,10 +226,10 @@ export class ScreenTitle implements GameScreen {
 
   private _drawTitle(baseY: number): void {
     const prevMapping = $d.setSpriteColorMapping(
-      BpxSpriteColorMapping.of(color =>
+      BpxSpriteColorMapping.of((color, x, y) =>
         color?.cssHex === Pico8Colors.black.cssHex ?
           null
-        : g.baseSpriteMapping.getMappedColor(color),
+        : g.baseSpriteMapping.getMappedColor(color, x, y),
       ),
     );
     $d.sprite(
@@ -296,10 +296,10 @@ export class ScreenTitle implements GameScreen {
     if (ScreenTitle._gameCoverMode) {
       // BRP
       const prevMapping = $d.setSpriteColorMapping(
-        BpxSpriteColorMapping.of(color =>
+        BpxSpriteColorMapping.of((color, x, y) =>
           color?.cssHex === Pico8Colors.black.cssHex ? null
           : color?.cssHex === Pico8Colors.lemon.cssHex ? c.mauve
-          : g.baseSpriteMapping.getMappedColor(color),
+          : g.baseSpriteMapping.getMappedColor(color, x, y),
         ),
       );
       $d.sprite(

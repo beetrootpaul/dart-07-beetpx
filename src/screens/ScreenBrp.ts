@@ -85,10 +85,10 @@ export class ScreenBrp implements GameScreen {
 
     if (!this._brpPresentingTimer.hasFinishedOverall) {
       const prevMapping = $d.setSpriteColorMapping(
-        BpxSpriteColorMapping.of(color =>
+        BpxSpriteColorMapping.of((color, x, y) =>
           color?.cssHex === Pico8Colors.lemon.cssHex ?
             logoColor
-          : g.baseSpriteMapping.getMappedColor(color),
+          : g.baseSpriteMapping.getMappedColor(color, x, y),
         ),
       );
       $d.sprite(

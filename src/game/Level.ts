@@ -150,10 +150,10 @@ export class Level {
 
     if (this._phase === "main") {
       const prevMapping = $d.setSpriteColorMapping(
-        BpxSpriteColorMapping.of(color =>
+        BpxSpriteColorMapping.of((color, x, y) =>
           color?.cssHex === Pico8Colors.black.cssHex ?
             null
-          : g.baseSpriteMapping.getMappedColor(color),
+          : g.baseSpriteMapping.getMappedColor(color, x, y),
         ),
       );
 

@@ -168,10 +168,10 @@ export class PauseMenu {
           this._cSprite
         : this._cSpritePressed;
       const prevMapping = $d.setSpriteColorMapping(
-        BpxSpriteColorMapping.of(color =>
+        BpxSpriteColorMapping.of((color, x, y) =>
           color?.cssHex === Pico8Colors.pink.cssHex ?
             c.darkerPurple
-          : g.baseSpriteMapping.getMappedColor(color),
+          : g.baseSpriteMapping.getMappedColor(color, x, y),
         ),
       );
       sprite.draw(
