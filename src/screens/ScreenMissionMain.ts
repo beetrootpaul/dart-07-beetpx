@@ -1,4 +1,4 @@
-import { $d } from "../../../beetpx";
+import { $d } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { Game } from "../game/Game";
 import { Hud } from "../gui/Hud";

@@ -1,6 +1,6 @@
 import { $u, $v, $v_0_0, BeetPx } from "@beetpx/beetpx";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { MovementLine } from "./movement/MovementLine";
+import { MovementLine } from "./MovementLine";
 
 describe("MovementLine", () => {
   let stubbedFrameNumber = 1;
