@@ -110,7 +110,7 @@ export class ScreenSelectMission implements GameScreen {
       this._initShipMovement();
     }
 
-    if ($.wasButtonJustPressed("a")) {
+    if ($.wasButtonJustPressed("O")) {
       $.startPlayback(g.assets.sfxOptionsConfirm);
       if (ScreenSelectMission._selectedMission > 0) {
         Music.fadeOutCurrentMusic();

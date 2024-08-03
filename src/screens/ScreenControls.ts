@@ -49,7 +49,7 @@ export class ScreenControls implements GameScreen {
   }
 
   update(): void {
-    if ($.wasButtonJustPressed("a")) {
+    if ($.wasButtonJustPressed("O")) {
       $.startPlayback(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }

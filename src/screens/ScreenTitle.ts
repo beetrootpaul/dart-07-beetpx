@@ -168,7 +168,7 @@ export class ScreenTitle implements GameScreen {
       ScreenTitle._playSelected = !ScreenTitle._playSelected;
     }
 
-    if ($.wasButtonJustPressed("a")) {
+    if ($.wasButtonJustPressed("O")) {
       $.startPlayback(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }

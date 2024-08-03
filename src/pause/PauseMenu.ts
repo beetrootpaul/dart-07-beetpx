@@ -86,7 +86,7 @@ export class PauseMenu {
   }
 
   update(): void {
-    if ($.wasButtonJustPressed("a")) {
+    if ($.wasButtonJustPressed("O")) {
       this._entries[this._focusedEntry]!.execute();
     }
 

@@ -12,12 +12,57 @@ let pauseMenu: PauseMenu | undefined;
 
 const debugGameInfo: DebugGameInfo = new DebugGameInfo();
 
-$.init({
+$.setOnStarted(() => {
+  $d.setFont(pico8Font);
+
+  pauseMenu = new PauseMenu();
+
+  $d.setSpriteColorMapping(g.baseSpriteMapping);
+
+  currentScreen = new ScreenBrp();
+});
+
+$.setOnUpdate(() => {
+  debugGameInfo.update();
+
+  if ($.isPaused) {
+    pauseMenu?.update();
+  } else {
+    nextScreen = currentScreen?.preUpdate();
+    if (nextScreen) {
+      currentScreen = nextScreen;
+    }
+    currentScreen?.update();
+  }
+});
+
+$.setOnDraw(() => {
+  $d.setCameraXy($v_0_0);
+
+  currentScreen?.draw();
+
+  if ($.isPaused) {
+    pauseMenu?.draw();
+  }
+
+  if ($.debug) {
+    debugGameInfo.preDraw();
+    debugGameInfo.draw();
+    debugGameInfo.postDraw();
+  }
+});
+
+$.start({
+  gameId: "dart-07-beetpx",
   canvasSize: "128x128",
   fixedTimestep: "60fps",
-  globalPause: {
+  gamePause: {
     available: true,
   },
+  screenshots: {
+    available: true,
+  },
+  requireConfirmationOnTabClose: BEETPX__IS_PROD,
   assets: [
     // IMAGE files
     g.assets.mainSpritesheetUrl,
@@ -78,48 +123,6 @@ $.init({
   frameByFrame: {
     available: !window.BEETPX__IS_PROD,
   },
-}).then(async ({ startGame }) => {
-  $.setOnStarted(() => {
-    $d.useFont(pico8Font);
-
-    pauseMenu = new PauseMenu();
-
-    $d.setSpriteColorMapping(g.baseSpriteMapping);
-
-    currentScreen = new ScreenBrp();
-  });
-
-  $.setOnUpdate(() => {
-    debugGameInfo.update();
-
-    if ($.isPaused) {
-      pauseMenu?.update();
-    } else {
-      nextScreen = currentScreen?.preUpdate();
-      if (nextScreen) {
-        currentScreen = nextScreen;
-      }
-      currentScreen?.update();
-    }
-  });
-
-  $.setOnDraw(() => {
-    $d.setCameraXy($v_0_0);
-
-    currentScreen?.draw();
-
-    if ($.isPaused) {
-      pauseMenu?.draw();
-    }
-
-    if ($.debug) {
-      debugGameInfo.preDraw();
-      debugGameInfo.draw();
-      debugGameInfo.postDraw();
-    }
-  });
-
-  await startGame();
 });
 
 // TODO: polishing: music: mission 2

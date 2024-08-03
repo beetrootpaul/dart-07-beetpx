@@ -54,7 +54,7 @@ export class ScreenBrp implements GameScreen {
   }
 
   update(): void {
-    if ($.wasButtonJustPressed("a") || $.wasButtonJustPressed("b")) {
+    if ($.wasButtonJustPressed("O") || $.wasButtonJustPressed("X")) {
       this._skip = true;
     }
   }

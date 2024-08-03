@@ -417,11 +417,11 @@ export class Game {
 
   update(): void {
     this._player?.setMovement($.getPressedDirection(), this._fastMovement);
-    if ($.isButtonPressed("a")) {
+    if ($.isButtonPressed("O")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);
     }
     // TODO: this implementation (combined with a throttle inside the player) can end up with incorrectly used charges
-    if ($.wasButtonJustPressed("b")) {
+    if ($.wasButtonJustPressed("X")) {
       if (this._shockwaveCharges > 0 && this._player) {
         this._shockwaveCharges -= 1;
         this._player.triggerShockwave();

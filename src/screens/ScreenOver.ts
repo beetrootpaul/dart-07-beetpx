@@ -108,7 +108,7 @@ export class ScreenOver implements GameScreen {
       }
     }
 
-    if ($.wasButtonJustPressed("a")) {
+    if ($.wasButtonJustPressed("O")) {
       $.startPlayback(g.assets.sfxOptionsConfirm);
       Music.fadeOutCurrentMusic();
       this._proceed = true;

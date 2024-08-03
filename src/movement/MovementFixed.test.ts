@@ -1,20 +1,9 @@
-import { $u, $v, $v_0_0, BeetPx } from "@beetpx/beetpx";
-import { beforeEach, describe, expect, test, vi } from "vitest";
+import { $u, $v, $v_0_0 } from "@beetpx/beetpx";
+import { describe, expect, test } from "vitest";
+import { incrementFrameNumber } from "../test-setup/stub-frame-number";
 import { MovementFixed } from "./MovementFixed";
 
 describe("MovementFixed", () => {
-  let stubbedFrameNumber = 1;
-
-  function incrementFrameNumber(): void {
-    stubbedFrameNumber += 1;
-  }
-
-  beforeEach(() => {
-    vi.spyOn(BeetPx, "frameNumberOutsidePause", "get").mockImplementation(
-      () => stubbedFrameNumber,
-    );
-  });
-
   [
     $v(0, 0),
     $v(1, 2),

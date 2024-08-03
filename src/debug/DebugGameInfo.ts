@@ -19,7 +19,7 @@ export class DebugGameInfo {
   };
 
   update() {
-    this._updateCallsData.history[this._updateCallsData.index] += 1;
+    this._updateCallsData.history[this._updateCallsData.index]! += 1;
   }
 
   preDraw(): void {
