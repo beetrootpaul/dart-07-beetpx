@@ -1,7 +1,6 @@
 import {
   $v,
   BpxCanvasSnapshotColorMapping,
-  BpxRgbColor,
   BpxSpriteColorMapping,
 } from "@beetpx/beetpx";
 import { Helpers } from "./misc/Helpers";
@@ -118,67 +117,37 @@ export const g = {
     [Pico8Colors.peach, c.peach],
   ]),
 
-  snapshotNegative: BpxCanvasSnapshotColorMapping.of(
-    (canvasColor: BpxRgbColor | null): BpxRgbColor | null => {
-      switch (canvasColor?.cssHex) {
-        case c.black.cssHex:
-          return c.white;
-        case c.darkerBlue.cssHex:
-          return c.lightGrey;
-        case c.darkerPurple.cssHex:
-          return c.lavender;
-        case c.darkGreen.cssHex:
-          return c.mauve;
-        case c.trueBlue.cssHex:
-          return c.darkOrange;
-        case c.blueGreen.cssHex:
-          return c.peach;
-        case c.lightGrey.cssHex:
-          return c.darkerBlue;
-        case c.white.cssHex:
-          return c.black;
-        case c.red.cssHex:
-          return c.blue;
-        case c.darkOrange.cssHex:
-          return c.trueBlue;
-        case c.blue.cssHex:
-          return c.red;
-        case c.lavender.cssHex:
-          return c.darkerPurple;
-        case c.mauve.cssHex:
-          return c.darkGreen;
-        case c.peach.cssHex:
-          return c.blueGreen;
-        default:
-          return canvasColor;
-      }
-    },
-  ),
+  snapshotNegative: BpxCanvasSnapshotColorMapping.from([
+    [c.black, c.white],
+    [c.darkerBlue, c.lightGrey],
+    [c.darkerPurple, c.lavender],
+    [c.darkGreen, c.mauve],
+    [c.trueBlue, c.darkOrange],
+    [c.blueGreen, c.peach],
+    [c.lightGrey, c.darkerBlue],
+    [c.white, c.black],
+    [c.red, c.blue],
+    [c.darkOrange, c.trueBlue],
+    [c.blue, c.red],
+    [c.lavender, c.darkerPurple],
+    [c.mauve, c.darkGreen],
+    [c.peach, c.blueGreen],
+  ]),
 
-  snapshotDarker: BpxCanvasSnapshotColorMapping.of(
-    (canvasColor: BpxRgbColor | null): BpxRgbColor | null => {
-      switch (canvasColor?.cssHex) {
-        case c.black.cssHex:
-        case c.darkerBlue.cssHex:
-        case c.darkerPurple.cssHex:
-          return c.black;
-        case c.trueBlue.cssHex:
-        case c.blueGreen.cssHex:
-        case c.mauve.cssHex:
-          return c.darkerPurple;
-        case c.darkGreen.cssHex:
-        case c.red.cssHex:
-        case c.darkOrange.cssHex:
-        case c.lavender.cssHex:
-          return c.mauve;
-        case c.lightGrey.cssHex:
-        case c.white.cssHex:
-        case c.blue.cssHex:
-        case c.peach.cssHex:
-          return c.lavender;
-        default:
-          return canvasColor;
-      }
-    },
-  ),
+  snapshotDarker: BpxCanvasSnapshotColorMapping.from([
+    [c.black, c.black],
+    [c.darkerBlue, c.black],
+    [c.darkerPurple, c.black],
+    [c.trueBlue, c.darkerPurple],
+    [c.blueGreen, c.darkerPurple],
+    [c.mauve, c.darkerPurple],
+    [c.darkGreen, c.mauve],
+    [c.red, c.mauve],
+    [c.darkOrange, c.mauve],
+    [c.lavender, c.mauve],
+    [c.lightGrey, c.lavender],
+    [c.white, c.lavender],
+    [c.blue, c.lavender],
+    [c.peach, c.lavender],
+  ]),
 };

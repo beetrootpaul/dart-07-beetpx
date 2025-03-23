@@ -1,10 +1,10 @@
 import {
-  $,
   $d,
   $spr,
   $timer,
   $timerSeq,
   $v,
+  $x,
   BpxSprite,
   BpxSpriteColorMapping,
   BpxTimer,
@@ -54,7 +54,7 @@ export class ScreenBrp implements GameScreen {
   }
 
   update(): void {
-    if ($.wasButtonJustPressed("O") || $.wasButtonJustPressed("X")) {
+    if ($x.wasButtonJustPressed("O") || $x.wasButtonJustPressed("X")) {
       this._skip = true;
     }
   }
@@ -86,7 +86,7 @@ export class ScreenBrp implements GameScreen {
     if (!this._brpPresentingTimer.hasFinishedOverall) {
       const prevMapping = $d.setSpriteColorMapping(
         BpxSpriteColorMapping.of((color, x, y) =>
-          color?.cssHex === Pico8Colors.lemon.cssHex ?
+          color?.cssHex === Pico8Colors.lemon.cssHex || x == null || y == null ?
             logoColor
           : g.baseSpriteMapping.getMappedColor(color, x, y),
         ),

@@ -1,8 +1,8 @@
 import {
-  $,
   $timer,
   $u,
   $v,
+  $x,
   BpxRgbColor,
   BpxSoundSequence,
   BpxVector2d,
@@ -73,7 +73,7 @@ export class Mission3 implements Mission {
 
   private _maybeAddParticle(y: number): void {
     if (Math.random() < 0.4) {
-      const whxy = $u.randomElementOf([
+      const whxy = $u.randOf([
         // particle 1
         [3, 4, 24, 56],
         [3, 4, 24, 56],
@@ -158,7 +158,7 @@ export class Mission3 implements Mission {
           }),
           bulletFireTimer: $timer(40, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            $.startPlayback(g.assets.sfxEnemyMultiShoot);
+            $x.startPlayback(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -192,7 +192,7 @@ export class Mission3 implements Mission {
           score: 1,
           bulletFireTimer: $timer(80, { loop: true }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            $.startPlayback(g.assets.sfxEnemyMultiShoot);
+            $x.startPlayback(g.assets.sfxEnemyMultiShoot);
             return [
               $eb(
                 MovementLine.of({

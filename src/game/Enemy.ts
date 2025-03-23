@@ -81,7 +81,7 @@ export class Enemy {
       this._isDestroyed = true;
       const powerupTypesToPickFrom =
         this._properties.powerupsDistribution.split(",");
-      const powerupType = $u.randomElementOf(powerupTypesToPickFrom)!;
+      const powerupType = $u.randOf(powerupTypesToPickFrom)!;
       this._onDestroyed(
         mainCollisionCircle,
         this._properties.score,

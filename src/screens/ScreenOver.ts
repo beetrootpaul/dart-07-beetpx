@@ -1,4 +1,4 @@
-import { $, $d, $spr, $u, $v } from "@beetpx/beetpx";
+import { $d, $spr, $u, $v, $x } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { PersistedState } from "../PersistedState";
 import { Game } from "../game/Game";
@@ -63,14 +63,14 @@ export class ScreenOver implements GameScreen {
     this._fadeOut = new Fade("out", { fadeFrames: 30 });
 
     if (params.isWin) {
-      $.startPlayback(g.assets.sfxGameWin);
+      $x.startPlayback(g.assets.sfxGameWin);
     }
 
     const currentScore = this._game.score.rawValue;
     const highScoreSoFar =
-      $.loadPersistedState<PersistedState>()?.highScore ?? 0;
+      $x.loadPersistedState<PersistedState>()?.highScore ?? 0;
     this._gotHighScore = currentScore > highScoreSoFar;
-    $.savePersistedState<PersistedState>({
+    $x.savePersistedState<PersistedState>({
       highScore: Math.max(highScoreSoFar, currentScore),
     });
   }
@@ -102,14 +102,14 @@ export class ScreenOver implements GameScreen {
 
   update(): void {
     if (!this._isWin) {
-      if ($.wasButtonJustPressed("up") || $.wasButtonJustPressed("down")) {
-        $.startPlayback(g.assets.sfxOptionsChange);
+      if ($x.wasButtonJustPressed("up") || $x.wasButtonJustPressed("down")) {
+        $x.startPlayback(g.assets.sfxOptionsChange);
         this._retry = !this._retry;
       }
     }
 
-    if ($.wasButtonJustPressed("O")) {
-      $.startPlayback(g.assets.sfxOptionsConfirm);
+    if ($x.wasButtonJustPressed("O")) {
+      $x.startPlayback(g.assets.sfxOptionsConfirm);
       Music.fadeOutCurrentMusic();
       this._proceed = true;
     }
@@ -198,13 +198,13 @@ export class ScreenOver implements GameScreen {
       this._drawButton(
         `try mission ${CurrentMission.current} again`,
         81,
-        this._retry && !$.isPaused,
+        this._retry && !$x.isPaused,
       );
     }
     this._drawButton(
       "go to title screen",
       this._isWin ? 85 : 103,
-      (!this._retry || this._isWin) && !$.isPaused,
+      (!this._retry || this._isWin) && !$x.isPaused,
     );
 
     this._fadeIn.draw();

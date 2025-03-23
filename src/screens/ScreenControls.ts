@@ -1,4 +1,4 @@
-import { $, $d, $spr, $u, $v } from "@beetpx/beetpx";
+import { $d, $spr, $u, $v, $x } from "@beetpx/beetpx";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
 import { GameScreen } from "./GameScreen";
@@ -49,8 +49,8 @@ export class ScreenControls implements GameScreen {
   }
 
   update(): void {
-    if ($.wasButtonJustPressed("O")) {
-      $.startPlayback(g.assets.sfxOptionsConfirm);
+    if ($x.wasButtonJustPressed("O")) {
+      $x.startPlayback(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }
   }
@@ -60,7 +60,7 @@ export class ScreenControls implements GameScreen {
 
     // button shape
     $d.sprite(
-      $spr(g.assets.mainSpritesheetUrl)(1, 12, !$.isPaused ? 35 : 36, 12),
+      $spr(g.assets.mainSpritesheetUrl)(1, 12, !$x.isPaused ? 35 : 36, 12),
       $v(baseX, baseY),
       { scaleXy: $v(w, 1) },
     );
@@ -68,7 +68,7 @@ export class ScreenControls implements GameScreen {
     // button text
     $d.text("back", $v(baseX + 4, baseY + 3), c.mauve);
 
-    if (!$.isPaused) {
+    if (!$x.isPaused) {
       // "x" press incentive
       const sprite =
         $u.booleanChangingEveryNthFrame(g.fps / 3) ?

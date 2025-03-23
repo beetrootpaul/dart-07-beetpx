@@ -1,8 +1,8 @@
 import {
-  $,
   $timer,
   $u,
   $v,
+  $x,
   BpxEasing,
   BpxRgbColor,
   BpxSoundSequence,
@@ -25,7 +25,7 @@ const $sspr = Sprite.for(g.assets.mission1SpritesheetUrl).static;
 const $eb = EnemyBullet.factory($sspr(4, 4, 124, 64), 2);
 
 function t(): number {
-  return $.frameNumber / g.fps;
+  return $x.frameNumber / g.fps;
 }
 
 export class Mission1 implements Mission {
@@ -184,7 +184,7 @@ export class Mission1 implements Mission {
           }),
           bulletFireTimer: $timer(40, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            $.startPlayback(g.assets.sfxEnemyShoot);
+            $x.startPlayback(g.assets.sfxEnemyShoot);
             return [
               $eb(
                 MovementLine.of({
@@ -246,7 +246,7 @@ export class Mission1 implements Mission {
           ]),
           bulletFireTimer: $timer(33, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            $.startPlayback(g.assets.sfxEnemyMultiShoot);
+            $x.startPlayback(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -292,7 +292,7 @@ export class Mission1 implements Mission {
           ]),
           bulletFireTimer: $timer(60, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            $.startPlayback(g.assets.sfxEnemyShoot);
+            $x.startPlayback(g.assets.sfxEnemyShoot);
             const enemyXy = enemyMovement.xy;
             const playerXy = playerCollisionCircle.center;
             return [
@@ -331,7 +331,7 @@ export class Mission1 implements Mission {
           }),
           bulletFireTimer: $timer(60, { loop: true }),
           spawnBullets: (enemyMovement, playerCollisionCircle) => {
-            $.startPlayback(g.assets.sfxEnemyMultiShoot);
+            $x.startPlayback(g.assets.sfxEnemyMultiShoot);
             const bullets: EnemyBullet[] = [];
             for (let i = 1; i <= 8; i++) {
               bullets.push(
@@ -371,7 +371,7 @@ export class Mission1 implements Mission {
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             if (t() % 2 < 1) return [];
 
-            $.startPlayback(g.assets.sfxEnemyShoot);
+            $x.startPlayback(g.assets.sfxEnemyShoot);
 
             return [
               $eb(
@@ -392,7 +392,7 @@ export class Mission1 implements Mission {
           spawnBullets: (bossMovement, playerCollisionCircle) => {
             const bullets: EnemyBullet[] = [];
             if (t() > 0.6) {
-              $.startPlayback(g.assets.sfxEnemyMultiShoot);
+              $x.startPlayback(g.assets.sfxEnemyMultiShoot);
               for (let i = 1; i <= 8; i++) {
                 bullets.push(
                   $eb(
@@ -434,7 +434,7 @@ export class Mission1 implements Mission {
           score: 650,
           bulletFireTimer: $timer(8, { loop: true }),
           spawnBullets: (bossMovement, playerCollisionCircle) => {
-            $.startPlayback(g.assets.sfxEnemyShoot);
+            $x.startPlayback(g.assets.sfxEnemyShoot);
             if (t() % 2 > 1.5) {
               // side bullets
               return [

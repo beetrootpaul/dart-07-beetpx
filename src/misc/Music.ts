@@ -1,4 +1,4 @@
-import { $, BpxAudioPlaybackId } from "@beetpx/beetpx";
+import { $x, BpxAudioPlaybackId } from "@beetpx/beetpx";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
 
@@ -8,7 +8,7 @@ export class Music {
   static playTitleMusic(opts: { withIntro: boolean }): void {
     const halfDuration = (fullSoundDurationMs: number) =>
       (fullSoundDurationMs * 16) / 32;
-    Music._playbackId = $.startPlaybackSequence({
+    Music._playbackId = $x.startPlaybackSequence({
       intro:
         opts.withIntro ?
           [
@@ -24,20 +24,20 @@ export class Music {
   }
 
   static playLevelMusicMain(): void {
-    Music._playbackId = $.startPlaybackSequence(
+    Music._playbackId = $x.startPlaybackSequence(
       CurrentMission.m.audioSequenceMain,
     );
   }
 
   static playLevelMusicBoss(): void {
-    Music._playbackId = $.startPlaybackSequence(
+    Music._playbackId = $x.startPlaybackSequence(
       CurrentMission.m.audioSequenceBoss,
     );
   }
 
   static fadeOutCurrentMusic(): void {
     if (Music._playbackId) {
-      $.stopPlayback(Music._playbackId, { fadeOutMillis: 500 });
+      $x.stopPlayback(Music._playbackId, { fadeOutMillis: 500 });
     }
   }
 }

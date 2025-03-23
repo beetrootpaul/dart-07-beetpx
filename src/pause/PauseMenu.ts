@@ -1,9 +1,9 @@
 import {
-  $,
   $d,
   $u,
   $v,
   $v_0_0,
+  $x,
   BpxPixels,
   BpxSpriteColorMapping,
   BpxVector2d,
@@ -62,21 +62,21 @@ export class PauseMenu {
   constructor() {
     this._entries = [
       new PauseMenuEntrySimple("continue", () => {
-        $.resume();
+        $x.resume();
       }),
       new PauseMenuEntryToggle(
         "sounds:",
-        () => !$.isAudioMuted(),
+        () => !$x.isAudioMuted(),
         newValue => {
           if (newValue) {
-            $.unmuteAudio();
+            $x.unmuteAudio();
           } else {
-            $.muteAudio();
+            $x.muteAudio();
           }
         },
       ),
       new PauseMenuEntrySimple("restart game", () => {
-        // $.restart();
+        // $x.restart();
         this._restartFadeOut = new Fade("out", {
           fadeFrames: 30,
           ignoreGamePause: true,
@@ -86,15 +86,15 @@ export class PauseMenu {
   }
 
   update(): void {
-    if ($.wasButtonJustPressed("O")) {
+    if ($x.wasButtonJustPressed("O")) {
       this._entries[this._focusedEntry]!.execute();
     }
 
-    if ($.wasButtonJustPressed("up")) {
+    if ($x.wasButtonJustPressed("up")) {
       this._focusedEntry =
         (this._focusedEntry - 1 + this._entries.length) % this._entries.length;
     }
-    if ($.wasButtonJustPressed("down")) {
+    if ($x.wasButtonJustPressed("down")) {
       this._focusedEntry = (this._focusedEntry + 1) % this._entries.length;
     }
 
@@ -105,7 +105,7 @@ export class PauseMenu {
     this._restartFadeOut?.update();
     if (this._restartFadeOut?.hasFinished) {
       this._restartFadeOut = null;
-      $.restart();
+      $x.restart();
     }
   }
 
@@ -173,7 +173,7 @@ export class PauseMenu {
         : this._cSpritePressed;
       const prevMapping = $d.setSpriteColorMapping(
         BpxSpriteColorMapping.of((color, x, y) =>
-          color?.cssHex === Pico8Colors.pink.cssHex ?
+          color?.cssHex === Pico8Colors.pink.cssHex || x == null || y == null ?
             c.darkerPurple
           : g.baseSpriteMapping.getMappedColor(color, x, y),
         ),

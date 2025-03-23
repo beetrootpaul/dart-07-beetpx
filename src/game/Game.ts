@@ -1,4 +1,4 @@
-import { $, $d, $timer, $v, BpxTimer, BpxVector2d } from "@beetpx/beetpx";
+import { $d, $timer, $v, $x, BpxTimer, BpxVector2d } from "@beetpx/beetpx";
 import { Collisions } from "../collisions/Collisions";
 import { g } from "../globals";
 import { CurrentMission } from "../missions/CurrentMission";
@@ -79,13 +79,13 @@ export class Game {
     this._tripleShoot = params.tripleShoot;
 
     this._level = new Level(
-      new LevelDescriptor($.getJsonAsset(g.assets.levelsJson).json),
+      new LevelDescriptor($x.getJsonAsset(g.assets.levelsJson).json),
     );
 
     this._player = new Player({
       onBulletsSpawned: bullets => {
         // TODO: consider not playing a bullet sound at all
-        $.startPlayback(
+        $x.startPlayback(
           this._tripleShoot ?
             g.assets.sfxPlayerTripleShoot
           : g.assets.sfxPlayerShoot,
@@ -93,14 +93,14 @@ export class Game {
         this._playerBullets.push(...bullets);
       },
       onShockwaveTriggered: shockwave => {
-        $.startPlayback(g.assets.sfxPlayerShockwave);
+        $x.startPlayback(g.assets.sfxPlayerShockwave);
         this._shockwaves.push(shockwave);
       },
       onDamaged: () => {
-        $.startPlayback(g.assets.sfxDamagePlayer);
+        $x.startPlayback(g.assets.sfxDamagePlayer);
       },
       onDestroyed: playerCc => {
-        $.startPlayback(g.assets.sfxDestroyPlayer);
+        $x.startPlayback(g.assets.sfxDestroyPlayer);
         this._explosions.push(
           new Explosion({ startXy: playerCc.center, magnitude: playerCc.r }),
           new Explosion({
@@ -161,7 +161,7 @@ export class Game {
       this.score.add(10);
       this._floats.push(new Float({ startXy: xy, score: 10 }));
     }
-    $.startPlayback(
+    $x.startPlayback(
       hasEffect ? g.assets.sfxPowerupPicked : g.assets.sfxPowerupNoEffect,
     );
   }
@@ -312,10 +312,10 @@ export class Game {
         }
       },
       onDamaged: () => {
-        $.startPlayback(g.assets.sfxDamageEnemy);
+        $x.startPlayback(g.assets.sfxDamageEnemy);
       },
       onEnteredNextPhase: (collisionCircles, scoreToAdd) => {
-        $.startPlayback(g.assets.sfxDestroyBossPhase);
+        $x.startPlayback(g.assets.sfxDestroyBossPhase);
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -332,7 +332,7 @@ export class Game {
         }
       },
       onDestroyed: (collisionCircles, scoreToAdd) => {
-        $.startPlayback(g.assets.sfxDestroyBossFinal1);
+        $x.startPlayback(g.assets.sfxDestroyBossFinal1);
 
         this.score.add(scoreToAdd);
         this._floats.push(
@@ -350,7 +350,7 @@ export class Game {
               magnitude: 1.4 * cc.r,
               waitFrames: 4 + Math.random() * 44,
               onStarted: () => {
-                $.startPlayback(g.assets.sfxDestroyBossFinal2);
+                $x.startPlayback(g.assets.sfxDestroyBossFinal2);
               },
             }),
             new Explosion({
@@ -358,7 +358,7 @@ export class Game {
               magnitude: 1.8 * cc.r,
               waitFrames: 12 + Math.random() * 36,
               onStarted: () => {
-                $.startPlayback(g.assets.sfxDestroyBossFinal3);
+                $x.startPlayback(g.assets.sfxDestroyBossFinal3);
               },
             }),
             new Explosion({
@@ -416,12 +416,12 @@ export class Game {
   }
 
   update(): void {
-    this._player?.setMovement($.getPressedDirection(), this._fastMovement);
-    if ($.isButtonPressed("O")) {
+    this._player?.setMovement($x.getPressedDirection(), this._fastMovement);
+    if ($x.isButtonPressed("O")) {
       this._player?.fire(this._fastShoot, this._tripleShoot);
     }
     // TODO: this implementation (combined with a throttle inside the player) can end up with incorrectly used charges
-    if ($.wasButtonJustPressed("X")) {
+    if ($x.wasButtonJustPressed("X")) {
       if (this._shockwaveCharges > 0 && this._player) {
         this._shockwaveCharges -= 1;
         this._player.triggerShockwave();
@@ -454,7 +454,7 @@ export class Game {
             }
           },
           onDamaged: mainCollisionCircle => {
-            $.startPlayback(g.assets.sfxDamagePlayer);
+            $x.startPlayback(g.assets.sfxDamagePlayer);
             this._explosions.push(
               new Explosion({
                 startXy: mainCollisionCircle.center,
@@ -463,7 +463,7 @@ export class Game {
             );
           },
           onDestroyed: (mainCollisionCircle, scoreToAdd, powerupType) => {
-            $.startPlayback(g.assets.sfxDestroyEnemy);
+            $x.startPlayback(g.assets.sfxDestroyEnemy);
             this.score.add(scoreToAdd);
             this._floats.push(
               new Float({
@@ -491,7 +491,7 @@ export class Game {
       );
     }
 
-    $.logDebug(
+    $x.logDebug(
       "e:",
       this._enemies.length,
       "pb:",
@@ -538,7 +538,7 @@ export class Game {
 
     $d.removeClippingRegion();
 
-    if ($.debug) {
+    if ($x.debug) {
       this._enemies.forEach(e => {
         e.collisionCircles.forEach(Collisions.debugDrawCollisionCircle);
       });

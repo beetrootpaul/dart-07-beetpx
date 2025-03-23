@@ -1,9 +1,9 @@
 import {
-  $,
   $d,
   $spr,
   $u,
   $v,
+  $x,
   BpxRgbColor,
   BpxSprite,
   BpxSpriteColorMapping,
@@ -131,7 +131,7 @@ export class ScreenTitle implements GameScreen {
       params.startFadeIn ? new Fade("in", { fadeFrames: 30 }) : null;
 
     this._highScore = new Score(
-      $.loadPersistedState<PersistedState>()?.highScore ?? 0,
+      $x.loadPersistedState<PersistedState>()?.highScore ?? 0,
     );
 
     for (let y = 0; y < g.viewportSize.y; y++) {
@@ -141,7 +141,7 @@ export class ScreenTitle implements GameScreen {
 
   private _maybeAddStar(y: number): void {
     if (Math.random() < 0.1) {
-      const speed = $u.randomElementOf([0.25, 0.5, 0.75])!;
+      const speed = $u.randOf([0.25, 0.5, 0.75])!;
       const star = {
         xy: $v(Math.ceil(1 + Math.random() * g.viewportSize.x - 3), y),
         speed: speed,
@@ -163,13 +163,13 @@ export class ScreenTitle implements GameScreen {
   }
 
   update(): void {
-    if ($.wasButtonJustPressed("up") || $.wasButtonJustPressed("down")) {
-      $.startPlayback(g.assets.sfxOptionsChange);
+    if ($x.wasButtonJustPressed("up") || $x.wasButtonJustPressed("down")) {
+      $x.startPlayback(g.assets.sfxOptionsChange);
       ScreenTitle._playSelected = !ScreenTitle._playSelected;
     }
 
-    if ($.wasButtonJustPressed("O")) {
-      $.startPlayback(g.assets.sfxOptionsConfirm);
+    if ($x.wasButtonJustPressed("O")) {
+      $x.startPlayback(g.assets.sfxOptionsConfirm);
       this._proceed = true;
     }
 
@@ -190,7 +190,7 @@ export class ScreenTitle implements GameScreen {
 
     const prevMapping = $d.setSpriteColorMapping(
       BpxSpriteColorMapping.of((color, x, y) =>
-        color?.cssHex === Pico8Colors.black.cssHex ?
+        color?.cssHex === Pico8Colors.black.cssHex || x == null || y == null ?
           null
         : g.baseSpriteMapping.getMappedColor(color, x, y),
       ),
@@ -227,7 +227,7 @@ export class ScreenTitle implements GameScreen {
   private _drawTitle(baseY: number): void {
     const prevMapping = $d.setSpriteColorMapping(
       BpxSpriteColorMapping.of((color, x, y) =>
-        color?.cssHex === Pico8Colors.black.cssHex ?
+        color?.cssHex === Pico8Colors.black.cssHex || x == null || y == null ?
           null
         : g.baseSpriteMapping.getMappedColor(color, x, y),
       ),
@@ -297,7 +297,8 @@ export class ScreenTitle implements GameScreen {
       // BRP
       const prevMapping = $d.setSpriteColorMapping(
         BpxSpriteColorMapping.of((color, x, y) =>
-          color?.cssHex === Pico8Colors.black.cssHex ? null
+          color?.cssHex === Pico8Colors.black.cssHex || x == null || y == null ?
+            null
           : color?.cssHex === Pico8Colors.lemon.cssHex ? c.mauve
           : g.baseSpriteMapping.getMappedColor(color, x, y),
         ),
@@ -324,14 +325,14 @@ export class ScreenTitle implements GameScreen {
         98,
         15,
         82,
-        ScreenTitle._playSelected && !$.isPaused,
+        ScreenTitle._playSelected && !$x.isPaused,
       );
       this._drawButton(
         "controls",
         98,
         15,
         104,
-        !ScreenTitle._playSelected && !$.isPaused,
+        !ScreenTitle._playSelected && !$x.isPaused,
       );
     }
 

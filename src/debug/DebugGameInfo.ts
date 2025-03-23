@@ -1,4 +1,4 @@
-import { $, $d, $v } from "@beetpx/beetpx";
+import { $d, $v, $x } from "@beetpx/beetpx";
 import { c, g } from "../globals";
 
 export class DebugGameInfo {
@@ -23,7 +23,7 @@ export class DebugGameInfo {
   }
 
   preDraw(): void {
-    this._fpsData.history[this._updateCallsData.index] = $.renderingFps;
+    this._fpsData.history[this._updateCallsData.index] = $x.renderingFps;
   }
 
   draw(): void {
@@ -58,7 +58,7 @@ export class DebugGameInfo {
   }
 
   private _drawFps(): void {
-    this._fpsData.history[this._fpsData.index] = $.renderingFps;
+    this._fpsData.history[this._fpsData.index] = $x.renderingFps;
 
     for (let column = 0; column < this._fpsData.history.length; column++) {
       const tensOfFps = Math.round(this._fpsData.history[column]! / 10);
@@ -77,7 +77,7 @@ export class DebugGameInfo {
   }
 
   private _drawAudioState(): void {
-    const audioState = $.getAudioContext().state;
+    const audioState = $x.getAudioContext().state;
     const audioStateText =
       audioState === "suspended" ? "s"
       : audioState === "running" ? "r"

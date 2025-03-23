@@ -2,11 +2,11 @@
 //   - distance = how many tiles we have scrolled forward (can be fraction)
 //   - lane     = which row of tiles are we talking about, perpendicular to distance
 import {
-  $,
   $d,
   $spr,
   $u,
   $v,
+  $x,
   BpxSprite,
   BpxSpriteColorMapping,
   BpxVector2d,
@@ -63,7 +63,7 @@ export class Level {
 
   enterPhaseMain(): void {
     this._phase = "main";
-    $.logDebug("intro -> MAIN");
+    $x.logDebug("intro -> MAIN");
   }
 
   get progressFraction(): number {
@@ -116,7 +116,7 @@ export class Level {
       this._minVisibleDistance >= this._levelDescriptor.maxDefinedDistance
     ) {
       this._phase = "outro";
-      $.logDebug("MAIN -> outro");
+      $x.logDebug("MAIN -> outro");
     }
 
     this._maxVisibleDistance =
@@ -137,7 +137,7 @@ export class Level {
 
     this._minVisibleDistance = this._maxVisibleDistance - g.gameAreaTiles.y - 1;
 
-    $.logDebug(
+    $x.logDebug(
       "visible distance: " +
         this._minVisibleDistance.toFixed(2) +
         " : " +
@@ -151,7 +151,7 @@ export class Level {
     if (this._phase === "main") {
       const prevMapping = $d.setSpriteColorMapping(
         BpxSpriteColorMapping.of((color, x, y) =>
-          color?.cssHex === Pico8Colors.black.cssHex ?
+          color?.cssHex === Pico8Colors.black.cssHex || x == null || y == null ?
             null
           : g.baseSpriteMapping.getMappedColor(color, x, y),
         ),

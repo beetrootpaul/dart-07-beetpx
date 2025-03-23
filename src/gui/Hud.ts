@@ -1,4 +1,4 @@
-import { $, $d, $v, BpxEasing } from "@beetpx/beetpx";
+import { $d, $v, $x, BpxEasing } from "@beetpx/beetpx";
 import { Game } from "../game/Game";
 import { c, g } from "../globals";
 import { Sprite, StaticSprite } from "../misc/Sprite";
@@ -81,7 +81,7 @@ export class Hud {
       Hud._barSize.add(Hud._safetyBorder, 2 * Hud._safetyBorder),
       c.black,
     );
-    if ($.debug) {
+    if ($x.debug) {
       $d.rectFilled($v(0, 0), Hud._barSize, c.blueGreen);
       $d.rectFilled(
         g.viewportSize.sub(Hud._barSize),

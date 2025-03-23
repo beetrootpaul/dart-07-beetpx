@@ -1,4 +1,4 @@
-import { $, $d, $v_0_0 } from "@beetpx/beetpx";
+import { $d, $v_0_0, $x } from "@beetpx/beetpx";
 import { DebugGameInfo } from "./debug/DebugGameInfo";
 import { g } from "./globals";
 import { PauseMenu } from "./pause/PauseMenu";
@@ -12,7 +12,7 @@ let pauseMenu: PauseMenu | undefined;
 
 const debugGameInfo: DebugGameInfo = new DebugGameInfo();
 
-$.setOnStarted(() => {
+$x.setOnStarted(() => {
   $d.setFont(pico8Font);
 
   pauseMenu = new PauseMenu();
@@ -22,10 +22,10 @@ $.setOnStarted(() => {
   currentScreen = new ScreenBrp();
 });
 
-$.setOnUpdate(() => {
+$x.setOnUpdate(() => {
   debugGameInfo.update();
 
-  if ($.isPaused) {
+  if ($x.isPaused) {
     pauseMenu?.update();
   } else {
     nextScreen = currentScreen?.preUpdate();
@@ -36,23 +36,23 @@ $.setOnUpdate(() => {
   }
 });
 
-$.setOnDraw(() => {
+$x.setOnDraw(() => {
   $d.setCameraXy($v_0_0);
 
   currentScreen?.draw();
 
-  if ($.isPaused) {
+  if ($x.isPaused) {
     pauseMenu?.draw();
   }
 
-  if ($.debug) {
+  if ($x.debug) {
     debugGameInfo.preDraw();
     debugGameInfo.draw();
     debugGameInfo.postDraw();
   }
 });
 
-$.start({
+$x.start({
   gameId: "dart-07-beetpx",
   canvasSize: "128x128",
   fixedTimestep: "60fps",

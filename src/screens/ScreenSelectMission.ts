@@ -1,4 +1,4 @@
-import { $, $d, $spr, $u, $v, BpxVector2d } from "@beetpx/beetpx";
+import { $d, $spr, $u, $v, $x, BpxVector2d } from "@beetpx/beetpx";
 import { Fade } from "../Fade";
 import { c, g } from "../globals";
 import { Music } from "../misc/Music";
@@ -97,21 +97,21 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   update(): void {
-    if ($.wasButtonJustPressed("up")) {
-      $.startPlayback(g.assets.sfxOptionsChange);
+    if ($x.wasButtonJustPressed("up")) {
+      $x.startPlayback(g.assets.sfxOptionsChange);
       ScreenSelectMission._selectedMission =
         (ScreenSelectMission._selectedMission + 4 - 1) % 4;
       this._initShipMovement();
     }
-    if ($.wasButtonJustPressed("down")) {
-      $.startPlayback(g.assets.sfxOptionsChange);
+    if ($x.wasButtonJustPressed("down")) {
+      $x.startPlayback(g.assets.sfxOptionsChange);
       ScreenSelectMission._selectedMission =
         (ScreenSelectMission._selectedMission + 1) % 4;
       this._initShipMovement();
     }
 
-    if ($.wasButtonJustPressed("O")) {
-      $.startPlayback(g.assets.sfxOptionsConfirm);
+    if ($x.wasButtonJustPressed("O")) {
+      $x.startPlayback(g.assets.sfxOptionsConfirm);
       if (ScreenSelectMission._selectedMission > 0) {
         Music.fadeOutCurrentMusic();
       }
@@ -136,7 +136,7 @@ export class ScreenSelectMission implements GameScreen {
 
   private _drawMissionButton(mission: number): void {
     const selected =
-      mission === ScreenSelectMission._selectedMission && !$.isPaused;
+      mission === ScreenSelectMission._selectedMission && !$x.isPaused;
 
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(mission);
 
@@ -189,7 +189,7 @@ export class ScreenSelectMission implements GameScreen {
   }
 
   private _drawBackButton(): void {
-    const selected = 0 === ScreenSelectMission._selectedMission && !$.isPaused;
+    const selected = 0 === ScreenSelectMission._selectedMission && !$x.isPaused;
 
     const [buttonXy1, buttonWh] = this._missionButtonXyWh(0);
 
